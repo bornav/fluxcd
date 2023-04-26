@@ -1,0 +1,203 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: matrix-synapse-replication
+  namespace: matrix
+spec:
+  ports:
+    # Needs listeners added to the Synapse config as well, according to the
+    # workers documentation, if workers are to be used
+    - name: replication
+      protocol: TCP
+      port: 9092
+      targetPort: 9092
+    - name: http-replication
+      protocol: TCP
+      port: 9093
+      targetPort: 9093
+  selector:
+    app: matrix-synapse
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-synapse
+  namespace: matrix
+  annotations: 
+    dns.alpha.kubernetes.io/external: "matrix-synapse.matrix.svc.cluster.local"
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8008
+      targetPort: 8008
+    - name: https
+      protocol: TCP
+      port: 8448
+      targetPort: 8448
+  selector:
+    app: matrix-synapse
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: matrix-synapse
+  name: matrix-synapse
+  namespace: matrix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matrix-synapse
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /_synapse/metrics
+        prometheus.io/port: "9090"
+        prometheus.io/scrape: "true"
+      labels:
+        app: matrix-synapse
+    spec:
+      containers:
+        - command:
+            - sh
+            - -c
+            #- cp /synapse/config/homeserver.yaml /data/homeserver.yaml && sleep 8400000s
+            - cp /synapse/config/homeserver.yaml /data/homeserver.yaml && ./start.py generate && chmod +r -R /bridges &&./start.py
+            #- /start.py
+        # - command:
+        #     - sh
+        #     - -c
+        #     - sleep 84000s
+        # - command: # As an example of how to add rest_auth to the container without requiring a separate image
+        #     - sh
+        #     - -c
+        #     - |
+        #       curl https://raw.githubusercontent.com/kamax-matrix/matrix-synapse-rest-password-provider/master/rest_auth_provider.py -o /usr/local/lib/python2.7/site-packages/rest_auth_provider.py
+        #       /matrix-synapse
+          env:
+            - name: SYNAPSE_CACHE_FACTOR
+              value: "5.00"
+            - name: SYNAPSE_CONFIG_PATH
+              value: "/data/homeserver.yaml"
+            - name: SYNAPSE_SERVER_NAME
+              value: "matrix.cloud.icecoldlair.com"
+            - name: SYNAPSE_REPORT_STATS
+              value: "no"
+          image: matrixdotorg/synapse:v1.80.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /_matrix/client/versions
+              port: 8008
+              scheme: HTTP
+            initialDelaySeconds: 120
+          name: matrix-synapse
+          readinessProbe:
+            httpGet:
+              path: /_matrix/client/versions
+              port: 8008
+              scheme: HTTP
+            initialDelaySeconds: 10
+          # resources:
+          #   # These are just some arbitrary values, will have to be tuned or removed per-deployment
+          #   requests:
+          #     memory: 250Mi
+          #     cpu: 250m
+          #   limits:
+          #     memory: 1Gi
+          #     cpu: 1
+          volumeMounts:
+            - mountPath: /data
+              name: matrix-synapse-data
+            # - mountPath: /synapse/keys
+            #   name: matrix-synapse-keys
+            - mountPath: /synapse/config
+              name: matrix-synapse-config
+            - mountPath: /bridges
+              name: matrix-bridges
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsUser: 0
+      volumes:
+        - name: matrix-synapse-data
+          persistentVolumeClaim:
+            claimName: matrix-synapse-data
+        # - name: matrix-synapse-data
+        #   emptyDir: {}
+        # - name: matrix-synapse-keys
+        #   secret:
+        #     secretName: matrix-synapse-keys
+        - name: matrix-synapse-config
+          configMap:
+            name: matrix-synapse
+        - name: matrix-bridges
+          persistentVolumeClaim:
+            claimName: matrix-bridges-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: matrix-synapse-data
+  name: matrix-synapse-data
+  namespace: matrix
+  annotations:
+    numberOfReplicas: "1"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: matrix-bridges-data
+  name: matrix-bridges-data
+  namespace: matrix
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 100Mi
+status: {}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: matrix-synapse
+  namespace: matrix
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+    # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icecoldlair.com
+    # traefik.ingress.kubernetes.io/proxy-body-size: 500m
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`matrix.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: matrix-synapse
+          port: 8008
+          namespace: matrix
+      # middlewares:
+      #  - name: default-headers
+      #    namespace: default
+  tls:
+    secretName: cloud-icecoldlair-com-prod
+
+#to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icecoldlair.com/_matrix/client/v3/login"

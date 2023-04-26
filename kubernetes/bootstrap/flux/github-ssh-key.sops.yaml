@@ -1,0 +1,30 @@
+# yamllint disable
+# https://github.com/k8s-at-home/template-cluster-k3s/issues/324
+apiVersion: v1
+kind: Secret
+metadata:
+    name: github-ssh-key
+    namespace: flux-system
+stringData:
+    identity: ENC[AES256_GCM,data:KVpTg1sbMZ+GQW3MOBO8wzY848VDkL9OuawqQkziIyiasqFybcGL2wZoj2pWxoWC0tuqdx7dXTAZGUfT3PajwPinVmu1fkWdkIi5sK9nsg398PjCYSiggFLHcLwTYrxXbx7PQhhJd4yLfykKzm0emQ/esSbdVIL27G4jZwEgyPNFEHunzHCvKWiOgtVOZVAM0OS8XfghIY66F8r50XdL7gaHjsMdwL3RDHYKt+XIhQ4QW2Z9O47k0RBIGopR77eoeDeTm7zVESnO13MG3d/WQPnx4Yk3NzUvZSxPbcYJn8er8yBhB83g4aBMMT0ZsZbBKefN0FqFGgHm8N0dbYYcaWHMeo/mN3d0CzQI4R3xFoi4/O7oG4Ie6XYiks5jnC1bjXAEcorHGpXvmAcuoYm1rkZ9nigDrO0Rwzs/EjSArf1XghS2aN2Y20vOLDq+zZsGoRs5rY9M6WqNiMjGuZPOwAK1S+tL+aedf0P8EAo/oSDN/VLIGH45v/hoK3rY1xj9wvEG9/xE/zh5trmBGdUw,iv:zgldKoPpT15AD22wui2EBUJwVAHCc5OsyqPldLUQp50=,tag:JvWCy9vfrP8Ecfdr+5RPeA==,type:str]
+    known_hosts: ENC[AES256_GCM,data:ENGSl84GGNCz2pW/AFBwD7DWnxOdj+jYUB8KI9hZm277J2oXP59CBUcQleqlJ170St7SGqNtqIl3NYEwUu5VCMN/9Rkak+yQLUzsijLWwHzMt/qxQMu2EsMe10dZBptuGoX8NWcN74dwG2zlUT6IEmZO8CkgUHsi6em4P0WTfJGxZUG7ra6PPer6H8ctajWNJYHogVeqsHii4DxjYOwxiJExE0lDy10QgJNQbA==,iv:TmIGunOX/CNUHdu2cfdKaOJfxFVvF4ozokY0Ou6bncA=,tag:+VAm2V6XuUE0L81QycoJsQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBjRll5aGMxdzJYU1JUblht
+            RzI2a1luZXBSSE0wWmRodzhvV0Y5aFFLZHkwCmdGQmJxRHROOFN6NlFzeitJQVR1
+            dVhGVlhTZnVEV0hadjVqbWtPVURmSE0KLS0tIFZVZGNadmdHeHpIN1V2UzFvVWJi
+            N2RVZy8rdThkTHRGNzJ6WWRCWktTYTgK8P18u6/Bk0IycOS/G4CWoaIobn6okCSY
+            jAMLZlY75djYZbrMw3vtyYFzYaA3NvyNyE6izeY5ieMdVeaob1iCQg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-04-24T11:54:06Z"
+    mac: ENC[AES256_GCM,data:CAlbATa4uRoTjtB1Fje32/FjXHEeE7TDMC/Rtq5ERPwhlKAZba8DdXK2kPqU/2grkv8Kn9EmlqamY5UoPkzTKPAzuACoyTvre/T89tLiY8mtBNk5TLfz/ZYjQLjF2JsUjE4M0LT63/6Z2QsyLah+NwZBkSbECCtMM6nXE+qt5Ek=,iv:t48o3ybbEBRUQYNq5fuwScnlTgEGxggofj96HrkPSbQ=,tag:qh455I0ETz2hpXtC9t9IKQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

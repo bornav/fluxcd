@@ -1,0 +1,22 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: longhorn-ui-ingress
+  namespace: longhorn-system
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`longhorn.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: longhorn-frontend
+          port: 80
+          namespace: longhorn-system
+      middlewares:
+        - name: longhorn-dashboard-basicauth
+          namespace: longhorn-system
+  tls:
+    secretName: cloud-icecoldlair-com-prod

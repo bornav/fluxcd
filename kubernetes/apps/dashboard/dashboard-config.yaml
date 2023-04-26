@@ -1,0 +1,125 @@
+---
+apiVersion: v1
+data:
+  services.yaml: |
+    - Services:
+        - Element:
+            icon: element.png
+            href: https://element.cloud.icecoldlair.com/
+            #ping: http://element.matrix.svc.cluster.local
+        - Matrix:
+            icon: matrix.png
+            href: https://matrix.cloud.icecoldlair.com/
+            #ping: http://matrix-synapse.matrix.svc.cluster.local
+        - KuberneteDashboard:
+            icon: kubernetes-dashboard.png
+            href: https://kubernetes-dashboard.cloud.icecoldlair.com/
+            #htef: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+        - WeaveGitOps:
+            #icon: kubernetes-dashboard.png
+            href: https://weave-gitops.cloud.icecoldlair.com/
+
+    - Cloud:
+        - traefik_cloud:
+            icon: traefik.png
+            href: https://traefik.cloud.icecoldlair.com
+            #ping: http://traefik.traefik.svc.cluster.local
+        - Longhorn:
+            icon: longhorn.png
+            href: https://longhorn.cloud.icecoldlair.com
+        - portainerDB:
+            icon: portainer.png
+            href: https://oracle2.cloud.icecoldlair.com:9443/
+            #ping: https://oracle2.cloud.icecoldlair.com:9443/
+        - netmaker:
+            icon: netmaker.png
+            hfer: https://dashboard.netmaker.cloud.icecoldlair.com/
+            
+kind: ConfigMap
+metadata:
+  name: dashboard-homepage-services
+  namespace: dashboard
+---
+apiVersion: v1
+data:
+  settings.yaml: |
+    theme: dark
+    color: slate
+    language: en
+    target: _self
+    headerStyle: clean
+    layout:
+      Services:
+      Cloud:
+        icon: https://cdn-icons-png.flaticon.com/512/252/252035.png
+kind: ConfigMap
+metadata:
+  name: dashboard-homepage-settings
+  namespace: dashboard
+---
+apiVersion: v1
+data:
+  bookmarks.yaml: |
+    # For configuration options and examples, please see:
+    # https://github.com/benphelps/homepage/wiki/Bookmarks
+    #- Developer:
+    #    - Github:
+    #        - abbr: GH
+    #          href: https://github.com/
+    #- Social:
+    #    - Reddit:
+    #        - abbr: RE
+    #          href: https://reddit.com/
+
+    #- Entertainment:
+    #    - YouTube:
+    #        - abbr: YT
+    #          href: https://youtube.com/
+
+kind: ConfigMap
+metadata:
+  name: dashboard-homepage-bookmarks
+  namespace: dashboard
+---
+apiVersion: v1
+data:
+  docker.yaml: |
+    # For configuration options and examples, please see:
+    # https://github.com/benphelps/homepage/wiki/Docker-Integration
+
+    # my-docker:
+    #   host: 127.0.0.1
+    #   port: 2375
+
+    # my-docker:
+    #   socket: /var/run/docker.sock
+kind: ConfigMap
+metadata:
+  name: dashboard-homepage-docker
+  namespace: dashboard
+---
+apiVersion: v1
+data:
+  kubernetes.yaml: |
+    # sample kubernetes config
+kind: ConfigMap
+metadata:
+  name: dashboard-homepage-kubernetes
+  namespace: dashboard
+---
+apiVersion: v1
+data:
+  widgets.yaml: |
+    # For configuration options and examples, please see:
+    # https://github.com/benphelps/homepage/wiki/Information-Widgets
+    #- resources:
+    #    cpu: true
+    #    memory: true
+    #    disk: /
+    #- search:
+    #    provider: google
+    #    target: _self
+kind: ConfigMap
+metadata:
+  name: dashboard-homepage-widgets
+  namespace: dashboard
