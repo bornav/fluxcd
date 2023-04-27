@@ -1,0 +1,61 @@
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mautrix-bridge-signal
+#   namespace: matrix
+#   labels:
+#     app: mautrix-bridge-signal
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: mautrix-bridge-signal
+#   strategy:
+#     type: Recreate
+#   template:
+#     metadata:
+#       labels:
+#         io.kompose.network/dockerfile-default: "true"
+#         app: mautrix-bridge-signal
+#     spec:
+#       containers:
+#         - command:
+#             - sh
+#             - -c
+#             #- sleep 8000s
+#             - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
+#           image: dock.mau.dev/mautrix/signal:v0.4.2
+#           name: mautrix-bridge-signal
+#           resources: {}
+#           volumeMounts:
+#             - mountPath: /data
+#               name: matrix-bridges-data
+#               subPath: "signal"
+#             - mountPath: /config/config.yaml
+#               name: matrix-bridge-signal-config
+#               subPath: config.yaml
+#       restartPolicy: Always
+#       volumes:
+#         - name: matrix-bridges-data
+#           persistentVolumeClaim:
+#             claimName: matrix-bridges-data
+#         - name: matrix-bridge-signal-config
+#           configMap:
+#             name: matrix-bridge-signal-config
+# status: {}
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mautrix-bridge-signal
+#   namespace: matrix
+#   annotations: 
+#     dns.alpha.kubernetes.io/external: "mautrix-bridge-signal.matrix.svc.cluster.local"
+# spec:
+#   selector:
+#     app: mautrix-bridge-signal
+#   ports:
+#   - name: http
+#     targetPort: 29328
+#     port: 29328

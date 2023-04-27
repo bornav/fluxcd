@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: mautrix-bridge-whatsapp
+    namespace: matrix
+    labels:
+        app: mautrix-bridge-whatsapp
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: mautrix-bridge-whatsapp
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                io.kompose.network/dockerfile-default: "true"
+                app: mautrix-bridge-whatsapp
+        spec:
+            containers:
+                - command:
+                    - sh
+                    - -c
+                    - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && ./docker-run.sh
+                  image: dock.mau.dev/mautrix/whatsapp:v0.8.4
+                  name: mautrix-bridge-whatsapp
+                  resources: {}
+                  volumeMounts:
+                    - mountPath: /data
+                      name: matrix-bridges-data
+                      subPath: whatsapp
+                    - mountPath: /config/config.yaml
+                      name: matrix-bridge-whatsapp-config
+                      subPath: config.yaml
+            restartPolicy: Always
+            volumes:
+                - name: matrix-bridges-data
+                  persistentVolumeClaim:
+                    claimName: matrix-bridges-data
+                - name: matrix-bridge-whatsapp-config
+                  configMap:
+                    name: matrix-bridge-whatsapp-config
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: mautrix-bridge-whatsapp
+    namespace: matrix
+    annotations:
+        dns.alpha.kubernetes.io/external: mautrix-bridge-whatsapp.matrix.svc.cluster.local
+spec:
+    selector:
+        app: mautrix-bridge-whatsapp
+    ports:
+        - name: http
+          targetPort: 29318
+          port: 29318

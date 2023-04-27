@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: mautrix-bridge-facebook
+    namespace: matrix
+    labels:
+        app: mautrix-bridge-facebook
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: mautrix-bridge-facebook
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                io.kompose.network/dockerfile-default: "true"
+                app: mautrix-bridge-facebook
+        spec:
+            containers:
+                - command:
+                    - sh
+                    - -c
+                    #- sleep 8000s
+                    - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
+                  image: dock.mau.dev/mautrix/facebook:v0.4.1
+                  name: mautrix-bridge-facebook
+                  resources: {}
+                  volumeMounts:
+                    - mountPath: /data
+                      name: matrix-bridges-data
+                      subPath: facebook
+                    - mountPath: /config/config.yaml
+                      name: matrix-bridge-facebook-config
+                      subPath: config.yaml
+            restartPolicy: Always
+            volumes:
+                - name: matrix-bridges-data
+                  persistentVolumeClaim:
+                    claimName: matrix-bridges-data
+                - name: matrix-bridge-facebook-config
+                  configMap:
+                    name: matrix-bridge-facebook-config
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: mautrix-bridge-facebook
+    namespace: matrix
+    annotations:
+        dns.alpha.kubernetes.io/external: mautrix-bridge-facebook.matrix.svc.cluster.local
+spec:
+    selector:
+        app: mautrix-bridge-facebook
+    ports:
+        - name: http
+          targetPort: 29319
+          port: 29319

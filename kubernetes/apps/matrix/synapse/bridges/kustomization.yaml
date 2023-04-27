@@ -2,7 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: matrix
 resources:
-  - facebook-synapse-bridge-config.yaml
-  - signal-synapse-bridge-config.yaml
-  - telegram-synapse-bridge-config.yaml
-  - whatsapp-synapse-bridge-config.yaml
+  - facebook-synapse-bridge.yaml
+  - signal-synapse-bridge.yaml
+  - telegram-synapse-bridge.yaml
+  - whatsapp-synapse-bridge.yaml
+  - facebook-config.yaml
+  - signal-config.yaml
+  - telegram-config.yaml
+  - whatsapp-config.yaml
