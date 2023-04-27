@@ -20,27 +20,6 @@ spec:
     app: matrix-synapse
   type: ClusterIP
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: matrix-synapse
-  namespace: matrix
-  annotations: 
-    dns.alpha.kubernetes.io/external: "matrix-synapse.matrix.svc.cluster.local"
-spec:
-  ports:
-    - name: http
-      protocol: TCP
-      port: 8008
-      targetPort: 8008
-    - name: https
-      protocol: TCP
-      port: 8448
-      targetPort: 8448
-  selector:
-    app: matrix-synapse
-  type: ClusterIP
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -103,14 +82,10 @@ spec:
               port: 8008
               scheme: HTTP
             initialDelaySeconds: 10
-          # resources:
-          #   # These are just some arbitrary values, will have to be tuned or removed per-deployment
-          #   requests:
-          #     memory: 250Mi
-          #     cpu: 250m
-          #   limits:
-          #     memory: 1Gi
-          #     cpu: 1
+          resources:
+            requests:
+              memory: 250Mi
+              cpu: 250m
           volumeMounts:
             - mountPath: /data
               name: matrix-synapse-data
@@ -140,40 +115,6 @@ spec:
         - name: matrix-bridges
           persistentVolumeClaim:
             claimName: matrix-bridges-data
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: matrix-synapse-data
-  name: matrix-synapse-data
-  namespace: matrix
-  annotations:
-    numberOfReplicas: "1"
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 2Gi
-status: {}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: matrix-bridges-data
-  name: matrix-bridges-data
-  namespace: matrix
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 100Mi
-status: {}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute

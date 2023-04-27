@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: matrix
 resources:
   - synapse.yaml
-  - synapse-config.yaml
+  - config.yaml
+  - pvc.yaml
+  - service.yaml
