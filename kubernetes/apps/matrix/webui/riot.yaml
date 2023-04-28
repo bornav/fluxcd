@@ -124,7 +124,7 @@ spec:
         app: element
     spec:
       containers:
-      - image: vectorim/element-web:v1.11.28
+      - image: vectorim/element-web:v1.11.30
         imagePullPolicy: IfNotPresent
         name: element-web
         readinessProbe:
