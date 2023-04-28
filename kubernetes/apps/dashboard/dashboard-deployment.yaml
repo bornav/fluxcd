@@ -25,7 +25,7 @@ spec:
         app: dashboard-homepage
     spec:
       containers:
-        - image: ghcr.io/benphelps/homepage:v0.6.10
+        - image: ghcr.io/benphelps/homepage:v0.6.16
           name: dashboard-homepage
           resources: {}
           volumeMounts:
