@@ -1,0 +1,69 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-homepage-cloud
+  namespace: dashboard
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dashboard.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: dashboard-homepage
+          port: 3000
+          namespace: dashboard
+      middlewares:
+       - name: dashboard-basicauth
+         namespace: dashboard
+  tls:
+    secretName: cloud-icecoldlair-com-prod
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-homepage-local
+  namespace: dashboard
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dashboard.local.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: dashboard-homepage
+          port: 3000
+          namespace: dashboard
+      middlewares:
+       - name: dashboard-basicauth
+         namespace: dashboard
+  tls:
+    secretName: local-icecoldlair-com-prod
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard-homepage
+  namespace: dashboard
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: dashboard-homepage
+          port: 3000
+          namespace: dashboard
+      middlewares:
+       - name: dashboard-basicauth
+         namespace: dashboard
+  tls:
+    secretName: icecoldlair-com-prod
