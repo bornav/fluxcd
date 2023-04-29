@@ -18,6 +18,9 @@ data:
         - WeaveGitOps:
             #icon: kubernetes-dashboard.png
             href: https://weave-gitops.cloud.icecoldlair.com/
+        - renovate:
+            #icon: kubernetes-dashboard.png
+            href: https://app.renovatebot.com/dashboard#github/bornav/fluxcd
 
     - Cloud:
         - traefik_cloud:
