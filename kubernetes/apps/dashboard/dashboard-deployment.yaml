@@ -25,7 +25,7 @@ spec:
           resources: 
             limits:
               cpu: 100m
-              memory: 50M
+              memory: 200M
           volumeMounts:
             - mountPath: /app/config/settings.yaml
               name: dashboard-homepage-settings
