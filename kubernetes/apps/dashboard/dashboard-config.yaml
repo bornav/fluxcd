@@ -37,6 +37,10 @@ data:
         - netmaker:
             icon: netmaker.png
             hfer: https://dashboard.netmaker.cloud.icecoldlair.com/
+    - DevOps:
+        - jenkins:
+            icon: jenkins.png
+            href: https://jenkins.cloud.icecoldlair.com
             
 kind: ConfigMap
 metadata:
