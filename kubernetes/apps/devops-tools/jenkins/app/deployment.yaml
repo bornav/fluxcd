@@ -14,21 +14,22 @@ spec:
         app: jenkins-server
     spec:
       securityContext:
-        fsGroup: 0 
+        fsGroup: 0
         runAsUser: 0
       serviceAccountName: jenkins-admin
-      initContainers:
-        - name: setup
-          image: jenkins/jenkins:2.405
-          securityContext:
-            runAsUser: 0
-          command: ["sh", "-c", "apt-get update && apt install -y build-essential"]
-          volumeMounts:
-            - name: jenkins-data
-              mountPath: /var/jenkins_home
+      # initContainers: //TODO after change the security context above for both to 1000
+      #   - name: install-dependancies
+      #     image: jenkins/jenkins:2.405
+      #     securityContext:
+      #       runAsUser: 0
+      #     command: ["sh", "-c", "apt-get update && apt install -y build-essential"]
+      #     volumeMounts:
+      #       - name: jenkins-data
+      #         mountPath: /var/jenkins_home
       containers:
         - name: jenkins
           image: jenkins/jenkins:2.405
+          command: ["sh", "-c", "apt-get update && apt install -y build-essential golang-go && curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh && /usr/local/bin/jenkins.sh"] # //TODO: remove
           resources:
             limits:
               memory: "10Gi"
