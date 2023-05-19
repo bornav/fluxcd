@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jenkins-ingress-route
+  namespace: devops-tools
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec: 
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jenkins.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: jenkins-service
+          port: 8080
+  tls: 
+    secretName: cloud-icecoldlair-com-prod
