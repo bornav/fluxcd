@@ -8,3 +8,4 @@ resources:
   - ./traefik.yaml
   - ./longhorn.yaml
   - ./weave-gitops.yaml
+  - ./jenkins.yaml
