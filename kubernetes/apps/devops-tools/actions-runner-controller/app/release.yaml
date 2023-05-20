@@ -14,7 +14,7 @@ spec:
         name: actions-runner-controller
         namespace: flux-system
       interval: 1m
-  values:
-    authSecret:
-      github_token: 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
-      create: true
+  valuesFrom:
+    - kind: ConfigMap
+      name: github_token_secret
+      valuesKey: github_token.yaml
