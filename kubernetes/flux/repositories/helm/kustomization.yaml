@@ -9,3 +9,4 @@ resources:
   - ./longhorn.yaml
   - ./weave-gitops.yaml
   - ./jenkins.yaml
+  - ./actions-runner-controller.yaml
