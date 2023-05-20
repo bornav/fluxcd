@@ -18,7 +18,7 @@ spec:
         runAsUser: 0
       serviceAccountName: jenkins-admin
       # initContainers: //TODO after change the security context above for both to 1000
-      #   - name: install-dependancies
+      #   - name: install-dependencies
       #     image: jenkins/jenkins:2.405
       #     securityContext:
       #       runAsUser: 0
@@ -29,7 +29,7 @@ spec:
       containers:
         - name: jenkins
           image: jenkins/jenkins:2.405
-          command: ["sh", "-c", "apt-get update && apt install -y build-essential golang-go && curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh && /usr/local/bin/jenkins.sh"] # //TODO: remove
+          command: ["sh", "-c", "sh /dependencies.sh && /usr/local/bin/jenkins.sh"] # //TODO: remove
           resources:
             limits:
               memory: "10Gi"
@@ -60,8 +60,31 @@ spec:
             failureThreshold: 3
           volumeMounts:
             - name: jenkins-data
-              mountPath: /var/jenkins_home         
+              mountPath: /var/jenkins_home
+            - name: jenkins-dependencies-configmap
+              mountPath: /dependencies.sh
+              subPath: dependencies.sh
       volumes:
         - name: jenkins-data
           persistentVolumeClaim:
               claimName: jenkins-pv-claim
+        - name: jenkins-dependencies-configmap
+          configMap:
+            name: jenkins-dependencies
+
+---
+apiVersion: v1
+data:
+    dependencies.sh: |
+        #!/bin/sh
+        apt-get update
+        apt install -y build-essential
+        curl -L https://go.dev/dl/go1.20.4.linux-arm64.tar.gz -o go1.20.4.linux-arm64.tar.gz
+        tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz
+        cp /usr/local/go/bin/go /usr/bin/
+        #curl -fsSL https://get.docker.com -o get-docker.sh
+        #sh get-docker.sh 
+kind: ConfigMap
+metadata:
+    name: jenkins-dependencies
+    namespace: devops-tools
