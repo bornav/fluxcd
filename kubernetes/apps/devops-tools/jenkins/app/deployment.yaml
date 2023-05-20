@@ -33,7 +33,7 @@ spec:
           resources:
             limits:
               memory: "10Gi"
-              cpu: "3000m"
+              cpu: "2500m"
             requests:
               memory: "500Mi"
               cpu: "500m"
@@ -77,8 +77,9 @@ apiVersion: v1
 data:
     dependencies.sh: |
         #!/bin/sh
+        echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
         apt-get update
-        apt install -y build-essential
+        apt install -y build-essential goreleaser
         curl -L https://go.dev/dl/go1.20.4.linux-arm64.tar.gz -o go1.20.4.linux-arm64.tar.gz
         tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz
         cp /usr/local/go/bin/go /usr/bin/

@@ -1,0 +1,21 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: actions-runner-controller
+  namespace: devops-tools
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: actions-runner-controller
+      version: 0.23.3 #chart version not app
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller
+        namespace: flux-system
+      interval: 1m
+  values:
+    authSecret:
+      github_token: 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
+      create: true

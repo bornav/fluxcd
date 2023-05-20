@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: devops-runners
 resources:
-- actions-runner-controller
-- jenkins
+- deployment.yaml
 - namespace.yaml
