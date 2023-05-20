@@ -16,5 +16,5 @@ spec:
       interval: 1m
   valuesFrom:
     - kind: ConfigMap
-      name: github_token_secret
+      name: github-token-secret
       valuesKey: github_token.yaml
