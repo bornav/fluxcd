@@ -24,7 +24,7 @@ spec:
             retries: 3
     valuesFrom:
         - kind: ConfigMap
-          name: values.yaml
+          name: weave-gitops-admin-secret
           valuesKey: values.yaml
     values:
         # adminUser:

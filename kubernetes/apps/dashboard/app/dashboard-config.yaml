@@ -45,7 +45,6 @@ data:
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-services
-  namespace: dashboard
 ---
 apiVersion: v1
 data:
@@ -62,7 +61,6 @@ data:
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-settings
-  namespace: dashboard
 ---
 apiVersion: v1
 data:
@@ -86,7 +84,6 @@ data:
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-bookmarks
-  namespace: dashboard
 ---
 apiVersion: v1
 data:
@@ -103,7 +100,6 @@ data:
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-docker
-  namespace: dashboard
 ---
 apiVersion: v1
 data:
@@ -112,7 +108,6 @@ data:
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-kubernetes
-  namespace: dashboard
 ---
 apiVersion: v1
 data:
@@ -129,4 +124,3 @@ data:
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-widgets
-  namespace: dashboard
