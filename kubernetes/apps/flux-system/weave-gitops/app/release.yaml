@@ -22,28 +22,12 @@ spec:
         cleanupOnFail: true
         remediation:
             retries: 3
+    valuesFrom:
+        - kind: ConfigMap
+          name: values.yaml
+          valuesKey: values.yaml
     values:
-        adminUser:
-            create: ENC[AES256_GCM,data:bt+RIg==,iv:piMr/TE9p0mdxUJ2+cJy7tVmGhw4WpdzRHyDqoxaGYw=,tag:/MlqfzK/8vhsW2hKsYEQ2Q==,type:bool]
-            passwordHash: ENC[AES256_GCM,data:8GRwtD5ZF2JEAGfRucDgEfD5KoCzFZf7QC+12foKIOiWWEil/mdf+5rPKXToINXCqOBVrXB5dIUDc/ZB,iv:ZKIt5QJtkDtmzxNN+oKwLaPUkJDFmsEjhX0zLebOElM=,tag:q+hsf0uixxtxRSZAF7nAUw==,type:str]
-            username: ENC[AES256_GCM,data:uenUP04=,iv:PMMfHsYJc/djTIeoD+dtjCgsUR8so0nGVkh5oJO/dfA=,tag:btLpG1u1Aqemih/lB1TFew==,type:str]
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSByOUNmZXBHbi9HTktLMnJC
-            NEpYdHE2ZXYvRnhRN2VOYkdYeEc3aDFDQXh3CldudHB5RGw0MGpPWGN0ek50ZXJG
-            blZsOGZYY3p5QjVZWWVLT1RGeklacDQKLS0tIFJzVzJBVys5MEtLRkZ6UXRxUlR0
-            STc5TUJtVXFnZ0poRjJkVmVrY2lpR3cKIh+7gSyoA5VKhTVjIHCBqRhXp0LZgALj
-            socfN935u4j8heTkx7Xen452a59n/vXJjyKVI27/sc3Jb3+8uGsPSw==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-26T11:50:42Z"
-    mac: ENC[AES256_GCM,data:rL2jm54rPUqS0jLvx1VzYfzWL8HJL177aWr0EmD4muTYvmUwC9TJOmrO60PxKHlgkUBSQUYByAzV8pUgUBh8rkkm9O5WRvwL8GbLae+76jiDzvtp6rN0w8ZlJeg+tzTtHAfv2zJn3axWEMv6tEqfZPXP/EjFXGPLHVplrw/j9J0=,iv:LYSPCu3Sex3sNKGtXPgeeUl+8+By+Fm87valpbwHeTs=,tag:4BgiSi2kBJTiTFlL4k5Amg==,type:str]
-    pgp: []
-    encrypted_regex: ^(values)$
-    version: 3.7.3
+        # adminUser:
+        #     create: x
+        #     passwordHash: x
+        #     username: x
