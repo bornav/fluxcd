@@ -20,3 +20,4 @@ spec:
   - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
     repositoryNames:
     - bornav/fluxcd
+    
