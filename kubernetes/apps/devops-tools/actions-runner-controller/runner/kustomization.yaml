@@ -3,4 +3,3 @@ kind: Kustomization
 namespace: devops-runners
 resources:
 - deployment.yaml
-- namespace.yaml
