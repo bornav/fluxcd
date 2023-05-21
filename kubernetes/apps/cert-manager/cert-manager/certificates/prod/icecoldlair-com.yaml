@@ -3,7 +3,6 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: icecoldlair.com-prod
-  namespace: default
 spec:
   secretName: icecoldlair-com-prod
   issuerRef:
