@@ -5,6 +5,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
 spec:
   ports:
     - port: 443
@@ -18,6 +19,7 @@ metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
   name: dashboard-metrics-scraper
+  namespace: kubernetes-dashboard
 spec:
   ports:
     - port: 8000
