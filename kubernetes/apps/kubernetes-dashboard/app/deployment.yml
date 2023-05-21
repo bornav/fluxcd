@@ -11,10 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: kubernetes-dashboard
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -22,7 +18,6 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
 
 ---
 kind: ConfigMap
@@ -31,7 +26,6 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard-settings
-  namespace: kubernetes-dashboard
 
 ---
 kind: Deployment
@@ -40,7 +34,6 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -107,7 +100,6 @@ metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
   name: dashboard-metrics-scraper
-  namespace: kubernetes-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -158,7 +150,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
   annotations: 
     kubernetes.io/ingress.class: traefik-external
 spec:
@@ -176,3 +167,4 @@ spec:
       #    namespace: kubernetes-dashboard
   tls:
     secretName: cloud-icecoldlair-com-prod
+    
