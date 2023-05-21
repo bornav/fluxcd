@@ -10,3 +10,4 @@ resources:
   - ./weave-gitops.yaml
   - ./jenkins.yaml
   - ./actions-runner-controller.yaml
+  - ./renovate.yaml
