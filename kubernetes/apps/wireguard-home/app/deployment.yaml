@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wireguard
+  namespace: wireguard-local
   labels:
     app: wireguard
 spec:
