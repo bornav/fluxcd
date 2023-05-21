@@ -3,7 +3,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: matrix-synapse-replication
-  namespace: matrix
 spec:
   ports:
     # Needs listeners added to the Synapse config as well, according to the
@@ -26,7 +25,6 @@ metadata:
   labels:
     app: matrix-synapse
   name: matrix-synapse
-  namespace: matrix
 spec:
   replicas: 1
   selector:
@@ -120,7 +118,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: matrix-synapse
-  namespace: matrix
   annotations: 
     kubernetes.io/ingress.class: traefik-external
     # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icecoldlair.com

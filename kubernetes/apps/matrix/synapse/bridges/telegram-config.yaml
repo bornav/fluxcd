@@ -4,7 +4,6 @@ data:
 kind: ConfigMap
 metadata:
     name: matrix-bridge-telegram-config
-    namespace: matrix
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +19,8 @@ sops:
             UDd0T25HNVBiVDJxTHdSckJ4UlBNcUkKhwydPCN+sNmb5pGzbU1UixcDmJsJ0Lwi
             Sy8mRoli9ty2Kyg1yTP3+3CIomhukCXPzqBhMmAvx6jna1SQa7vtpQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-27T17:01:51Z"
-    mac: ENC[AES256_GCM,data:9dyKOFb3KMdn1pGcmK+tT19M6tksxnZDGcrnB3tpa4eV9J7GNp7T6zPfdk5ZnY6THeHVnUNE1Bom2ZgivhTSxhUiQuMShKHLuSmPTkbFR3+LtGrF5QpGEPbAzeuRk/I9kSnGw9dlTWhb2J6aiLHYF2nfCujApWzNvTbYqWgzSHM=,iv:7krnqKt/mu5JGNyho4FQbKtKeVx954N5Kpnt9FxEZQA=,tag:T/oh7thiWYi1XnziH40EtQ==,type:str]
+    lastmodified: "2023-05-20T15:29:08Z"
+    mac: ENC[AES256_GCM,data:PRlQBFLxkdraM1xJJUhauf1mtCVRyq+aohAZp02b9xSZfMBKV5HBBsfdJO60Plfx6lF8Vp2+0XNSd8L5zfqaL8axzMkLAIdsiui+X8hFeAwLW2p5s2XKjZxPXwj3RqDI6aZAUej5sxN2ONqeDhG+kvhrR21/YlOat/czSmG1hqs=,iv:fVl2AmEwB7tTH2HvT1CyF2mQOR1p7B38FhPQ/g0LWbk=,tag:9eU5G7lKZpyZXkuY0VHQUA==,type:str]
     pgp: []
     encrypted_regex: ^(data|data)$
     version: 3.7.3

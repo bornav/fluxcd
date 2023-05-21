@@ -5,7 +5,6 @@ metadata:
   labels:
     app: matrix-synapse-data
   name: matrix-synapse-data
-  namespace: matrix
   annotations:
     numberOfReplicas: "1"
 spec:
@@ -23,7 +22,6 @@ metadata:
   labels:
     app: matrix-bridges-data
   name: matrix-bridges-data
-  namespace: matrix
 spec:
   accessModes:
     - ReadWriteMany

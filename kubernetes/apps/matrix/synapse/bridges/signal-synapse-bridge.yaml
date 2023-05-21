@@ -3,7 +3,6 @@
 # kind: Deployment
 # metadata:
 #   name: mautrix-bridge-signal
-#   namespace: matrix
 #   labels:
 #     app: mautrix-bridge-signal
 # spec:
@@ -49,7 +48,6 @@
 # kind: Service
 # metadata:
 #   name: mautrix-bridge-signal
-#   namespace: matrix
 #   annotations: 
 #     dns.alpha.kubernetes.io/external: "mautrix-bridge-signal.matrix.svc.cluster.local"
 # spec:

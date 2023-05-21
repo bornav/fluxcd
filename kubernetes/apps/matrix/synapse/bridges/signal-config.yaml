@@ -4,7 +4,6 @@ data:
 kind: ConfigMap
 metadata:
     name: matrix-bridge-signal-config
-    namespace: matrix
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +19,8 @@ sops:
             WUFUK0R0S2puNUN6S09vVTBQelBsOU0KP/EcPdPXiNOQKdiNgqOj2pf/RcaAXFYX
             tdxSORo6VZvTEDJQd98+kLtedVMLuZS07/1S1UEvL432vbqy4o9qfQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-27T17:01:48Z"
-    mac: ENC[AES256_GCM,data:An12WpiSH5dhhJrJhIlXIM1AwraokYfJ89i2EHhNpBBx2wJvVvtZwPTCW9Uuay/ZntMCWbUCOlMynFopZV4+J6AwA+3DHz/URCsbh2No76dxId4IovlVJUA0m3b/vsgFsT2ywTLsPcgL5PUXyJSiFpXWF8WwjOeKPs+cfMhmEck=,iv:n/72EPSDdrQ3Tg0IqTGqkQ/9lb817VULrwhonL5j8M4=,tag:q6M/CtGOymgg4yDfKrI6Lw==,type:str]
+    lastmodified: "2023-05-20T15:29:24Z"
+    mac: ENC[AES256_GCM,data:4I+PNkvtmq8Kk5Qj5gXsqeUKvWh6zey75R/lRlcaNsn1ukbKgoRYZElN6i3t4qkvr1jQHfh3V0oDLpIYnlhm+hXiyISVxE3tN2hxh0e7UuLN5tGKdA4OvvGBzszzjm5G8CMaOzvoiG2sN/WrElFfPNdJWsdqy+lu+z2+sjTehIE=,iv:8qqDErdsuLIEqb46EAn/vOgBBs4cTH6v8fEvin88QLA=,tag:aGF6vlXS8fmN8PGFlEINdw==,type:str]
     pgp: []
     encrypted_regex: ^(data|data)$
     version: 3.7.3

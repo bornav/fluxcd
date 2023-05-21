@@ -4,7 +4,6 @@ data:
 kind: ConfigMap
 metadata:
     name: matrix-bridge-facebook-config
-    namespace: matrix
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +19,8 @@ sops:
             M3V3NWwxOE5vUjBzT1NhVDhYVm9zVUUKGIXqk+M54eufekUzW6hZaIuQoXgzVP9V
             eXttiiOrSoftAbvlt+Zrk6x7pwzPzine5QmCvXXjPn5dDuraJ0YsDg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-27T17:01:56Z"
-    mac: ENC[AES256_GCM,data:nUYF2LYgbnvSFpoHtRR0t/8fvfv1jh+509EtAqhJsQUI720M4uMVAnBIznn/ggU4XzTJ91JOGevnwb6OOOGssDDz9hMPdwCTKCLK2vfkS1XolYftsX2tMmabQOZJ+tBPemx7wsGI0/RoQt9uObH0fufPtYkzm+9bQpXR/t552tc=,iv:zf0tKzODNYZkOfxaYAJqAlFZJFovraONZcmVh0Q5aLA=,tag:4Q7/Sn09oXhQAmKMrWRK1g==,type:str]
+    lastmodified: "2023-05-20T15:29:45Z"
+    mac: ENC[AES256_GCM,data:QJ1kBM0v1Nd6VGmEfc0YyUc8fiPCwTDbHYesRiSxwGKRBscwHxJpny3nc6WtSbQOu0oCtxe68J8NFEPNu6gCBTNRpQfE0e0j/DjpC3jL+ma+WLgDldkmWx8+U9wcQVqhmZ0JrdwZIalr3ArD/uE51pP+aEwUg8lGd/WEh8HryFw=,iv:IMDWurfOdCLKZW3mun6pWIxrv5ZCYscfad8Gwt3ApYg=,tag:p4ChVIB0R5CNrjQVWSEGcA==,type:str]
     pgp: []
     encrypted_regex: ^(data|data)$
     version: 3.7.3

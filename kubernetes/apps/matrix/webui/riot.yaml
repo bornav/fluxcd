@@ -96,7 +96,6 @@ metadata:
   labels:
     app: element
   name: element
-  namespace: matrix
 spec:
   ports:
   - port: 80
@@ -112,7 +111,6 @@ metadata:
   labels:
     app: element
   name: element
-  namespace: matrix
 spec:
   replicas: 1
   selector:
@@ -144,7 +142,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: element
-  namespace: matrix
   annotations: 
     kubernetes.io/ingress.class: traefik-external
 spec:
@@ -167,7 +164,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: element-cloud
-  namespace: matrix
   annotations: 
     kubernetes.io/ingress.class: traefik-external
 spec:

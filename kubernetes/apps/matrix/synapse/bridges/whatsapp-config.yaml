@@ -4,7 +4,6 @@ data:
 kind: ConfigMap
 metadata:
     name: matrix-bridge-whatsapp-config
-    namespace: matrix
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +19,8 @@ sops:
             ZzNnSVJ0dzRjSGFBbENQdGNEV0hJQWsKCAp+tpXJTRW1zgs5gGnl9ahm0CIpU8ad
             F+OxspL71IgjV8LRoAST1AT+xMuQSB+XhetYpX/joCEp7dS2zlmiEw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-27T17:01:59Z"
-    mac: ENC[AES256_GCM,data:5ahR+KJ4ZbEoWNZLluFAezz/FC6oIJa2xnxGUoSVV0+QgIKxut/LwGKZWNnwLuT5whAZWrOv+8ST/usCo58e/bRo3qnELSlY9NAqKY6upDcoBiAP++5Cv5z0eV61OfcFgYt6M07Gs7SpVVIp8Jlis6YVM6tuw244v08CUeiFLZM=,iv:R2FxDzMjYS1UGx0DeJ29VxSrhS0tlTdQimHKZvdxRVA=,tag:29ZBRcX88Q5O70Bj4+dJ8Q==,type:str]
+    lastmodified: "2023-05-20T15:28:23Z"
+    mac: ENC[AES256_GCM,data:zASmctnlVz59Nd+Z7yoXuNGLPM70H1FQEZKiewzixvQC7InUvIxwpg2ym7J1sa9QTkZaxKJzy8HaILkmZSgQ5kOd8oAVfXCecsjAd7g3ExqhUkHSTgb5hG+ZvCCjuCaN4xivM1nVN1yHsHWbKC81BUQUTv4ENRxR/3MiS53CCKY=,iv:iDzDcnuhKByZLv4yio4lXBlc4ZQxZ6ih8QLDPs18vC0=,tag:GyEzJJXF7mIpsfF+cBkMdg==,type:str]
     pgp: []
     encrypted_regex: ^(data|data)$
     version: 3.7.3

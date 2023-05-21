@@ -4,7 +4,6 @@ data:
 kind: ConfigMap
 metadata:
     name: matrix-synapse
-    namespace: matrix
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +19,8 @@ sops:
             ZnVDUXhRd2NnU2NJNWJPY3hEbUxVa2MKzy5h8xtxqJl3WUjxiKmeTore1v3zGoUl
             DQPD9lQavM0C4MJm4yo8TDcxxq1gUdrh4vDcdUR0iy86NosuM3D/TQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-04-27T17:02:44Z"
-    mac: ENC[AES256_GCM,data:qQvKfSCvq6b2FY/pVLs61fHyk//zAyB5OklOPxXT202JKQf0GvozhpNHT/IFBHVM5kcS8rOk45k7DJWpgrFX6qG7k9js/8nJi6gNprkE9Xrh4Gk3oV8WNxSbBcQY+1kFENBQxZxop8RpwE6XXV4LdZY9VDGlwi9AttQWv2Gc1HU=,iv:TgLtsQvf5vDWR8U4uL4nHzZkM9Z2EpTmhesNtjrMcaA=,tag:sxC+O6vcG0GAbO6chL7aYA==,type:str]
+    lastmodified: "2023-05-20T15:31:25Z"
+    mac: ENC[AES256_GCM,data:A/p6KDT7t3/9VhA93Urb0IWuQx+4xZ2u7J+VA2fmWOD07UVyyHSPG8AWmweEtTj8oLAC+VoqTRRBnUxSjY/9CUET4dyk7zgRGLO2qBhXGDRahGET2a7yRRxZgQ8B9H8RHQZf9pm8pfz2HgngYM+Cg8mLWv0GX75wdgFfsV5VEBo=,iv:mJRL5NQ3bNaCWd1kUHuwKF7RQ1McGzQwxWw04Z+pLMg=,tag:2q0IeG2EH8va1bg0AUQVuw==,type:str]
     pgp: []
     encrypted_regex: ^(data|data)$
     version: 3.7.3
