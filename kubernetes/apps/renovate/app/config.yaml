@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: renovate-config
+data:
+    config.json: ENC[AES256_GCM,data:0Cm3OVvM+hsyCUn1xhoSlJd92w1i4QTQMuLIb6R/pHFDZDIsnYhaTrdvyWyMlxDG1/0fzQ==,iv:r3g+FzW//TsvrU/Xyb9qFLGiNo8SOYKy+O1792rqRoA=,tag:XqkY/042RD26MfTskkN7kQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4L2E4ZXR4b2MzS2p6WUxv
+            cW5MZCtJR1lqTGNjWCszSzcyV25MMVZWejNFCkRKN2xtU290UDVBWHpQVnpJWThr
+            dS9keWpVNzJZcGl4THhtSUwrRHJQQ2cKLS0tIElFUEJja3N2QjdjeDNXWHNNeTMw
+            STN5bm1YRjFISHlicTY3emx5N3dpQ00KiBSnYYdrwxpoBbveRIR7U6lx4Ca8cGXp
+            vqSSdNRtOV8dDqbihIiYAyA1uDOeQVTHdkjDQZkYp6LWPEmqWAdfug==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-05-21T18:47:58Z"
+    mac: ENC[AES256_GCM,data:jmCQmJS/gIK6iBI/fIJ1hazi/vyl17kWYAQ3bQmYd1po+BAvaZ0ZgaNTSqa7rC4HcdBIUjb1ddTbmsnwqCL6ZLrzYW5MMrWbxo1MNdrvzT3uy6XLTEpSF5nth5CSSemvgUz5abfGR8pB3E8gIlncXG7ixhrgzK0sPZkltKRyeeg=,iv:44JlSNlF9Qvtb49h7EJgA3Tvh1oS5LFYey9po6PGGb0=,tag:JNNTHEpPjl1mhY8bESudgg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|data)$
+    version: 3.7.3
