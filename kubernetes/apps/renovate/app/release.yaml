@@ -25,7 +25,7 @@ spec:
         - kind: ConfigMap
           name: renovate-config
           valuesKey: config.json
-    # values:
+    values:
     #     adminUser:
     #         create: x
     #         passwordHash: x
