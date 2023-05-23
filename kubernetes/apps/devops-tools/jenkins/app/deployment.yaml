@@ -28,7 +28,7 @@ spec:
       #         mountPath: /var/jenkins_home
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.405
+          image: jenkins/jenkins:2.406
           command: ["sh", "-c", "sh /dependencies.sh && /usr/local/bin/jenkins.sh"] # //TODO: remove
           resources:
             limits:
