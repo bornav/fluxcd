@@ -15,5 +15,8 @@ spec:
       services:
         - name: jenkins-service
           port: 8080
+      middlewares:
+       - name: dashboard-basicauth
+         namespace: devops-tools
   tls: 
     secretName: cloud-icecoldlair-com-prod
