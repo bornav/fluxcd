@@ -27,7 +27,7 @@ data:
         "enableSyntaxHighlightLanguageDetection": true,
         "scrollToBottomOnMessageSent": false,
         "ctrlFForSearch": true,
-        "developerMode": false
+        "developerMode": true
       }
 
     }
