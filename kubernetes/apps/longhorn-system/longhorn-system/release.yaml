@@ -20,8 +20,8 @@ spec:
       defaultClass: true
       reclaimPolicy: Delete
       defaultClassReplicaCount: 1
-    # defaultSettings:
-    #   backupTarget: s3://longhorn@minio/
+    defaultSettings:
+      backupTarget: nfs://wireguard.longhorn-system.svc.cluster.local:/mnt/Vega/longhorn_kubernetes_backup
     #   backupTargetCredentialSecret: longhorn-backup-secret
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
