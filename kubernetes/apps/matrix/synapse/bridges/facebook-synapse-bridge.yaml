@@ -24,7 +24,7 @@ spec:
                     - -c
                     #- sleep 8000s
                     - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
-                  image: dock.mau.dev/mautrix/facebook:v0.4.1
+                  image: dock.mau.dev/mautrix/facebook:v0.5.0
                   name: mautrix-bridge-facebook
                   resources: {}
                   volumeMounts:
