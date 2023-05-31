@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: jenkins
-      version: 4.3.23 #chart version not app
+      version: 4.3.24 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: jenkins
