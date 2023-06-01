@@ -6,4 +6,4 @@ metadata:
 resources:
   - namespace.yaml
   - webui
-  - ./synapse/kustomization.yaml
+  - ./synapse/ks.yaml
