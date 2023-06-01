@@ -41,8 +41,8 @@ do
     kustomize build "${file/%$kustomize_config}" $kustomize_flags  | \
       kubeconform -exit-on-error  -verbose -summary -schema-location default \
        -schema-location '/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json' -schema-location $OPENAPI
-    # if [[ ${PIPESTATUS[0]} != 0 ]]; then
-    #   exit 1
-    # fi
+    if [[ ${PIPESTATUS[0]} != 0 ]]; then
+      exit 1
+    fi
   done
 done
