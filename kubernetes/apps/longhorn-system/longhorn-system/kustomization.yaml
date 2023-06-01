@@ -1,8 +1,57 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
-namespace: longhorn-system
-resources:
-- dashboard
-- release.yaml
-- wireguard-local.yaml
-- wireguard-secret.yaml
+metadata:
+  name: longhorn-systems-base
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/longhorn-systems/longhorn-systems/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      name: longhorn
+      namespace: longhorn
+  interval: 15m
+  retryInterval: 1m
+  timeout: 3m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: longhorn-systems-dashboard
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: longhorn-systems-base
+  path: ./kubernetes/apps/longhorn-systems/longhorn-systems/dashboard
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 1m
+  timeout: 3m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: longhorn-systems-wireguard
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: longhorn-systems-base
+  path: ./kubernetes/apps/longhorn-systems/longhorn-systems/wireguard
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 1m
+  timeout: 3m
