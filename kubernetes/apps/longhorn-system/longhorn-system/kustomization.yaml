@@ -19,39 +19,21 @@ spec:
   interval: 15m
   retryInterval: 1m
   timeout: 3m
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: longhorn-system-dashboard
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: longhorn-system-base
-#   path: ./kubernetes/apps/longhorn-system/longhorn-system/dashboard
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: fluxcd-kubernetes
-#     namespace: flux-system
-#   interval: 15m
-#   retryInterval: 1m
-#   timeout: 3m
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: longhorn-system-wireguard
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: longhorn-system-base
-#   path: ./kubernetes/apps/longhorn-system/longhorn-system/wireguard
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: fluxcd-kubernetes
-#     namespace: flux-system
-#   interval: 15m
-#   retryInterval: 1m
-#   timeout: 3m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: longhorn-system-addons
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: longhorn-system-base
+  path: ./kubernetes/apps/longhorn-system/longhorn-system/addons
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 1m
+  timeout: 3m
