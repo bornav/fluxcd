@@ -3,13 +3,14 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: longhorn
+  namespace: longhorn-system
 spec:
   releaseName: longhorn
   interval: 5m
   chart:
     spec:
       chart: longhorn
-      version: 1.4.2
+      version: 1.4.1
       sourceRef:
         kind: HelmRepository
         name: longhorn
@@ -20,8 +21,8 @@ spec:
       defaultClass: true
       reclaimPolicy: Delete
       defaultClassReplicaCount: 1
-    defaultSettings:
-      backupTarget: nfs://wireguard.longhorn-system.svc.cluster.local:/mnt/Vega/longhorn_kubernetes_backup
+    # defaultSettings:
+    #   backupTarget: s3://longhorn@minio/
     #   backupTargetCredentialSecret: longhorn-backup-secret
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
