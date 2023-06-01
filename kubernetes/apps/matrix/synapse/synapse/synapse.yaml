@@ -39,6 +39,62 @@ spec:
       labels:
         app: matrix-synapse
     spec:
+      initContainers:
+        - name: "create-db-container-telegram"
+          image: postgres
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER
+            - name: DB_ENCODING
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_ENCODING
+            - name: DB_LOCALE
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_LOCALE
+            - name: DB_TEMPLATE
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_TEMPLATE
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_NAME_SYNAPSE
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_NAME_SYNAPSE
+            - name: DB_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_PASSWORD
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: POSTGRES_PASSWORD
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
+              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
       containers:
         - command:
             - sh
