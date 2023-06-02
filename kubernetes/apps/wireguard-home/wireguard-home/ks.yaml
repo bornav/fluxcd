@@ -11,10 +11,10 @@ spec:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  # decryption:
+  #   provider: sops
+  #   secretRef:
+  #     name: sops-age
   interval: 15m
   retryInterval: 1m
   timeout: 3m
