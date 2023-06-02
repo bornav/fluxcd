@@ -5,7 +5,8 @@ SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 export PATH=$PATH:$SCRIPTPATH
 ROOT=kubernetes
 # mirror kustomize-controller build options
-kustomize_flags="--load-restrictor=LoadRestrictionsNone --reorder=legacy"
+#kustomize_flags="--load-restrictor=LoadRestrictionsNone --reorder=legacy"
+kustomize_flags="--load-restrictor=LoadRestrictionsNone"
 kustomize_config="kustomization.yaml"
 
 # Kubernetes Open API extension scheme
