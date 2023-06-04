@@ -128,6 +128,13 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 80
+        resources:
+          requests: 
+            memory: "1Mi"
+            cpu: "1m"
+          limits:
+            memory: "3000Mi"
+            cpu: "2500m"
         volumeMounts:
         - mountPath: /app/config.json
           name: element-config

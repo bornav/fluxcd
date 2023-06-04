@@ -36,3 +36,10 @@ spec:
       nameservers:
         - "1.1.1.1"
         - "9.9.9.9"
+    resources:
+      requests: 
+          memory: "1Mi"
+          cpu: "1m"
+      limits:
+          memory: "500Mi"
+          cpu: "500m"

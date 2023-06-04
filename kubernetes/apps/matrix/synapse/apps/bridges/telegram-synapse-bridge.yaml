@@ -81,7 +81,13 @@ spec:
                     - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
                   image: dock.mau.dev/mautrix/telegram:v0.14.0
                   name: mautrix-bridge-telegram
-                  resources: {}
+                  resources:
+                    requests: 
+                        memory: "1Mi"
+                        cpu: "1m"
+                    limits:
+                        memory: "6Gi"
+                        cpu: "2500m"
                   volumeMounts:
                     - mountPath: /data
                       name: matrix-bridges-data

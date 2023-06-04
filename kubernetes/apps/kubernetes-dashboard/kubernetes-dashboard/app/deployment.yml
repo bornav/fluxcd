@@ -71,6 +71,13 @@ spec:
               # Create on-disk volume to store exec logs
             - mountPath: /tmp
               name: tmp-volume
+          resources:
+            requests: 
+              memory: "1Mi"
+              cpu: "1m"
+            limits:
+              memory: "6Gi"
+              cpu: "2500m"
           livenessProbe:
             httpGet:
               scheme: HTTPS
@@ -139,6 +146,13 @@ spec:
             readOnlyRootFilesystem: true
             runAsUser: 1001
             runAsGroup: 2001
+          resources:
+            requests: 
+                memory: "1Mi"
+                cpu: "1m"
+            limits:
+                memory: "6Gi"
+                cpu: "2500m"
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
         "kubernetes.io/os": linux

@@ -42,6 +42,10 @@ spec:
               # subPath: wg0.conf
               mountPath: /etc/wireguard/
               readOnly: true
+          resources:
+            limits:
+              memory: "10Gi"
+              cpu: "2500m"
           securityContext:
             privileged: true
             capabilities:

@@ -22,4 +22,11 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest
+        image: nginx:1.25.0
+        resources:
+          requests: 
+            memory: "1Mi"
+            cpu: "1m"
+          limits:
+            memory: "6Gi"
+            cpu: "2500m"

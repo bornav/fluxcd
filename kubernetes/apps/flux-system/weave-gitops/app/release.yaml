@@ -26,6 +26,13 @@ spec:
           name: weave-gitops-admin-secret
           valuesKey: values.yaml
     values:
+        resources:
+            requests: 
+                memory: "1Mi"
+                cpu: "1m"
+            limits:
+                memory: "6Gi"
+                cpu: "2500m"
         # adminUser:
         #     create: x
         #     passwordHash: x

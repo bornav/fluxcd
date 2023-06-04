@@ -61,7 +61,13 @@ spec:
                   name: databases
                   ports:
                     - containerPort: 5432
-                  resources: {}
+                  resources:
+                    requests: 
+                        memory: "1Mi"
+                        cpu: "1m"
+                    limits:
+                        memory: "10Gi"
+                        cpu: "3000m"
                   volumeMounts:
                     - mountPath: /data
                       name: matrix-database-data

@@ -30,6 +30,13 @@ spec:
       podAnnotations: {}
       additionalContainers: []
       initContainers: []
+    resources:
+        requests: 
+          memory: "1Mi"
+          cpu: "1m"
+        limits:
+          memory: "6Gi"
+          cpu: "3000m"
     ports:
       web:
         redirectTo: websecure

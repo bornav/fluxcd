@@ -82,7 +82,13 @@ spec:
                     - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
                   image: dock.mau.dev/mautrix/facebook:v0.4.1
                   name: mautrix-bridge-facebook
-                  resources: {}
+                  resources:
+                    requests: 
+                        memory: "1Mi"
+                        cpu: "1m"
+                    limits:
+                        memory: "6Gi"
+                        cpu: "2500m"
                   volumeMounts:
                     - mountPath: /data
                       name: matrix-bridges-data

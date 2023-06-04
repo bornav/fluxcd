@@ -25,7 +25,7 @@ spec:
               mountPath: /etc/wireguard-secret/
       containers:
         - name: "wireguard"
-          image: "linuxserver/wireguard:latest"
+          image: "linuxserver/wireguard:v1.0.20210914-ls118"
           ports:
             - containerPort: 51820
           env:
@@ -39,6 +39,13 @@ spec:
               subPath: wg0.conf
               #mountPath: /etc/wireguard/
               readOnly: true
+          resources:
+            requests: 
+              memory: "1Mi"
+              cpu: "1m"
+            limits:
+              memory: "6Gi"
+              cpu: "2500m"
           securityContext:
             privileged: true
             capabilities:
@@ -52,21 +59,22 @@ spec:
             secretName: wireguard
       imagePullSecrets:
         - name: docker-registry
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: wireguard
-spec:
-  selector:
-    name: wireguard
-  ports:
-    # - name: http
-    #   port: 5800
-    #   targetPort: 5800
-    - name: nfs
-      port: 2049
-      targetPort: 2049
-    - name: portmapper
-      port: 111
-      targetPort: 111
+# --- unneeded?
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: wireguard
+# spec:
+#   selector:
+#     name: wireguard
+#   ports:
+#     # - name: http
+#     #   port: 5800
+#     #   targetPort: 5800
+#     - name: nfs
+#       port: 2049
+#       targetPort: 2049
+#     - name: portmapper
+#       port: 111
+#       targetPort: 111
+

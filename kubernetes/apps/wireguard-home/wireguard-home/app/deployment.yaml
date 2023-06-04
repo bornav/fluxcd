@@ -45,6 +45,10 @@ spec:
               subPath: wg0.conf
               #mountPath: /etc/wireguard/
               readOnly: true
+          resources:
+            limits:
+              memory: "10Gi"
+              cpu: "2500m"
           securityContext:
             privileged: true
             capabilities:
@@ -58,33 +62,33 @@ spec:
             secretName: wireguard
       imagePullSecrets:
         - name: docker-registry
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: wireguard
-  annotations: 
-    dns.alpha.kubernetes.io/external: wireguard.test.svc.cluster.local
-spec:
-  selector:
-    name: wireguard
-  ports:
-    # - name: wireguard
-    #   port: 51820
-    #   targetPort: 51820
-    - name: http
-      port: 5800
-      targetPort: 5800
-    - name: nfs
-      port: 2049
-      targetPort: 2049
-    - name: portmapper
-      port: 111
-      targetPort: 111
-    # - name: http
-    #   port: 80
-    #   targetPort: 80
----
+# --- Unneeded?
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: wireguard
+#   annotations: 
+#     dns.alpha.kubernetes.io/external: wireguard.test.svc.cluster.local
+# spec:
+#   selector:
+#     name: wireguard
+#   ports:
+#     # - name: wireguard
+#     #   port: 51820
+#     #   targetPort: 51820
+#     - name: http
+#       port: 5800
+#       targetPort: 5800
+#     - name: nfs
+#       port: 2049
+#       targetPort: 2049
+#     - name: portmapper
+#       port: 111
+#       targetPort: 111
+#     # - name: http
+#     #   port: 80
+#     #   targetPort: 80
+# ---
 # apiVersion: networking.k8s.io/v1
 # kind: NetworkPolicy
 # metadata:
