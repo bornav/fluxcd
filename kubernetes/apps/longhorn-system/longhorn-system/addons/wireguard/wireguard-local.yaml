@@ -15,24 +15,29 @@ spec:
         name: wireguard
     spec:
       initContainers:
-        - name: "wireguard-template-replacement"
-          image: "busybox"
-          command: ["sh", "-c", "ENI=$(ip route get 8.8.8.8 | grep 8.8.8.8 | awk '{print $5}'); sed \"s/ENI/$ENI/g\" /etc/wireguard-secret/wg0.conf.template > /etc/wireguard/wg0.conf; chmod 400 /etc/wireguard/wg0.conf"]
+        - name: 'wireguard-template-replacement'
+          image: 'busybox'
+          command:
+            [
+              'sh',
+              '-c',
+              'ENI=$(ip route get 8.8.8.8 | grep 8.8.8.8 | awk ''{print $5}''); sed "s/ENI/$ENI/g" /etc/wireguard-secret/wg0.conf.template > /etc/wireguard/wg0.conf; chmod 400 /etc/wireguard/wg0.conf',
+            ]
           volumeMounts:
             - name: wireguard-config
               mountPath: /etc/wireguard/
             - name: wireguard-secret
               mountPath: /etc/wireguard-secret/
       containers:
-        - name: "wireguard"
-          image: "linuxserver/wireguard:v1.0.20210914-ls118"
+        - name: 'wireguard'
+          image: 'linuxserver/wireguard:v1.0.20210914-ls118'
           ports:
             - containerPort: 51820
           env:
-            - name: "TZ"
-              value: "Europe/Vienna"
-            - name: "HOSTADDR"
-              value: "10.0.0.0/8"
+            - name: 'TZ'
+              value: 'Europe/Vienna'
+            - name: 'HOSTADDR'
+              value: '10.0.0.0/8'
           volumeMounts:
             - name: wireguard-config
               mountPath: /config/wg0.conf
@@ -40,12 +45,12 @@ spec:
               #mountPath: /etc/wireguard/
               readOnly: true
           resources:
-            requests: 
-              memory: "1Mi"
-              cpu: "1m"
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
             limits:
-              memory: "6Gi"
-              cpu: "2500m"
+              memory: '6Gi'
+              cpu: '2500m'
           securityContext:
             privileged: true
             capabilities:
@@ -77,4 +82,3 @@ spec:
     - name: portmapper
       port: 111
       targetPort: 111
-

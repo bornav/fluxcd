@@ -7,6 +7,6 @@ spec:
   selector:
     app: dashboard-homepage
   ports:
-  - name: http
-    targetPort: 3000
-    port: 3000
+    - name: http
+      targetPort: 3000
+      port: 3000

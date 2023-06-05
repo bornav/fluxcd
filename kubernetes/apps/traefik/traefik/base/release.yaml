@@ -18,11 +18,11 @@ spec:
   values:
     apiVersion: traefik.containo.us/v1alpha1
     globalArguments:
-      - "--global.sendanonymoususage=false"
-      - "--global.checknewversion=false"
+      - '--global.sendanonymoususage=false'
+      - '--global.checknewversion=false'
     additionalArguments:
-      - "--serversTransport.insecureSkipVerify=true"
-      - "--log.level=INFO" # TODO: change to
+      - '--serversTransport.insecureSkipVerify=true'
+      - '--log.level=INFO' # TODO: change to
     deployment:
       enabled: true
       replicas: 1
@@ -31,12 +31,12 @@ spec:
       additionalContainers: []
       initContainers: []
     resources:
-        requests: 
-          memory: "1Mi"
-          cpu: "1m"
-        limits:
-          memory: "6Gi"
-          cpu: "3000m"
+      requests:
+        memory: '1Mi'
+        cpu: '1m'
+      limits:
+        memory: '6Gi'
+        cpu: '3000m'
     ports:
       web:
         redirectTo: websecure

@@ -1,120 +1,119 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: mautrix-bridge-whatsapp
-    labels:
-        app: mautrix-bridge-whatsapp
+  name: mautrix-bridge-whatsapp
+  labels:
+    app: mautrix-bridge-whatsapp
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: mautrix-bridge-whatsapp
-    strategy:
-        type: Recreate
-    template:
-        metadata:
-            labels:
-                io.kompose.network/dockerfile-default: "true"
-                app: mautrix-bridge-whatsapp
-        spec:
-            initContainers:
-                - name: "create-db-container-whatsapp"
-                  image: "postgres"
-                  env:
-                    - name: DB_HOST
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_HOST
-                    - name: DB_USER
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_USER
-                    - name: DB_ENCODING
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_ENCODING
-                    - name: DB_LOCALE
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_LOCALE
-                    - name: DB_TEMPLATE
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_TEMPLATE
-                    - name: DB_NAME
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_NAME_WHATSAPP
-                    - name: DB_USER_NAME
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_USER_NAME_WHATSAPP
-                    - name: DB_USER_PASSWORD
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: DB_USER_PASSWORD
-                    - name: POSTGRES_PASSWORD
-                      valueFrom:
-                        secretKeyRef:
-                          name: synapse-database-secrets
-                          key: POSTGRES_PASSWORD
-                  command:
-                      - /bin/bash
-                      - -c
-                  args:
-                      - |
-                        while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
-                        if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
-            containers:
-                - command:
-                    - sh
-                    - -c
-                    - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && ./docker-run.sh
-                  image: dock.mau.dev/mautrix/whatsapp:v0.8.5
-                  name: mautrix-bridge-whatsapp
-                  resources:
-                    requests: 
-                        memory: "1Mi"
-                        cpu: "1m"
-                    limits:
-                        memory: "6Gi"
-                        cpu: "2500m"
-                  volumeMounts:
-                    - mountPath: /data
-                      name: matrix-bridges-data
-                      subPath: whatsapp
-                    - mountPath: /config/config.yaml
-                      name: matrix-bridge-whatsapp-config
-                      subPath: config.yaml
-            restartPolicy: Always
-            volumes:
-                - name: matrix-bridges-data
-                  persistentVolumeClaim:
-                    claimName: matrix-bridges-data
-                - name: matrix-bridge-whatsapp-config
-                  configMap:
-                    name: matrix-bridge-whatsapp-config
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mautrix-bridge-whatsapp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.network/dockerfile-default: 'true'
+        app: mautrix-bridge-whatsapp
+    spec:
+      initContainers:
+        - name: 'create-db-container-whatsapp'
+          image: 'postgres'
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER
+            - name: DB_ENCODING
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_ENCODING
+            - name: DB_LOCALE
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_LOCALE
+            - name: DB_TEMPLATE
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_TEMPLATE
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_NAME_WHATSAPP
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_NAME_WHATSAPP
+            - name: DB_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_PASSWORD
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: POSTGRES_PASSWORD
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
+              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
+      containers:
+        - command:
+            - sh
+            - -c
+            - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && ./docker-run.sh
+          image: dock.mau.dev/mautrix/whatsapp:v0.8.5
+          name: mautrix-bridge-whatsapp
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - mountPath: /data
+              name: matrix-bridges-data
+              subPath: whatsapp
+            - mountPath: /config/config.yaml
+              name: matrix-bridge-whatsapp-config
+              subPath: config.yaml
+      restartPolicy: Always
+      volumes:
+        - name: matrix-bridges-data
+          persistentVolumeClaim:
+            claimName: matrix-bridges-data
+        - name: matrix-bridge-whatsapp-config
+          configMap:
+            name: matrix-bridge-whatsapp-config
 status: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: mautrix-bridge-whatsapp
-    annotations:
-        dns.alpha.kubernetes.io/external: mautrix-bridge-whatsapp.matrix.svc.cluster.local
+  name: mautrix-bridge-whatsapp
+  annotations:
+    dns.alpha.kubernetes.io/external: mautrix-bridge-whatsapp.matrix.svc.cluster.local
 spec:
-    selector:
-        app: mautrix-bridge-whatsapp
-    ports:
-        - name: http
-          targetPort: 29318
-          port: 29318
-          
+  selector:
+    app: mautrix-bridge-whatsapp
+  ports:
+    - name: http
+      targetPort: 29318
+      port: 29318

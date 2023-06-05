@@ -72,12 +72,12 @@ spec:
             - mountPath: /tmp
               name: tmp-volume
           resources:
-            requests: 
-              memory: "1Mi"
-              cpu: "1m"
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
             limits:
-              memory: "6Gi"
-              cpu: "2500m"
+              memory: '6Gi'
+              cpu: '2500m'
           livenessProbe:
             httpGet:
               scheme: HTTPS
@@ -98,7 +98,7 @@ spec:
           emptyDir: {}
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "kubernetes.io/os": linux
+        'kubernetes.io/os': linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -139,23 +139,23 @@ spec:
             initialDelaySeconds: 30
             timeoutSeconds: 30
           volumeMounts:
-          - mountPath: /tmp
-            name: tmp-volume
+            - mountPath: /tmp
+              name: tmp-volume
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsUser: 1001
             runAsGroup: 2001
           resources:
-            requests: 
-                memory: "1Mi"
-                cpu: "1m"
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
             limits:
-                memory: "6Gi"
-                cpu: "2500m"
+              memory: '6Gi'
+              cpu: '2500m'
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
-        "kubernetes.io/os": linux
+        'kubernetes.io/os': linux
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -169,7 +169,7 @@ kind: IngressRoute
 metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:

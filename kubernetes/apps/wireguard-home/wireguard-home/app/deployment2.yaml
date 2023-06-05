@@ -19,9 +19,14 @@ spec:
         # The template file only contains the "ENI" placeholder, so when
         # bootstrapping the application we'll need to replace the placeholder
         # and create the actual wg0.conf configuration file.
-        - name: "wireguard-template-replacement"
-          image: "busybox"
-          command: ["sh", "-c", "ENI=$(ip route get 8.8.8.8 | grep 8.8.8.8 | awk '{print $5}'); sed \"s/ENI/$ENI/g\" /etc/wireguard-secret/wg0.conf.template > /etc/wireguard/wg0.conf; chmod 400 /etc/wireguard/wg0.conf"]
+        - name: 'wireguard-template-replacement'
+          image: 'busybox'
+          command:
+            [
+              'sh',
+              '-c',
+              'ENI=$(ip route get 8.8.8.8 | grep 8.8.8.8 | awk ''{print $5}''); sed "s/ENI/$ENI/g" /etc/wireguard-secret/wg0.conf.template > /etc/wireguard/wg0.conf; chmod 400 /etc/wireguard/wg0.conf',
+            ]
           volumeMounts:
             - name: wireguard-config
               mountPath: /etc/wireguard/
@@ -29,13 +34,13 @@ spec:
               mountPath: /etc/wireguard-secret/
 
       containers:
-        - name: "wireguard2"
-          image: "linuxserver/wireguard:latest"
+        - name: 'wireguard2'
+          image: 'linuxserver/wireguard:latest'
           ports:
             - containerPort: 51820
           env:
-            - name: "TZ"
-              value: "Europe/Vienna"
+            - name: 'TZ'
+              value: 'Europe/Vienna'
           volumeMounts:
             - name: wireguard-config
               # mountPath: /config/wg0.conf
@@ -44,8 +49,8 @@ spec:
               readOnly: true
           resources:
             limits:
-              memory: "10Gi"
-              cpu: "2500m"
+              memory: '10Gi'
+              cpu: '2500m'
           securityContext:
             privileged: true
             capabilities:

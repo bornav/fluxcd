@@ -4,9 +4,9 @@ kind: ClusterRoleBinding
 metadata:
   name: traefik-default-access
 subjects:
-- kind: ServiceAccount
-  name: traefik
-  namespace: traefik
+  - kind: ServiceAccount
+    name: traefik
+    namespace: traefik
 roleRef:
   kind: ClusterRole
   name: traefik-default-access
@@ -17,9 +17,9 @@ kind: ClusterRole
 metadata:
   name: traefik-default-access
 rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources: ["namespaces"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: [""]
-  resources: ["pods", "services", "endpoints", "secrets"]
-  verbs: ["get", "list", "watch"]
+  - apiGroups: [''] # "" indicates the core API group
+    resources: ['namespaces']
+    verbs: ['get', 'list', 'watch']
+  - apiGroups: ['']
+    resources: ['pods', 'services', 'endpoints', 'secrets']
+    verbs: ['get', 'list', 'watch']

@@ -3,8 +3,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: matrix-synapse
-  annotations: 
-    dns.alpha.kubernetes.io/external: "matrix-synapse.matrix.svc.cluster.local"
+  annotations:
+    dns.alpha.kubernetes.io/external: 'matrix-synapse.matrix.svc.cluster.local'
 spec:
   ports:
     - name: http

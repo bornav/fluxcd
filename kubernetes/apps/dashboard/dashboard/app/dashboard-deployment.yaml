@@ -21,7 +21,7 @@ spec:
       containers:
         - image: ghcr.io/benphelps/homepage:v0.6.20
           name: dashboard-homepage
-          resources: 
+          resources:
             limits:
               cpu: 100m
               memory: 200M

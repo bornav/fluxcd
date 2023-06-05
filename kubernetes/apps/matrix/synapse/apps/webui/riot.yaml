@@ -98,9 +98,9 @@ metadata:
   name: element
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
+    - port: 80
+      protocol: TCP
+      targetPort: 80
   selector:
     app: element
   type: ClusterIP
@@ -122,34 +122,34 @@ spec:
         app: element
     spec:
       containers:
-      - image: vectorim/element-web:v1.11.31
-        imagePullPolicy: IfNotPresent
-        name: element-web
-        readinessProbe:
-          tcpSocket:
-            port: 80
-        resources:
-          requests: 
-            memory: "1Mi"
-            cpu: "1m"
-          limits:
-            memory: "3000Mi"
-            cpu: "2500m"
-        volumeMounts:
-        - mountPath: /app/config.json
-          name: element-config
-          subPath: config.json
+        - image: vectorim/element-web:v1.11.31
+          imagePullPolicy: IfNotPresent
+          name: element-web
+          readinessProbe:
+            tcpSocket:
+              port: 80
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '3000Mi'
+              cpu: '2500m'
+          volumeMounts:
+            - mountPath: /app/config.json
+              name: element-config
+              subPath: config.json
       restartPolicy: Always
       volumes:
-      - configMap:
+        - configMap:
+            name: element-config
           name: element-config
-        name: element-config
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: element
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:
@@ -171,7 +171,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: element-cloud
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:

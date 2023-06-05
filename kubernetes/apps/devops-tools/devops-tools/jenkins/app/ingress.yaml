@@ -4,9 +4,9 @@ kind: IngressRoute
 metadata:
   name: jenkins-ingress-route
   namespace: devops-tools
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
-spec: 
+spec:
   entryPoints:
     - websecure
   routes:
@@ -18,5 +18,5 @@ spec:
       # middlewares:
       #  - name: dashboard-basicauth
       #    namespace: devops-tools
-  tls: 
+  tls:
     secretName: cloud-icecoldlair-com-prod

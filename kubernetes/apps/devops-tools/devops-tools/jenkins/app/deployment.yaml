@@ -29,14 +29,18 @@ spec:
       containers:
         - name: jenkins
           image: jenkins/jenkins:2.407
-          command: ["sh", "-c", "sh /dependencies.sh && /usr/local/bin/jenkins.sh"] # //TODO: remove
+          command: [
+              'sh',
+              '-c',
+              'sh /dependencies.sh && /usr/local/bin/jenkins.sh',
+            ] # //TODO: remove
           resources:
             limits:
-              memory: "10Gi"
-              cpu: "2500m"
+              memory: '10Gi'
+              cpu: '2500m'
             requests:
-              memory: "500Mi"
-              cpu: "500m"
+              memory: '500Mi'
+              cpu: '500m'
           ports:
             - name: httpport
               containerPort: 8080
@@ -44,7 +48,7 @@ spec:
               containerPort: 50000
           livenessProbe:
             httpGet:
-              path: "/login"
+              path: '/login'
               port: 8080
             initialDelaySeconds: 90
             periodSeconds: 10
@@ -52,7 +56,7 @@ spec:
             failureThreshold: 5
           readinessProbe:
             httpGet:
-              path: "/login"
+              path: '/login'
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 10
@@ -67,7 +71,7 @@ spec:
       volumes:
         - name: jenkins-data
           persistentVolumeClaim:
-              claimName: jenkins-pv-claim
+            claimName: jenkins-pv-claim
         - name: jenkins-dependencies-configmap
           configMap:
             name: jenkins-dependencies
@@ -75,17 +79,17 @@ spec:
 ---
 apiVersion: v1
 data:
-    dependencies.sh: |
-        #!/bin/sh
-        echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
-        apt-get update
-        apt install -y build-essential goreleaser
-        curl -L https://go.dev/dl/go1.20.4.linux-arm64.tar.gz -o go1.20.4.linux-arm64.tar.gz
-        tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz
-        cp /usr/local/go/bin/go /usr/bin/
-        #curl -fsSL https://get.docker.com -o get-docker.sh
-        #sh get-docker.sh 
+  dependencies.sh: |
+    #!/bin/sh
+    echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
+    apt-get update
+    apt install -y build-essential goreleaser
+    curl -L https://go.dev/dl/go1.20.4.linux-arm64.tar.gz -o go1.20.4.linux-arm64.tar.gz
+    tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz
+    cp /usr/local/go/bin/go /usr/bin/
+    #curl -fsSL https://get.docker.com -o get-docker.sh
+    #sh get-docker.sh
 kind: ConfigMap
 metadata:
-    name: jenkins-dependencies
-    namespace: devops-tools
+  name: jenkins-dependencies
+  namespace: devops-tools

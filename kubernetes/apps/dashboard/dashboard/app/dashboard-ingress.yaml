@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: dashboard-homepage-cloud
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:
@@ -16,8 +16,8 @@ spec:
           port: 3000
           namespace: dashboard
       middlewares:
-       - name: dashboard-basicauth
-         namespace: dashboard
+        - name: dashboard-basicauth
+          namespace: dashboard
   tls:
     secretName: cloud-icecoldlair-com-prod
 ---
@@ -25,7 +25,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: dashboard-homepage-local
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:
@@ -37,7 +37,7 @@ spec:
         - name: dashboard-homepage
           port: 3000
       middlewares:
-       - name: dashboard-basicauth
+        - name: dashboard-basicauth
   tls:
     secretName: local-icecoldlair-com-prod
 ---
@@ -45,7 +45,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: dashboard-homepage
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
   entryPoints:
@@ -58,7 +58,7 @@ spec:
           port: 3000
           namespace: dashboard
       middlewares:
-       - name: dashboard-basicauth
-         namespace: dashboard
+        - name: dashboard-basicauth
+          namespace: dashboard
   tls:
     secretName: icecoldlair-com-prod

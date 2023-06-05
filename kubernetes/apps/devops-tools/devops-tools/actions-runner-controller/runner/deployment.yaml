@@ -18,9 +18,9 @@ spec:
   minReplicas: 1
   maxReplicas: 5
   metrics:
-  - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
-    repositoryNames:
-    - bornav/fluxcd
+    - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
+      repositoryNames:
+        - bornav/fluxcd
 ---
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
@@ -41,6 +41,6 @@ spec:
   minReplicas: 1
   maxReplicas: 5
   metrics:
-  - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
-    repositoryNames:
-    - bornav/fluxcd
+    - type: TotalNumberOfQueuedAndInProgressWorkflowRuns
+      repositoryNames:
+        - bornav/fluxcd

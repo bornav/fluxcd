@@ -34,13 +34,13 @@ spec:
     metadata:
       annotations:
         prometheus.io/path: /_synapse/metrics
-        prometheus.io/port: "9090"
-        prometheus.io/scrape: "true"
+        prometheus.io/port: '9090'
+        prometheus.io/scrape: 'true'
       labels:
         app: matrix-synapse
     spec:
       initContainers:
-        - name: "create-db-container-telegram"
+        - name: 'create-db-container-telegram'
           image: postgres
           env:
             - name: DB_HOST
@@ -102,25 +102,25 @@ spec:
             #- cp /synapse/config/homeserver.yaml /data/homeserver.yaml && sleep 8400000s
             - cp /synapse/config/homeserver.yaml /data/homeserver.yaml && ./start.py generate && chmod +r -R /bridges &&./start.py
             #- /start.py
-        # - command:
-        #     - sh
-        #     - -c
-        #     - sleep 84000s
-        # - command: # As an example of how to add rest_auth to the container without requiring a separate image
-        #     - sh
-        #     - -c
-        #     - |
-        #       curl https://raw.githubusercontent.com/kamax-matrix/matrix-synapse-rest-password-provider/master/rest_auth_provider.py -o /usr/local/lib/python2.7/site-packages/rest_auth_provider.py
-        #       /matrix-synapse
+          # - command:
+          #     - sh
+          #     - -c
+          #     - sleep 84000s
+          # - command: # As an example of how to add rest_auth to the container without requiring a separate image
+          #     - sh
+          #     - -c
+          #     - |
+          #       curl https://raw.githubusercontent.com/kamax-matrix/matrix-synapse-rest-password-provider/master/rest_auth_provider.py -o /usr/local/lib/python2.7/site-packages/rest_auth_provider.py
+          #       /matrix-synapse
           env:
             - name: SYNAPSE_CACHE_FACTOR
-              value: "5.00"
+              value: '5.00'
             - name: SYNAPSE_CONFIG_PATH
-              value: "/data/homeserver.yaml"
+              value: '/data/homeserver.yaml'
             - name: SYNAPSE_SERVER_NAME
-              value: "matrix.cloud.icecoldlair.com"
+              value: 'matrix.cloud.icecoldlair.com'
             - name: SYNAPSE_REPORT_STATS
-              value: "no"
+              value: 'no'
           image: matrixdotorg/synapse:v1.84.1
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -137,12 +137,12 @@ spec:
               scheme: HTTP
             initialDelaySeconds: 10
           resources:
-            requests: 
-              memory: "1Mi"
-              cpu: "1m"
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
             limits:
-              memory: "6Gi"
-              cpu: "2500m"
+              memory: '6Gi'
+              cpu: '2500m'
           volumeMounts:
             - mountPath: /data
               name: matrix-synapse-data
@@ -177,7 +177,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: matrix-synapse
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: traefik-external
     # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icecoldlair.com
     # traefik.ingress.kubernetes.io/proxy-body-size: 500m
@@ -196,5 +196,4 @@ spec:
       #    namespace: default
   tls:
     secretName: cloud-icecoldlair-com-prod
-
 #to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icecoldlair.com/_matrix/client/v3/login"

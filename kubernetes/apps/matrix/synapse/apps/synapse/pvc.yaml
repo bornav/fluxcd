@@ -6,7 +6,7 @@ metadata:
     app: matrix-synapse-data
   name: matrix-synapse-data
   annotations:
-    numberOfReplicas: "1"
+    numberOfReplicas: '1'
 spec:
   accessModes:
     - ReadWriteOnce

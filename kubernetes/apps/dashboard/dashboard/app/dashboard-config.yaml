@@ -41,7 +41,7 @@ data:
         - jenkins:
             icon: jenkins.png
             href: https://jenkins.cloud.icecoldlair.com
-            
+
 kind: ConfigMap
 metadata:
   name: dashboard-homepage-services

@@ -13,7 +13,7 @@ metadata:
   name: jenkins-pv-volume
   namespace: devops-tools
   annotations:
-    numberOfReplicas: "1"
+    numberOfReplicas: '1'
 spec:
   accessModes:
     - ReadWriteOnce
@@ -22,7 +22,7 @@ spec:
     name: jenkins-pv-claim
     namespace: devops-tools
   hostPath:
-    path: "/mnt"
+    path: '/mnt'
   capacity:
     storage: 10Gi
 status: {}

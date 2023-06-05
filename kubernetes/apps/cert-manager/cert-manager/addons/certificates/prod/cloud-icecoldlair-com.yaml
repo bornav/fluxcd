@@ -8,7 +8,7 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: "*.cloud.icecoldlair.com"
+  commonName: '*.cloud.icecoldlair.com'
   dnsNames:
-  - "cloud.icecoldlair.com"
-  - "*.cloud.icecoldlair.com"
+    - 'cloud.icecoldlair.com'
+    - '*.cloud.icecoldlair.com'

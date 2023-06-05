@@ -8,7 +8,7 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: "*.icecoldlair.com"
+  commonName: '*.icecoldlair.com'
   dnsNames:
-  - "icecoldlair.com"
-  - "*.icecoldlair.com"
+    - 'icecoldlair.com'
+    - '*.icecoldlair.com'
