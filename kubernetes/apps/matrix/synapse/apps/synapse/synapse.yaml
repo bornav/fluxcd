@@ -121,7 +121,7 @@ spec:
               value: 'matrix.cloud.icecoldlair.com'
             - name: SYNAPSE_REPORT_STATS
               value: 'no'
-          image: matrixdotorg/synapse:v1.85.0
+          image: matrixdotorg/synapse:v1.85.1
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
