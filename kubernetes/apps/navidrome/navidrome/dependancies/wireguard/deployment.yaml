@@ -98,15 +98,9 @@ spec:
             - mountPath: /config/navidrome.toml
               name: navidrome-configuration
               subPath: navidrome.toml
-            - mountPath: /data/music
-              name: navidrome-music-folder
       volumes:
         - name: navidrome-configuration
           configMap:
             name: navidrome-config
-        - name: navidrome-music-folder
-          nfs:
-            server: wireguard.navidrome.svc.cluster.local
-            path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
       restartPolicy: Always
 status: {}
