@@ -13,7 +13,7 @@ data:
       },
       "default_theme": "dark",
       "UIFeature": {
-        "feedback": "true",
+        "feedback": "false",
         "registration": "false"
       },
       "showLabsSettings": true,
