@@ -1,0 +1,14 @@
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mautrix-bridge-signal
+#   annotations:
+#     dns.alpha.kubernetes.io/external: "mautrix-bridge-signal.matrix.svc.cluster.local"
+# spec:
+#   selector:
+#     app: mautrix-bridge-signal
+#   ports:
+#   - name: http
+#     targetPort: 29328
+#     port: 29328

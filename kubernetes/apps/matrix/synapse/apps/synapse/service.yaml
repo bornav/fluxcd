@@ -18,3 +18,23 @@ spec:
   selector:
     app: matrix-synapse
   type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: matrix-synapse-replication
+spec:
+  ports:
+    # Needs listeners added to the Synapse config as well, according to the
+    # workers documentation, if workers are to be used
+    - name: replication
+      protocol: TCP
+      port: 9092
+      targetPort: 9092
+    - name: http-replication
+      protocol: TCP
+      port: 9093
+      targetPort: 9093
+  selector:
+    app: matrix-synapse
+  type: ClusterIP

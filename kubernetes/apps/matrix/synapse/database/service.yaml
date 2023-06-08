@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-database-service
+  annotations:
+    dns.alpha.kubernetes.io/external: matrix-database-service.matrix.svc.cluster.local
+spec:
+  ports:
+    - name: http
+      targetPort: 5432
+      port: 5432
+  selector:
+    app: matrix-database
+  type: ClusterIP

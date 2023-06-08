@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mautrix-bridge-facebook
+  annotations:
+    dns.alpha.kubernetes.io/external: mautrix-bridge-facebook.matrix.svc.cluster.local
+spec:
+  selector:
+    app: mautrix-bridge-facebook
+  ports:
+    - name: http
+      targetPort: 29319
+      port: 29319

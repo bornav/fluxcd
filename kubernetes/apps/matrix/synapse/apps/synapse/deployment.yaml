@@ -1,24 +1,4 @@
 ---
-kind: Service
-apiVersion: v1
-metadata:
-  name: matrix-synapse-replication
-spec:
-  ports:
-    # Needs listeners added to the Synapse config as well, according to the
-    # workers documentation, if workers are to be used
-    - name: replication
-      protocol: TCP
-      port: 9092
-      targetPort: 9092
-    - name: http-replication
-      protocol: TCP
-      port: 9093
-      targetPort: 9093
-  selector:
-    app: matrix-synapse
-  type: ClusterIP
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -172,28 +152,4 @@ spec:
         - name: matrix-bridges
           persistentVolumeClaim:
             claimName: matrix-bridges-data
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: matrix-synapse
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
-    # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icecoldlair.com
-    # traefik.ingress.kubernetes.io/proxy-body-size: 500m
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`matrix.cloud.icecoldlair.com`)
-      kind: Rule
-      services:
-        - name: matrix-synapse
-          port: 8008
-          namespace: matrix
-      # middlewares:
-      #  - name: default-headers
-      #    namespace: default
-  tls:
-    secretName: cloud-icecoldlair-com-prod
 #to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icecoldlair.com/_matrix/client/v3/login"

@@ -1,0 +1,44 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: element
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`element.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: element
+          port: 80
+          namespace: matrix
+      #middlewares:
+      #  - name: default-headers
+      #    namespace: default
+  tls:
+    secretName: icecoldlair-com-prod
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: element-cloud
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`element.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: element
+          port: 80
+          namespace: matrix
+      #middlewares:
+      #  - name: default-headers
+      #    namespace: default
+  tls:
+    secretName: cloud-icecoldlair-com-prod

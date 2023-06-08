@@ -103,17 +103,3 @@ spec:
           configMap:
             name: matrix-bridge-whatsapp-config
 status: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mautrix-bridge-whatsapp
-  annotations:
-    dns.alpha.kubernetes.io/external: mautrix-bridge-whatsapp.matrix.svc.cluster.local
-spec:
-  selector:
-    app: mautrix-bridge-whatsapp
-  ports:
-    - name: http
-      targetPort: 29318
-      port: 29318

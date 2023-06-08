@@ -4,3 +4,5 @@ namespace: matrix
 resources:
   - deployment.yaml
   - secrets.yaml
+  - pvc.yaml
+  - service.yaml
