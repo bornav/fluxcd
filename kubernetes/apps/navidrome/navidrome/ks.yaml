@@ -2,12 +2,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: navidrome-app
+  name: navidrome-dependancies
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: navidrome-dependancies
-  path: ./kubernetes/apps/navidrome/navidrome/app
+  path: ./kubernetes/apps/navidrome/navidrome/dependancies
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,10 +18,12 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: navidrome-dependancies
+  name: navidrome-app
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/navidrome/navidrome/dependancies
+  dependsOn:
+    - name: navidrome-dependancies
+  path: ./kubernetes/apps/navidrome/navidrome/app
   prune: true
   sourceRef:
     kind: GitRepository
