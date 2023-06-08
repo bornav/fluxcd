@@ -19,7 +19,7 @@ spec:
         app: navidrome-app
     spec:
       containers:
-        - image: deluan/navidrome:v0.49.3
+        - image: deluan/navidrome:0.49.3
           name: navidrome
           env:
             - name: ND_CONFIGFILE
