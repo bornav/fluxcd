@@ -64,3 +64,49 @@ spec:
             secretName: wireguard
       imagePullSecrets:
         - name: docker-registry
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: navidrome-2
+  labels:
+    app: navidrome-app-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: navidrome-app-2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        # io.kompose.network/dockerfile-default: "true"
+        app: navidrome-app-2
+    spec:
+      containers:
+        - image: deluan/navidrome:0.49.3
+          name: navidrome
+          env:
+            - name: ND_CONFIGFILE
+              value: '/config/navidrome.toml'
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 500M
+          volumeMounts:
+            - mountPath: /config/navidrome.toml
+              name: navidrome-configuration
+              subPath: navidrome.toml
+            - mountPath: /data/music
+              name: navidrome-music-folder
+      volumes:
+        - name: navidrome-configuration
+          configMap:
+            name: navidrome-config
+        - name: navidrome-music-folder
+          nfs:
+            server: wireguard.navidrome.svc.cluster.local
+            path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
+      restartPolicy: Always
+status: {}
