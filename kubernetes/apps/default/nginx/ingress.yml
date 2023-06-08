@@ -3,7 +3,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx-cloud
-  namespace: default
   annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
@@ -22,6 +21,7 @@ spec:
           port: 80
       middlewares:
         - name: default-headers
+          namespace: default
   tls:
     secretName: cloud-icecoldlair-com-prod
 ---
@@ -29,7 +29,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx-local
-  namespace: default
   annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
@@ -48,6 +47,7 @@ spec:
           port: 80
       middlewares:
         - name: default-headers
+          namespace: default
   tls:
     secretName: local-icecoldlair-com-prod
 ---
@@ -55,7 +55,6 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx
-  namespace: default
   annotations:
     kubernetes.io/ingress.class: traefik-external
 spec:
@@ -74,5 +73,6 @@ spec:
           port: 80
       middlewares:
         - name: default-headers
+          namespace: default
   tls:
     secretName: icecoldlair-com-prod
