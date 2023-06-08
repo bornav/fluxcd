@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: navidrome
+  labels:
+    app: navidrome-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: navidrome-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        # io.kompose.network/dockerfile-default: "true"
+        app: navidrome-app
+    spec:
+      containers:
+        - image: deluan/navidrome:v0.49.3
+          name: navidrome
+          env:
+            - name: ND_CONFIGFILE
+              value: '/config/navidrome.toml'
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 500M
+          volumeMounts:
+            - mountPath: /config/navidrome.toml
+              name: navidrome-configuration
+              subPath: navidrome.toml
+            # - mountPath: /data/music
+            #   name: navidrome-music-folder
+      volumes:
+        - name: navidrome-configuration
+          configMap:
+            name: navidrome-config
+      restartPolicy: Always
+status: {}

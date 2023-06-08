@@ -1,0 +1,38 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: navidrome
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`navidrome.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: navidrome-service
+          port: 3000
+          namespace: navidrome
+  tls:
+    secretName: cloud-icecoldlair-com-prod
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: navidrome
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`navidrome.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: navidrome-service
+          port: 3000
+          namespace: navidrome
+  tls:
+    secretName: icecoldlair-com-prod

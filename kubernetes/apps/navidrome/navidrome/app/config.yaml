@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  services.toml: ENC[AES256_GCM,data:GMmUgV1FttlF8v+ad7fLrG6yTODn8juVIaGknJS/h7m7dVi3Ue9o9TIK5GjST3inrm9ddIUHWxzEQVFz1t0eYUYKtT8a09dNUmlRuxzqtfMcI7cCaf+K+2vd0dUsI5eY9cY/NH+Tn7WUwdMggelcC5KLGZsyhXP2MU1f+XuKRCyyGlegPQdSZTquRDGouroCImGS58pnt3jRyfJMHQ/zCq3AHFgWpQPsepLUgYeDkcgNtqtonqvs1Od0i7JsUbWK5odr/6rmMHlu8b1g4KoH/an1QHPTV9fZLbrvMJ483rMIwaX026jI3JAbHzCHBZAvuDQxQxjW4WXutn5Xne7ai9JRrCl20gptHUgfiigMA1RawPRIsY+gkw7cZ3xUmgTXsIzImALenB/CcbI=,iv:NwD9QVVUZJnJv3fyoqMYe+LVrlN9ewZj39B+I3LVgjk=,tag:2hZoGD7XRl4jTA1KBWTcFw==,type:str]
+kind: ConfigMap
+metadata:
+  name: navidrome-config
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQVXhHUXBkNmkrVzVmamVl
+        bm1zcGI1b1JKOWpmK0NldHlTdm1iNkM5RFE4ClIrb3VNVWgyamo2VWhHQk5JV1Zs
+        RXZLRzF5QmtDbVp0NzVZYm84SDZ3dXMKLS0tIDhoK3EyRlo5N2F3cE1wOTZCbHFF
+        Z3REd3hOcko4dnJWVTh4Q2NQVWRtRU0Kb+RjXR45SNOb2WQfzUsi9jnvof+k/aiV
+        158c1z1X7TVssCphS5BI4hkU6w+Jsg4INs0F3/7PtJQVVCARySSK+Q==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: '2023-06-08T16:58:16Z'
+  mac: ENC[AES256_GCM,data:BXsvGx2HQwB3i5vjauolnAmdUFo7Q+mtZWOx+yJJ+J0cc1mgqO/GwVa5JGr1sSe08y6JXA/FimmGbj7QyPb/xkeD0fA5wJ6EWYoX2Ss6ls1KuZujNj1slDdIYz0uX8nwyNLKvUGmbx8qG9FFSbpF2Mq23z9OQSEwyyO5xGiZ6q4=,iv:iRHIAPrnXvkkLqnKvRHSDAgtzcju0VoEbm8LNZC0aq8=,tag:JALfqYRTOx1Tmu6nTou+2w==,type:str]
+  pgp: []
+  encrypted_regex: ^(data|data)$
+  version: 3.7.3
