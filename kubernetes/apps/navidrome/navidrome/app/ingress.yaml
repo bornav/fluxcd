@@ -13,7 +13,7 @@ spec:
       kind: Rule
       services:
         - name: navidrome-service
-          port: 3000
+          port: 4533
           namespace: navidrome
   tls:
     secretName: cloud-icecoldlair-com-prod
@@ -32,7 +32,7 @@ spec:
       kind: Rule
       services:
         - name: navidrome-service
-          port: 3000
+          port: 4533
           namespace: navidrome
   tls:
     secretName: icecoldlair-com-prod
