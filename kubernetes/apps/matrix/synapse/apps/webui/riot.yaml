@@ -16,6 +16,10 @@ data:
         "feedback": "true",
         "registration": "false"
       },
+      "showLabsSettings": true,
+      "features": {
+        "feature_custom_status": "labs"
+      },
       "setting_defaults": {
         "MessageComposerInput.showStickersButton": true,
         "MessageComposerInput.showPollsButton": true,
