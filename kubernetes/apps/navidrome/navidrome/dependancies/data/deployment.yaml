@@ -2,45 +2,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: navidrome
+  name: music-nfs
   labels:
-    app: navidrome-app
+    app: music-nfs
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: navidrome-app
+      app: music-nfs
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         # io.kompose.network/dockerfile-default: "true"
-        app: navidrome-app
+        app: music-nfs
     spec:
       containers:
-        - image: deluan/navidrome:0.49.3
+        - image: d3fk/nfs-client:v4
           name: navidrome
           env:
-            - name: ND_CONFIGFILE
-              value: '/config/navidrome.toml'
+            - name: SERVER
+              value: 'wireguard.navidrome.svc.cluster.local'
+            - name: SHARE
+              value: '/mnt/Vega/MultiMedia/MusicLibrary/METAL'
+            - name: MOUNT_OPTIONS
+              value: 'nfsvers=4.0,actimeo=1,soft,timeo=300,retry=2'
           resources:
             limits:
               cpu: 1000m
-              memory: 500M
+              memory: 200M
           volumeMounts:
-            - mountPath: /config/navidrome.toml
-              name: navidrome-configuration
-              subPath: navidrome.toml
             - mountPath: /data/music
               name: navidrome-music-folder
       volumes:
-        - name: navidrome-configuration
+        - name: navidrome-music
           configMap:
             name: navidrome-config
-        - name: navidrome-music-folder
-          nfs:
-            server: wireguard.navidrome.svc.cluster.local
-            path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
       restartPolicy: Always
 status: {}
