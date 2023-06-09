@@ -50,16 +50,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: element
+      app: element-default
   template:
     metadata:
       labels:
-        app: element
+        app: element-default
     spec:
       containers:
         - image: vectorim/element-web:v1.11.32
           imagePullPolicy: IfNotPresent
-          name: element-web
+          name: element-web-default
           readinessProbe:
             tcpSocket:
               port: 80
