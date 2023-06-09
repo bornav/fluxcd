@@ -57,6 +57,8 @@ data:
 kind: ConfigMap
 metadata:
   name: element-config-bare
+  labels:
+    app: element-config-bare
   namespace: matrix
 ---
 apiVersion: v1
