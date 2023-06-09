@@ -38,7 +38,6 @@ spec:
         - name: element-config
           configMap:
             name: element-config
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -72,10 +71,10 @@ spec:
               cpu: '2500m'
           volumeMounts:
             - mountPath: /app/config.json
-              name: element-config
+              name: element-config-default
               subPath: config.json
       restartPolicy: Always
       volumes:
-        - name: element-config
+        - name: element-config-default
           configMap:
             name: element-config-default
