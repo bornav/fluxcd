@@ -38,7 +38,7 @@ spec:
         - name: element-config
           configMap:
             name: element-config
-          
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -79,4 +79,3 @@ spec:
         - name: element-config
           configMap:
             name: element-config-default
-          

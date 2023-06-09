@@ -117,5 +117,3 @@ kind: ConfigMap
 metadata:
   name: element-config-sample-default
   namespace: matrix
-
-
