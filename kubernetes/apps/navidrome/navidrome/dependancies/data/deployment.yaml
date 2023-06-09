@@ -20,7 +20,11 @@ spec:
     spec:
       containers:
         - image: d3fk/nfs-client:v4
-          name: navidrome
+          name: nfs-client
+          command:
+            - sh
+            - -c
+            - sleep 8400000s
           env:
             - name: SERVER
               value: 'wireguard.navidrome.svc.cluster.local'
@@ -28,16 +32,18 @@ spec:
               value: '/mnt/Vega/MultiMedia/MusicLibrary/METAL'
             - name: MOUNT_OPTIONS
               value: 'nfsvers=4.0,actimeo=1,soft,timeo=300,retry=2'
+            - name: MOUNTPOINT
+              value: '/home/data'
           resources:
             limits:
               cpu: 1000m
               memory: 200M
-          volumeMounts:
-            - mountPath: /data/music
-              name: navidrome-music-folder
-      volumes:
-        - name: navidrome-music
-          configMap:
-            name: navidrome-config
+          securityContext:
+            # runAsUser: 1000
+            # runAsGroup: 1000
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
       restartPolicy: Always
 status: {}
