@@ -11,3 +11,4 @@ resources:
   - ./jenkins.yaml
   - ./actions-runner-controller.yaml
   - ./renovate.yaml
+  - ./csi-driver-smb.yaml
