@@ -92,52 +92,57 @@ spec:
               cpu: 1000m
               memory: 500M
           volumeMounts:
-            - mountPath: /data/music
-              name: navidrome-music-folder
-          securityContext:
-            privileged: true
-            capabilities:
-              add:
-                - NET_ADMIN
+            - name: navidrome-music-folder
+              mountPath: /data/music
+            # - name: navidrome-music-folder2
+            #   mountPath: /data/music2
+          # securityContext:
+          #   # runAsGroup: 1000
+          #   # runAsUser: 0
+          #   privileged: true
+          #   # capabilities:
+          #   #   add:
+          #   #     - NET_ADMIN
       volumes:
         - name: navidrome-music-folder
           nfs:
-            server: wireguard.navidrome.svc.cluster.local
-            path: /mnt/Vega/test
-        # - name: navidrome-music-folder
+            server: 10.43.173.76
+            #server: wireguard.navidrome.svc.cluster.local # this with ip
+            path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
+        # - name: navidrome-music-folder2
         #   persistentVolumeClaim:
         #     claimName: nfs
       restartPolicy: Always
 status: {}
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: nfs
-spec:
-  capacity:
-    storage: 1Mi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: wireguard.navidrome.svc.cluster.local
-    path: /mnt/Vega/test
-  mountOptions:
-    - nfsvers=4.0
-      actimeo=1
-      soft
-      timeo=300
-      retry=2D
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: ''
-  resources:
-    requests:
-      storage: 1Mi
-  volumeName: nfs
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: nfs
+# spec:
+#   capacity:
+#     storage: 1Mi
+#   accessModes:
+#     - ReadWriteMany
+#   nfs:
+#     server: 10.43.173.76
+#     path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
+#   # mountOptions:
+#   #   - nfsvers=4.0
+#   #     actimeo=1
+#   #     soft
+#   #     timeo=300
+#   #     retry=2D
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: nfs
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   storageClassName: ''
+#   resources:
+#     requests:
+#       storage: 1Mi
+#   volumeName: nfs
