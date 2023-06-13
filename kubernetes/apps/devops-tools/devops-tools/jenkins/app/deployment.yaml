@@ -28,7 +28,7 @@ spec:
       #         mountPath: /var/jenkins_home
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.409
+          image: jenkins/jenkins:2.410
           command: [
               'sh',
               '-c',
