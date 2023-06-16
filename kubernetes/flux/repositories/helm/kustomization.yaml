@@ -12,3 +12,4 @@ resources:
   - ./actions-runner-controller.yaml
   - ./renovate.yaml
   - ./csi-driver-smb.yaml
+  - ./csi-driver-nfs.yaml

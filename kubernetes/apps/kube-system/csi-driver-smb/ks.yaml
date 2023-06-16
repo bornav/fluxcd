@@ -5,7 +5,7 @@ metadata:
   name: csi-driver-smb
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/flux-system/csi-driver-smb/driver
+  path: ./kubernetes/apps/kube-system/csi-driver-smb/driver
   prune: true
   sourceRef:
     kind: GitRepository
