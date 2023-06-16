@@ -2,8 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wireguard
+  name: wireguard-svc
 spec:
+  clusterIP: 10.43.255.254
   selector:
     name: wireguard
   ports:

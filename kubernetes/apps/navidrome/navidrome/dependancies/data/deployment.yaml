@@ -30,8 +30,8 @@ spec:
               value: 'wireguard.navidrome.svc.cluster.local'
             - name: SHARE
               value: '/mnt/Vega/MultiMedia/MusicLibrary/METAL'
-            - name: MOUNT_OPTIONS
-              value: 'nfsvers=4.0,actimeo=1,soft,timeo=300,retry=2'
+            #- name: MOUNT_OPTIONS
+            #value: 'nfsvers=4.0,actimeo=1,soft,timeo=300,retry=2'
             - name: MOUNTPOINT
               value: '/home/data'
           resources:
