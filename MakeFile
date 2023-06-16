@@ -1,9 +1,0 @@
-setup-git:
-	@echo Setting up git hooks
-	@mkdir -p .git/hooks
-	@(cd .git/hooks && ln -sf ../../.github/hooks/* .)
-	@(cd ../../)
-.PHONY: setup-git
-
-pre-push: ./scripts/verify-fluxcd.sh
-.PHONY: pre-push
