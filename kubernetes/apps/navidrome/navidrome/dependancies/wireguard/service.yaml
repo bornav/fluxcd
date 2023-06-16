@@ -8,9 +8,12 @@ spec:
   selector:
     name: wireguard
   ports:
-    - name: http
+    - name: http2
       port: 5800
       targetPort: 5800
+    - name: http
+      port: 80
+      targetPort: 80
     - name: nfs
       port: 2049
       targetPort: 2049
