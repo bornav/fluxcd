@@ -65,84 +65,34 @@ spec:
       imagePullSecrets:
         - name: docker-registry
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: navidrome-3
-  labels:
-    app: navidrome-app-3
+  name: nfs-pv
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: navidrome-app-3
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        # io.kompose.network/dockerfile-default: "true"
-        app: navidrome-app-3
-    spec:
-      containers:
-        - image: deluan/navidrome:0.49.3
-          name: navidrome
-          resources:
-            limits:
-              cpu: 1000m
-              memory: 500M
-          volumeMounts:
-            - name: navidrome-music-folder
-              mountPath: /data/music
-            # - name: navidrome-music-folder2
-            #   mountPath: /data/music2
-          # securityContext:
-          #   # runAsGroup: 1000
-          #   # runAsUser: 0
-          #   privileged: true
-          #   # capabilities:
-          #   #   add:
-          #   #     - NET_ADMIN
-      volumes:
-        - name: navidrome-music-folder
-          nfs:
-            server: 10.43.173.76
-            #server: wireguard.navidrome.svc.cluster.local # this with ip
-            path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
-        # - name: navidrome-music-folder2
-        #   persistentVolumeClaim:
-        #     claimName: nfs
-      restartPolicy: Always
-status: {}
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: nfs
-# spec:
-#   capacity:
-#     storage: 1Mi
-#   accessModes:
-#     - ReadWriteMany
-#   nfs:
-#     server: 10.43.173.76
-#     path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
-#   # mountOptions:
-#   #   - nfsvers=4.0
-#   #     actimeo=1
-#   #     soft
-#   #     timeo=300
-#   #     retry=2D
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: nfs
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   storageClassName: ''
-#   resources:
-#     requests:
-#       storage: 1Mi
-#   volumeName: nfs
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 10.43.255.254 # workaroung for coredns unable to mount nfs share using dns
+    path: /mnt/Vega/MultiMedia/MusicLibrary/METAL
+  # mountOptions:
+  #   - nfsvers=4.0
+  #     actimeo=1
+  #     soft
+  #     timeo=300
+  #     retry=2D
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+  resources:
+    requests:
+      storage: 1Mi
+  volumeName: nfs-pv
