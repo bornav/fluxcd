@@ -38,6 +38,10 @@ do
  echo "INFO - Validating kustomize overlays"
  find ./$ROOT/$k8s_resources -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
   do
+    if [[ $file == *.decrypted~* ]]; then
+      echo "INFO - Skipping file: $file"
+      continue
+    fi
     echo "INFO - Validating kustomization ${file/%$kustomize_config}"
     kustomize build "${file/%$kustomize_config}" $kustomize_flags  | \
       kubeconform -exit-on-error  -verbose -summary -schema-location default \
