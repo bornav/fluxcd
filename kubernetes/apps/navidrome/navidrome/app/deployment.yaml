@@ -22,7 +22,7 @@ spec:
           image: 'busybox'
           env:
             - name: ADDRESS
-              value: 10.43.255.254
+              value: wireguard-svc.navidrome.svc.cluster.local
           command:
             [
               'sh',
