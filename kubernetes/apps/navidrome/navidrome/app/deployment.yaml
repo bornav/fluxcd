@@ -27,13 +27,8 @@ spec:
             [
               'sh',
               '-c',
-              'iproute add 10.2.11.200 via $ADDRESS;exit_code=1; while [ $exit_code -ne 0 ]; do ping -c 1 -w 3 -W 3 10.2.11.200; exit_code=$?; done',
+              'until wget -O /dev/null $ADDRESS:80; do sleep 1; done'
             ]
-          securityContext:
-            privileged: true
-            capabilities:
-              add:
-                - NET_ADMIN
       containers:
         - image: deluan/navidrome:0.49.3
           name: navidrome
