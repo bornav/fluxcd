@@ -1,0 +1,19 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`grafana.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 3000
+          namespace: monitoring
+  tls:
+    secretName: cloud-icecoldlair-com-prod
