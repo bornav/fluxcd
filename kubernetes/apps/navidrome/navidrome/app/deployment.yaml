@@ -27,7 +27,7 @@ spec:
             [
               'sh',
               '-c',
-              'until wget -O /dev/null $ADDRESS:80; do sleep 1; done'
+              'until wget -O /dev/null $ADDRESS:80; do sleep 1; done',
             ]
       containers:
         - image: deluan/navidrome:0.49.3
