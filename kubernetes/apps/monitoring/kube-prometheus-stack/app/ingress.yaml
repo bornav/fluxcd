@@ -13,7 +13,7 @@ spec:
       kind: Rule
       services:
         - name: grafana
-          port: 3000
+          port: 80
           namespace: monitoring
   tls:
     secretName: cloud-icecoldlair-com-prod
