@@ -13,3 +13,5 @@ resources:
   - ./renovate.yaml
   - ./csi-driver-smb.yaml
   - ./csi-driver-nfs.yaml
+  - ./grafana.yaml
+  - ./prometheus-community.yaml
