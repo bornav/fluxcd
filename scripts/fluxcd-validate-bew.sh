@@ -1,5 +1,9 @@
-
 #!/bin/bash
+if [[ $VALIDATE == false ]]; then
+  echo VALIDATE env set to false
+  exit
+fi
+
 # find our local path to run in CI
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 export PATH=$PATH:$SCRIPTPATH
