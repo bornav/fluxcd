@@ -26,4 +26,3 @@ spec:
   #     name: weave-gitops-admin-secret
   #     valuesKey: values.yaml
   values:
-    
