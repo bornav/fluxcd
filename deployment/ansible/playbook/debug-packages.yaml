@@ -1,0 +1,8 @@
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: install debug packages
+      apt:
+        update_cache: true
+        name: iputils-ping
+      become: true
