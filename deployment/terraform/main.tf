@@ -75,7 +75,7 @@ terraform {
     }
     oci = {
       source = "oracle/oci"
-      version = "5.2.0"
+      version = "5.2.1"
     }
      aws = {
       source = "hashicorp/aws"
