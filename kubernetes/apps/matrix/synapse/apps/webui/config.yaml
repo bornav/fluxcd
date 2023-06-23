@@ -23,6 +23,7 @@ data:
       "setting_defaults": {
         "MessageComposerInput.showStickersButton": true,
         "MessageComposerInput.showPollsButton": true,
+        "MessageComposerInput.useMarkdown":false,
         "feature_custom_themes": true,
         "feature_jump_to_date": true,
         "feature_bridge_state": true,
