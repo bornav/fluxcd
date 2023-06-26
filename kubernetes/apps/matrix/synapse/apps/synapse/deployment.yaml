@@ -79,8 +79,8 @@ spec:
         - command:
             - sh
             - -c
-            #- cp /synapse/config/homeserver.yaml /data/homeserver.yaml && sleep 8400000s
-            - cp /synapse/config/homeserver.yaml /data/homeserver.yaml && ./start.py generate && chmod +r -R /bridges &&./start.py
+            #- cp /synapse/config/homeserver.yaml /data/homeserver.yaml && sleep 8400000s 
+            - curl https://raw.githubusercontent.com/devture/matrix-synapse-shared-secret-auth/master/shared_secret_authenticator.py -o /usr/local/lib/python3.11/site-packages/shared_secret_authenticator.py && cp /synapse/config/homeserver.yaml /data/homeserver.yaml && ./start.py generate && chmod +r -R /bridges &&./start.py
             #- /start.py
           # - command:
           #     - sh
