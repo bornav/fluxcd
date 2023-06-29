@@ -7,7 +7,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/matrix/synapse/database
   prune: true
-  targetNamespace: matrix-dev
+  # targetNamespace: matrix-dev
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -29,7 +29,7 @@ metadata:
 spec:
   dependsOn:
     - name: synapse-databases
-  targetNamespace: matrix-dev
+  # targetNamespace: matrix-dev
   path: ./kubernetes/apps/matrix/synapse/apps
   prune: true
   sourceRef:
