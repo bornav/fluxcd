@@ -1,20 +1,56 @@
-{
-	"data": "ENC[AES256_GCM,data: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,iv:mbO1J9Gt21NiOFDb1bWPJ2uMmiH46gNrBLmNpmWAV4w=,tag:w2V95vKIL0EMGMIXdkakEA==,type:str]",
-	"sops": {
-		"kms": null,
-		"gcp_kms": null,
-		"azure_kv": null,
-		"hc_vault": null,
-		"age": [
-			{
-				"recipient": "age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a",
-				"enc": "-----BEGIN AGE ENCRYPTED FILE-----\nYWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKaHNkU0gyb3hIS2NQSGQ1\nbHdIekwyOHRSZHZtakxLbjQ1Q3QrWXhBQmdNCkJKNDRnTGNzZ1RWNlRTYWNBcm9G\nbXdKdHgzMTRFczhFZm5RQ1Uxd0t3OVkKLS0tIC83SEhJT0s4NXQrV2NVRTRDdWJB\nbThJODU5S3BOUC9XdjcvaVBRazhCS3MKeKSFSznswzIjZwznoQqvlzLvTIMdFYVb\nbeb0Yb9MN9wIgHGMMLogVSCkkx+agPifEwTRrA6WoPOxUiLLizCgvQ==\n-----END AGE ENCRYPTED FILE-----\n"
-			}
-		],
-		"lastmodified": "2023-06-19T12:43:31Z",
-		"mac": "ENC[AES256_GCM,data:SKVkHrF1dVrrzOGIq7XMIsIDnq3QgOM2oSBWo3sJJHo6hpqd+RMBczE2wHfJI9DxJpYtC+MKxWCv8I4Ph1828rpPGo2svml9SB9vXhWNVqQYIoaSiCx9obo5xqLngw1KwjR0v2Z2ANQD90bZJN7doJJkw9BqvCJbZwTHYOduDjg=,iv:RXfhm1DdS40b8Lr8Qc0CElYu9dAie2koLTedg0qTxN4=,tag:6Wm7gc5cvQvaIUk4D9gs2Q==,type:str]",
-		"pgp": null,
-		"unencrypted_suffix": "_unencrypted",
-		"version": "3.7.3"
-	}
+gcp_01 = {
+    name = "instance-gcp-x86-01"
+    region = "us-central1"
+    zone = "us-central1-c"
+    machine_type = "e2-micro"
+    tags = ["http-server", "https-server","allow-all-traffic"]
+    allow_stopping_for_update = true
+    can_ip_forward      = true
+    deletion_protection = false
+    enable_display      = false
+    boot_disk = {
+      auto_delete = true
+      device_name = "instance-gcp-x86-01"
+      mode = "READ_WRITE"
+      initialize_params = {
+        image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2204-jammy-v20230617"
+        size  = 30
+        type  = "pd-standard"
+      }
+    }
+    labels = {
+      goog-ec-src = "vm_add-tf"
+    }
+    metadata = {
+      ssh-keys = "ubunut:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDeIvrOE9lMNjGuW6pm0RMGET8ze+Qr9/R4fgXplguadgOPi1rys3mRXkxMLMPgLbKrSRACt33arRprfnSbA6YIMl6WdaOSJAh0uPHeD82tt90F2DuQKCqCLmjbQenaFrjBlTlKnSpRTZd0m+5nfHOSE4XCyIllULhBKh6wrNdulJ3X7ZrpqS3gS/P5R7jxghScjUR/Y+GmhuLroow85LgzGQuoDfanm6YQgTB9Y+vYzUIZWs6edAEkGesTUJdnAxUIrEssBZUiWfw/ZqwK+APiQ0cCjcr8PR4wHMo0gK2Xgspn6FoIpogQBCJreQ2gColot9uYZaE6qla3JtAP3qlcjstkbh0qploijz0AMLLM8njs6hK5XSnjLsvc68q1OfS8NREWCs2z7m7ZR3UbeKcl1P3UkPsbCnqTFao618ISb2ButR5yFROqmKdk4fcQajdlKRtvgMc6zC0OI5ApyLCCIhPwGDrTjMl1rrAL7O1/aV8jg2X1Efqg1g1UV3qsmnSNUUO30W0EMI63KlynOF9uSpuBTc5we2OIK2hOF6ty5wpb3Y6a+vNnEl8A4QqvhTA0DZB4miH1PGweAc5P1mrNHcmj3oBGh3FxkxH8dpltkP5lckIHcRHZEKdLrQN0y54aoE9mfm08q3StmS0PDFI1LhUaH7wIxCApMLl+TYIFFw=="
+    }
+    network_interface = {
+      access_config = {
+        network_tier = "STANDARD"
+      }
+    }
+    scheduling = {
+      automatic_restart = true
+      on_host_maintenance = "MIGRATE"
+      preemptible = false
+      provisioning_model = "STANDARD"
+    }
+    service_account = {
+      email = "278952645295-compute@developer.gserviceaccount.com"
+      scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    }
+    shielded_instance_config = {
+      enable_integrity_monitoring = true
+      enable_secure_boot = false
+      enable_vtpm = true
+    }
+    gc_network = {
+      auto_create_subnetworks = false
+      name = "k3s-network"
+    }
+    gc_subnet = {
+      name = "k3s-subnetwork"
+      ip_cidr_range = "10.20.0.0/24"
+      region = "us-central1"
+    }   
 }
