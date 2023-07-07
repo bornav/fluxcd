@@ -12,3 +12,27 @@ spec:
     - name: http
       targetPort: 29319
       port: 29319
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mautrix-bridge-facebook-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+    # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icecoldlair.com
+    # traefik.ingress.kubernetes.io/proxy-body-size: 500m
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`https://matrix.cloud.icecoldlair.com/public/facebook/`)
+      kind: Rule
+      services:
+        - name: mautrix-bridge-facebook
+          port: 29319
+          namespace: matrix
+      # middlewares:
+      #  - name: default-headers
+      #    namespace: default
+  tls:
+    secretName: cloud-icecoldlair-com-prod
