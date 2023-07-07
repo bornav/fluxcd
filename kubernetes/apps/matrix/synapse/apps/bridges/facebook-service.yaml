@@ -25,7 +25,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`https://matrix.cloud.icecoldlair.com/public/facebook/`)
+    - match: Host(`matrix.cloud.icecoldlair.com/public/facebook/`)
       kind: Rule
       services:
         - name: mautrix-bridge-facebook
