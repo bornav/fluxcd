@@ -37,3 +37,6 @@ spec:
       enabled: true
     serviceMonitor:
       enabled: false
+    cert-manager:
+      enabled: false
+      installCRDs: false
