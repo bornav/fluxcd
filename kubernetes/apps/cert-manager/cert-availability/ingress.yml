@@ -1,0 +1,78 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-cloud
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.nginx.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+    - match: Host(`nginx.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+      middlewares:
+        - name: default-headers
+          namespace: default
+  tls:
+    secretName: cloud-icecoldlair-com-prod
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-local
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.nginx.local.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+    - match: Host(`nginx.local.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+      middlewares:
+        - name: default-headers
+          namespace: default
+  tls:
+    secretName: local-icecoldlair-com-prod
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.nginx.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+    - match: Host(`nginx.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: nginx
+          port: 80
+      middlewares:
+        - name: default-headers
+          namespace: default
+  tls:
+    secretName: icecoldlair-com-prod
