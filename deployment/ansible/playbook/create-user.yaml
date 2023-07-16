@@ -1,0 +1,50 @@
+
+- name: Create user for k8s
+  hosts: "local_test"
+  become: yes
+  tasks:
+    - name: Update root user's password
+      user:
+        name: root
+        update_password: always
+        password: "{{root_password | password_hash('sha512')}}"
+    - name: Make normal user
+      user:
+        name: '{{ username_k8s }}'
+        password: "{{password_k8s | password_hash('sha512')}}"
+        groups:
+        - sudo
+        state: present
+        shell: /bin/bash
+        createhome: yes
+    - name: "Set authorized keys taken from url"
+      ansible.posix.authorized_key:
+        user: '{{ username_k8s }}'
+        state: present
+        key: https://raw.githubusercontent.com/bornav/fluxcd/main/deployment/authorized.keys
+    # - name: Disable swap
+    #   become: true
+    #   shell:
+    #     "swapoff -a && sed -i '/ swap / s/^\\(.*\\)$/#\\1/g' /etc/fstab"
+    # - name: Install gpg
+    #   apt: 
+    #     name: gpg
+    #     state: present
+    # - name: Install apt-transport-https
+    #   apt: 
+    #     name: apt-transport-https
+    #     state: present
+    # - name: Install ca-certificates
+    #   apt: 
+    #     name: ca-certificates
+    #     state: present
+    # - name: Install curl
+    #   apt: 
+    #     name: curl
+    #     state: present
+    # - name: Add google apt-key 
+    #   apt_key: 
+    #     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    #     state: present
+
+

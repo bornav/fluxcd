@@ -1,3 +1,4 @@
 *.decrypted~*
 temp.json
 .vscode
+k3s-ansible

@@ -1,4 +1,6 @@
-[ubuntu]
-ks
-[OracleOCI_Ubuntu]
-ks
+[local_test]
+k8s-01
+k8s-02
+k8s-03
+k8s-04
+k8s-05
