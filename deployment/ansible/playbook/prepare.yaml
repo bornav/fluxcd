@@ -1,0 +1,54 @@
+---
+- hosts: "local_test"
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+    - name: Gathering facts
+      setup:
+    - name: "Set authorized keys taken from url"
+      ansible.posix.authorized_key:
+        user: '{{ username }}'
+        state: present
+        key: '{{ public_key_location }}'
+    - name: Update root user's password
+      user:
+        name: root
+        update_password: always
+        password: "{{root_password | password_hash('sha512')}}"
+    - name: Make normal user
+      user:
+        name: '{{ username_k8s }}'
+        password: "{{password_k8s | password_hash('sha512')}}"
+        groups:
+        - sudo
+        state: present
+        shell: /bin/bash
+        createhome: yes
+    - name: "Set authorized keys taken from url"
+      ansible.posix.authorized_key:
+        user: '{{ username_k8s }}'
+        state: present
+        key: '{{ public_key_location }}'
+    - name: Purge builting firewall rules and packages
+      apt:
+        update_cache: true
+        name:
+          - netfilter-persistent
+          - iptables-persistent
+        purge: true
+    - name: install dependancies
+      apt:
+        update_cache: true
+        name: 
+          - wireguard
+          - wireguard-tools
+      become: true
+    - name: install debug packages
+      apt:
+        update_cache: true
+        name: iputils-ping
+      become: true
+      
+

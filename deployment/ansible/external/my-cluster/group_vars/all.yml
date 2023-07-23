@@ -12,7 +12,8 @@ flannel_iface: "enp1s0"
 
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
-apiserver_endpoint: "10.88.1.100"
+# apiserver_endpoint: "10.88.1.100"
+apiserver_endpoint: "192.168.122.243"
 
 # k3s_token is required  masters can talk together securely
 # this token should be alpha numeric only

@@ -1,4 +1,4 @@
-- hosts: "*"
+- hosts: "local_test"
   become: yes
   tasks:
     - name: install debug packages

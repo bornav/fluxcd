@@ -9,8 +9,9 @@ if [[ $CLEAN != false ]]; then
     # done
 fi
 sops --decrypt ./vars/vars-protected.yaml > ./vars/.decrypted~vars-protected.yaml
-ansible-playbook ./playbook/add-ssh-keys.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
-ansible-playbook ./playbook/create-user.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
+ansible-playbook ./playbook/prepare.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
+# ansible-playbook ./playbook/add-ssh-keys.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
+# ansible-playbook ./playbook/create-user.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
 
 
 git clone --branch v1.25.9+k3s1 https://github.com/techno-tim/k3s-ansible
