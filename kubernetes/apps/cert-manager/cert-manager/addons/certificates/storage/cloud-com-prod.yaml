@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-com-prod
+  namespace: cert-manager
+  annotations:
+    cert-manager.io/alt-names: '*.cloud-com-prod,cloud-com-prod'
+    cert-manager.io/certificate-name: cloud-com-prod
+    cert-manager.io/common-name: '*.cloud-com-prod'
+    cert-manager.io/ip-sans: ''
+    cert-manager.io/issuer-group: ''
+    cert-manager.io/issuer-kind: ClusterIssuer
+    cert-manager.io/issuer-name: letsencrypt-staging
+    cert-manager.io/uri-sans: ''
+  managedFields:
+    - manager: cert-manager-certificates-issuing
+      operation: Apply
+      apiVersion: v1
+      time: '2023-07-15T16:32:44Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:data:
+          f:tls.crt: {}
+          f:tls.key: {}
+        f:metadata:
+          f:annotations:
+            f:cert-manager.io/alt-names: {}
+            f:cert-manager.io/certificate-name: {}
+            f:cert-manager.io/common-name: {}
+            f:cert-manager.io/ip-sans: {}
+            f:cert-manager.io/issuer-group: {}
+            f:cert-manager.io/issuer-kind: {}
+            f:cert-manager.io/issuer-name: {}
+            f:cert-manager.io/uri-sans: {}
+          f:labels:
+            f:controller.cert-manager.io/fao: {}
+        f:type: {}
+  selfLink: /api/v1/namespaces/cert-manager/secrets/icecoldlair-com-staging
+data:
+  tls.crt: >-
+    aGFoYWZ1bmk6JGFwcjEkbGQuODJNWXokQURBaGdoY0g1bHpKV3dFVC83blJNLwoK
+  tls.key: >-
+    aGFoYWZ1bmk6JGFwcjEkbGQuODJNWXokQURBaGdoY0g1bHpKV3dFVC83blJNLwoK
+type: kubernetes.io/tls
