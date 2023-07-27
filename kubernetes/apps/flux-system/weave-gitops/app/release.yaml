@@ -49,4 +49,4 @@ spec:
               pathType: Prefix
       tls:
         - hosts:
-            - cloud.icecoldlair.com
+            - weave-gitops.cloud.icecoldlair.com
