@@ -1,6 +1,16 @@
 #/bin/sh
 #SSH KEY
 #ansible-playbook ./playbook/purge-net-blockers.yaml --user bocmo --ask-pass --ask-become-pass -i ./inventory/hosts
+bootstrap(){
+    cd ../../
+    chmod +x ./kubernetes/bootstrap/bootstrap.sh
+    ./kubernetes/bootstrap/bootstrap.sh
+    cd deployment/ansible
+}
+if [[ $1 == BOOTSTRAP ]]; then
+    bootstrap
+    exit
+fi
 if [[ $CLEAN != false ]]; then
     ~/scripts/snapshot_revert.sh 
     # while ! ping -c 1 -n -w 1 k8s-01 &> /dev/null
@@ -32,8 +42,7 @@ cd ..
 #rm ./vars/.decrypted~vars-protected.yaml ./external/my-cluster/group_vars/.decrypted~encrypted.yaml
 
 if [[ $BOOTSTRAP == true ]]; then
-    cd ../../
-    chmod +x ./kubernetes/bootstrap/bootstrap.sh
-    ./kubernetes/bootstrap/bootstrap.sh
-    cd deployment/ansible
+    bootstrap
 fi
+
+clean

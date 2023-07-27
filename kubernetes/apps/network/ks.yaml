@@ -8,7 +8,7 @@ spec:
   # dependsOn:
     # - name: cluster-apps-external-secrets-stores
     # - name: cluster-apps-nginx-certificates
-  path: ./kubernetes/apps/network/nginx-ingress/set
+  path: ./kubernetes/apps/network/nginx-ingress/
   prune: true
   sourceRef:
     kind: GitRepository
