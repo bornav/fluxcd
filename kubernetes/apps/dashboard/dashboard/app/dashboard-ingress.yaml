@@ -63,4 +63,4 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - *host
+        - cloud-icecoldlair-com-prod
