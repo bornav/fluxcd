@@ -4,20 +4,24 @@ k3s_version: v1.25.9+k3s1
 ansible_user: kube
 systemd_dir: /etc/systemd/system
 
+ansible_ssh_private_key_file: "~/.ssh/cdn_key_pwless"
+
 # Set your timezone
 system_timezone: "Europe/Vienna"
 
 # interface which will be used for flannel
-flannel_iface: "enp1s0"
+flannel_iface: "enp0s6"
+#flannel_iface: "enp1s0"
 
 
 # apiserver_endpoint is virtual ip-address which will be configured on each master
 # apiserver_endpoint: "10.88.1.100"
-apiserver_endpoint: "192.168.122.243"
+apiserver_endpoint: "10.0.0.253"
+#apiserver_endpoint: "192.168.122.243"
 
 # k3s_token is required  masters can talk together securely
 # this token should be alpha numeric only
-k3s_token: "some-SUPER-DEDEUPER-secret-password"
+k3s_token: "K104b1d56ac7185680a381281304c492185f1ef96e3dfd6f0a4e7910477a5eaa141"
 
 # The IP on which the node is reachable in the cluster.
 # Here, a sensible default is provided, you can still override

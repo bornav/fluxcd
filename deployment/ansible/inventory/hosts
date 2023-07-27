@@ -4,3 +4,5 @@ k8s-02
 k8s-03
 k8s-04
 k8s-05
+[cloud] 
+oraclearm1.cloud.icecoldlair.com ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/cdn_key_pwless
