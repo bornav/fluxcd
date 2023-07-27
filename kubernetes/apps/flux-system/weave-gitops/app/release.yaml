@@ -49,4 +49,4 @@ spec:
               pathType: Prefix
       tls:
         - hosts:
-            - cert-manager/cloud.icecoldlair.com-staging
+            - cloud.icecoldlair.com
