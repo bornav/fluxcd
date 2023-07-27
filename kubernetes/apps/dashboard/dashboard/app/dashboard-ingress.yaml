@@ -21,44 +21,46 @@ spec:
   tls:
     secretName: cloud-icecoldlair-com-prod
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: v1
+kind: Service
 metadata:
-  name: dashboard-homepage-local
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
+  name: &app dashboard-homepage-cloud-nginx
+  namespace: dashboard
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`dashboard.local.icecoldlair.com`)
-      kind: Rule
-      services:
-        - name: dashboard-homepage
-          port: 3000
-      middlewares:
-        - name: dashboard-basicauth
-  tls:
-    secretName: local-icecoldlair-com-prod
+  # type: ExternalName
+  # externalName: valetudo.turbo.ac.
+  selector:
+    app: dashboard-homepage
+  ports:
+    - name: http
+      port: &port 3000
+      protocol: TCP
+      targetPort: *port
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: dashboard-homepage
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
+  name: &app dashboard-homepage-cloud-nginx
+  namespace: networking
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`icecoldlair.com`)
-      kind: Rule
-      services:
-        - name: dashboard-homepage
-          port: 3000
-          namespace: dashboard
-      middlewares:
-        - name: dashboard-basicauth
-          namespace: dashboard
+  ingressClassName: nginx
+  rules:
+    - host: &host dashboard2.cloud.icecoldlair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: *app
+                port:
+                  number: 80
   tls:
-    secretName: icecoldlair-com-prod
+    - hosts:
+        - *host
