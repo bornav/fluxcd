@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -15,3 +14,4 @@ resources:
   - ./csi-driver-nfs.yaml
   - ./grafana.yaml
   - ./prometheus-community.yaml
+  - ./ingress-nginx.yaml
