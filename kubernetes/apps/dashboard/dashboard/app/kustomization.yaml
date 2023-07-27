@@ -5,6 +5,6 @@ resources:
   - dashboard-config.yaml
   - dashboard-deployment.yaml
   - dashboard-ingress.yaml
-  - dashboard-middleware.yaml
+  # - dashboard-middleware.yaml
   - dashboard-secret.yaml
   - dashboard-service.yaml
