@@ -6,6 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/navidrome/navidrome/dependancies
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,6 +25,7 @@ spec:
   dependsOn:
     - name: navidrome-dependancies
   path: ./kubernetes/apps/navidrome/navidrome/app
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository

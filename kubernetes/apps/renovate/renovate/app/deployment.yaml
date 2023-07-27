@@ -1,0 +1,43 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate-job
+spec:
+  schedule: '0 1 * * *'
+  jobTemplate:
+    # metadata:
+    #   labels:
+    #     app.kubernetes.io/name: renovate
+    #     app.kubernetes.io/instance: renovate-1684694109
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: renovate
+            app.kubernetes.io/instance: renovate-1684694109
+        spec:
+          serviceAccountName: default
+          restartPolicy: Never
+          containers:
+            - name: renovate
+              image: 'renovate/renovate:35.87.0'
+              imagePullPolicy: IfNotPresent
+              resources:
+                requests:
+                  memory: '1Mi'
+                  cpu: '1m'
+                limits:
+                  memory: '6Gi'
+                  cpu: '2500m'
+              volumeMounts:
+                - name: config-volume
+                  mountPath: /usr/src/app/config.json
+                  subPath: config.json
+              env:
+                - name: RENOVATE_CONFIG_FILE
+                  value: /usr/src/app/config.json
+          volumes:
+            - name: config-volume
+              configMap:
+                name: renovate-config

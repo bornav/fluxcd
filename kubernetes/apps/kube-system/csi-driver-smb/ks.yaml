@@ -7,6 +7,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/kube-system/csi-driver-smb/driver
   prune: true
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
