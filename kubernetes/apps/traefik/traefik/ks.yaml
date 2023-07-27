@@ -7,6 +7,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/traefik/traefik/base
   prune: true
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -21,9 +22,10 @@ metadata:
   name: traefik-addons
   namespace: flux-system
 spec:
+  path: ./kubernetes/apps/traefik/traefik/addons
+  suspend: true
   dependsOn:
     - name: traefik-base
-  path: ./kubernetes/apps/traefik/traefik/addons
   prune: true
   sourceRef:
     kind: GitRepository
