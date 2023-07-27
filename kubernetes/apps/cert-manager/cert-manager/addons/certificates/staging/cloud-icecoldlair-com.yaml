@@ -3,6 +3,8 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: cloud.icecoldlair.com-staging
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
 spec:
   secretName: cloud-icecoldlair-com-staging
   issuerRef:
