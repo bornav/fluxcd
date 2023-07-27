@@ -21,6 +21,8 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  uninstall:
+    keepHistory: false
   valuesFrom:
     - kind: ConfigMap
       name: weave-gitops-admin-secret
@@ -41,10 +43,10 @@ spec:
       enabled: true
       className: external
       hosts:
-        - host: &host weave-gitops.cloud.icecoldlair.com
+        - host: weave-gitops.cloud.icecoldlair.com
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - *host
+            - cert-manager/cloud.icecoldlair.com-staging
