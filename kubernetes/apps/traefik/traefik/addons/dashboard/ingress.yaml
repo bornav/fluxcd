@@ -19,3 +19,49 @@ spec:
   tls:
     #secretName: cloud-icecoldlair-com-staging-tls
     secretName: cloud-icecoldlair-com-prod
+# ---
+# apiVersion: traefik.io/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: foo
+#   namespace: bar
+# spec:
+#   entryPoints:                      # [1]
+#     - foo
+#   routes:                           # [2]
+#   - kind: Rule
+#     match: Host(`test.example.com`) # [3]
+#     priority: 10                    # [4]
+#     middlewares:                    # [5]
+#     - name: middleware1             # [6]
+#       namespace: default            # [7]
+#     services:                       # [8]
+#     - kind: Service
+#       name: foo
+#       namespace: default
+#       passHostHeader: true
+#       port: 80                      # [9]
+#       responseForwarding:
+#         flushInterval: 1ms
+#       scheme: https
+#       serversTransport: transport   # [10]
+#       sticky:
+#         cookie:
+#           httpOnly: true
+#           name: cookie
+#           secure: true
+#           sameSite: none
+#       strategy: RoundRobin
+#       weight: 10
+#       nativeLB: true                # [11]
+#   tls:                              # [12]
+#     secretName: supersecret         # [13]
+#     options:                        # [14]
+#       name: opt                     # [15]
+#       namespace: default            # [16]
+#     certResolver: foo               # [17]
+#     domains:                        # [18]
+#     - main: example.net             # [19]
+#       sans:                         # [20]
+#       - a.example.net
+#       - b.example.net

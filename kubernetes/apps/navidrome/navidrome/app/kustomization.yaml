@@ -4,7 +4,7 @@ namespace: navidrome
 resources:
   - config.yaml
   - deployment.yaml
-  - ingress.yaml
+  # - ingress.yaml
 #  - middleware.yaml
   - secret.yaml
   - service.yaml

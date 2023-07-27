@@ -1,25 +1,25 @@
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: dashboard-homepage-cloud
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`dashboard.cloud.icecoldlair.com`)
-      kind: Rule
-      services:
-        - name: dashboard-homepage
-          port: 3000
-          namespace: dashboard
-      middlewares:
-        - name: dashboard-basicauth
-          namespace: dashboard
-  tls:
-    secretName: cloud-icecoldlair-com-prod
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: dashboard-homepage-cloud
+#   annotations:
+#     kubernetes.io/ingress.class: traefik-external
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - match: Host(`dashboard.cloud.icecoldlair.com`)
+#       kind: Rule
+#       services:
+#         - name: dashboard-homepage
+#           port: 3000
+#           namespace: dashboard
+#       middlewares:
+#         - name: dashboard-basicauth
+#           namespace: dashboard
+#   tls:
+#     secretName: cloud-icecoldlair-com-prod
 ---
 apiVersion: v1
 kind: Service

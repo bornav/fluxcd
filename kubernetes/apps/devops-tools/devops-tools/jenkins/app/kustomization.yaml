@@ -4,7 +4,7 @@ resources:
   - dashboard-middleware.yaml
   - dashboard-secret.yaml
   - deployment.yaml
-  - ingress.yaml
+  # - ingress.yaml
   - service.yaml
   - serviceAccount.yaml
   - volume.yaml
