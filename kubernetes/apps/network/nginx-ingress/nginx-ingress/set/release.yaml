@@ -65,7 +65,7 @@ spec:
       #     namespaceSelector:
       #       any: true
       extraArgs:
-        default-ssl-certificate: cert-manager/cloud.icecoldlair.com
+        default-ssl-certificate: cert-manager/cloud.icecoldlair.com-staging
       # topologySpreadConstraints:
       #   - maxSkew: 1
       #     topologyKey: kubernetes.io/hostname
