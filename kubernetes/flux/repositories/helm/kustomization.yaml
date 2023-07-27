@@ -15,3 +15,4 @@ resources:
   - ./grafana.yaml
   - ./prometheus-community.yaml
   - ./ingress-nginx.yaml
+  - ./emberstack.yaml
