@@ -17,5 +17,5 @@ spec:
       name: weave-gitops
       namespace: flux-system
   interval: 15m
-  retryinterval: 15m
+  retryInterval: 15m
   timeout: 5m
