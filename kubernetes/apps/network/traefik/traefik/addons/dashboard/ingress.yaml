@@ -42,7 +42,7 @@ spec:
 #       passHostHeader: true
 #       port: 80                      # [9]
 #       responseForwarding:
-#         flushInterval: 1ms
+#         flushinterval: 15ms
 #       scheme: https
 #       serversTransport: transport   # [10]
 #       sticky:

@@ -13,5 +13,5 @@ spec:
     name: fluxcd-kubernetes
     namespace: flux-system
   interval: 15m
-  retryInterval: 1m
-  timeout: 3m
+  retryinterval: 15m
+  timeout: 5m
