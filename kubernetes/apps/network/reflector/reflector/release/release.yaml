@@ -25,7 +25,10 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # values:
+  values:
+    configuration:
+      logging:
+        minimumLevel: Debug
   #   installCRDs: true
   #   replicaCount: 1
   #   extraArgs:
