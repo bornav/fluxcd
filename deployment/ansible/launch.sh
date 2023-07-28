@@ -46,7 +46,7 @@ if [[ $1 == BOOTSTRAP ]]; then
     bootstrap
     exit
 fi
-if [[ $CLEAN != false ]]; then
+if [[ $CLEAN_VIRT == true ]]; then
     ~/scripts/snapshot_revert.sh 
     # while ! ping -c 1 -n -w 1 k8s-01 &> /dev/null
     # do

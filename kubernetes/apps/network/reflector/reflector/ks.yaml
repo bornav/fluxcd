@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/network/reflector/reflector/release
-  suspend: true
+  suspend: false
   prune: true
   sourceRef:
     kind: GitRepository
