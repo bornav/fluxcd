@@ -67,7 +67,8 @@ metal_lb_speaker_tag_version: "v0.13.9"
 metal_lb_controller_tag_version: "v0.13.9"
 
 # metallb ip range for load balancer
-metal_lb_ip_range: "10.88.1.10-10.88.1.99"
+#metal_lb_ip_range: "10.88.1.10-10.88.1.99"
+metal_lb_ip_range: "10.0.0.230-10.0.0.240"
 
 # Only enable if your nodes are proxmox LXC nodes, make sure to configure your proxmox nodes
 # in your hosts.ini file.
