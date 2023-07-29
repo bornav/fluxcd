@@ -1,67 +1,67 @@
-# ---
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: IngressRoute
-# metadata:
-#   name: dashboard-homepage-cloud
-#   annotations:
-#     kubernetes.io/ingress.class: traefik-external
-# spec:
-#   entryPoints:
-#     - websecure
-#   routes:
-#     - match: Host(`dashboard.cloud.icecoldlair.com`)
-#       kind: Rule
-#       services:
-#         - name: dashboard-homepage
-#           port: 3000
-#           namespace: dashboard
-#       middlewares:
-#         - name: dashboard-basicauth
-#           namespace: dashboard
-#   tls:
-#     secretName: cloud-icecoldlair-com-prod
 ---
-apiVersion: v1
-kind: Service
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
-  name: &app dashboard-homepage-cloud-nginx
-  namespace: dashboard
-  labels:
-    app.kubernetes.io/name: *app
-    app.kubernetes.io/instance: *app
+  name: dashboard-homepage-cloud
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
 spec:
-  # type: ExternalName
-  # externalName: valetudo.turbo.ac.
-  selector:
-    app: dashboard-homepage
-  ports:
-    - name: http
-      port: &port 3000
-      protocol: TCP
-      targetPort: *port
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app dashboard-homepage-cloud-nginx
-  namespace: networking
-  labels:
-    app.kubernetes.io/name: *app
-    app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: nginx
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: &host dashboard2.cloud.icecoldlair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: *app
-                port:
-                  number: 80
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dashboard.cloud.icecoldlair.com`)
+      kind: Rule
+      services:
+        - name: dashboard-homepage
+          port: 3000
+          namespace: dashboard
+      middlewares:
+        - name: dashboard-basicauth
+          namespace: dashboard
   tls:
-    - hosts:
-        - cloud-icecoldlair-com-staging
+    secretName: cloud-icecoldlair-com-staging
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: &app dashboard-homepage-cloud-nginx
+#   namespace: dashboard
+#   labels:
+#     app.kubernetes.io/name: *app
+#     app.kubernetes.io/instance: *app
+# spec:
+#   # type: ExternalName
+#   # externalName: valetudo.turbo.ac.
+#   selector:
+#     app: dashboard-homepage
+#   ports:
+#     - name: http
+#       port: &port 3000
+#       protocol: TCP
+#       targetPort: *port
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: &app dashboard-homepage-cloud-nginx
+#   namespace: networking
+#   labels:
+#     app.kubernetes.io/name: *app
+#     app.kubernetes.io/instance: *app
+#     kubernetes.io/ingress.class: nginx
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: &host dashboard2.cloud.icecoldlair.com
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: *app
+#                 port:
+#                   number: 80
+#   tls:
+#     - hosts:
+#         - cloud-icecoldlair-com-staging
