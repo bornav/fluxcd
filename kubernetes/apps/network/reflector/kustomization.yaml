@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   #- namespace.yaml
   #- ./reflector/ks.yaml
-  #- reflector-helmless
+  - reflector-helmless
