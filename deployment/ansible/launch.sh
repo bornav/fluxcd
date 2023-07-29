@@ -15,7 +15,12 @@ reset(){
 bootstrap(){
     cd ../../
     chmod +x ./kubernetes/bootstrap/bootstrap.sh
-    ./kubernetes/bootstrap/bootstrap.sh
+    kubectl apply --server-side --kustomize ./kubernetes/bootstrap/flux
+    sops --decrypt kubernetes/bootstrap/flux/age-key.sops.yaml | kubectl apply -f -
+    sops --decrypt kubernetes/bootstrap/flux/github-ssh-key.sops.yaml | kubectl apply -f -
+    sops --decrypt kubernetes/bootstrap/flux/github-token.sops.yaml | kubectl apply -f -
+    kubectl apply -f kubernetes/flux/vars/cluster-settings.yaml
+    kubectl apply --server-side --kustomize ./kubernetes/flux/config
     cd deployment/ansible
 }
 kube_config(){
@@ -30,6 +35,9 @@ sops --decrypt ./external/my-cluster/group_vars/encrypted.yaml > ./external/my-c
 rm_secrets(){
 find | grep -i .decrypted | xargs rm
 }
+if [[ $1 == FRESH ]]; then
+    reset
+fi
 if [[ $1 == RESET ]]; then
     reset
     exit
