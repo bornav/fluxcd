@@ -48,12 +48,28 @@
     - name: install debug packages
       apt:
         update_cache: true
-        name: iputils-ping
+        name: 
+          - iputils-ping
+          - tracerout
+          - nano
+          - vi
       become: true
+    - name: Flush all existing iptables rules
+      iptables:
+        flush: yes
     - name: Enable IP forwarding
       sysctl:
         name: "net.ipv4.ip_forward"
         value: 1
+    - name: OPEN 22 for ssh
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_ports: "22"
+        jump: ACCEPT
+        #ctstate: NEW
+        #syn: match
+        comment: opens port 22
     - name: OPEN 6443 for k9s
       ansible.builtin.iptables:
         chain: INPUT
@@ -63,6 +79,15 @@
         #ctstate: NEW
         #syn: match
         comment: opens port 6443
+    # - name: allow incoming traffic on ports 80 and 443 and forward them to vip
+    #   shell: | 
+    #     iptables -t nat -A PREROUTING -i enp0s6 -p tcp --dport 80 -j DNAT --to-destination 10.0.0.239:80
+    #     iptables -A FORWARD -p tcp -d 10.0.0.239 --dport 80 -j ACCEPT
+    #     iptables -t nat -A PREROUTING -i enp0s6 -p tcp --dport 443 -j DNAT --to-destination 10.0.0.239:443
+    #     iptables -A FORWARD -p tcp -d 10.0.0.239 --dport 443 -j ACCEPT
+    # # iptables -t nat -A POSTROUTING -o enp0s6 -p tcp --dport 80 -d 10.0.0.239 -j MASQUERADE
+    # # iptables -t nat -A POSTROUTING -o enp0s6 -p tcp --dport 443 -d 10.0.0.239 -j MASQUERADE
+
     # - name: OPEN 80, 443, 6443 for k9s
     #   ansible.builtin.iptables:
     #     chain: INPUT
@@ -84,41 +109,41 @@
     #     dport: 80
     #     jump: DNAT
     #     to_destination: "10.0.0.239:80"
-    - name: Allow incoming traffic on port 80 (HTTP)
-      iptables:
-        table: nat
-        chain: PREROUTING
-        in_interface: eth0  # Replace with the external interface name
-        protocol: tcp
-        dport: 80
-        jump: DNAT
-        to_destination: "10.0.0.239:80"
-      # when: ansible_default_ipv4.address == '138.3.244.139'
-    - name: Allow incoming traffic on port 443 (HTTPS)
-      iptables:
-        table: nat
-        chain: PREROUTING
-        in_interface: eth0  # Replace with the external interface name
-        protocol: tcp
-        dport: 443
-        jump: DNAT
-        to_destination: "10.0.0.239:443"
-      # when: ansible_default_ipv4.address == '138.3.244.139'
-    - name: Allow forwarding of port 80 to internal IP
-      iptables:
-        chain: FORWARD
-        protocol: tcp
-        destination: "10.0.0.239"
-        dport: 80
-        jump: ACCEPT
-      # when: ansible_default_ipv4.address == '138.3.244.139'
-    - name: Allow forwarding of port 443 to internal IP
-      iptables:
-        chain: FORWARD
-        protocol: tcp
-        destination: "10.0.0.239"
-        dport: 443
-        jump: ACCEPT
-      # when: ansible_default_ipv4.address == '138.3.244.139'
+    # - name: Allow incoming traffic on port 80 (HTTP)
+    #   iptables:
+    #     table: nat
+    #     chain: PREROUTING
+    #     in_interface: enp0s6  # Replace with the external interface name
+    #     protocol: tcp
+    #     to_ports: 80
+    #     jump: DNAT
+    #     to_destination: "10.0.0.239:80"
+    #   # when: ansible_default_ipv4.address == '138.3.244.139'
+    # - name: Allow incoming traffic on port 443 (HTTPS)
+    #   iptables:
+    #     table: nat
+    #     chain: PREROUTING
+    #     in_interface: enp0s6  # Replace with the external interface name
+    #     protocol: tcp
+    #     to_ports: 443
+    #     jump: DNAT
+    #     to_destination: "10.0.0.239:443"
+    #   # when: ansible_default_ipv4.address == '138.3.244.139'
+    # - name: Allow forwarding of port 80 to internal IP
+    #   iptables:
+    #     chain: FORWARD
+    #     protocol: tcp
+    #     destination: "10.0.0.239"
+    #     to_ports: 80
+    #     jump: ACCEPT
+    #   # when: ansible_default_ipv4.address == '138.3.244.139'
+    # - name: Allow forwarding of port 443 to internal IP
+    #   iptables:
+    #     chain: FORWARD
+    #     protocol: tcp
+    #     destination: "10.0.0.239"
+    #     to_ports: 443
+    #     jump: ACCEPT
+    #   # when: ansible_default_ipv4.address == '138.3.244.139'
       
 
