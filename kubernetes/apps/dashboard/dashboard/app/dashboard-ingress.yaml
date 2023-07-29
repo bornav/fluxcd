@@ -48,7 +48,6 @@ metadata:
   labels:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: nginx
 spec:
   ingressClassName: nginx
   rules:
@@ -64,4 +63,4 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - cloud-icecoldlair-com-staging
+        - cloud-icecoldlair-com-prod

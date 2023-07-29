@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
-      interval: 15m
+      interval: 1m
   valuesFrom:
     - kind: ConfigMap
       name: github-token-secret

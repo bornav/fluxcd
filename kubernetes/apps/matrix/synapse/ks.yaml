@@ -19,8 +19,8 @@ spec:
   #     name: cert-manager
   #     namespace: cert-manager
   interval: 15m
-  retryInterval: 15m
-  timeout: 5m
+  retryInterval: 1m
+  timeout: 3m
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -39,5 +39,5 @@ spec:
     name: fluxcd-kubernetes
     namespace: flux-system
   interval: 15m
-  retryInterval: 15m
-  timeout: 5m
+  retryInterval: 1m
+  timeout: 3m

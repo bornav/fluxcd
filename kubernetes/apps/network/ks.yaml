@@ -2,33 +2,40 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: devops-tools-jenkins
+  name: nginx-ingress
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/devops-tools/devops-tools/jenkins
+  # dependsOn:
+    # - name: cluster-apps-external-secrets-stores
+    # - name: cluster-apps-nginx-certificates
+  path: ./kubernetes/apps/network/nginx-ingress/
   prune: true
-  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
-  interval: 15m
+  wait: true
+  interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 5m
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: devops-tools-github-actions
+  name: traefik
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/devops-tools/devops-tools/actions-runner-controller
-  prune: true
+  # dependsOn:
+    # - name: cluster-apps-external-secrets-stores
+    # - name: cluster-apps-nginx-certificates
+  path: ./kubernetes/apps/network/traefik/
   suspend: true
+  prune: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
-  interval: 15m
+  wait: true
+  interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 5m

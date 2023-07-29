@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: traefik
         namespace: flux-system
-      interval: 15m
+      interval: 1m
   values:
     apiVersion: traefik.containo.us/v1alpha1
     globalArguments:

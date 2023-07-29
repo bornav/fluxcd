@@ -17,5 +17,5 @@ spec:
   #   secretRef:
   #     name: sops-age
   interval: 15m
-  retryInterval: 15m
-  timeout: 5m
+  retryInterval: 1m
+  timeout: 3m
