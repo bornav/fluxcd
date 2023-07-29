@@ -29,6 +29,7 @@ spec:
     # - name: cluster-apps-nginx-certificates
   path: ./kubernetes/apps/network/nginx-ingress/nginx-ingress/set
   prune: true
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
