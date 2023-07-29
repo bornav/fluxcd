@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: cert-manager
         namespace: flux-system
-      interval: 1m
+      interval: 15m
   install:
     createNamespace: true
     remediation:

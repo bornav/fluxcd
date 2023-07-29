@@ -1,3 +1,7 @@
 username: "ubuntu"
 username_k8s: "kube"
 public_key_location: "https://raw.githubusercontent.com/bornav/fluxcd/main/deployment/authorized.keys"
+
+new_server_name: "https://oraclearm1.cloud.icecoldlair.com:6443"
+new_cluster_name: "cluster-prod"
+new_user_name: "user-prod"

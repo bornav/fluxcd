@@ -15,7 +15,7 @@
 #     namespace: flux-system
 #   wait: true
 #   interval: 30m
-#   retryInterval: 1m
+#   retryInterval: 15m
 #   timeout: 5m
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -29,13 +29,14 @@ spec:
     # - name: cluster-apps-nginx-certificates
   path: ./kubernetes/apps/network/nginx-ingress/nginx-ingress/set
   prune: true
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
   wait: true
   interval: 30m
-  retryInterval: 1m
+  retryInterval: 15m
   timeout: 5m
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -54,5 +55,5 @@ spec:
 #     namespace: flux-system
 #   wait: true
 #   interval: 30m
-#   retryInterval: 1m
+#   retryInterval: 15m
 #   timeout: 5m

@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: reflector
-  namespace: cert-manager
+  namespace: kube-system
 spec:
   interval: 5m
   chart:
@@ -14,7 +14,7 @@ spec:
         kind: HelmRepository
         name: emberstack
         namespace: flux-system
-      interval: 1m
+      interval: 15m
   install:
     createNamespace: true
     remediation:
@@ -25,7 +25,10 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # values:
+  values:
+    # configuration:
+    #   logging:
+    #     minimumLevel: Debug
   #   installCRDs: true
   #   replicaCount: 1
   #   extraArgs:
