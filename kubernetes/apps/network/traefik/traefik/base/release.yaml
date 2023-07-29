@@ -60,7 +60,7 @@ spec:
       enabled: true
     service:
       enabled: true
-      type: LoadBalancer
+      type: ClusterIP
       annotations: {}
       labels: {}
       # spec:
