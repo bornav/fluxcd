@@ -6,7 +6,7 @@ metadata:
   name: fluxcd-kubernetes
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 2m
   url: ssh://git@github.com/bornav/fluxcd.git
   ref:
     branch: main
@@ -25,7 +25,7 @@ metadata:
   name: cluster
   namespace: flux-system
 spec:
-  interval: 15m
+  interval: 2m
   path: ./kubernetes/flux
   prune: true
   wait: false
