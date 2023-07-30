@@ -1,6 +1,6 @@
 #/bin/sh
 #SSH KEY
-#ansible-playbook ./playbook/purge-net-blockers.yaml --user bocmo --ask-pass --ask-become-pass -i ./inventory/hosts
+#ansible-playbook ./playbook/purge-net-blockers.yaml --user bocmo --ask-pass --ask-become-pass -i ./inventory/hosts.ini
 reset(){
     decrypt
     git clone --branch v1.25.9+k3s1 https://github.com/techno-tim/k3s-ansible
@@ -10,7 +10,6 @@ reset(){
     cd k3s-ansible
     ansible-playbook reset.yml -e "@../external/my-cluster/group_vars/.decrypted~encrypted.yaml" -e "@../vars/.decrypted~vars-protected.yaml"
     cd ..
-    exit
 }
 bootstrap(){
     cd ../../
@@ -25,18 +24,38 @@ bootstrap(){
 }
 kube_config(){
     decrypt
-    ansible-playbook ./playbook/update_kube_config.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
+    ansible-playbook ./playbook/update_kube_config.yaml -i ./inventory/hosts.ini -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
     rm_secrets
 }
 decrypt(){
 sops --decrypt ./vars/vars-protected.yaml > ./vars/.decrypted~vars-protected.yaml
 sops --decrypt ./external/my-cluster/group_vars/encrypted.yaml > ./external/my-cluster/group_vars/.decrypted~encrypted.yaml
+sops --decrypt ./vars/netmaker.env > ./vars/.decrypted~netmaker.env
 }
 rm_secrets(){
 find | grep -i .decrypted | xargs rm
 }
-if [[ $1 == FRESH ]]; then
-    reset
+k3s_install(){
+git clone --branch v1.25.9+k3s1 https://github.com/techno-tim/k3s-ansible
+cat k3s-ansible/ansible.example.cfg > k3s-ansible/ansible.cfg
+sed -i 's#^inventory = .*#inventory = ../external/my-cluster/hosts.ini#' k3s-ansible/ansible.cfg
+sed -i 's#^ansible-playbook site.yml$#ansible-playbook site.yml -e "@../external/my-cluster/group_vars/.decrypted~encrypted.yaml" -e "@../vars/.decrypted~vars-protected.yaml"#' k3s-ansible/deploy.sh
+cd k3s-ansible
+ansible-galaxy install -r ./collections/requirements.yml
+./deploy.sh
+cd ..
+}
+simple_install(){
+    ansible-playbook ./playbook/simple_k3s_install.yaml -i ./inventory/hosts.ini
+    
+}
+netmaker_install(){
+    decrypt
+    ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook ./playbook/netmaker-install.yaml -i ./inventory/hosts.ini -e "@./vars/vars.yaml"  
+}
+if [[ $1 == NETMAKER ]]; then
+    netmaker_install
+    exit
 fi
 if [[ $1 == RESET ]]; then
     reset
@@ -62,23 +81,23 @@ if [[ $CLEAN_VIRT == true ]]; then
     # done
 fi
 decrypt
-ansible-playbook ./playbook/prepare-cloud.yaml -i ./inventory/hosts -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
+ansible-playbook ./playbook/prepare-cloud.yaml -i ./inventory/hosts.ini -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
 
 
-git clone --branch v1.25.9+k3s1 https://github.com/techno-tim/k3s-ansible
-cat k3s-ansible/ansible.example.cfg > k3s-ansible/ansible.cfg
-sed -i 's#^inventory = .*#inventory = ../external/my-cluster/hosts.ini#' k3s-ansible/ansible.cfg
-sed -i 's#^ansible-playbook site.yml$#ansible-playbook site.yml -e "@../external/my-cluster/group_vars/.decrypted~encrypted.yaml" -e "@../vars/.decrypted~vars-protected.yaml"#' k3s-ansible/deploy.sh
-
-
-cd k3s-ansible
-ansible-galaxy install -r ./collections/requirements.yml
-./deploy.sh
-cd ..
 
 #rm_secrets
 #rm -rf k3s-ansible
 #rm ./vars/.decrypted~vars-protected.yaml ./external/my-cluster/group_vars/.decrypted~encrypted.yaml
+
+if [[ $FRESH == true ]]; then
+    reset
+fi
+if [[ $SIMPLE != true ]]; then
+    k3s_install
+fi
+if [[ $SIMPLE == true ]]; then
+    simple_install
+fi
 if [[ $CONFIG == true ]]; then
     kube_config
 fi

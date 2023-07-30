@@ -50,9 +50,10 @@
         update_cache: true
         name: 
           - iputils-ping
-          - tracerout
+          - traceroute
           - nano
-          - vi
+          - vim
+          - tcpdump
       become: true
     - name: Flush all existing iptables rules
       iptables:

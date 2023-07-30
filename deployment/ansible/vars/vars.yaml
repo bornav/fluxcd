@@ -5,3 +5,10 @@ public_key_location: "https://raw.githubusercontent.com/bornav/fluxcd/main/deplo
 new_server_name: "https://oraclearm1.cloud.icecoldlair.com:6443"
 new_cluster_name: "cluster-prod"
 new_user_name: "user-prod"
+
+
+##netmaker
+NM_RELEASE: "v0.20.4"
+NM_AARCH: "amd64"
+NM_ROOT_DIR: "/root"
+NM_SCRIPT_NAME: "nm-quick.sh"

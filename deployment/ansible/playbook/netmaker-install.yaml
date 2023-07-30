@@ -1,0 +1,48 @@
+---
+- hosts: "cloud"
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+    - name: Gathering facts
+      setup:
+    - name: Create new variable from two existing variables
+      set_fact:
+        SCRIPT_PATH: "{{NM_ROOT_DIR}}/{{NM_SCRIPT_NAME}}"
+    # - name: download binary
+    #   shell: | 
+    #     wget -O "{{NM_ROOT_DIR}}"/"{{NM_SCRIPT_NAME}}" https://github.com/gravitl/netmaker/releases/download/"{{NM_RELEASE}}"/nmctl-linux-"{{NM_AARCH}}"
+    - name: download nm-quick
+      shell: | 
+        wget -qO "{{SCRIPT_PATH}}" https://raw.githubusercontent.com/bornav/netmaker/master/scripts/"{{NM_SCRIPT_NAME}}"
+        chmod +x "{{SCRIPT_PATH}}"
+    - name: Copy environment file to remote host
+      copy:
+        src: "{{playbook_dir}}/../vars/netmaker.env"
+        dest: "{{NM_ROOT_DIR}}/netmaker.env"
+      become: yes
+    - name: modyfy script
+      shell: |
+        sed -i '/unset AUTO_BUILD/s/^/#/' {{SCRIPT_PATH}}
+    - name: make sure directory exists
+      shell: |
+        mkdir -p /etc/cron.monthly
+    - name: run nm-quick script
+      shell: | 
+        AUTO_BUILD=on {{SCRIPT_PATH}}
+
+# NM_ROOT_DIR: "/root"
+# NM_SCRIPT_NAME: "nm-quick.sh"
+
+
+# wget -qO /root/nm-quick.sh https://raw.githubusercontent.com/gravitl/netmaker/master/scripts/nm-quick.sh
+# chmod +x /root/nm-quick.sh
+# /root/nm-quick.sh
+
+# #/bin/sh
+# NM_RELEASE=v0.20.4
+# NM_AARCH=amd64
+# #
+# wget -O /root https://github.com/gravitl/netmaker/releases/download/"{{ NM_RELEASE }}"/nmctl-linux-"{{ NM_AARCH }}"
+# chmod +x /usr/bin/nmctl
