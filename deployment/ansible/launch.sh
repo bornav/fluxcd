@@ -1,6 +1,6 @@
 #/bin/sh
-#SSH KEY
-#ansible-playbook ./playbook/purge-net-blockers.yaml --user bocmo --ask-pass --ask-become-pass -i ./inventory/hosts.ini
+#example deploy simple cluster: BOOTSTRAP=true SIMPLE=true ./launch.sh
+#example nuke existing cluster: ~any~ ./launch.sh RESET
 reset(){
     decrypt
     git clone --branch v1.25.9+k3s1 https://github.com/techno-tim/k3s-ansible
@@ -33,7 +33,12 @@ sops --decrypt ./external/my-cluster/group_vars/encrypted.yaml > ./external/my-c
 sops --decrypt ./vars/netmaker.env > ./vars/.decrypted~netmaker.env
 }
 rm_secrets(){
-find | grep -i .decrypted | xargs rm
+if [ "$(find . -type f | grep -i ".decrypted" | wc -l)" -gt 0 ]; then
+  find . -type f | grep -i .decrypted | xargs rm
+else
+  echo no secrets found
+  break
+fi
 }
 k3s_install(){
 git clone --branch v1.25.9+k3s1 https://github.com/techno-tim/k3s-ansible

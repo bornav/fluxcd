@@ -2,3 +2,6 @@
 temp.json
 .vscode
 k3s-ansible
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
