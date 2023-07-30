@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: matrix
 resources:
   - deployment.yaml
-  # - ingress.yaml
+  - ingress.yaml
   - service.yaml
   - config.yaml
