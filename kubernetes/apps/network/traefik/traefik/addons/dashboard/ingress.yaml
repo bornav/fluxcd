@@ -18,7 +18,7 @@ spec:
           kind: TraefikService
   tls:
     #secretName: cloud-icecoldlair-com-staging-tls
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icecoldlair-com-staging
 # ---
 # apiVersion: traefik.io/v1alpha1
 # kind: IngressRoute
