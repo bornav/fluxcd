@@ -3,5 +3,5 @@ kind: Kustomization
 namespace: cert-manager
 resources:
   - deployment.yaml
-  #- ingress.yaml
+  - ingress.yaml
   - service.yaml

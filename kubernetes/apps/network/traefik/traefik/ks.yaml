@@ -6,6 +6,8 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/network/traefik/traefik/base
+  dependsOn:
+    - name: cert-manager-addons
   suspend: false
   prune: true
   sourceRef:
