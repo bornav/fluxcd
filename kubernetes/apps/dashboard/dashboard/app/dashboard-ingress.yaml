@@ -1,25 +1,51 @@
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: dashboard-homepage-cloud
+#   annotations:
+#     kubernetes.io/ingress.class: traefik-external
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - match: Host(`dashboard.cloud.icecoldlair.com`)
+#       kind: Rule
+#       services:
+#         - name: dashboard-homepage
+#           port: 3000
+#           namespace: dashboard
+#       middlewares:
+#         - name: dashboard-basicauth
+#           namespace: dashboard
+#   tls:
+#     secretName: cloud-icecoldlair-com-staging
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: dashboard-homepage-cloud
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
+  name: &app dashboard-homepage-cloud
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`dashboard.cloud.icecoldlair.com`)
-      kind: Rule
-      services:
-        - name: dashboard-homepage
-          port: 3000
-          namespace: dashboard
-      middlewares:
-        - name: dashboard-basicauth
-          namespace: dashboard
+  ingressClassName: traefik
+  rules:
+    - host: &host dashboard.cloud.icecoldlair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-homepage
+                port:
+                  number: 3000
   tls:
-    secretName: cloud-icecoldlair-com-staging
+  - hosts:
+      - dashboard.cloud.icecoldlair.com
+    secretName: cloud-icecoldlair-com-prod
 # ---
 # apiVersion: v1
 # kind: Service
