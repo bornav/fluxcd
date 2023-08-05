@@ -46,5 +46,5 @@ spec:
                   number: 8008
   tls:
   - hosts:
-      - elemen2.cloud.icecoldlair.com
+      - matrix.cloud.icecoldlair.com
     secretName: cloud-icecoldlair-com-prod
