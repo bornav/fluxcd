@@ -9,14 +9,14 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 22.0.0 #chart version not app
+      version: 23.0.0 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: traefik
         namespace: flux-system
       interval: 15m
   values:
-    apiVersion: traefik.containo.us/v1alpha1
+    #apiVersion: traefik.containo.us/v1alpha1
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
