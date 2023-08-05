@@ -38,10 +38,10 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api@internal
-                kind: TraefikService
-                # port:
-                #   number: 80
+                name: traefik
+                #kind: TraefikService
+                port:
+                  number: 80
   tls:
   - hosts:
       - traefik.cloud.icecoldlair.com
