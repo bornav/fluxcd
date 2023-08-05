@@ -68,32 +68,6 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app element
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: &host nginx.cloud.icecoldlair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: element
-                port:
-                  number: 80
-  tls:
-  - hosts:
-      - nginx.cloud.icecoldlair.com
-    secretName: cloud-icecoldlair-com-staging
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: &app element-cloud
   labels:
     # app.kubernetes.io/name: *app
@@ -120,7 +94,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app element-cloud-default
+  name: &app element
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
@@ -135,10 +109,36 @@ spec:
             pathType: Prefix
             backend:
               service:
+                name: element
+                port:
+                  number: 80
+  tls:
+  - hosts:
+      - element.cloud.icecoldlair.com
+    secretName: cloud-icecoldlair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app element-cloud-default
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host element2.cloud.icecoldlair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
                 name: element-default
                 port:
                   number: 80
   tls:
   - hosts:
-      - elemen2.cloud.icecoldlair.com
+      - element2.cloud.icecoldlair.com
     secretName: cloud-icecoldlair-com-prod
