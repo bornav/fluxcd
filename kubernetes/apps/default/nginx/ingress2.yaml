@@ -6,9 +6,9 @@ metadata:
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
-    # kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: traefik
 spec:
-  ingressClassName: nginx-external
+  ingressClassName: traefik
   rules:
     - host: &host nginx.cloud.icecoldlair.com
       http:
