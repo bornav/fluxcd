@@ -10,6 +10,7 @@ ansible_ssh_private_key_file: "~/.ssh/cdn_key_pwless"
 system_timezone: "Europe/Vienna"
 
 # interface which will be used for flannel
+#flannel_iface: "netmaker"
 flannel_iface: "enp0s6"
 #flannel_iface: "enp1s0"
 
@@ -18,6 +19,7 @@ flannel_iface: "enp0s6"
 # apiserver_endpoint: "10.88.1.100"
 apiserver_endpoint: "10.0.0.253"
 #apiserver_endpoint: "192.168.122.243"
+#apiserver_endpoint: "10.101.255.253"
 
 # k3s_token is required  masters can talk together securely
 # this token should be alpha numeric only
@@ -67,6 +69,7 @@ metal_lb_speaker_tag_version: "v0.13.9"
 metal_lb_controller_tag_version: "v0.13.9"
 
 # metallb ip range for load balancer
+#metal_lb_ip_range: "10.101.200.10-10.101.200.250"
 #metal_lb_ip_range: "10.88.1.10-10.88.1.99"
 metal_lb_ip_range: "10.0.0.230-10.0.0.240"
 

@@ -14,12 +14,12 @@
     #   shell: | 
     #     wget -O "{{NM_ROOT_DIR}}"/"{{NM_SCRIPT_NAME}}" https://github.com/gravitl/netmaker/releases/download/"{{NM_RELEASE}}"/nmctl-linux-"{{NM_AARCH}}"
     - name: download nm-quick
-      shell: | 
-        wget -qO "{{SCRIPT_PATH}}" https://raw.githubusercontent.com/bornav/netmaker/master/scripts/"{{NM_SCRIPT_NAME}}"
+      shell: |
+        wget -qO "{{SCRIPT_PATH}}" https://raw.githubusercontent.com/bornav/netmaker/feature_nm-quick_arm64_support/scripts/"{{NM_SCRIPT_NAME}}"
         chmod +x "{{SCRIPT_PATH}}"
     - name: Copy environment file to remote host
       copy:
-        src: "{{playbook_dir}}/../vars/netmaker.env"
+        src: "{{playbook_dir}}/../vars/.decrypted~netmaker.env"
         dest: "{{NM_ROOT_DIR}}/netmaker.env"
       become: yes
     - name: modyfy script
