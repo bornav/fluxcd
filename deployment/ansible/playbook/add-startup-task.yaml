@@ -1,0 +1,80 @@
+---
+- hosts: "cloud"
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+    - name: Gathering facts
+      setup:
+    - name: permissions
+      set_fact:
+        permissions: "u+rwx,g+rx,o+rx"
+    - name: s
+      set_fact:
+        autorun_path: "/etc/systemd/system"
+    - name: Creating a file with content
+      copy:
+        dest: "{{autorun_path}}/tcpforwardhttp.service"
+        content: |
+          [Unit]
+          Description=tcpforwarder service
+          After=network-online.target
+          Wants=network-online.target
+          StartLimitIntervalSec=0
+
+          [Service]
+          Type=simple
+          Restart=always
+          RestartSec=16
+          User=root
+          ExecStart=/usr/bin/tcpforwarder -lPort {{port_http}} -rHost {{reverse_proxy_ip}} -rPort {{port_http}}
+
+          [Install]
+          WantedBy=multi-user.target
+        mode: "{{permissions}}"
+    - name: Creating a file with content
+      copy:
+        dest: "{{autorun_path}}/tcpforwardhttps.service"
+        content: |
+          [Unit]
+          Description=tcpforwarder service
+          After=network-online.target
+          Wants=network-online.target
+          StartLimitIntervalSec=0
+
+          [Service]
+          Type=simple
+          Restart=always
+          RestartSec=16
+          User=root
+          ExecStart=/usr/bin/tcpforwarder -lPort {{port_https}} -rHost {{reverse_proxy_ip}} -rPort {{port_https}}
+
+          [Install]
+          WantedBy=multi-user.target
+        mode: "{{permissions}}"
+    - name: Creating a file with content
+      copy:
+        dest: "{{autorun_path}}/tcpforwardapi.service"
+        content: |
+          [Unit]
+          Description=tcpforwarder service
+          After=network-online.target
+          Wants=network-online.target
+          StartLimitIntervalSec=0
+
+          [Service]
+          Type=simple
+          Restart=always
+          RestartSec=16
+          User=root
+          ExecStart=/usr/bin/tcpforwarder -lPort {{port_api}} -rHost {{reverse_proxy_ip}} -rPort {{port_api}}
+
+          [Install]
+          WantedBy=multi-user.target
+        mode: "{{permissions}}"
+    - name: enable the services
+      shell: | 
+        systemctl enable --now "tcpforwardhttp"
+        systemctl enable --now "tcpforwardhttps"
+        systemctl enable --now "tcpforwardapi"

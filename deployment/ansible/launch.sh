@@ -75,7 +75,12 @@ prepare(){
     decrypt
     ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook ./playbook/prepare-cloud.yaml -i $host_location -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml" -e ansible_user=ubuntu $DBG
 }
-
+forward_traffic(){
+    ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook ./playbook/add-startup-task.yaml -i $host_location -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
+}
+test(){ #this is a test funtion for rapid testing
+    echo ""
+}
 if [ -z "$DEBUG" ];then
     break
 else
@@ -87,6 +92,9 @@ if [ -z "$1" ];then
     break
 elif [[ $1 == NETMAKER ]]; then
     netmaker_install
+    exit
+elif [[ $1 == TEST ]]; then
+    test
     exit
 elif [[ $1 == RESET ]]; then
     reset
@@ -142,8 +150,10 @@ if [[ $CONFIG == true ]]; then
 fi
 
 if [[ $BOOTSTRAP == true ]]; then
-    kube_config
+    kube_configservice
     bootstrap
+    forward_traffic
 fi
+
 
 # clean
