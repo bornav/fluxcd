@@ -45,11 +45,19 @@ spec:
           enabled: true
     ingressRoute:
       dashboard:
-        enabled: false
+        # -- Create an IngressRoute for the dashboard
+        enabled: true
+        annotations: {}
+        labels: {}
+        # -- The router match rule used for the dashboard ingressRoute
+        matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+        entryPoints: ["traefik"]
+        middlewares: []
+        tls: {}
     providers:
       kubernetesCRD:
         enabled: true
-        ingressClass: traefik-external
+        ingressClass: traefik
         allowExternalNameServices: true
       kubernetesIngress:
         enabled: true
