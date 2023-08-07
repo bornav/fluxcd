@@ -26,6 +26,8 @@ metadata:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
     kubernetes.io/ingress.class: traefik
+  # annotations:  # Add this section for annotations
+  #   traefik.ingress.kubernetes.io/router.middlewares: default-prefix@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:

@@ -5,3 +5,5 @@ resources:
   - release.yaml
   - secret.yaml
   - ingress.yaml
+  - basicauth-secret.yaml
+  - middleware.yaml
