@@ -24,7 +24,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/devops-tools/devops-tools/actions-runner-controller/app
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -41,7 +41,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/devops-tools/devops-tools/actions-runner-controller/runners
   prune: true
-  suspend: true
+  suspend: false
   dependsOn:
     - name: devops-tools-github-actions
   sourceRef:
