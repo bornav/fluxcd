@@ -4,4 +4,4 @@ namespace: monitoring
 resources:
   - release.yaml
   - secret.yaml
-  # - ingress.yaml
+  - ingress.yaml
