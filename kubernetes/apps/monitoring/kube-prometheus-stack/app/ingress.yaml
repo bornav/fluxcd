@@ -1,19 +1,45 @@
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: grafana-ingress
+#   annotations:
+#     kubernetes.io/ingress.class: traefik-external
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - match: Host(`grafana.cloud.icecoldlair.com`)
+#       kind: Rule
+#       services:
+#         - name: grafana
+#           port: 80
+#           namespace: monitoring
+#   tls:
+#     secretName: cloud-icecoldlair-com-prod
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: grafana-ingress
-  annotations:
-    kubernetes.io/ingress.class: traefik-external
+  name: &app grafana-ingress
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`grafana.cloud.icecoldlair.com`)
-      kind: Rule
-      services:
-        - name: grafana
-          port: 80
-          namespace: monitoring
+  ingressClassName: traefik
+  rules:
+    - host: &host grafana.cloud.icecoldlair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 80
   tls:
+  - hosts:
+      - grafana.cloud.icecoldlair.com
     secretName: cloud-icecoldlair-com-prod
