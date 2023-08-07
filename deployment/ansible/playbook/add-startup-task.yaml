@@ -7,9 +7,19 @@
       ansible.builtin.wait_for_connection:
     - name: Gathering facts
       setup:
-    - name: permissions
+    - name: set permission variable
       set_fact:
         permissions: "u+rwx,g+rx,o+rx"
+    - name: download tcpforwarder
+      shell: |
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "x86_64" ]; then
+          ARCH=amd64
+        elif [ "$ARCH" = "aarch64" ]; then
+          ARCH=arm64
+        fi
+        wget -qO "/usr/bin/tcpforwarder" https://github.com/bornav/tcpforwarder/releases/download/v0.0.4/tcpforwarder-$ARCH
+        chmod +x "/usr/bin/tcpforwarder"
     - name: s
       set_fact:
         autorun_path: "/etc/systemd/system"

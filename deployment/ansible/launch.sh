@@ -79,6 +79,7 @@ forward_traffic(){
     ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook ./playbook/add-startup-task.yaml -i $host_location -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
 }
 test(){ #this is a test funtion for rapid testing
+    ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook ./playbook/add-startup-task.yaml -i $host_location -e "@./vars/vars.yaml" -e "@./vars/.decrypted~vars-protected.yaml"
     echo ""
 }
 if [ -z "$DEBUG" ];then
