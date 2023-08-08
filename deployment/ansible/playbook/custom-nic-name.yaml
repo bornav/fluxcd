@@ -1,0 +1,32 @@
+#untested but should be working
+---
+- hosts: "cloud"
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+    - name: Gathering facts
+      setup:
+    - name: set permission variable
+      set_fact:
+        permissions: "u+rw,g+r,o+r"
+    - name: set fact
+      set_fact:
+        nic_mac_address: "50:eb:f6:78:32:56"
+    - name: set fact
+      set_fact:
+        nic_name: "enp80s0"
+    - name: set fact
+      set_fact:
+        rule_name: "70-persistant-net.rules"
+    - name: Creating a file with content
+      copy:
+        dest: "/etc/udev/rules.d/{{rule_name}}"
+        content: |
+          SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="{{nic_mac_address:}}", NAME="{{nic_name}}"
+        mode: "{{permissions}}"
+    - name: restart services
+      shell: | 
+        udevadm control --reload-rules
+        systemctl restart networking
