@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 23.2.0 #chart version not app
+      version: 24.0.0 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: traefik
