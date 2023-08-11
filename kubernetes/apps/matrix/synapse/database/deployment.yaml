@@ -41,7 +41,7 @@ spec:
                 secretKeyRef:
                   name: synapse-database-secrets
                   key: POSTGRES_PASSWORD
-          image: postgres:14.8-alpine
+          image: postgres:14.9-alpine
           name: databases
           ports:
             - containerPort: 5432
