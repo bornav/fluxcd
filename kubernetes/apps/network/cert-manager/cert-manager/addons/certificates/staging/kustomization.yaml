@@ -4,3 +4,6 @@ resources:
   - icecoldlair-com.yaml
   - local-icecoldlair-com.yaml
   - cloud-icecoldlair-com.yaml
+  - icylair-com.yaml
+  - local-icylair-com.yaml
+  - cloud-icylair-com.yaml

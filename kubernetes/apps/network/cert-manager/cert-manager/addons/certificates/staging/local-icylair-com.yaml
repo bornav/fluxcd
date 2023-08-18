@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: local.icylair.com-staging
+spec:
+  secretName: local-icylair-com-staging
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: '*.local.icylair.com'
+  dnsNames:
+    - 'local.icylair.com'
+    - '*.local.icylair.com'
