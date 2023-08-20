@@ -46,6 +46,32 @@ spec:
   - hosts:
       - dashboard.cloud.icecoldlair.com
     secretName: cloud-icecoldlair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app dashboard-homepage-cloud
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host dashboard.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-homepage
+                port:
+                  number: 3000
+  tls:
+  - hosts:
+      - dashboard.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
 # ---
 # apiVersion: v1
 # kind: Service
