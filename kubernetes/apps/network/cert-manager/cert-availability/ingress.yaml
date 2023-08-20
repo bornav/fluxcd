@@ -22,58 +22,38 @@ spec:
                   number: 80
   tls:
   - hosts:
+      - nginx.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
+  - hosts:
+      - nginx.cloud.icylair.com
+    secretName: cloud-icylair-com-staging
+  - hosts:
+      - nginx.cloud.icylair.com
+    secretName: local-icylair-com-prod
+  - hosts:
+      - nginx.cloud.icylair.com
+    secretName: local-icylair-com-staging
+  - hosts:
+      - nginx.cloud.icylair.com
+    secretName: icylair-com-prod
+  - hosts:
+      - nginx.cloud.icylair.com
+    secretName: icylair-com-staging
+  - hosts:
       - nginx.cloud.icecoldlair.com
-    secretName: cloud-icecoldlair-com-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app nginx-local
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: &host nginx.local.icecoldlair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: nginx
-                port:
-                  number: 80
-  tls:
+    secretName: cloud-icylair-com-prod
   - hosts:
-      - nginx.local.icecoldlair.com
-    secretName: local-icecoldlair-com-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app nginx-default
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: &host nginx.icecoldlair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: nginx
-                port:
-                  number: 80
-  tls:
+      - nginx.cloud.icecoldlair.com
+    secretName: cloud-icylair-com-staging
   - hosts:
-      - nginx.icecoldlair.com
-    secretName: icecoldlair-com-prod
----
+      - nginx.cloud.icecoldlair.com
+    secretName: local-icylair-com-prod
+  - hosts:
+      - nginx.cloud.icecoldlair.com
+    secretName: local-icylair-com-staging
+  - hosts:
+      - nginx.cloud.icecoldlair.com
+    secretName: icylair-com-prod
+  - hosts:
+      - nginx.cloud.icecoldlair.com
+    secretName: icylair-com-staging
