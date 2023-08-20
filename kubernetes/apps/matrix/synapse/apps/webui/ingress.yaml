@@ -120,7 +120,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app element-cloud-default
+  name: &app element-cloud-default-new
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
@@ -142,3 +142,81 @@ spec:
   - hosts:
       - element2.cloud.icecoldlair.com
     secretName: cloud-icecoldlair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app element-cloud-new
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host element.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: element
+                port:
+                  number: 80
+  tls:
+  - hosts:
+      - element.icylair.com
+    secretName: icylair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app element-new
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host element.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: element
+                port:
+                  number: 80
+  tls:
+  - hosts:
+      - element.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app element-cloud-default-new
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host element2.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: element-default
+                port:
+                  number: 80
+  tls:
+  - hosts:
+      - element2.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
