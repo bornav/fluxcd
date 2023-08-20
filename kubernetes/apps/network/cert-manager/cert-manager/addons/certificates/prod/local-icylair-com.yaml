@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: local.icylair.com-prod
+spec:
+  secretName: local-icylair-com-prod
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: '*.local.icylair.com'
+  dnsNames:
+    - 'local.icylair.com'
+    - '*.local.icylair.com'
