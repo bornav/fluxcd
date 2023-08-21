@@ -5,7 +5,7 @@ metadata:
   name: reflector
   namespace: kube-system
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: reflector
@@ -25,7 +25,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
+  # values:
     # configuration:
     #   logging:
     #     minimumLevel: Debug
