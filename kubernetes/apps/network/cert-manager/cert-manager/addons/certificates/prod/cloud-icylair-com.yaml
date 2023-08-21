@@ -14,7 +14,7 @@ spec:
     - '*.cloud.icylair.com'
   secretTemplate:
     annotations:
-      reflector.v1.k8s.emberstack.com/secret-reflection-allowed-namespaces: "nginx"
-      reflector.v1.k8s.emberstack.com/secret-reflection-allowed: "true"
-      reflector.v1.k8s.emberstack.com/secret-reflection-auto-enabled: "true"
-      reflector.v1.k8s.emberstack.com/secret-reflection-auto-namespaces: "nginx"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "nginx,traefik,matrix"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "nginx,traefik,matrix"
