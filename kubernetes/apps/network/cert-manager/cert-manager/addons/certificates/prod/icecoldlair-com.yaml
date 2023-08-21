@@ -12,3 +12,9 @@ spec:
   dnsNames:
     - 'icecoldlair.com'
     - '*.icecoldlair.com'
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "nginx,traefik,matrix"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "nginx,traefik,matrix"

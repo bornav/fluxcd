@@ -1,0 +1,6 @@
+- op: replace #action 
+  path: /spec/secretTemplate/annotations/reflector.v1.k8s.emberstack.com~1reflection-allowed-namespaces # / is ~1
+  value: "matrix,traefik,monitoring,nginx,longhorn-systems,dashboard,default,devops-tools"
+- op: replace #action 
+  path: /spec/secretTemplate/annotations/reflector.v1.k8s.emberstack.com~1reflection-auto-namespaces # / is ~1 reflector.v1.k8s.emberstack.com/reflection-auto-namespaces
+  value: "matrix"
