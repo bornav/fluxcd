@@ -5,6 +5,7 @@ resources:
   #- icecoldlair-com.yaml
   #- local-icecoldlair-com.yaml
   - cloud-icecoldlair-com.yaml
+  - icecoldlair-com.yaml
   - cloud-icylair-com.yaml
   - icylair-com.yaml
 patches:
