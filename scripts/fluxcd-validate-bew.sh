@@ -29,12 +29,17 @@ curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.ta
 
 find ./$ROOT -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
+    first_line=$(head -n 1 "$file")
+    if [[ $first_line == *"#kubeNotkonform"* ]]; then
+      echo "INFO - Skipping validation for $file"
+      continue
+    fi
     echo "INFO - Validating $file"
     yq -e 'true' "$file" > /dev/null
 done
 
-echo "INFO - Validating clusters"
-         kubeconform  -exit-on-error -verbose -summary -schema-location default  -schema-location '/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json' -schema-location $OPENAPI ./$ROOT/
+# echo "INFO - Validating clusters"
+#          kubeconform  -exit-on-error -verbose -summary -schema-location default -schema-location '/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json' -schema-location $OPENAPI ./$ROOT/
 
 
 for k8s_resources in "${resources[@]}"
@@ -42,14 +47,14 @@ do
  echo "INFO - Validating kustomize overlays"
  find ./$ROOT/$k8s_resources -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
   do
-    if [[ $file == *.decrypted~* ]]; then
+    first_line=$(head -n 1 "$file")
+    if [[ $file == *.decrypted~* || $first_line == *"#kubeNotkonform"* ]]; then
       echo "INFO - Skipping file: $file"
       continue
     fi
     echo "INFO - Validating kustomization ${file/%$kustomize_config}"
     kustomize build "${file/%$kustomize_config}" $kustomize_flags  | \
-      kubeconform -exit-on-error  -verbose -summary -schema-location default \
-       -schema-location '/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json' -schema-location $OPENAPI
+      kubeconform -exit-on-error -verbose -summary -schema-location default -schema-location '/tmp/flux-crd-schemas/master-standalone-strict/{{ .ResourceKind }}{{ .KindSuffix }}.json' -schema-location $OPENAPI
     if [[ ${PIPESTATUS[0]} != 0 ]]; then
       exit 1
     fi

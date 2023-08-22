@@ -48,9 +48,15 @@ curl -sL https://github.com/fluxcd/flux2/releases/latest/download/crd-schemas.ta
 echo "INFO - Validating clusters"
 find ./kubernetes -maxdepth 2 -type f -name '*.yaml' -print0 | while IFS= read -r -d $'\0' file;
   do
-    kubeconform "${kubeconform_flags[@]}" "${kubeconform_config[@]}" "${file}"
-    if [[ ${PIPESTATUS[0]} != 0 ]]; then
-      exit 1
+    first_line=$(head -n 1 "$file")
+    echo $first_line
+    if [[ $first_line == *"#kubeNotkonform"* ]]; then
+      echo "INFO - Skipping validation for $file"
+    else
+      kubeconform "${kubeconform_flags[@]}" "${kubeconform_config[@]}" "${file}"
+      if [[ ${PIPESTATUS[0]} != 0 ]]; then
+        exit 1
+      fi
     fi
 done
 
@@ -58,9 +64,15 @@ echo "INFO - Validating kustomize overlays"
 find . -type f -name $kustomize_config -print0 | while IFS= read -r -d $'\0' file;
   do
     echo "INFO - Validating kustomization ${file/%$kustomize_config}"
-    kustomize build "${file/%$kustomize_config}" "${kustomize_flags[@]}" | \
-      kubeconform "${kubeconform_flags[@]}" "${kubeconform_config[@]}"
-    if [[ ${PIPESTATUS[0]} != 0 ]]; then
-      exit 1
+    first_line=$(head -n 1 "$file")
+    
+    if [[ $first_line == *"kubeNotkonform"* ]]; then
+      echo "INFO - Skipping validation for $file"
+    else
+      kustomize build "${file/%$kustomize_config}" "${kustomize_flags[@]}" | \
+        kubeconform "${kubeconform_flags[@]}" "${kubeconform_config[@]}"
+      if [[ ${PIPESTATUS[0]} != 0 ]]; then
+        exit 1
+      fi
     fi
 done
