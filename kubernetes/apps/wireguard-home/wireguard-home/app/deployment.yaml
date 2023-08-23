@@ -123,7 +123,7 @@ spec:
 #   entryPoints:
 #     - websecure
 #   routes:
-#     - match: Host(`qbit.cloud.icecoldlair.com`)
+#     - match: Host(`qbit.cloud.icylair.com`)
 #       kind: Rule
 #       services:
 #         - name: wireguard
@@ -131,4 +131,4 @@ spec:
 #       # middlewares:
 #       #   - name: default-headers
 #   tls:
-#     secretName: cloud-icecoldlair-com-prod
+#     secretName: cloud-icylair-com-prod

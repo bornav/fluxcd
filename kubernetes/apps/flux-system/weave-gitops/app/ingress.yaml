@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`weave-gitops.cloud.icecoldlair.com`)
+    - match: Host(`weave-gitops.cloud.icylair.com`)
       kind: Rule
       services:
         - name: weave-gitops
@@ -19,4 +19,4 @@ spec:
       #  - name: dashboard-basicauth
       #    namespace: flux-system
   tls:
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icylair-com-prod

@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jenkins.cloud.icecoldlair.com`)
+    - match: Host(`jenkins.cloud.icylair.com`)
       kind: Rule
       services:
         - name: jenkins-service
@@ -19,4 +19,4 @@ spec:
       #  - name: dashboard-basicauth
       #    namespace: devops-tools
   tls:
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icylair-com-prod

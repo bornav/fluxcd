@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host nginx.cloud.icecoldlair.com
+    - host: &host nginx.cloud.icylair.com
       http:
         paths:
           - path: /
@@ -40,20 +40,20 @@ spec:
       - nginx.cloud.icylair.com
     secretName: icylair-com-staging
   - hosts:
-      - nginx.cloud.icecoldlair.com
+      - nginx.cloud.icylair.com
     secretName: cloud-icylair-com-prod
   - hosts:
-      - nginx.cloud.icecoldlair.com
+      - nginx.cloud.icylair.com
     secretName: cloud-icylair-com-staging
   - hosts:
-      - nginx.cloud.icecoldlair.com
+      - nginx.cloud.icylair.com
     secretName: local-icylair-com-prod
   - hosts:
-      - nginx.cloud.icecoldlair.com
+      - nginx.cloud.icylair.com
     secretName: local-icylair-com-staging
   - hosts:
-      - nginx.cloud.icecoldlair.com
+      - nginx.cloud.icylair.com
     secretName: icylair-com-prod
   - hosts:
-      - nginx.cloud.icecoldlair.com
+      - nginx.cloud.icylair.com
     secretName: icylair-com-staging

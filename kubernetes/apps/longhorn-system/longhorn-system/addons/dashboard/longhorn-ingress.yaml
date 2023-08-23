@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`longhorn.cloud.icecoldlair.com`)
+    - match: Host(`longhorn.cloud.icylair.com`)
       kind: Rule
       services:
         - name: longhorn-frontend
@@ -19,4 +19,4 @@ spec:
         - name: longhorn-dashboard-basicauth
           namespace: longhorn-system
   tls:
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icylair-com-prod

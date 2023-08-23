@@ -43,10 +43,10 @@ spec:
       enabled: true
       className: traefik
       hosts:
-        - host: weave-gitops.cloud.icecoldlair.com
+        - host: weave-gitops.cloud.icylair.com
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - weave-gitops.cloud.icecoldlair.com
+            - weave-gitops.cloud.icylair.com

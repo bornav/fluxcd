@@ -9,12 +9,12 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`www.nginx.cloud.icecoldlair.com`)
+    - match: Host(`www.nginx.cloud.icylair.com`)
       kind: Rule
       services:
         - name: nginx
           port: 80
-    - match: Host(`nginx.cloud.icecoldlair.com`)
+    - match: Host(`nginx.cloud.icylair.com`)
       kind: Rule
       services:
         - name: nginx
@@ -23,7 +23,7 @@ spec:
         - name: default-headers
           namespace: default
   tls:
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icylair-com-prod
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -35,12 +35,12 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`www.nginx.local.icecoldlair.com`)
+    - match: Host(`www.nginx.local.icylair.com`)
       kind: Rule
       services:
         - name: nginx
           port: 80
-    - match: Host(`nginx.local.icecoldlair.com`)
+    - match: Host(`nginx.local.icylair.com`)
       kind: Rule
       services:
         - name: nginx
@@ -61,12 +61,12 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`www.nginx.icecoldlair.com`)
+    - match: Host(`www.nginx.icylair.com`)
       kind: Rule
       services:
         - name: nginx
           port: 80
-    - match: Host(`nginx.icecoldlair.com`)
+    - match: Host(`nginx.icylair.com`)
       kind: Rule
       services:
         - name: nginx
@@ -75,4 +75,4 @@ spec:
         - name: default-headers
           namespace: default
   tls:
-    secretName: icecoldlair-com-prod
+    secretName: icylair-com-prod

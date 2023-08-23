@@ -94,7 +94,7 @@ controller:
       #  https: https
   # service:
   #   annotations:
-      # external-dns.alpha.kubernetes.io/hostname: external.cloud.icecoldlair.com
+      # external-dns.alpha.kubernetes.io/hostname: external.cloud.icylair.com
       # io.cilium/lb-ipam-ips: 192.168.42.206
     # externalTrafficPolicy: Cluster
   ingressClass: nginx-external
@@ -131,7 +131,7 @@ controller:
   #     namespaceSelector:
   #       any: true
   # extraArgs:
-  #   default-ssl-certificate: nginx/cloud.icecoldlair.com-staging
+  #   default-ssl-certificate: nginx/cloud.icylair.com-staging
   # topologySpreadConstraints:
   #   - maxSkew: 1
   #     topologyKey: kubernetes.io/hostname

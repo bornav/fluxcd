@@ -8,7 +8,7 @@
 #   entryPoints:
 #     - websecure
 #   routes:
-#     - match: Host(`traefik.cloud.icecoldlair.com`)
+#     - match: Host(`traefik.cloud.icylair.com`)
 #       kind: Rule
 #       middlewares:
 #         - name: traefik-dashboard-basicauth
@@ -31,7 +31,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host traefik.cloud.icecoldlair.com
+    - host: &host traefik.cloud.icylair.com
       http:
         paths:
           - path: /
@@ -44,8 +44,8 @@ spec:
                   number: 80
   tls:
   - hosts:
-      - traefik.cloud.icecoldlair.com
-    secretName: cloud-icecoldlair-com-prod
+      - traefik.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
 ---
 # ---
 # apiVersion: traefik.io/v1alpha1

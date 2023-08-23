@@ -9,14 +9,14 @@
 #   entryPoints:
 #     - websecure
 #   routes:
-#     - match: Host(`grafana.cloud.icecoldlair.com`)
+#     - match: Host(`grafana.cloud.icylair.com`)
 #       kind: Rule
 #       services:
 #         - name: grafana
 #           port: 80
 #           namespace: monitoring
 #   tls:
-#     secretName: cloud-icecoldlair-com-prod
+#     secretName: cloud-icylair-com-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -31,7 +31,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host grafana.cloud.icecoldlair.com
+    - host: &host grafana.cloud.icylair.com
       http:
         paths:
           - path: /
@@ -43,5 +43,5 @@ spec:
                   number: 80
   tls:
   - hosts:
-      - grafana.cloud.icecoldlair.com
-    secretName: cloud-icecoldlair-com-prod
+      - grafana.cloud.icylair.com
+    secretName: cloud-icylair-com-prod

@@ -9,14 +9,14 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`navidrome.cloud.icecoldlair.com`)
+    - match: Host(`navidrome.cloud.icylair.com`)
       kind: Rule
       services:
         - name: navidrome-service
           port: 4533
           namespace: navidrome
   tls:
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icylair-com-prod
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -28,11 +28,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`navidrome.icecoldlair.com`)
+    - match: Host(`navidrome.icylair.com`)
       kind: Rule
       services:
         - name: navidrome-service
           port: 4533
           namespace: navidrome
   tls:
-    secretName: icecoldlair-com-prod
+    secretName: icylair-com-prod

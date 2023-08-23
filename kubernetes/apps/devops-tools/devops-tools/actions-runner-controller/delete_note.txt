@@ -1,0 +1,1 @@
+to delete this deployment remove finalizers object from pods, and in the same from the runners
