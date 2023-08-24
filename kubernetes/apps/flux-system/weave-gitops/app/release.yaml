@@ -41,7 +41,7 @@ spec:
     #     username: x
     ingress:
       enabled: true
-      className: traefik
+      className: nginx-external
       hosts:
         - host: weave-gitops.cloud.icylair.com
           paths:
