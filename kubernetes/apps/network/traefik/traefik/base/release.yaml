@@ -46,7 +46,7 @@ spec:
     ingressRoute:
       dashboard:
         # -- Create an IngressRoute for the dashboard
-        enabled: false
+        enabled: true
         annotations: {}
         labels: {}
         # -- The router match rule used for the dashboard ingressRoute
