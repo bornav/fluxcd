@@ -9,7 +9,7 @@
 #   entryPoints:
 #     - websecure
 #   routes:
-#     - match: Host(`element.icecoldlair.com`)
+#     - match: Host(`element.icylair.com`)
 #       kind: Rule
 #       services:
 #         - name: element
@@ -19,7 +19,7 @@
 #       #  - name: default-headers
 #       #    namespace: default
 #   tls:
-#     secretName: icecoldlair-com-prod
+#     secretName: icylair-com-prod
 # ---
 # apiVersion: traefik.containo.us/v1alpha1
 # kind: IngressRoute
@@ -31,7 +31,7 @@
 #   entryPoints:
 #     - websecure
 #   routes:
-#     - match: Host(`element.cloud.icecoldlair.com`)
+#     - match: Host(`element.cloud.icylair.com`)
 #       kind: Rule
 #       services:
 #         - name: element
@@ -41,7 +41,7 @@
 #       #  - name: default-headers
 #       #    namespace: default
 #   tls:
-#     secretName: cloud-icecoldlair-com-prod
+#     secretName: cloud-icylair-com-prod
 # ---
 # apiVersion: traefik.containo.us/v1alpha1
 # kind: IngressRoute
@@ -53,7 +53,7 @@
 #   entryPoints:
 #     - websecure
 #   routes:
-#     - match: Host(`element2.cloud.icecoldlair.com`)
+#     - match: Host(`element2.cloud.icylair.com`)
 #       kind: Rule
 #       services:
 #         - name: element-default
@@ -63,7 +63,7 @@
 #       #  - name: default-headers
 #       #    namespace: default
 #   tls:
-#     secretName: cloud-icecoldlair-com-prod
+#     secretName: cloud-icylair-com-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -76,7 +76,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host element.icecoldlair.com
+    - host: &host element.icylair.com
       http:
         paths:
           - path: /
@@ -88,8 +88,8 @@ spec:
                   number: 80
   tls:
   - hosts:
-      - element.icecoldlair.com
-    secretName: icecoldlair-com-prod
+      - element.icylair.com
+    secretName: icylair-com-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -102,7 +102,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host element.cloud.icecoldlair.com
+    - host: &host element.cloud.icylair.com
       http:
         paths:
           - path: /
@@ -114,8 +114,8 @@ spec:
                   number: 80
   tls:
   - hosts:
-      - element.cloud.icecoldlair.com
-    secretName: cloud-icecoldlair-com-prod
+      - element.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -128,7 +128,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host element2.cloud.icecoldlair.com
+    - host: &host element2.cloud.icylair.com
       http:
         paths:
           - path: /
@@ -140,8 +140,8 @@ spec:
                   number: 80
   tls:
   - hosts:
-      - element2.cloud.icecoldlair.com
-    secretName: cloud-icecoldlair-com-prod
+      - element2.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

@@ -19,13 +19,13 @@ metadata:
   name: mautrix-bridge-facebook-ingress
   annotations:
     kubernetes.io/ingress.class: traefik-external
-    # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icecoldlair.com
+    # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icylair.com
     # traefik.ingress.kubernetes.io/proxy-body-size: 500m
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`matrix.cloud.icecoldlair.com/public/facebook/`)
+    - match: Host(`matrix.cloud.icylair.com/public/facebook/`)
       kind: Rule
       services:
         - name: mautrix-bridge-facebook
@@ -35,4 +35,4 @@ spec:
       #  - name: default-headers
       #    namespace: default
   tls:
-    secretName: cloud-icecoldlair-com-prod
+    secretName: cloud-icylair-com-prod

@@ -98,7 +98,7 @@ spec:
             - name: SYNAPSE_CONFIG_PATH
               value: '/data/homeserver.yaml'
             - name: SYNAPSE_SERVER_NAME
-              value: 'matrix.cloud.icecoldlair.com'
+              value: 'matrix.cloud.icylair.com'
             - name: SYNAPSE_REPORT_STATS
               value: 'no'
           image: matrixdotorg/synapse:v1.90.0
@@ -152,4 +152,4 @@ spec:
         - name: matrix-bridges
           persistentVolumeClaim:
             claimName: matrix-bridges-data
-#to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icecoldlair.com/_matrix/client/v3/login"
+#to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icylair.com/_matrix/client/v3/login"
