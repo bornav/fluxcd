@@ -3,5 +3,5 @@ kind: Kustomization
 namespace: traefik
 resources:
   #- ingress.yaml
-  - middleware.yaml
+  #- middleware.yaml
   - secret-dashboard.yaml
