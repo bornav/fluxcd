@@ -7,12 +7,11 @@ spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-default
+    app.kubernetes.io/instance: traefik-traefik
   ports:
-  - port: 8080
-    name: traefik
-    targetPort: 9000
-    protocol: TCP
+    - name: http
+      targetPort: 9000
+      port: 9000
 ---
 apiVersion: v1
 kind: Secret
@@ -37,8 +36,10 @@ metadata:
   name: traefik-dashboard
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: default-traefik-dashboard-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-dashboard-auth@kubernetescrd
+    # kubernetes.io/ingress.class: traefik
 spec:
+  ingressClassName: traefik
   rules:
   - host: traefik.cloud.icylair.com
     http:
@@ -49,4 +50,4 @@ spec:
           service:
             name: traefik-api
             port:
-              name: traefik
+              number: 9000

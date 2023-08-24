@@ -25,7 +25,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/network/traefik/traefik/addons
-  suspend: false
+  suspend: true
   dependsOn:
     - name: traefik-base
   prune: true

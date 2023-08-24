@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
 - cert-manager
 - namespace.yaml
-- nginx-ingress
+- nginx
 - reflector
 - traefik
