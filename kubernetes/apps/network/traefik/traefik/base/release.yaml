@@ -45,15 +45,24 @@ spec:
           enabled: true
     ingressRoute:
       dashboard:
-        # -- Create an IngressRoute for the dashboard
         enabled: true
-        annotations: {}
-        labels: {}
-        # -- The router match rule used for the dashboard ingressRoute
-        matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
-        entryPoints: ["traefik"]
-        middlewares: []
-        tls: {}
+        # Custom match rule with host domain
+        matchRule: Host(`traefik.cloud.icylair.com`)
+        entryPoints: ["websecure"]
+        # Add custom middlewares : authentication and redirection
+        middlewares:
+          - name: traefik-dashboard-auth
+    # ingressRoute:
+    #   dashboard:
+    #     # -- Create an IngressRoute for the dashboard
+    #     enabled: false
+    #     annotations: {}
+    #     labels: {}
+    #     # -- The router match rule used for the dashboard ingressRoute
+    #     matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+    #     entryPoints: ["traefik"]
+    #     middlewares: []
+    #     tls: {}
     providers:
       kubernetesCRD:
         enabled: true
