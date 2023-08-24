@@ -18,7 +18,7 @@ spec:
 # metadata:
 #   name: mautrix-bridge-facebook-ingress
 #   annotations:
-#     kubernetes.io/ingress.class: traefik-external
+#     kubernetes.io/ingress.class: nginx-external
 #     # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icylair.com
 #     # traefik.ingress.kubernetes.io/proxy-body-size: 500m
 # spec:

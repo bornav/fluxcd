@@ -4,7 +4,7 @@ kind: IngressRoute
 metadata:
   name: navidrome-cloud
   annotations:
-    kubernetes.io/ingress.class: traefik-external
+    kubernetes.io/ingress.class: nginx-external
 spec:
   entryPoints:
     - websecure
@@ -23,7 +23,7 @@ kind: IngressRoute
 metadata:
   name: navidrome
   annotations:
-    kubernetes.io/ingress.class: traefik-external
+    kubernetes.io/ingress.class: nginx-external
 spec:
   entryPoints:
     - websecure

@@ -118,7 +118,7 @@ spec:
 # metadata:
 #   name: wireguard
 #   annotations:
-#     kubernetes.io/ingress.class: traefik-external
+#     kubernetes.io/ingress.class: nginx-external
 # spec:
 #   entryPoints:
 #     - websecure

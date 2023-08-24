@@ -4,7 +4,7 @@
 # metadata:
 #   name: dashboard-homepage-cloud
 #   annotations:
-#     kubernetes.io/ingress.class: traefik-external
+#     kubernetes.io/ingress.class: nginx-external
 # spec:
 #   entryPoints:
 #     - websecure
@@ -28,9 +28,11 @@ metadata:
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
+    # kubernetes.io/ingress.class: nginx-external
+    kubernetes.io/ingress.class: nginx-external
 spec:
-  ingressClassName: traefik
+  # ingressClassName: nginx-external
+  ingressClassName: nginx-external
   rules:
     - host: &host dashboard.cloud.icylair.com
       http:
