@@ -5,7 +5,7 @@ metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: cert-manager
@@ -40,6 +40,6 @@ spec:
       requests:
         memory: '1Mi'
         cpu: '1m'
-      limits:
-        memory: '500Mi'
-        cpu: '500m'
+      # limits:
+      #   memory: '500Mi'
+      #   cpu: '500m'
