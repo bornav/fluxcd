@@ -118,6 +118,9 @@ elif [[ $1 == FORWARD ]]; then
 elif [[ $1 == FORWARD_CLEAN ]]; then
     forward_clean
     exit
+elif [[ $1 == FORWARD_TRAFFIC ]]; then
+    forward_traffic
+    exit
 elif [[ $1 == RERE ]]; then
     reset
 elif [[ $CLEAN_VIRT == true ]]; then
@@ -151,7 +154,7 @@ if [[ $CONFIG == true ]]; then
 fi
 
 if [[ $BOOTSTRAP == true ]]; then
-    kube_configservice
+    kube_config
     bootstrap
     forward_traffic
 fi
