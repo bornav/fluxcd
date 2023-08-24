@@ -51,15 +51,7 @@ spec:
         entryPoints: ["websecure"]
         # Add custom middlewares : authentication and redirection
         middlewares:
-          - name: traefik-dashboard-auth
-    extraObjects:
-      - apiVersion: traefik.io/v1alpha1
-        kind: Middleware
-        metadata:
-          name: traefik-dashboard-auth
-        spec:
-          basicAuth:
-            secret: traefik-dashboard-auth
+          - name: traefik-dashboard-auth      
     # ingressRoute:
     #   dashboard:
     #     # -- Create an IngressRoute for the dashboard
