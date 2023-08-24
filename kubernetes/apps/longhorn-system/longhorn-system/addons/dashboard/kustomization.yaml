@@ -5,4 +5,4 @@ namespace: longhorn-system
 resources:
   - longhorn-ingress.yaml
   - longhorn-middleware.yaml
-  #- longhorn-secret.yaml
+  - longhorn-secret.yaml
