@@ -9,7 +9,7 @@ metadata:
     kubernetes.io/ingress.class: nginx-external
   annotations:
     nginx.ingress.kubernetes.io/auth-type: basic
-    nginx.ingress.kubernetes.io/auth-secret: longhorn-dashboard-auth
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth 
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
 spec:
   ingressClassName: nginx-external
@@ -28,3 +28,4 @@ spec:
   - hosts:
       - longhorn.cloud.icylair.com
     secretName: cloud-icylair-com-prod
+    
