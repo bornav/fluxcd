@@ -7,7 +7,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/matrix/synapse/database
   prune: true
-  suspend: true
+  suspend: false
   # targetNamespace: matrix-dev
   sourceRef:
     kind: GitRepository
@@ -32,7 +32,7 @@ spec:
     - name: synapse-databases
   # targetNamespace: matrix-dev
   path: ./kubernetes/apps/matrix/synapse/apps
-  suspend: true
+  suspend: false
   prune: true
   sourceRef:
     kind: GitRepository
