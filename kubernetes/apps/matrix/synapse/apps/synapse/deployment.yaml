@@ -101,7 +101,7 @@ spec:
               value: 'matrix.cloud.icylair.com'
             - name: SYNAPSE_REPORT_STATS
               value: 'no'
-          image: matrixdotorg/synapse:v1.92.1
+          image: matrixdotorg/synapse:v1.92.2
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
