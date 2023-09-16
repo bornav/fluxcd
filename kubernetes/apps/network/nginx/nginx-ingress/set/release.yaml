@@ -36,14 +36,14 @@ spec:
         # externalTrafficPolicy: Cluster
       ingressClassResource:
         name: nginx-external
-      #   default: false
-      #   controllerValue: k8s.io/external
-      # admissionWebhooks:
-      #   objectSelector:
-      #     matchExpressions:
-      #       - key: ingress-class
-      #         operator: In
-      #         values: ["external"]
+        default: false
+        controllerValue: k8s.io/nginx-external
+      admissionWebhooks:
+        objectSelector:
+          matchExpressions:
+            - key: ingress-class
+              operator: In
+              values: ["nginx-external"]
       # config:
       #   client-body-buffer-size: 10G
       #   client-max-buffer-size: 10G
