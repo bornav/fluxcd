@@ -6,3 +6,4 @@ resources:
 - nginx
 - reflector
 - traefik
+- home-local-wireguard-connection
