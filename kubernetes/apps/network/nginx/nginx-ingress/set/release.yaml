@@ -26,7 +26,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    fullnameOverride: nginx-external
+    fullnameOverride: nginx
     controller:
       replicaCount: 1
       # service:
@@ -35,7 +35,7 @@ spec:
           # io.cilium/lb-ipam-ips: 192.168.42.206
         # externalTrafficPolicy: Cluster
       ingressClassResource:
-        name: nginx-external
+        name: nginx
       #   default: false
       #   controllerValue: k8s.io/external
       # admissionWebhooks:
