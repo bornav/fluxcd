@@ -7,6 +7,12 @@ spec:
   selector:
     name: wireguard
   ports:
+    - name: smb-old
+      port: 139
+      targetPort: 139
+    - name: smb
+      port: 445
+      targetPort: 445
     - name: http
       port: 5800
       targetPort: 5800
@@ -16,3 +22,9 @@ spec:
     - name: portmapper
       port: 111
       targetPort: 111
+    - name: syncthing-api
+      port: 8384
+      targetPort: 8384
+    - name: syncthing-sync
+      port: 22000
+      targetPort: 22000
