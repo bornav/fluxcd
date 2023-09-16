@@ -35,15 +35,9 @@ spec:
           # io.cilium/lb-ipam-ips: 192.168.42.206
         # externalTrafficPolicy: Cluster
       ingressClassResource:
-        name: external
-        default: false
-        controllerValue: k8s.io/external
-      admissionWebhooks:
-        objectSelector:
-          matchExpressions:
-            - key: ingress-class
-              operator: In
-              values: ["external"]
+        name: nginx-external
+      #   default: false
+      #   controllerValue: k8s.io/external
       # admissionWebhooks:
       #   objectSelector:
       #     matchExpressions:
@@ -51,8 +45,8 @@ spec:
       #         operator: In
       #         values: ["external"]
       # config:
-      #   client-body-buffer-size: 8000m
-      #   client-max-buffer-size: 8000m
+      #   client-body-buffer-size: 10G
+      #   client-max-buffer-size: 10G
       # #   client-body-timeout: 120
       # #   client-header-timeout: 120
       # #   enable-brotli: "true"
@@ -60,7 +54,7 @@ spec:
       # #   hsts-max-age: 31449600
       # #   keep-alive-requests: 10000
       # #   keep-alive: 120
-      #   proxy-body-size: 8000m
+      #   proxy-body-size: 10G
       #   proxy-buffer-size: 16k
       #   ssl-protocols: TLSv1.3 TLSv1.2
       #   use-geoip2: true
@@ -86,7 +80,7 @@ spec:
           cpu: 100m
           memory: 250Mi
     # defaultBackend:
-    #   enabled: false
+    #   enabled:  false
   # valuesFrom:
   #   - targetPath: controller.maxmindLicenseKey
   #     kind: Secret
