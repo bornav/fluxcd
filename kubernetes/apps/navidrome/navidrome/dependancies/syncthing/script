@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# OOP:
+# local device id
+# remote device id
+
+# add to local remote device
+# att to remote local device
+
+# share 
+export API_PORT="8384"
+export API_KEY=$(syncthing cli --home /config config gui apikey get)
+export REMOTE="https://wireguard.network.svc.cluster.local:$API_PORT/rest"
+export LOCAL="https://localhost:$API_PORT/rest"
+export LOCAL_ENDPOINT_GET="curl -k -X GET -H 'X-API-Key: $API_KEY' $LOCAL"
+export REMOTE_ENDPOINT_GET="curl -k -X GET -H 'X-API-Key: $home_local_device_api' $REMOTE"
+export LOCAL_ENDPOINT_POST="curl -k -X POST -H 'X-API-Key: $API_KEY' $LOCAL"
+export REMOTE_ENDPOINT_POST="curl -k -X POST -H 'X-API-Key: $home_local_device_api' $REMOTE"
+export LOCAL_ENDPOINT_PUT="curl -k -X PUT -H 'X-API-Key: $API_KEY' $LOCAL"
+export REMOTE_ENDPOINT_PUT="curl -k -X PUT -H 'X-API-Key: $home_local_device_api' $REMOTE"
+export LOCAL_API_H="-H 'X-API-Key: $API_KEY'"
+export REMOTE_API_H="-H 'X-API-Key: $home_local_device_api'"
+# echo $LOCAL_ENDPOINT_GET
+# echo $REMOTE_ENDPOINT_GETR
+
+export LOCAL_DEVICE_ID=$(eval $LOCAL_ENDPOINT_GET/config | jq .defaults.folder.devices[0].deviceID)
+export REMOTE_DEVICE_ID=$(eval $REMOTE_ENDPOINT_GET/config | jq .defaults.folder.devices[0].deviceID)
+
+export TARGET_FOLDER=$()
+
+#get folder in question
+#eval $REMOTE_ENDPOINT_GET/config/folders | jq '.[] | select(.label == "navidrome-music")'
+
+#add remote to local device
+eval "curl -k -X GET $REMOTE_API_H  $REMOTE/config/devices/$REMOTE_DEVICE_ID > config.json"
+eval "curl -k -X POST $LOCAL_API_H -H 'Content-Type: application/json' -d @../config.json $LOCAL/config/devices"
+
+
+#add local to remote device
+eval "curl -k -X GET $LOCAL_API_H  $LOCAL/config/devices/$LOCAL_DEVICE_ID > config.json"
+eval "curl -k -X POST $REMOTE_API_H -H 'Content-Type: application/json' -d @../config.json $REMOTE/config/devices"
+
+#add remote folder localy
+eval $REMOTE_ENDPOINT_GET/config/folders | jq '.[] | select(.label == "navidrome-music")' | jq '.path = "/music"' > config.json
+eval "curl -k -X POST $LOCAL_API_H -H 'Content-Type: application/json' -d @../config.json $LOCAL/config/folders"
+
+ eval "$REMOTE_ENDPOINT_GET/cluster/pending/folder"
+
+# curl -k -X GET -H "X-API-Key: $home_local_device_api" https://wireguard.network.svc.cluster.local:8384/rest/config/options
+
+# syncthing cli --home /config config gui apikey get
+
+# export API_KEY=$(syncthing cli --home /config config gui apikey get)
+
