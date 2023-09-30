@@ -57,4 +57,4 @@ spec:
   tls:
   - hosts:
       - navidrome.cloud.icylair.com
-    secretName: icylair-com-prod
+    secretName: cloud-icylair-com-prod
