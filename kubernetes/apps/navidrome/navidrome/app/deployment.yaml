@@ -30,7 +30,7 @@ spec:
       #         'until wget -O /dev/null $ADDRESS:80; do sleep 1; done'
       #       ]
       containers:
-        - image: deluan/navidrome:0.49.3
+        - image: bornav/navidrome-bornav-test-cloud-sync:v0.0
           name: navidrome
           env:
             - name: ND_CONFIGFILE
