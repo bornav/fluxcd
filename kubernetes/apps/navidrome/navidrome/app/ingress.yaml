@@ -44,7 +44,7 @@ metadata:
 spec:
   ingressClassName: nginx-external
   rules:
-    - host: &host navidrome.icylair.com
+    - host: &host navidrome.cloud.icylair.com
       http:
         paths:
           - path: /
