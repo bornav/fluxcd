@@ -52,8 +52,8 @@ spec:
               subPath: navidrome.toml
             - name: navidrome-data-folder
               mountPath: /data
-            - name: navidrome-music-folder
-              mountPath: /music
+            - name: pv-navidrome-music
+              mountPath: /data/music
       volumes:
         - name: navidrome-configuration
           configMap:
@@ -61,39 +61,7 @@ spec:
         - name: navidrome-data-folder
           persistentVolumeClaim:
             claimName: navidrome-data
-        # - name: navidrome-music-folder
-        #   persistentVolumeClaim:
-        #     claimName: nfs-pvc
-        - name: navidrome-music-folder
+        - name: pv-navidrome-music
           persistentVolumeClaim:
-            claimName: pvc-nfs-dynamic
+            claimName: pv-navidrome-music
       restartPolicy: Always
-status: {}
-# ---
-# apiVersion: storage.k8s.io/v1
-# kind: StorageClass
-# metadata:
-#   name: nfs-csi
-# provisioner: nfs.csi.k8s.io
-# parameters:
-#   server: wireguard-svc.navidrome.svc.cluster.local
-#   share: /mnt/Vega/MultiMedia/MusicLibrary/METAL
-#   # csi.storage.k8s.io/provisioner-secret is only needed for providing mountOptions in DeleteVolume
-#   # csi.storage.k8s.io/provisioner-secret-name: "mount-options"
-#   # csi.storage.k8s.io/provisioner-secret-namespace: "default"
-# reclaimPolicy: Delete
-# volumeBindingMode: Immediate
-# mountOptions:
-#   - nfsvers=4.1
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: pvc-nfs-dynamic
-# spec:
-#   accessModes:
-#     - ReadWriteMany
-#   resources:
-#     requests:
-#       storage: 10Gi
-#   storageClassName: nfs-csi
