@@ -6,7 +6,7 @@ metadata:
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
-    # kubernetes.io/ingress.class: nginx-external
+    kubernetes.io/ingress.class: nginx-external
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
@@ -36,7 +36,7 @@ metadata:
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
-    # kubernetes.io/ingress.class: nginx-external
+    kubernetes.io/ingress.class: nginx-external
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
