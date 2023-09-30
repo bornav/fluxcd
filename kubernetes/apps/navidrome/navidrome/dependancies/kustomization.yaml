@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: navidrome
 resources:
   #- data
-  - wireguard
+  - syncthing

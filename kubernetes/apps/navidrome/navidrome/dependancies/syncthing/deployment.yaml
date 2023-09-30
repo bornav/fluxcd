@@ -1,0 +1,103 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing
+  labels:
+    app: syncthing
+spec:
+  selector:
+    matchLabels:
+      name: syncthing
+  template:
+    metadata:
+      labels:
+        name: syncthing
+    spec:
+      initContainers:
+        - name: 'prepare-music'
+          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+          command: ["/bin/sh"]  # Override the entrypoint
+          args: ["-c", "cp /startup.sh /start.sh && chmod +x /start.sh && /start.sh" ]
+          env:
+            - name: 'FLAGS'
+              value: '-a -u -o -g --progress'
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: pv-navidrome-music
+              mountPath: /music
+            - name: startup-script
+              mountPath: /startup.sh
+              subPath: startup.sh
+      containers:
+        - name: 'syncthing'
+          image: 'lscr.io/linuxserver/syncthing:latest'
+          ports:
+            - containerPort: 8384
+          env:
+            - name: 'HOSTNAME'
+              value: 'navidrome-syncthing'
+            - name: 'TZ'
+              value: 'Europe/Vienna'
+            # - name: 'HOME'
+            #   value: '/var/syncthing/'
+            # - name: 'STHOMEDIR'
+            #   value: '/var/syncthing/config'
+            # - name: 'GUID'
+            #   value: '1000'
+            # - name: 'PGID'
+            #   value: '1000'
+          envFrom:
+          - secretRef:
+              name: home-local-syncthing-env
+          volumeMounts:
+            - mountPath: /music
+              name: pv-navidrome-music
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          # securityContext:
+          #   runAsUser: 1000
+          #   runAsGroup: 1000
+            # privileged: true
+            # capabilities:
+              # add:
+                # - NET_ADMIN
+      volumes:
+        - name: wireguard-config
+          emptyDir: {}
+        - name: wireguard-secret
+          secret:
+            secretName: wireguard
+        - name: startup-script
+          secret:
+            secretName: start-script
+        - name: pv-navidrome-music
+          persistentVolumeClaim:
+            claimName: pv-navidrome-music
+      imagePullSecrets:
+        - name: docker-registry
+        
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pv-navidrome-music
+  name: pv-navidrome-music
+  annotations:
+    numberOfReplicas: '1'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 6Gi
+status: {}
+---

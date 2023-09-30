@@ -1,38 +1,30 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: navidrome-cloud
+  name: &app navidrome
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    # kubernetes.io/ingress.class: nginx-external
   annotations:
-    kubernetes.io/ingress.class: nginx-external
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`navidrome.cloud.icylair.com`)
-      kind: Rule
-      services:
-        - name: navidrome-service
-          port: 4533
-          namespace: navidrome
+  ingressClassName: nginx-external
+  rules:
+    - host: &host navidrome.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: navidrome-service
+                port:
+                  number: 4533
   tls:
-    secretName: cloud-icylair-com-prod
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: navidrome
-  annotations:
-    kubernetes.io/ingress.class: nginx-external
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`navidrome.icylair.com`)
-      kind: Rule
-      services:
-        - name: navidrome-service
-          port: 4533
-          namespace: navidrome
-  tls:
+  - hosts:
+      - navidrome.icylair.com
     secretName: icylair-com-prod
