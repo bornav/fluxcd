@@ -65,3 +65,48 @@ spec:
           persistentVolumeClaim:
             claimName: pv-navidrome-music
       restartPolicy: Always
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: longhorn-restore-job
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: longhorn-restore
+#         image: longhorn/longhorn-engine:latest # Replace with the appropriate Longhorn image
+#         command:
+#         - "/bin/sh"
+#         - "-c"
+#         - |
+#           if [ -z "$(longhorn snapshot ls --label=navidrome-data -q)" ]; then
+#             echo "No snapshot with label 'navidrome-data' found. Skipping restore."
+#           else
+#             SNAP=$(longhorn snapshot ls --label=navidrome-data -q)
+#             echo "Restoring from snapshot: $SNAP"
+#             longhorn snapshot restore $SNAP
+#           fi
+#       restartPolicy: Never
+#   backoffLimit: 4 # You can adjust this as needed
+# ---
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: longhorn-backup-cron
+# spec:
+#   schedule: "*/30 * * * *" # Runs every 30 minutes
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#           - name: longhorn-backup
+#             image: longhorn/longhorn-engine:latest # Replace with the appropriate Longhorn image
+#             command:
+#             - "/bin/sh"
+#             - "-c"
+#             - |
+#               echo "Creating backup with label 'navidrome-data'..."
+#               longhorn snapshot create --label=navidrome-data
+#           restartPolicy: Never
