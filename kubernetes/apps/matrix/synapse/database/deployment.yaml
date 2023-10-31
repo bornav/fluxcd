@@ -18,7 +18,9 @@ spec:
         app: matrix-database
     spec:
       containers:
-        - env:
+        - name: databases
+          image: postgres:14.9-alpine
+          env:
             - name: PGDATA
               value: /data/data
             - name: GID
@@ -41,10 +43,28 @@ spec:
                 secretKeyRef:
                   name: synapse-database-secrets
                   key: POSTGRES_PASSWORD
-          image: postgres:14.9-alpine
-          name: databases
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER
           ports:
             - containerPort: 5432
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "$DB_USER"]
+            initialDelaySeconds: 0
+            timeoutSeconds: 2
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "$DB_USER"]
+            initialDelaySeconds: 0
+            timeoutSeconds: 2
           resources:
             requests:
               memory: '1Mi'
