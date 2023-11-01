@@ -53,7 +53,7 @@ spec:
             - name: navidrome-data-folder
               mountPath: /data
             - name: pv-navidrome-music
-              mountPath: /data/music
+              mountPath: /music
       volumes:
         - name: navidrome-configuration
           configMap:

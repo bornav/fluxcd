@@ -54,6 +54,8 @@ spec:
           volumeMounts:
             - mountPath: /music
               name: pv-navidrome-music
+            - mountPath: /data
+              name: navidrome-data-folder
             - mountPath: /syncthing-setup-folder.sh
               name: syncthing-setup-folder
               subPath: syncthing-setup-folder.sh
@@ -87,6 +89,9 @@ spec:
         - name: pv-navidrome-music
           persistentVolumeClaim:
             claimName: pv-navidrome-music
+        - name: navidrome-data-folder
+          persistentVolumeClaim:
+            claimName: navidrome-data
         - name: syncthing-setup-folder
           configMap:
             name: syncthing-setup-folder

@@ -27,6 +27,7 @@ data:
     #add local to remote device
     eval "curl -k -X GET $LOCAL_API_H  $LOCAL/config/devices/$LOCAL_DEVICE_ID > config.json"
     eval "curl -k -X POST $REMOTE_API_H -H 'Content-Type: application/json' -d @../config.json $REMOTE/config/devices"
+
     #add remote folder localy
     eval $REMOTE_ENDPOINT_GET/config/folders | jq '.[] | select(.label == "navidrome-music")' | jq '.path = "/music"' > config.json
     eval "curl -k -X POST $LOCAL_API_H -H 'Content-Type: application/json' -d @../config.json $LOCAL/config/folders"
@@ -44,6 +45,17 @@ data:
     # curl -k -X GET -H "X-API-Key: $home_local_device_api" https://wireguard.network.svc.cluster.local:8384/rest/config/options
     # syncthing cli --home /config config gui apikey get
     # export API_KEY=$(syncthing cli --home /config config gui apikey get)
+
+    eval $REMOTE_ENDPOINT_GET/config/folders | jq '.[] | select(.label == "navidrome-data")' | jq '.path = "/data"' > config.json
+    eval "curl -k -X POST $LOCAL_API_H -H 'Content-Type: application/json' -d @../config.json $LOCAL/config/folders"
+    eval "$REMOTE_ENDPOINT_GET/cluster/pending/folders" # todo mby wait here for pending request to pop out
+
+    #get both shared folders/device/combo id-s
+    eval "curl -k -X GET $REMOTE_API_H -H 'Content-Type: application/json' $REMOTE/config/folders" > config_remote.json
+    eval "curl -k -X GET $LOCAL_API_H -H 'Content-Type: application/json' $LOCAL/config/folders" > config_local.json
+    NEW_DEVICES=$(jq '.[] | select(.label == "navidrome-data").devices' config_local.json)
+    jq --argjson val "$NEW_DEVICES" 'map(select(.label == "navidrome-data").devices = $val) ' config_remote.json | jq '.[] | select(.label == "navidrome-data")' > config.json
+    eval "curl -k -X POST $REMOTE_API_H -H 'Content-Type: application/json' -d @../config.json $REMOTE/config/folders"
 
 kind: ConfigMap
 metadata:
