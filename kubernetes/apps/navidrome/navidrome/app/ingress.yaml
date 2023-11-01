@@ -32,6 +32,36 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  name: &app navidrome
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: nginx-external
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: nginx-external
+  rules:
+    - host: &host music.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: navidrome-service
+                port:
+                  number: 4533
+  tls:
+  - hosts:
+      - music.icylair.com
+    secretName: icylair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
   name: &app navidrome-cloud
   labels:
     # app.kubernetes.io/name: *app
@@ -57,4 +87,34 @@ spec:
   tls:
   - hosts:
       - navidrome.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app navidrome-cloud
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: nginx-external
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: nginx-external
+  rules:
+    - host: &host music.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: navidrome-service
+                port:
+                  number: 4533
+  tls:
+  - hosts:
+      - music.cloud.icylair.com
     secretName: cloud-icylair-com-prod
