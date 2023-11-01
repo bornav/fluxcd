@@ -20,8 +20,6 @@ data:
     export REMOTE_DEVICE_ID=$(eval $REMOTE_ENDPOINT_GET/config | jq .defaults.folder.devices[0].deviceID)
     export TARGET_FOLDER=$()
     #get folder in question
-    #eval $REMOTE_ENDPOINT_GET/config/folders | jq '.[] | select(.label == "navidrome-music")'
-    #add remote to local device
     eval "curl -k -X GET $REMOTE_API_H  $REMOTE/config/devices/$REMOTE_DEVICE_ID > config.json"
     eval "curl -k -X POST $LOCAL_API_H -H 'Content-Type: application/json' -d @../config.json $LOCAL/config/devices"
     #add local to remote device
@@ -39,13 +37,8 @@ data:
     NEW_DEVICES=$(jq '.[] | select(.label == "navidrome-music").devices' config_local.json)
     jq --argjson val "$NEW_DEVICES" 'map(select(.label == "navidrome-music").devices = $val) ' config_remote.json | jq '.[] | select(.label == "navidrome-music")' > config.json
     eval "curl -k -X POST $REMOTE_API_H -H 'Content-Type: application/json' -d @../config.json $REMOTE/config/folders"
-    #jq '.[] | select(.label == "navidrome-music")' config_local.json geting both values
-    #cat config_local.json | jq '.[] | select(.label == "navidrome-music")'  | jq .devices
-    # eval "curl -k -X GET $REMOTE_API_H -H 'Content-Type: application/json' -d @../config.json $REMOTE/config/folders" > config_remote.json
-    # curl -k -X GET -H "X-API-Key: $home_local_device_api" https://wireguard.network.svc.cluster.local:8384/rest/config/options
-    # syncthing cli --home /config config gui apikey get
-    # export API_KEY=$(syncthing cli --home /config config gui apikey get)
 
+    #add second folder to sync
     eval $REMOTE_ENDPOINT_GET/config/folders | jq '.[] | select(.label == "navidrome-data")' | jq '.path = "/data"' > config.json
     eval "curl -k -X POST $LOCAL_API_H -H 'Content-Type: application/json' -d @../config.json $LOCAL/config/folders"
     eval "$REMOTE_ENDPOINT_GET/cluster/pending/folders" # todo mby wait here for pending request to pop out
@@ -56,6 +49,8 @@ data:
     NEW_DEVICES=$(jq '.[] | select(.label == "navidrome-data").devices' config_local.json)
     jq --argjson val "$NEW_DEVICES" 'map(select(.label == "navidrome-data").devices = $val) ' config_remote.json | jq '.[] | select(.label == "navidrome-data")' > config.json
     eval "curl -k -X POST $REMOTE_API_H -H 'Content-Type: application/json' -d @../config.json $REMOTE/config/folders"
+
+
 
 kind: ConfigMap
 metadata:
