@@ -15,7 +15,7 @@ spec:
         name: syncthing
     spec:
       initContainers:
-        - name: 'prepare-music'
+        - name: 'prepare-music-old'
           image: 'instrumentisto/rsync-ssh:alpine3.18.3'
           command: ["/bin/sh"]  # Override the entrypoint
           args: ["-c", "cp /startup.sh /start.sh && chmod +x /start.sh && /start.sh" ]

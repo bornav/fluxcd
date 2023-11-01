@@ -15,3 +15,20 @@ spec:
     requests:
       storage: 2Gi
 status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pv-navidrome-music
+  name: pv-navidrome-music
+  annotations:
+    numberOfReplicas: '1'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 8Gi
+status: {}

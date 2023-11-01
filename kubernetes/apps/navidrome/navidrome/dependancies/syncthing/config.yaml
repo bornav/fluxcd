@@ -4,6 +4,8 @@ data:
   syncthing-setup-folder.sh: |
     #!/bin/sh
     # share 
+
+    ## TODO: tcp://wireguard.network.svc.cluster.local:22000 add this to host connection type from dynamic
     export API_PORT="8384"
     export API_KEY=$(syncthing cli --home /config config gui apikey get)
     export REMOTE="https://wireguard.network.svc.cluster.local:$API_PORT/rest"
