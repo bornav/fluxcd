@@ -54,6 +54,9 @@ spec:
           volumeMounts:
             - mountPath: /music
               name: pv-navidrome-music
+            - mountPath: /syncthing-setup-folder.sh
+              name: syncthing-setup-folder
+              subPath: syncthing-setup-folder.sh
           resources:
             requests:
               memory: '1Mi'
@@ -61,6 +64,10 @@ spec:
             limits:
               memory: '6Gi'
               cpu: '2500m'
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 10; ./syncthing-setup-folder.sh"]
           # securityContext:
           #   runAsUser: 1000
           #   runAsGroup: 1000
@@ -80,6 +87,10 @@ spec:
         - name: pv-navidrome-music
           persistentVolumeClaim:
             claimName: pv-navidrome-music
+        - name: syncthing-setup-folder
+          configMap:
+            name: syncthing-setup-folder
+            defaultMode: 0777
       imagePullSecrets:
         - name: docker-registry
         
