@@ -109,6 +109,6 @@ spec:
   storageClassName: longhorn
   resources:
     requests:
-      storage: 6Gi
+      storage: 8Gi
 status: {}
 ---
