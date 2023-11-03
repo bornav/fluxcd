@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-    navidrome.toml: ENC[AES256_GCM,data:LbgbBJummdNnOKo66nWcFajyCrCDLFnGjc1qkCbO3MyIXw+ur+ZQ7BaPYRMBnXu2ebb2xnqg1d9hitvkhr4Ql3x3HwMIJHeVOTHaEQziTSYj+wc1rR7TKeP7hXpmq/De0wtiE1cFZrqbi0yB3ezTThB/2/8+3JIF078yqeVws+aZL2e8nr+3cLPuWBoPS5OVXML6XHzBsoHviSNiMLvPj4vGSLcLSXgiFydPr5WUUHX32hLpVHqn2jH2fAfusstnMoLl0HLUeuSEYnROOtW9nFO/CewCM/7SQQnFmfKzUai/hBh4hj0qyjDuLj2wbtWZ5xLrOdg9P06igcgrcD8kjs85RHk5UfmaQfmrjXfluWgXS2O0CVV86BmlTOjqa1M/XQ==,iv:Lt5wju40gRcd23+oAr0vjFggMC1YHKEr9m4OYtCZXKY=,tag:xVAbG2Onuv3g3i5KYWPHhg==,type:str]
+    navidrome.toml: ENC[AES256_GCM,data:+dyzBEhf+goa0auvrsS0f6S5p1s1BvLSN/IEcSiLtUyFnlFIjcJgKqAEMxBfi93NzU6ahhcNUqfi/BNKzlCsxbpfyGiWbAu0W/AmrsDi2MPQZgc68+Z+hfEaWc31usRoO8/srWZ3oHuLXyLsyorGGEWnLk+xfthOG153Wh7K3sAS914zEjPJ/rKyyKvKQ7tlH216OW2A/ZEINoDvcLZpO5yMjSIXKHN5vxQt2R8mvSaWSg5NhZ0CNw9cIE3Evu2Nfjy8CtaQ+H5dnooxq/WCno6f42CanyLHmX0YE6IaZUkGm1LJ12ea3nJHqIA79x9lSmAmP/0HNAWFe8q3qP7bfOV4uv3WfQPGY/CSA2m28toNzO7UUHdTlA+SsQiO3cDa,iv:Cq/9QrMK2/klbzmh0SUqZsvw3uTJYAzMJBqDn9JKKFc=,tag:Ad26+gDGFTOU7OtkGWYS6A==,type:str]
 kind: ConfigMap
 metadata:
     name: navidrome-config
@@ -19,8 +19,8 @@ sops:
             Z3REd3hOcko4dnJWVTh4Q2NQVWRtRU0Kb+RjXR45SNOb2WQfzUsi9jnvof+k/aiV
             158c1z1X7TVssCphS5BI4hkU6w+Jsg4INs0F3/7PtJQVVCARySSK+Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-11-01T16:15:20Z"
-    mac: ENC[AES256_GCM,data:mFjHE6DJNqXrEJQTcwg29ANgDhphRPzzJn9B537mKyZsIVJG3UxdDTmobgivxnJkOjHnvUc4E+ZWtiGjAJlu74sKDDL7xiYNgHMdi2Ys0mqaxy7hXEql66zC9INzYlWFDDcR24e9fIDDfEGOc27Bd9TTV9F/KUd4Aq6faJW4cCY=,iv:WKRUJRQz4cSZGPJDGG/tFOUXwaUWbTZg0F7LC57f+gs=,tag:NPEgrn+GhlRoxXI8oHe8Fw==,type:str]
+    lastmodified: "2023-11-01T18:52:55Z"
+    mac: ENC[AES256_GCM,data:f6CELtnOFmIU8FijuzT8XVJRT6fRg9OWgoPsA34MeqlETsZwfATw8sbcn2JQG64uby4I+e0sq8tW4pKV5q2aU0M5B89nQcm5iwodZn0Vlq/CafFbnKVbF8rNfDeHjGOX5Kl9u4CINDvVgIk03T8dI+vJptWJMo0Sc8/IyqxtNIk=,iv:nT0/rIpsU6UtTRvbDuNYu4gmdSBQqGNJYu+bb3UiMQA=,tag:8tOdVK1CuztG1PZE+1KHkA==,type:str]
     pgp: []
     encrypted_regex: ^(data|data)$
     version: 3.8.1

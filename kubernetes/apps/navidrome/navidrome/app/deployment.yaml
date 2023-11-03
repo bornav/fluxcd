@@ -77,6 +77,7 @@ spec:
         - name: navidrome-configuration
           configMap:
             name: navidrome-config
+            defaultMode: 0777
         - name: navidrome-data-folder
           persistentVolumeClaim:
             claimName: navidrome-data
