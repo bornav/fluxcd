@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app navidrome
+  name: &app navidrome-navidrome
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
@@ -32,7 +32,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app navidrome
+  name: &app music-navidrome
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
@@ -62,7 +62,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app navidrome-cloud
+  name: &app music-cloud-navidrome
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
@@ -92,7 +92,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app navidrome-cloud
+  name: &app navidrome-cloud-navidrome
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
