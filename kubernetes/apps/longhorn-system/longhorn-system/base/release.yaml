@@ -22,8 +22,8 @@ spec:
       reclaimPolicy: Delete
       defaultClassReplicaCount: 1
     defaultSettings:
-      backupTarget: nfs://wireguard.longhorn-system.svc.cluster.local:/mnt/Vega/longhorn_kubernetes_backup
-    #   backupTargetCredentialSecret: longhorn-backup-secret
+      backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
+      backupTargetCredentialSecret: cifs-secret
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
     #   defaultDataPath: /var/lib/longhorn/
