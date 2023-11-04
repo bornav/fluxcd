@@ -38,7 +38,7 @@ spec:
       fullnameOverride: alertmanager
       enabled: true
       ingress:
-        enabled: false
+        enabled: true
     grafana:
       enabled: true
       fullnameOverride: grafana
@@ -193,4 +193,4 @@ spec:
         memory: 512Mi
         cpu: 250m
       limits:
-        memory: 2048Mi
+        memory: 3072Mi
