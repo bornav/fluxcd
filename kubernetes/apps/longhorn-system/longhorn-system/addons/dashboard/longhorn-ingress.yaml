@@ -4,8 +4,8 @@ kind: Ingress
 metadata:
   name: &app longhorn-ui-ingress
   labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
+    name: *app
+    # app.kubernetes.io/instance: 
     kubernetes.io/ingress.class: nginx-external
   annotations:
     nginx.ingress.kubernetes.io/auth-type: basic
