@@ -16,3 +16,4 @@ resources:
   - ./prometheus-community.yaml
   - ./ingress-nginx.yaml
   - ./emberstack.yaml
+  - ./jaeger.yaml
