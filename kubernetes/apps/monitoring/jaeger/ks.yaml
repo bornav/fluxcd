@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jeager
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/monitoring/jeager/app
+  prune: true
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 15m
+  timeout: 5m
