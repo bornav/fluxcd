@@ -51,6 +51,20 @@ spec:
             limits:
               memory: '6Gi'
               cpu: '2500m'
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+              host: 10.0.0.3
+            failureThreshold: 30
+            periodSeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+              host: 10.0.0.3
+            # initialDelaySeconds: 5
+            periodSeconds: 3
           securityContext:
             privileged: true
             capabilities:
