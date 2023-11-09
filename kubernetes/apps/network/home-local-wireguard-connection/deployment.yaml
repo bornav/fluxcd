@@ -54,14 +54,14 @@ spec:
           startupProbe:
             httpGet:
               path: /
-              port: 80
+              port: 446
               host: 10.0.0.3
             failureThreshold: 30
             periodSeconds: 1
           livenessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 446
               host: 10.0.0.3
             # initialDelaySeconds: 5
             periodSeconds: 3
