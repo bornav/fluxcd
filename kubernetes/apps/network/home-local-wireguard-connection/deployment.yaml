@@ -56,8 +56,7 @@ spec:
               command:
               - /bin/sh
               - -c
-              - |
-                nc -zv 10.0.0.3 446
+              - 'curl --connect-timeout 1 -k https://10.0.0.3:446'
             failureThreshold: 30
             # initialDelaySeconds: 5
             periodSeconds: 1
@@ -66,8 +65,7 @@ spec:
               command:
               - /bin/sh
               - -c
-              - |
-                nc -zv 10.0.0.3 446
+              - 'curl --connect-timeout 1 -k https://10.0.0.3:446'
             # initialDelaySeconds: 10
             failureThreshold: 10
             periodSeconds: 1
