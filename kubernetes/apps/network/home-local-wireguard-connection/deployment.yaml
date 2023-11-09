@@ -51,27 +51,23 @@ spec:
             limits:
               memory: '6Gi'
               cpu: '2500m'
-          # startupProbe:
-          #   httpGet:
-          #     path: /
-          #     port: 446
-          #     host: 10.0.0.3
-          #     scheme: HTTPS
-          #     httpHeaders:
-          #       - name: Accept
-          #         value: "*/*"
-          #   failureThreshold: 30
-          #   initialDelaySeconds: 5
-          #   periodSeconds: 1
+          startupProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                nc -zv 10.0.0.3 446
+            failureThreshold: 30
+            # initialDelaySeconds: 5
+            periodSeconds: 1
           livenessProbe:
-            httpGet:
-              path: /
-              port: 446
-              host: 10.0.0.3
-              scheme: HTTPS
-              httpHeaders:
-                - name: Accept
-                  value: "*/*"
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                nc -zv 10.0.0.3 446
             # initialDelaySeconds: 10
             failureThreshold: 10
             periodSeconds: 1
