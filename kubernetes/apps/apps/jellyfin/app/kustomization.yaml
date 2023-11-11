@@ -4,4 +4,3 @@ namespace: jellyfin
 resources:
   - ingress.yaml
   - service.yaml
-  - pvc.yaml
