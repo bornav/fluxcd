@@ -7,7 +7,7 @@ metadata:
 spec:
   # dependsOn:
   #   - name: navidrome-dependancies
-  path: ./kubernetes/apps/navidrome/navidrome/app
+  path: ./kubernetes/apps/apps/jellyfin/jellyfin/app
   suspend: false
   prune: true
   sourceRef:
