@@ -4,7 +4,7 @@
 # metadata:
 #   name: grafana-ingress
 #   annotations:
-#     kubernetes.io/ingress.class: nginx-external
+#     kubernetes.io/ingress.class: traefik
 # spec:
 #   entryPoints:
 #     - websecure
@@ -25,11 +25,11 @@ metadata:
   labels:
     # app.kubernetes.io/name: *app
     # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: nginx-external
+    kubernetes.io/ingress.class: traefik
   # annotations:  # Add this section for annotations
   #   traefik.ingress.kubernetes.io/router.middlewares: default-prefix@kubernetescrd
 spec:
-  ingressClassName: nginx-external
+  ingressClassName: traefik
   rules:
     - host: &host grafana.cloud.icylair.com
       http:

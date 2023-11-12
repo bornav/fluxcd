@@ -37,9 +37,9 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.middlewares: traefik-dashboard-auth@kubernetescrd
-    # kubernetes.io/ingress.class: nginx-external
+    # kubernetes.io/ingress.class: traefik
 spec:
-  ingressClassName: nginx-external
+  ingressClassName: traefik
   rules:
   - host: traefik.cloud.icylair.com
     http:

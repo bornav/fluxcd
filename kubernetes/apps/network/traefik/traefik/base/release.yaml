@@ -33,7 +33,6 @@ spec:
       - '--global.checknewversion=false'
     additionalArguments:
       - '--serversTransport.insecureSkipVerify=true'
-      - '--providers.kubernetesingress.ingressclass=traefik-external'
       - '--log.level=INFO' # TODO: change to
     deployment:
       enabled: true
