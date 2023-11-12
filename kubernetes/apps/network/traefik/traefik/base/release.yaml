@@ -50,7 +50,8 @@ spec:
         cpu: '3000m'
     ports:
       web:
-        redirectTo: websecure
+        redirectTo:
+          port: websecure
       websecure:
         tls:
           enabled: true

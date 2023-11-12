@@ -1,0 +1,65 @@
+#https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
+#apiVersion: traefik.containo.us/v1alpha1
+globalArguments:
+  - '--global.sendanonymoususage=false'
+  - '--global.checknewversion=false'
+additionalArguments:
+  - '--serversTransport.insecureSkipVerify=true'
+  - '--log.level=INFO' # TODO: change to
+deployment:
+  enabled: true
+  replicas: 1
+  annotations: {}
+  podAnnotations: {}
+  additionalContainers: []
+  initContainers: []
+resources:
+  requests:
+    memory: '1Mi'
+    cpu: '1m'
+  limits:
+    memory: '6Gi'
+    cpu: '3000m'
+ports:
+  web:
+    redirectTo:
+      port: websecure
+  websecure:
+    tls:
+      enabled: true
+ingressRoute:
+  dashboard:
+    enabled: true     
+# ingressRoute:
+#   dashboard:
+#     # -- Create an IngressRoute for the dashboard
+#     enabled: false
+#     annotations: {}
+#     labels: {}
+#     # -- The router match rule used for the dashboard ingressRoute
+#     matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+#     entryPoints: ["traefik"]
+#     middlewares: []
+#     tls: {}
+providers:
+  kubernetesCRD:
+    enabled: true
+    ingressClass: traefik-external
+    allowExternalNameServices: true
+  kubernetesIngress:
+    enabled: true
+    allowExternalNameServices: true
+    publishedService:
+      enabled: false
+rbac:
+  enabled: true
+service:
+  enabled: true
+  type: LoadBalancer
+  annotations: {}
+  labels: {}
+  spec:
+    loadBalancerIP: 10.0.0.230
+    #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
+  loadBalancerSourceRanges: []
+  externalIPs: []
