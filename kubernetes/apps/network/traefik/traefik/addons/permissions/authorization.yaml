@@ -6,7 +6,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: traefik
-    namespace: traefik
+    namespace: network
 roleRef:
   kind: ClusterRole
   name: traefik-default-access
