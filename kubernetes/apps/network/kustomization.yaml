@@ -6,4 +6,4 @@ resources:
 - nginx
 - reflector
 - traefik
-- home-local-wireguard-connection
+- home-local-wireguard-connection/ks.yaml
