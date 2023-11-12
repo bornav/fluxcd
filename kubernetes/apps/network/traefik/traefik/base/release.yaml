@@ -55,6 +55,8 @@ spec:
       websecure:
         tls:
           enabled: true
+    ingressClass:
+      enabled: true
     ingressRoute:
       dashboard:
         enabled: true     
