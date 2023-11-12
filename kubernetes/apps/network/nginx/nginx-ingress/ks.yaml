@@ -28,7 +28,7 @@ spec:
     - name: cert-manager-addons
   path: ./kubernetes/apps/network/nginx/nginx-ingress/set
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
