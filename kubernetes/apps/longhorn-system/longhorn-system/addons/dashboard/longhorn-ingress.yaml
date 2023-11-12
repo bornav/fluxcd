@@ -8,6 +8,7 @@ metadata:
     # app.kubernetes.io/instance: 
     kubernetes.io/ingress.class: traefik
   annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-basic-auth@kubernetescrd
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: basic-auth 
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - foo'
