@@ -4,4 +4,4 @@ namespace: network
 resources:
   - dashboard
   - headers
-  - permissions
+#  - permissions
