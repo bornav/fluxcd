@@ -15,7 +15,18 @@ spec:
         name: traefik
         namespace: flux-system
       interval: 15m
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    #https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
     #apiVersion: traefik.containo.us/v1alpha1
     globalArguments:
       - '--global.sendanonymoususage=false'
@@ -60,7 +71,7 @@ spec:
     providers:
       kubernetesCRD:
         enabled: true
-        ingressClass: traefik
+        ingressClass: traefik-external
         allowExternalNameServices: true
       kubernetesIngress:
         enabled: true
