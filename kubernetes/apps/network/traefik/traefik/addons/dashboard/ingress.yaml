@@ -7,11 +7,10 @@ spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: traefik
-    app.kubernetes.io/instance: traefik-traefik
   ports:
     - name: http
-      targetPort: 9000
-      port: 9000
+      targetPort: 8000
+      port: 8000
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -35,7 +34,7 @@ spec:
           service:
             name: traefik-api
             port:
-              number: 9000
+              number: 8000
   tls:
   - hosts:
       - traefik.cloud.icylair.com
