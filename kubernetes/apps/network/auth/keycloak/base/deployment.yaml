@@ -5,6 +5,7 @@ metadata:
   labels:
     app: keycloak
 spec:
+  loadBalancerIP: 10.0.0.232
   ports:
     - name: http
       port: 8080
