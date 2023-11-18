@@ -6,6 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/network/auth/authentik/base
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository

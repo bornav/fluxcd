@@ -1,0 +1,30 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app keycloak
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host keycloak.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+  tls:
+  - hosts:
+      - keycloak.cloud.icylair.com
+    secretName: cloud-icylair-com-prod

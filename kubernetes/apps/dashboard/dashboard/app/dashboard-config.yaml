@@ -3,6 +3,9 @@ apiVersion: v1
 data:
   services.yaml: |
     - Services:
+        - Traefik:
+                icon: traefik.png
+                href: https://traefik.cloud.icylair.com
         - Element:
             icon: element.png
             href: https://element.cloud.icylair.com/
@@ -24,6 +27,9 @@ data:
         - Grafana:
             icon: grafana.png
             href: https://grafana.cloud.icylair.com/
+        - KeyCloak:
+            icon: keycloak.png
+            href: https://keycloak.cloud.icylair.com/
 
     - Cloud:
         - traefik_cloud:
