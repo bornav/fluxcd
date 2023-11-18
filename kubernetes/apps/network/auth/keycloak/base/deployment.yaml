@@ -78,7 +78,7 @@ spec:
               path: /realms/master
               port: 8080
         - name: databases
-          image: postgres:14.10-alpine
+          image: postgres:16.1-alpine
           env:
             - name: POSTGRES_USER
               valueFrom:
