@@ -75,15 +75,6 @@ spec:
             targetPort: 9000
             protocol: TCP
 
-      - apiVersion: v1
-        kind: Secret
-        metadata:
-          name: traefik-dashboard-auth-secret
-        type: kubernetes.io/basic-auth
-        stringData:
-          username: admin
-          password: changeme
-
       - apiVersion: traefik.io/v1alpha1
         kind: Middleware
         metadata:
