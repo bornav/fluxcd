@@ -55,20 +55,34 @@ spec:
       websecure:
         tls:
           enabled: true
+    # ingressRoute:
+      # dashboard:
+        # enabled: true     
     ingressRoute:
       dashboard:
-        enabled: true     
-    # ingressRoute:
-    #   dashboard:
-    #     # -- Create an IngressRoute for the dashboard
-    #     enabled: false
-    #     annotations: {}
-    #     labels: {}
-    #     # -- The router match rule used for the dashboard ingressRoute
-    #     matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
-    #     entryPoints: ["traefik"]
-    #     middlewares: []
-    #     tls: {}
+        enabled: true
+        # Custom match rule with host domain
+        matchRule: Host(`traefik.cloud.icylair.com`)
+        entryPoints: ["websecure"]
+        # Add custom middlewares : authentication and redirection
+        middlewares:
+          - name: traefik-dashboard-auth
+    extraObjects:
+      - apiVersion: v1
+        kind: Secret
+        metadata:
+          name: traefik-dashboard-auth-secret
+        type: kubernetes.io/basic-auth
+        stringData:
+          username: admin
+          password: changeme
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: traefik-dashboard-auth
+        spec:
+          basicAuth:
+            secret: traefik-dashboard-auth-secret
     providers:
       kubernetesCRD:
         enabled: true
