@@ -1,0 +1,25 @@
+authentik:
+    secret_key: "SM4xQLAbw88BQuCQQDZrIcdPptvaWyHUUJWqQZj4hVzdMJts3a"
+    # This sends anonymous usage-data, stack traces on errors and
+    # performance data to sentry.io, and is fully opt-in
+    error_reporting:
+        enabled: false
+    postgresql:
+        password: "ThisIsNotASecurePassword"
+
+ingress:
+    # Specify kubernetes ingress controller class name
+    ingressClassName: traefik
+    enabled: true
+    hosts:
+        # Specify external host name
+        - host: authentik.cloud.icylair.com
+          paths:
+              - path: "/"
+                pathType: Prefix
+
+postgresql:
+    enabled: true
+    postgresqlPassword: "ThisIsNotASecurePassword"
+redis:
+    enabled: true
