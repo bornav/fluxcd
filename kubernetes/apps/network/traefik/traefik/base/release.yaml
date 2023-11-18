@@ -68,7 +68,7 @@ spec:
           type: ClusterIP
           selector:
             app.kubernetes.io/name: traefik
-            app.kubernetes.io/instance: traefik-default
+            app.kubernetes.io/instance: traefik-network
           ports:
           - port: 8080
             name: traefik
@@ -98,7 +98,7 @@ spec:
           name: traefik-dashboard
           annotations:
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.middlewares: default-traefik-dashboard-auth@kubernetescrd
+            traefik.ingress.kubernetes.io/router.middlewares: network-traefik-dashboard-auth@kubernetescrd
         spec:
           rules:
           - host: traefik.cloud.icylair.com
