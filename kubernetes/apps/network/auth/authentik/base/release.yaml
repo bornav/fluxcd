@@ -44,6 +44,9 @@ spec:
               paths:
                   - path: "/"
                     pathType: Prefix
+        tls:
+          - hosts: ["authentik.cloud.icylair.com"]
+            secretName: cloud-icylair-com-prod
     postgresql:
         enabled: true
         postgresqlPassword: "ThisIsNotASecurePassword"
