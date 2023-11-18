@@ -17,3 +17,4 @@ resources:
   - ./ingress-nginx.yaml
   - ./emberstack.yaml
   - ./jaeger.yaml
+  - ./authentik.yaml
