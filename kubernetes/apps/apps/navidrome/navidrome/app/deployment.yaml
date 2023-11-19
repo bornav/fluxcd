@@ -43,9 +43,9 @@ spec:
           securityContext:
             privileged: true
           volumeMounts:
-            - name: pv-navidrome-music
-              mountPath: /music
-            - name: sync-data
+            - name: navidrome-data-folder
+              mountPath: /data
+            - name: prepare-data
               mountPath: /startup.sh
               subPath: startup.sh
       containers:
@@ -88,11 +88,43 @@ spec:
           secret:
             secretName: sync-music
             defaultMode: 0777
-        - name: sync-data
+        - name: prepare-data
           secret:
-            secretName: sync-data
+            secretName: prepare-data
             defaultMode: 0777
       restartPolicy: Always
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sync_data
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: 'sync_data'
+              image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+              command: ["/bin/sh"]  # Override the entrypoint
+              args: ["-c", "/startup.sh" ]
+              envFrom:
+              - secretRef:
+                  name: home-local-syncthing-env
+              securityContext:
+                privileged: true
+              volumeMounts:
+                - name: navidrome-data-folder
+                  mountPath: /data
+                - name: sync-data
+                  mountPath: /startup.sh
+                  subPath: startup.sh
+          volumes:
+            - name: sync-data
+              secret:
+                secretName: sync-data
+                defaultMode: 0777
 # ---
 # apiVersion: batch/v1
 # kind: Job
