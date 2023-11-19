@@ -99,13 +99,13 @@ kind: CronJob
 metadata:
   name: sync_data
 spec:
-  schedule: "* * * * *"
+  schedule: "*/15 * * * *"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-            - name: 'sync_data'
+            - name: 'sync-data'
               image: 'instrumentisto/rsync-ssh:alpine3.18.3'
               command: ["/bin/sh"]  # Override the entrypoint
               args: ["-c", "/startup.sh" ]
