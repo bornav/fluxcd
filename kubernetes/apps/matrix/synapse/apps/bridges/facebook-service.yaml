@@ -12,27 +12,33 @@ spec:
     - name: http
       targetPort: 29319
       port: 29319
-# ---
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: IngressRoute
-# metadata:
-#   name: mautrix-bridge-facebook-ingress
-#   annotations:
-#     kubernetes.io/ingress.class: traefik
-#     # traefik.ingress.kubernetes.io/custom-request-headers: X-Forwarded-Host:icylair.com
-#     # traefik.ingress.kubernetes.io/proxy-body-size: 500m
-# spec:
-#   entryPoints:
-#     - websecure
-#   routes:
-#     - match: Host(`matrix.cloud.icylair.com/public/facebook/`)
-#       kind: Rule
-#       services:
-#         - name: mautrix-bridge-facebook
-#           port: 29319
-#           namespace: matrix
-#       # middlewares:
-#       #  - name: default-headers
-#       #    namespace: default
-#   tls:
-#     secretName: cloud-icylair-com-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app mautrix-bridge-facebook-login
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: &host matrix.cloud.icylair.com
+      http:
+        paths:
+          - path: /public/facebook/
+            pathType: Prefix
+            backend:
+              service:
+                name: mautrix-bridge-facebook
+                port:
+                  number: 29319
+  tls:
+  - hosts:
+      - matrix.cloud.icylair.com
+    secretName: cloud-icylair-com-prod
