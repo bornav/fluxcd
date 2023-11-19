@@ -149,6 +149,7 @@ spec:
         - name: matrix-synapse-config
           configMap:
             name: matrix-synapse
+            defaultMode: 0777
         - name: matrix-bridges
           persistentVolumeClaim:
             claimName: matrix-bridges-data
