@@ -121,6 +121,9 @@ spec:
                   mountPath: /startup.sh
                   subPath: startup.sh
           volumes:
+            - name: navidrome-data-folder
+              persistentVolumeClaim:
+                claimName: navidrome-data
             - name: sync-data
               secret:
                 secretName: sync-data
