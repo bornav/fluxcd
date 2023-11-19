@@ -97,7 +97,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: sync_data
+  name: sync-data
 spec:
   schedule: "*/15 * * * *"
   jobTemplate:
@@ -125,6 +125,7 @@ spec:
               secret:
                 secretName: sync-data
                 defaultMode: 0777
+          restartPolicy: Never
 # ---
 # apiVersion: batch/v1
 # kind: Job
