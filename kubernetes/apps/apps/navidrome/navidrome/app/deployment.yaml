@@ -51,8 +51,8 @@ spec:
       containers:
         - image: bornav/navidrome-bornav-test-cloud-sync:v0.0
           name: navidrome
-          command: ["/bin/sh"]  # Override the entrypoint
-          args: ["-c", "sleep 8400" ]
+          # command: ["/bin/sh"]  # Override the entrypoint
+          # args: ["-c", "sleep 8400" ]
           env:
             - name: ND_CONFIGFILE
               value: '/config/navidrome.toml'
