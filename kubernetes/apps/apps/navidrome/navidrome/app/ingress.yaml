@@ -14,7 +14,37 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host navidrome.icylair.com
+    - host: navidrome.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: navidrome-service
+                port:
+                  number: 4533
+    - host: music.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: navidrome-service
+                port:
+                  number: 4533
+    - host: navidrome.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: navidrome-service
+                port:
+                  number: 4533
+    - host: music.cloud.icylair.com
       http:
         paths:
           - path: /
@@ -27,94 +57,9 @@ spec:
   tls:
   - hosts:
       - navidrome.icylair.com
-    secretName: icylair-com-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app music-navidrome
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
-    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: &host music.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: navidrome-service
-                port:
-                  number: 4533
-  tls:
-  - hosts:
       - music.icylair.com
     secretName: icylair-com-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app music-cloud-navidrome
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
-    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: &host navidrome.cloud.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: navidrome-service
-                port:
-                  number: 4533
-  tls:
-  - hosts:
-      - navidrome.cloud.icylair.com
-    secretName: cloud-icylair-com-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app navidrome-cloud-navidrome
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
-    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: &host music.cloud.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: navidrome-service
-                port:
-                  number: 4533
-  tls:
   - hosts:
       - music.cloud.icylair.com
+      - navidrome.cloud.icylair.com
     secretName: cloud-icylair-com-prod
