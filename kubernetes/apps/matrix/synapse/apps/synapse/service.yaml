@@ -38,3 +38,22 @@ spec:
   selector:
     app: matrix-synapse
   type: ClusterIP
+---
+apiVersion: v1 #unused but for future purpuse
+kind: Service
+metadata:
+  name: matrix-synapse-federation
+  annotations:
+    dns.alpha.kubernetes.io/external: 'matrix-synapse.matrix.svc.cluster.local'
+  labels:
+    app: matrix-synapse-federation
+spec:
+  loadBalancerIP: 10.0.0.239
+  ports:
+    - name: https
+      protocol: TCP
+      port: 8448
+      targetPort: 8448
+  selector:
+    app: matrix-synapse
+  type: LoadBalancer
