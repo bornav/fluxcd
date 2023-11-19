@@ -121,8 +121,7 @@ spec:
               memory: '1Mi'
               cpu: '1m'
             limits:
-              memory: '9Gi'
-              cpu: '10Gi'
+              memory: '6Gi'
           volumeMounts:
             - mountPath: /data
               name: matrix-synapse-data
