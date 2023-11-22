@@ -28,3 +28,6 @@ spec:
     - name: syncthing-sync
       port: 22000
       targetPort: 22000
+    - name: jellyfin
+      port: 8097
+      targetPort: 8097
