@@ -102,6 +102,7 @@ metadata:
   name: sync-data
 spec:
   schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
