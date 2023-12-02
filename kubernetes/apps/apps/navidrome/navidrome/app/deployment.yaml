@@ -18,21 +18,6 @@ spec:
         app: navidrome-app
     spec:
       initContainers:
-        - name: 'prepare-music'
-          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-          command: ["/bin/sh"]  # Override the entrypoint
-          args: ["-c", "/startup.sh" ]
-          envFrom:
-          - secretRef:
-              name: home-local-syncthing-env
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: pv-navidrome-music
-              mountPath: /music
-            - name: sync-music
-              mountPath: /startup.sh
-              subPath: startup.sh
         - name: 'prepare-data'
           image: 'instrumentisto/rsync-ssh:alpine3.18.3'
           command: ["/bin/sh"]  # Override the entrypoint
@@ -46,6 +31,21 @@ spec:
             - name: navidrome-data-folder
               mountPath: /data
             - name: prepare-data
+              mountPath: /startup.sh
+              subPath: startup.sh
+        - name: 'prepare-music'
+          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+          command: ["/bin/sh"]  # Override the entrypoint
+          args: ["-c", "/startup.sh" ]
+          envFrom:
+          - secretRef:
+              name: home-local-syncthing-env
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: pv-navidrome-music
+              mountPath: /music
+            - name: sync-music
               mountPath: /startup.sh
               subPath: startup.sh
       containers:
