@@ -21,8 +21,8 @@ spec:
         - name: 'prepare-data'
           image: 'instrumentisto/rsync-ssh:alpine3.18.3'
           command: ["/bin/sh"]  # Override the entrypoint
-          args: ["-c", "sleep 8400" ]
-          # args: ["-c", "./startup.sh" ]
+          # args: ["-c", "sleep 8400" ]
+          args: ["-c", "./startup.sh" ]
           envFrom:
           - secretRef:
               name: home-local-syncthing-env
