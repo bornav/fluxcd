@@ -6,4 +6,3 @@ resources:
   - secrets.yaml
   - pvc.yaml
   - service.yaml
-  - secrets.yaml
