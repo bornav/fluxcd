@@ -87,4 +87,4 @@
       shell: | 
         systemctl enable --now "tcpforwardhttp"
         systemctl enable --now "tcpforwardhttps"
-        systemctl enable --now "tcpforwardapi"
+        # systemctl enable --now "tcpforwardapi" #this seems to break it
