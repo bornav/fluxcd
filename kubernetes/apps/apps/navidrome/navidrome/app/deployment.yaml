@@ -75,6 +75,21 @@ spec:
               mountPath: /data
             - name: pv-navidrome-music
               mountPath: /music
+        - name: 'sync-data'
+          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+          command: ["/bin/sh"]  # Override the entrypoint
+          args: ["-c", "/startup.sh" ]
+          envFrom:
+          - secretRef:
+              name: home-local-syncthing-env
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: navidrome-data-folder
+              mountPath: /data
+            - name: sync-data
+              mountPath: /startup.sh
+              subPath: startup.sh
       volumes:
         - name: navidrome-configuration
           configMap:
@@ -94,44 +109,34 @@ spec:
           secret:
             secretName: prepare-data
             defaultMode: 0777
+        - name: sync-data
+          secret:
+            secretName: sync-data
+            defaultMode: 0777
       restartPolicy: Always
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: sync-data
-spec:
-  schedule: "*/15 * * * *"
-  successfulJobsHistoryLimit: 1
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-            - name: 'sync-data'
-              image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-              command: ["/bin/sh"]  # Override the entrypoint
-              args: ["-c", "/startup.sh" ]
-              envFrom:
-              - secretRef:
-                  name: home-local-syncthing-env
-              securityContext:
-                privileged: true
-              volumeMounts:
-                - name: navidrome-data-folder
-                  mountPath: /data
-                - name: sync-data
-                  mountPath: /startup.sh
-                  subPath: startup.sh
-          volumes:
-            - name: navidrome-data-folder
-              persistentVolumeClaim:
-                claimName: navidrome-data
-            - name: sync-data
-              secret:
-                secretName: sync-data
-                defaultMode: 0777
-          restartPolicy: Never
+# ---
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: sync-data
+# spec:
+#   schedule: "*/15 * * * *"
+#   successfulJobsHistoryLimit: 1
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+            
+#           volumes:
+#             - name: navidrome-data-folder
+#               persistentVolumeClaim:
+#                 claimName: navidrome-data
+#             - name: sync-data
+#               secret:
+#                 secretName: sync-data
+#                 defaultMode: 0777
+#           restartPolicy: Never
 # ---
 # apiVersion: batch/v1
 # kind: Job
