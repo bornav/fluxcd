@@ -17,6 +17,23 @@ spec:
       labels:
         app: matrix-database
     spec:
+      initContainers:
+        - name: 'prepare-data'
+          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+          command: ["/bin/sh"]  # Override the entrypoint
+          args: ["-c", "sleep 8400" ]
+          # args: ["-c", "./startup.sh" ]
+          envFrom:
+          - secretRef:
+              name: home-local-syncthing-env
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: matrix-database-data
+              mountPath: /data
+            - name: prepare-data
+              mountPath: /startup.sh
+              subPath: startup.sh
       containers:
         - name: databases
           image: postgres:14.10-alpine
@@ -75,9 +92,39 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: matrix-database-data
+        - name: 'sync'
+          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+          command: ["/bin/sh"]  # Override the entrypoint
+          # args: ["-c", "sleep 8400" ]
+          args: ["-c", "./startup.sh" ]
+          envFrom:
+          - secretRef:
+              name: home-local-syncthing-env
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: matrix-database-data
+              mountPath: /data
+            - name: sync-data
+              mountPath: /startup.sh
+              subPath: startup.sh
       restartPolicy: Always
       volumes:
         - name: matrix-database-data
           persistentVolumeClaim:
             claimName: matrix-database-data
+        - name: sync-data
+          secret:
+            secretName: sync-data-db
+            defaultMode: 0777
+        - name: prepare-data
+          secret:
+            secretName: prepare-data-db
+            defaultMode: 0777
 status: {}
