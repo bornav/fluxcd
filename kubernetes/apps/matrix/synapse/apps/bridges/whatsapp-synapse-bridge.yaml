@@ -21,31 +21,6 @@ spec:
         - name: 'create-db-container-whatsapp'
           image: 'postgres'
           env:
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_USER
-            - name: DB_ENCODING
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_ENCODING
-            - name: DB_LOCALE
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_LOCALE
-            - name: DB_TEMPLATE
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_TEMPLATE
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
@@ -56,16 +31,9 @@ spec:
                 secretKeyRef:
                   name: synapse-database-secrets
                   key: DB_USER_NAME_WHATSAPP
-            - name: DB_USER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_USER_PASSWORD
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: POSTGRES_PASSWORD
+          envFrom: #we need them both since some are redefined
+            - secretRef:
+                name: synapse-database-secrets
           command:
             - /bin/bash
             - -c
