@@ -34,7 +34,8 @@ spec:
       tls:
         - hosts: ["nc.cloud.icylair.com"]
           secretName: cloud-icylair-com-prod
-    nextcloud.host: nc.cloud.icylair.com
+    nextcloud:
+      host: nc.cloud.icylair.com
   #   resources:
   #     requests:
   #       memory: '1Mi'
