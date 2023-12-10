@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - jellyfin
   - navidrome
+  - nextcloud
   - namespace.yaml
