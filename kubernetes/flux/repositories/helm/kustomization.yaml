@@ -19,3 +19,4 @@ resources:
   - ./jaeger.yaml
   - ./authentik.yaml
   - ./rook-ceph.yaml
+  - ./nextcloud.yaml
