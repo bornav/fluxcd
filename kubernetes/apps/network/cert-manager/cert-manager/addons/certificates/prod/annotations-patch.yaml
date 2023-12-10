@@ -1,7 +1,7 @@
 #kubeNotkonform
 - op: replace #action 
   path: /spec/secretTemplate/annotations/reflector.v1.k8s.emberstack.com~1reflection-allowed-namespaces # / is ~1
-  value: "matrix,traefik,monitoring,network,nginx,longhorn-system,dashboard,default,devops-tools,navidrome,jellyfin,rook-ceph"
+  value: "matrix,traefik,monitoring,network,nginx,longhorn-system,dashboard,default,devops-tools,navidrome,jellyfin,rook-ceph,nextcloud,apps"
 - op: replace #action 
   path: /spec/secretTemplate/annotations/reflector.v1.k8s.emberstack.com~1reflection-auto-namespaces # / is ~1
-  value: "matrix,traefik,monitoring,network,nginx,longhorn-system,dashboard,default,devops-tools,navidrome,jellyfin,rook-ceph"
+  value: "matrix,traefik,monitoring,network,nginx,longhorn-system,dashboard,default,devops-tools,navidrome,jellyfin,rook-ceph,nextcloud,apps"
