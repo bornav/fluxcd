@@ -22,8 +22,13 @@ spec:
       reclaimPolicy: Delete
       defaultClassReplicaCount: 1
     defaultSettings:
-      backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
-      backupTargetCredentialSecret: cifs-secret
+      ##CIFS
+      # backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
+      # backupTargetCredentialSecret: cifs-secret
+      ##S3
+      backupTarget: "s3://kubernetes-backup-bucket@us-east-1/"
+      backupTargetCredentialSecret: s3-minio-secret
+      
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
     #   defaultDataPath: /var/lib/longhorn/
