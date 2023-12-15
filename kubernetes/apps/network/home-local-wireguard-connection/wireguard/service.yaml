@@ -31,3 +31,9 @@ spec:
     - name: jellyfin
       port: 8097
       targetPort: 8097
+    - name: minio_api
+      port: 9010
+      targetPort: 9010
+    - name: minio_ui
+      port: 9011
+      targetPort: 9011
