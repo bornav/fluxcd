@@ -28,6 +28,7 @@ spec:
       ##S3
       backupTarget: "s3://kubernetes-backup-bucket@us-east-1/"
       backupTargetCredentialSecret: s3-minio-secret
+      backupstorePollInterval: 30
       
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
@@ -40,7 +41,6 @@ spec:
     #   defaultReplicaCount: 3
     #   guaranteedEngineCPU: 0.25
     #   defaultLonghornStaticStorageClass: longhorn-static
-    #   backupstorePollInterval: 300
     #   autoSalvage: true
     #   autoDeletePodWhenVolumeDetachedUnexpectedly: true
     #   disableSchedulingOnCordonedNode: true
