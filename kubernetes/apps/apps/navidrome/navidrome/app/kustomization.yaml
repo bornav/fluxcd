@@ -9,3 +9,4 @@ resources:
   # - middleware.yaml
   - service.yaml
   - pvc.yaml
+  - volsync-replication.yaml
