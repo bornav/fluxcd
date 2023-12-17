@@ -20,3 +20,5 @@ resources:
   - ./authentik.yaml
   - ./rook-ceph.yaml
   - ./nextcloud.yaml
+  - ./velero.yaml
+  - ./backube.yaml
