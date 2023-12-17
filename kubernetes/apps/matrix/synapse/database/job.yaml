@@ -1,0 +1,144 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sync-test-old
+spec:
+  template:
+    spec:
+      containers:
+      - name: 'sync-test-old'
+        image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+        command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 8400" ]
+        args: ["-c", "./startup.sh" ]
+        envFrom:
+        - secretRef:
+            name: home-local-syncthing-env
+        resources:
+          requests:
+            memory: '1Mi'
+            cpu: '1m'
+          limits:
+            memory: '6Gi'
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: matrix-database-data-test
+            mountPath: /data
+          - name: prepare-data
+            mountPath: /startup.sh
+            subPath: startup.sh
+      volumes:
+        - name: matrix-database-data-test
+          persistentVolumeClaim:
+            claimName: matrix-database-data-test
+        - name: sync-data
+          secret:
+            secretName: sync-data-db
+            defaultMode: 0777
+        - name: prepare-data
+          secret:
+            secretName: prepare-data-db
+            defaultMode: 0777
+      restartPolicy: Never
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: matrix-database-data-test
+  name: matrix-database-data-test
+  annotations:
+    numberOfReplicas: '1'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: matrix-database-data-test2
+  name: matrix-database-data-test2
+  annotations:
+    numberOfReplicas: '1'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+status: {}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+    name: prepare-data-db-new
+type: Opaque
+stringData:
+    startup.sh: |-
+        #!/bin/sh
+        if test -f "/data/synced"; then
+            echo "not fresh aborting sync"
+            exit
+        fi
+        apk add samba-client
+        echo "//wireguard.network.svc.cluster.local/docker_data /mnt cifs user=borna,pass=JCc9r2Pb,uid=0,gid=0,soft 0 0" >> /etc/fstab
+        mount -a
+        rsync -auogPz /mnt/matrix/database/data/ /tmp/
+        cd /tmp
+        tar -xzvf data.tar.gz
+        mv ./data/* /data/
+        rm -rf ./*
+        touch /data/synced
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sync-test-new
+spec:
+  template:
+    spec:
+      containers:
+      - name: 'sync-test-old'
+        image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+        command: ["/bin/sh"]  # Override the entrypoint
+        args: ["-c", "sleep 8400" ]
+        # args: ["-c", "./startup.sh" ]
+        envFrom:
+        - secretRef:
+            name: home-local-syncthing-env
+        resources:
+          requests:
+            memory: '1Mi'
+            cpu: '1m'
+          limits:
+            memory: '6Gi'
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: matrix-database-data-test
+            mountPath: /data
+          - name: prepare-data
+            mountPath: /startup.sh
+            subPath: startup.sh
+      volumes:
+        - name: matrix-database-data-test
+          persistentVolumeClaim:
+            claimName: matrix-database-data-test2
+        - name: sync-data
+          secret:
+            secretName: sync-data-db
+            defaultMode: 0777
+        - name: prepare-data
+          secret:
+            secretName: prepare-data-db-new
+            defaultMode: 0777
+      restartPolicy: Never
