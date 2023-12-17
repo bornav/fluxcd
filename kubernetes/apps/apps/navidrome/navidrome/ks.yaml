@@ -24,7 +24,8 @@ metadata:
   name: navidrome-app
   namespace: flux-system
 spec:
-  # dependsOn:
+  dependsOn:
+    - name: volsync
   #   - name: navidrome-dependancies
   path: ./kubernetes/apps/apps/navidrome/navidrome/app
   suspend: false
