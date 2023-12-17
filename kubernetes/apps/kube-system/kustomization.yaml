@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./csi-driver-smb/ks.yaml
   - ./csi-driver-nfs/ks.yaml
+  - ./snapshot-controller/ks.yaml
