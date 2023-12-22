@@ -97,7 +97,7 @@ spec:
             defaultMode: 0777
         - name: navidrome-data-folder
           persistentVolumeClaim:
-            claimName: navidrome-data
+            claimName: pv-navidrome-data
         - name: pv-navidrome-music
           persistentVolumeClaim:
             claimName: pv-navidrome-music
