@@ -20,6 +20,7 @@ spec:
       yearly: 1
     copyMethod: Clone
     storageClassName: longhorn
+    unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
@@ -55,6 +56,7 @@ spec:
       yearly: 1
     copyMethod: Direct
     storageClassName: longhorn
+    unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
