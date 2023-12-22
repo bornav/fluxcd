@@ -22,6 +22,20 @@ spec:
     storageClassName: longhorn
 ---
 apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: pv-navidrome-data-restore
+  namespace: navidrome
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-navidrome-config-data
+    storageClassName: longhorn
+    destinationPVC: navidrome-data
+    copyMethod: Clone
+---
+apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name: pv-navidrome-music-backup
@@ -41,20 +55,6 @@ spec:
       yearly: 1
     copyMethod: Direct
     storageClassName: longhorn
----
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationDestination
-metadata:
-  name: pv-navidrome-data-restore
-  namespace: navidrome
-spec:
-  trigger:
-    manual: restore-once
-  restic:
-    repository: restic-navidrome-config-data
-    storageClassName: longhorn
-    destinationPVC: navidrome-data
-    copyMethod: Direct
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
