@@ -6,7 +6,7 @@ metadata:
   namespace: navidrome
 spec:
   # The PVC to be backed up
-  sourcePVC: navidrome-data
+  sourcePVC: pv-navidrome-data
   trigger:
     schedule: "*/10 * * * *"
   restic:
@@ -32,7 +32,7 @@ spec:
   restic:
     repository: restic-navidrome-config-data
     storageClassName: longhorn
-    destinationPVC: navidrome-data
+    destinationPVC: pv-navidrome-data
     copyMethod: Direct
 ---
 apiVersion: volsync.backube/v1alpha1
