@@ -33,7 +33,7 @@ spec:
     repository: restic-navidrome-config-data
     storageClassName: longhorn
     destinationPVC: navidrome-data
-    copyMethod: Clone
+    copyMethod: Direct
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
