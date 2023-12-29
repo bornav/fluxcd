@@ -5,7 +5,6 @@ metadata:
   name:  pv-navidrome-data-backup
   namespace: navidrome
 spec:
-  # The PVC to be backed up
   sourcePVC: pv-navidrome-data
   trigger:
     schedule: "*/10 * * * *"
@@ -18,7 +17,7 @@ spec:
       weekly: 4
       monthly: 2
       yearly: 1
-    copyMethod: Clone
+    copyMethod: Snapshot
     storageClassName: longhorn
     unlock: "something"
 ---
@@ -33,8 +32,9 @@ spec:
   restic:
     repository: restic-navidrome-config-data
     storageClassName: longhorn
-    destinationPVC: pv-navidrome-data
-    copyMethod: Direct
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 2Gi
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
@@ -54,7 +54,7 @@ spec:
       weekly: 4
       monthly: 2
       yearly: 1
-    copyMethod: Direct
+    copyMethod: Snapshot
     storageClassName: longhorn
     unlock: "something"
 ---
@@ -69,6 +69,6 @@ spec:
   restic:
     repository: restic-navidrome-config-music
     storageClassName: longhorn
-    destinationPVC: pv-navidrome-music
-    copyMethod: Direct
-
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 8Gi
