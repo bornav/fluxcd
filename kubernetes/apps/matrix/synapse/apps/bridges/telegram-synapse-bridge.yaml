@@ -47,7 +47,7 @@ spec:
             - -c
             #- sleep 8000s
             - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
-          image: dock.mau.dev/mautrix/telegram:v0.15.0
+          image: dock.mau.dev/mautrix/telegram:v0.15.1
           name: mautrix-bridge-telegram
           resources:
             requests:
