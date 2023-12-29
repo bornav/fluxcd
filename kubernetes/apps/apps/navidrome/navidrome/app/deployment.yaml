@@ -49,8 +49,8 @@ spec:
               mountPath: /startup.sh
               subPath: startup.sh
       containers:
-        - image: bornav/navidrome-bornav-test-cloud-sync:v0.0
-          name: navidrome
+        - name: navidrome
+          image: bornav/navidrome-bornav-test-cloud-sync:v0.0
           # command: ["/bin/sh"]  # Override the entrypoint
           # args: ["-c", "sleep 8400" ]
           env:
@@ -58,7 +58,10 @@ spec:
               value: '/config/navidrome.toml'
           resources:
             limits:
-              cpu: 1000m
+              cpu: 1500m
+              memory: 1000M
+            requests:
+              cpu: 100m
               memory: 500M
           # securityContext:
           #   # runAsGroup: 1000
@@ -84,6 +87,13 @@ spec:
               name: home-local-syncthing-env
           securityContext:
             privileged: true
+          resources:
+            limits:
+              cpu: 100G
+              memory: 1000M
+            requests:
+              cpu: 100m
+              memory: 500M
           volumeMounts:
             - name: navidrome-data-folder
               mountPath: /data

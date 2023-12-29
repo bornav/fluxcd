@@ -4,7 +4,8 @@ namespace: navidrome
 resources:
   - deployment.yaml
   - ingress.yaml
-  - secrets.yaml
+  # - secrets.yaml
+  - .decrypted~secrets.yaml
   - service.yaml
   - pvc.yaml
   - volsync-replication.yaml
