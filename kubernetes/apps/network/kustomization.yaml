@@ -7,4 +7,5 @@ resources:
 - reflector
 - traefik
 - auth
+- netshoot/ks.yaml
 - home-local-wireguard-connection/ks.yaml
