@@ -15,3 +15,38 @@ spec:
     requests:
       storage: 6Gi
 status: {}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  matrix-database-data-backup
+spec:
+  sourcePVC: matrix-database-data
+  trigger:
+    schedule: "*/2 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-matrix-database-data
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: matrix-database-data-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-matrix-database-data
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 6Gi

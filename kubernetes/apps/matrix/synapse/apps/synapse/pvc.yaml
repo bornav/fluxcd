@@ -30,3 +30,73 @@ spec:
     requests:
       storage: 100Mi
 status: {}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  matrix-synapse-data-backup
+spec:
+  sourcePVC: matrix-synapse-data
+  trigger:
+    schedule: "*/2 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-matrix-synapse-data
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: matrix-database-data-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-matrix-synapse-data
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 2Gi
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  matrix-bridges-data-backup
+spec:
+  sourcePVC: matrix-bridges-data
+  trigger:
+    schedule: "*/2 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-matrix-bridges-data
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: matrix-bridges-data-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-matrix-bridges-data
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 100Mi
