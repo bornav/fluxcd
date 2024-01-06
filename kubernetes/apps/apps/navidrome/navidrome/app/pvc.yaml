@@ -11,10 +11,10 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
-  # dataSourceRef:
-  #   kind: ReplicationDestination
-  #   apiGroup: volsync.backube
-  #   name: pv-navidrome-data-restore  # Name of the ReplicationDestination
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: pv-navidrome-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 2Gi
@@ -31,86 +31,86 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  # dataSourceRef:
-  #   kind: ReplicationDestination
-  #   apiGroup: volsync.backube
-  #   name: pv-navidrome-music-restore  # Name of the ReplicationDestination
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: pv-navidrome-music-restore  # Name of the ReplicationDestination
   storageClassName: longhorn
   resources:
     requests:
       storage: 8Gi
 status: {}
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name:  pv-navidrome-data-backup
-#   namespace: navidrome
-# spec:
-#   sourcePVC: pv-navidrome-data
-#   trigger:
-#     schedule: "*/10 * * * *"
-#   restic:
-#     pruneIntervalDays: 14
-#     repository: restic-navidrome-config-data
-#     retain:
-#       hourly: 6
-#       daily: 5
-#       weekly: 4
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn
-#     unlock: "something"
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationDestination
-# metadata:
-#   name: pv-navidrome-data-restore
-#   namespace: navidrome
-# spec:
-#   trigger:
-#     manual: restore-once
-#   restic:
-#     repository: restic-navidrome-config-data
-#     storageClassName: longhorn
-#     accessModes: ["ReadWriteOnce"]
-#     copyMethod: Snapshot
-#     capacity: 2Gi
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name: pv-navidrome-music-backup
-#   namespace: navidrome
-# spec:
-#   sourcePVC: pv-navidrome-music
-#   trigger:
-#     schedule: "*/60 * * * *"
-#   restic:
-#     pruneIntervalDays: 14
-#     repository: restic-navidrome-config-music
-#     retain:
-#       hourly: 6
-#       daily: 5
-#       weekly: 4
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn
-#     unlock: "something"
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationDestination
-# metadata:
-#   name: pv-navidrome-music-restore
-#   namespace: navidrome
-# spec:
-#   trigger:
-#     manual: restore-once
-#   restic:
-#     repository: restic-navidrome-config-music
-#     storageClassName: longhorn
-#     accessModes: ["ReadWriteOnce"]
-#     copyMethod: Snapshot
-#     capacity: 8Gi
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  pv-navidrome-data-backup
+  namespace: navidrome
+spec:
+  sourcePVC: pv-navidrome-data
+  trigger:
+    schedule: "*/10 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-navidrome-config-data
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: pv-navidrome-data-restore
+  namespace: navidrome
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-navidrome-config-data
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 2Gi
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: pv-navidrome-music-backup
+  namespace: navidrome
+spec:
+  sourcePVC: pv-navidrome-music
+  trigger:
+    schedule: "*/60 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-navidrome-config-music
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: pv-navidrome-music-restore
+  namespace: navidrome
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-navidrome-config-music
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 8Gi
