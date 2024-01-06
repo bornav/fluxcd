@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    numberOfReplicas: '1'
+  labels:
+    app: my-release-dokuwiki
+  name: my-release-dokuwiki
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: longhorn
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: my-release-dokuwiki-restore  # Name of the ReplicationDestination
+  resources:
+    requests:
+      storage: 4Gi
+  # volumeMode: Filesystem
+  # volumeName: pvc-34aebad8-c902-43e0-8d38-ef3434ce6a65
+status: {}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  my-release-dokuwiki-backup
+spec:
+  sourcePVC: my-release-dokuwiki
+  trigger:
+    schedule: "*/2 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-config-data
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: my-release-dokuwiki-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-config-data
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 4Gi
