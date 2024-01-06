@@ -11,6 +11,10 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: matrix-database-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 6Gi

@@ -11,6 +11,10 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: matrix-synapse-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 2Gi
@@ -26,6 +30,10 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: longhorn
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: matrix-bridges-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 100Mi
@@ -55,7 +63,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: matrix-database-data-restore
+  name: matrix-synapse-data-restore
 spec:
   trigger:
     manual: restore-once
