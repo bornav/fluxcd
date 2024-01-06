@@ -23,3 +23,4 @@ resources:
   - ./velero.yaml
   - ./backube.yaml
   - ./piraeus.yaml
+  - ./bitnami.yaml
