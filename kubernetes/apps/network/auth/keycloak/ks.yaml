@@ -7,7 +7,7 @@ metadata:
 spec:
   path: ./kubernetes/network/auth/keycloak/storage
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
