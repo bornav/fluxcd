@@ -30,10 +30,10 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: longhorn
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: matrix-bridges-data-restore  # Name of the ReplicationDestination
+  # dataSourceRef:
+  #   kind: ReplicationDestination
+  #   apiGroup: volsync.backube
+  #   name: matrix-bridges-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 100Mi
