@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: &name nextcloud-data
+  annotations:
+    numberOfReplicas: '1'
+  labels:
+    app: *name
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: longhorn
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: nextcloud-data-restore  # Name of the ReplicationDestination
+  resources:
+    requests:
+      storage: 18Gi
+status: {}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  &name nextcloud-data-backup
+spec:
+  sourcePVC: nextcloud-data
+  trigger:
+    schedule: "*/30 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-nextcloud-data
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: &name nextcloud-data-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-nextcloud-data
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: &name nextcloud-database
+  annotations:
+    numberOfReplicas: '1'
+  labels:
+    app: *name
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: longhorn
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: nextcloud-database-restore  # Name of the ReplicationDestination
+  resources:
+    requests:
+      storage: 1Gi
+status: {}
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  &name nextcloud-database-backup
+spec:
+  sourcePVC: nextcloud-database
+  trigger:
+    schedule: "*/30 * * * *"
+  restic:
+    pruneIntervalDays: 14
+    repository: restic-nextcloud-database
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: &name nextcloud-database-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-nextcloud-database
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 1Gi

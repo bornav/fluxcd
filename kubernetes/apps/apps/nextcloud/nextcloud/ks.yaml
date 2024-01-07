@@ -2,12 +2,31 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: nextcloud
+  name: nextcloud-app
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/apps/nextcloud/nextcloud/app
   prune: true
-  suspend: true
+  suspend: false
+  dependsOn:
+    - name: nextcloud-storage
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: nextcloud-storage
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/apps/nextcloud/nextcloud/storage
+  prune: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
