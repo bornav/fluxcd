@@ -27,7 +27,7 @@ metadata:
 spec:
   sourcePVC: matrix-database-data
   trigger:
-    schedule: "*/5 * * * *"
+    schedule: "*/15 * * * *"
   restic:
     pruneIntervalDays: 14
     repository: restic-matrix-database-data
