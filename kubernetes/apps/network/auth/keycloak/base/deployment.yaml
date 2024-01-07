@@ -86,6 +86,10 @@ spec:
             httpGet:
               path: /realms/master
               port: 8080
+          # volumeMounts:
+            # - name: keycloak-data
+              # mountPath: /opt  # Path in the pod where the PVC data will be mounted
+          #     subPath: keycloak  # Path within the PVC to be mounted
         - name: databases
           image: postgres:16.1-alpine
           env:
@@ -123,3 +127,12 @@ spec:
             limits:
               memory: '10Gi'
               cpu: '3000m'
+          volumeMounts:
+            - name: keycloak-data
+              mountPath: /data  # Path in the pod where the PVC data will be mounted
+              subPath: database  # Path within the PVC to be mounted
+      restartPolicy: Always
+      volumes:
+        - name: keycloak-data
+          persistentVolumeClaim:
+            claimName: keycloak-data
