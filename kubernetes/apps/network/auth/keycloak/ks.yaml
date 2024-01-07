@@ -25,7 +25,7 @@ metadata:
 spec:
   dependsOn:
     - name: keycloak-storage
-  path: ./kubernetes/network/auth/keycloak/storage
+  path: ./kubernetes/network/auth/keycloak/base
   suspend: false
   prune: true
   sourceRef:
