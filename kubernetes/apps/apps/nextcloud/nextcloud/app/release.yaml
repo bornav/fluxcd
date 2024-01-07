@@ -36,6 +36,43 @@ spec:
           secretName: cloud-icylair-com-prod
     nextcloud:
       host: nc.cloud.icylair.com
+      username: admin
+      password: test
+      # existingSecret:
+      #   enabled: true
+      #   secretName: nextcloud-secret
+      #   usernameKey: admin-name
+      #   passwordKey: admin-pass
+    persistence:
+      enabled: true
+      existingClaim: nexcloud-data
+    internalDatabase:
+      enabled: false
+    externalDatabase:
+      enabled: true
+      type: "postgresql"
+      name: "nextcloud"
+      existingSecret: 
+        enabled: true
+        secretName: postgres-secret
+        usernameKey: db-username
+        passwordKey: db-password
+    postgresql:
+      enabled: true
+      global:
+        postgresql:
+          auth:
+            database: nextcloud
+            username: nextcloud
+            # password: test
+            existingSecret: postgres-secret
+            secretKeys:
+              userPasswordKey: db-password
+              adminPasswordKey: db-password
+      # primary:
+      #   persistence:
+      #     enabled: true
+      #     existingClaim: nextcloud-database
   #   resources:
   #     requests:
   #       memory: '1Mi'
