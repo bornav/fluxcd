@@ -1,14 +1,15 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: &name nextcloud-data
+  name: nextcloud-data
+  labels:
+    app: nextcloud-data
   annotations:
     numberOfReplicas: '1'
-  labels:
-    app: *name
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   storageClassName: longhorn
   dataSourceRef:
     kind: ReplicationDestination
@@ -16,17 +17,38 @@ spec:
     name: nextcloud-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
-      storage: 18Gi
+      storage: 10Gi
+status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: nextcloud-database
+  name: nextcloud-database
+  annotations:
+    numberOfReplicas: '1'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: nextcloud-database-restore  # Name of the ReplicationDestination
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi
 status: {}
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name:  &name nextcloud-data-backup
+  name:  nextcloud-data-backup
 spec:
   sourcePVC: nextcloud-data
   trigger:
-    schedule: "*/30 * * * *"
+    schedule: "*/10 * * * *"
   restic:
     pruneIntervalDays: 14
     repository: restic-nextcloud-data
@@ -43,7 +65,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: &name nextcloud-data-restore
+  name: nextcloud-data-restore
 spec:
   trigger:
     manual: restore-once
@@ -54,35 +76,14 @@ spec:
     copyMethod: Snapshot
     capacity: 10Gi
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: &name nextcloud-database
-  annotations:
-    numberOfReplicas: '1'
-  labels:
-    app: *name
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: longhorn
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: nextcloud-database-restore  # Name of the ReplicationDestination
-  resources:
-    requests:
-      storage: 1Gi
-status: {}
----
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name:  &name nextcloud-database-backup
+  name: nextcloud-database-backup
 spec:
   sourcePVC: nextcloud-database
   trigger:
-    schedule: "*/30 * * * *"
+    schedule: "*/60 * * * *"
   restic:
     pruneIntervalDays: 14
     repository: restic-nextcloud-database
@@ -99,7 +100,7 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
-  name: &name nextcloud-database-restore
+  name: nextcloud-database-restore
 spec:
   trigger:
     manual: restore-once
