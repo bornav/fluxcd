@@ -52,7 +52,7 @@ k3s_install(){
     sed -i 's#^ansible-playbook site.yml$#ansible-playbook site.yml -e "@../external/my-cluster/group_vars/.decrypted~encrypted.yaml" -e "@../vars/.decrypted~vars-protected.yaml"#' k3s-ansible/deploy.sh
     cd k3s-ansible
     ansible-galaxy install -r ./collections/requirements.yml
-    ./deploy.sh
+    sh ./deploy.sh
     cd ..
 }
 simple_install(){
