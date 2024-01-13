@@ -28,7 +28,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: &host matrix.cloud.icylair.com
+    - host: &host matrix.icylair.com
       http:
         paths:
           - path: /public/facebook/
@@ -40,5 +40,5 @@ spec:
                   number: 29319
   tls:
   - hosts:
-      - matrix.cloud.icylair.com
-    secretName: cloud-icylair-com-prod
+      - matrix.icylair.com
+    secretName: icylair-com-prod
