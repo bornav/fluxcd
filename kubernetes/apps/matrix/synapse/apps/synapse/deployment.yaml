@@ -20,21 +20,21 @@ spec:
         app: matrix-synapse
     spec:
       initContainers:
-        - name: 'prepare-data'
-          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-          command: ["/bin/sh"]  # Override the entrypoint
-          args: ["-c", "/startup.sh" ]
-          envFrom:
-          - secretRef:
-              name: home-local-syncthing-env
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: matrix-synapse-data
-              mountPath: /data
-            - name: prepare-data
-              mountPath: /startup.sh
-              subPath: startup.sh
+        # - name: 'prepare-data'
+        #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+        #   command: ["/bin/sh"]  # Override the entrypoint
+        #   args: ["-c", "/startup.sh" ]
+        #   envFrom:
+        #   - secretRef:
+        #       name: home-local-syncthing-env
+        #   securityContext:
+        #     privileged: true
+        #   volumeMounts:
+        #     - name: matrix-synapse-data
+        #       mountPath: /data
+        #     - name: prepare-data
+        #       mountPath: /startup.sh
+        #       subPath: startup.sh
         - name: 'create-db-container-telegram'
           image: postgres
           env:
@@ -113,7 +113,7 @@ spec:
             - name: SYNAPSE_CONFIG_PATH
               value: '/data/homeserver.yaml'
             - name: SYNAPSE_SERVER_NAME
-              value: 'matrix.cloud.icylair.com'
+              value: 'matrix.icylair.com'
             - name: SYNAPSE_REPORT_STATS
               value: 'no'
           image: matrixdotorg/synapse:v1.98.0
@@ -146,27 +146,27 @@ spec:
               name: matrix-synapse-config
             - mountPath: /bridges
               name: matrix-bridges
-        - name: 'sync'
-          image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-          command: ["/bin/sh"]  # Override the entrypoint
-          args: ["-c", "./startup.sh" ]
-          envFrom:
-          - secretRef:
-              name: home-local-syncthing-env
-          resources:
-            requests:
-              memory: '1Mi'
-              cpu: '1m'
-            limits:
-              memory: '6Gi'
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: matrix-synapse-data
-              mountPath: /data
-            - name: sync-oneway
-              mountPath: /startup.sh
-              subPath: startup.sh
+        # - name: 'sync'
+        #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+        #   command: ["/bin/sh"]  # Override the entrypoint
+        #   args: ["-c", "./startup.sh" ]
+        #   envFrom:
+        #   - secretRef:
+        #       name: home-local-syncthing-env
+        #   resources:
+        #     requests:
+        #       memory: '1Mi'
+        #       cpu: '1m'
+        #     limits:
+        #       memory: '6Gi'
+        #   securityContext:
+        #     privileged: true
+        #   volumeMounts:
+        #     - name: matrix-synapse-data
+        #       mountPath: /data
+        #     - name: sync-oneway
+        #       mountPath: /startup.sh
+        #       subPath: startup.sh
       restartPolicy: Always
       securityContext:
         fsGroup: 0

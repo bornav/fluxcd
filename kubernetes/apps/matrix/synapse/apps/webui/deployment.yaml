@@ -38,43 +38,43 @@ spec:
         - name: element-config
           configMap:
             name: element-config
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: element-default
-  labels:
-    app: element-default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: element-default
-  template:
-    metadata:
-      labels:
-        app: element-default
-    spec:
-      containers:
-        - image: vectorim/element-web:v1.11.40
-          imagePullPolicy: IfNotPresent
-          name: element-web-default
-          readinessProbe:
-            tcpSocket:
-              port: 80
-          resources:
-            requests:
-              memory: '1Mi'
-              cpu: '1m'
-            limits:
-              memory: '3000Mi'
-              cpu: '2500m'
-          volumeMounts:
-            - mountPath: /app/config.json
-              name: element-config-bare
-              subPath: config.json
-      restartPolicy: Always
-      volumes:
-        - name: element-config-bare
-          configMap:
-            name: element-config-bare
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: element-default
+#   labels:
+#     app: element-default
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: element-default
+#   template:
+#     metadata:
+#       labels:
+#         app: element-default
+#     spec:
+#       containers:
+#         - image: vectorim/element-web:v1.11.40
+#           imagePullPolicy: IfNotPresent
+#           name: element-web-default
+#           readinessProbe:
+#             tcpSocket:
+#               port: 80
+#           resources:
+#             requests:
+#               memory: '1Mi'
+#               cpu: '1m'
+#             limits:
+#               memory: '3000Mi'
+#               cpu: '2500m'
+#           volumeMounts:
+#             - mountPath: /app/config.json
+#               name: element-config-bare
+#               subPath: config.json
+#       restartPolicy: Always
+#       volumes:
+#         - name: element-config-bare
+#           configMap:
+#             name: element-config-bare
