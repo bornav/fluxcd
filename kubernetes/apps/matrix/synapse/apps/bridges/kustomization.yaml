@@ -5,12 +5,12 @@ resources:
   - facebook-config.yaml
   - facebook-service.yaml
   - facebook-synapse-bridge.yaml
-  - signal-config.yaml
-  - signal-service.yaml
-  - signal-synapse-bridge.yaml
-  - telegram-config.yaml
-  - telegram-service.yaml
-  - telegram-synapse-bridge.yaml
+  # - signal-config.yaml
+  # - signal-service.yaml
+  # - signal-synapse-bridge.yaml
+  # - telegram-config.yaml
+  # - telegram-service.yaml
+  # - telegram-synapse-bridge.yaml
   - whatsapp-config.yaml
   - whatsapp-service.yaml
   - whatsapp-synapse-bridge.yaml
