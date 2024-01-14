@@ -4,3 +4,4 @@ namespace: nextcloud
 resources:
   - release.yaml
   - secret.yaml
+  # - .decrypted~secret.yaml

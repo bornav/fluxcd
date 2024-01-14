@@ -31,6 +31,10 @@ spec:
         - hosts: 
           - nc.cloud.icylair.com
           secretName: cloud-icylair-com-prod
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: 'nextcloud-nextcloud-redirectregex@kubernetescrd,nextcloud-your-middleware1@kubernetescrd,nextcloud-your-middleware2@kubernetescrd'
+        traefik.ingress.kubernetes.io/enable-cors: "true"
+        traefik.ingress.kubernetes.io/cors-headers: "X-Forwarded-For"
     nextcloud:
       host: nc.cloud.icylair.com
       existingSecret:
@@ -38,6 +42,22 @@ spec:
         secretName: nextcloud-secret
         usernameKey: admin-name
         passwordKey: admin-pass
+      # configs:
+      #   s3.config.php: |-
+      #     <?php
+      #     $CONFIG = array (
+      #       'objectstore' => array(
+      #         'class' => '\\OC\\Files\\ObjectStore\\S3',
+      #         'arguments' => array(
+      #           'bucket'     => 'my-bucket',
+      #           'autocreate' => true,
+      #           'key'        => 'xx',
+      #           'secret'     => 'xx',
+      #           'region'     => 'us-east-1',
+      #           'use_ssl'    => false
+      #         )
+      #       )
+      #     );
     persistence:
       enabled: true
       existingClaim: nextcloud-data
@@ -47,10 +67,11 @@ spec:
       enabled: true
       type: "postgresql"
       database: "nextcloud"
+      username: "nextcloud"
       existingSecret: 
         enabled: true
         secretName: postgres-secret
-        usernameKey: db-username
+        # usernameKey: db-username
         passwordKey: db-password
     postgresql:
       enabled: true
@@ -58,7 +79,7 @@ spec:
         postgresql:
           auth:
             database: nextcloud
-            # username: nextcloud
+            username: nextcloud
             # password: test
             existingSecret: postgres-secret
             secretKeys:
@@ -90,3 +111,33 @@ spec:
   #     tls:
   #       - hosts:
   #           - weave-gitops.cloud.icylair.com
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: nextcloud-redirectregex
+spec:
+  redirectRegex:
+    regex: 'https://(.*)/.well-known/(?:card|cal)dav'
+    replacement: 'https://$${1}/remote.php/dav'
+    permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: your-middleware1
+spec:
+  redirectRegex:
+    regex: '^/\.well-known/(carddav|caldav)/?$'
+    replacement: '/remote.php/dav'
+    permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: your-middleware2
+spec:
+  redirectRegex:
+    regex: '^/\.well-known/(webfinger|nodeinfo)/?$'
+    replacement: '/index.php/.well-known/$1'
+    permanent: true
