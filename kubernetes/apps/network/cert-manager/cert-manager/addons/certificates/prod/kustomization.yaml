@@ -8,6 +8,7 @@ resources:
   #- icecoldlair-com.yaml
   - cloud-icylair-com.yaml
   - icylair-com.yaml
+  - icylair-com-all.yaml
 patches:
   - target:
       kind: Certificate

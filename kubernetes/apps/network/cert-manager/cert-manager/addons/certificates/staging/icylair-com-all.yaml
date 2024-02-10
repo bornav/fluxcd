@@ -1,0 +1,22 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: icylair.com-all-staging
+spec:
+  secretName: icylair-com-all-staging
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: '*.icylair.com'
+  dnsNames:
+    - 'icylair.com'
+    - '*.icylair.com'
+    - '*.local.icylair.com'
+    - '*.cloud.icylair.com'
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/secret-reflection-allowed-namespaces: "cert-manager,nginx"
+      reflector.v1.k8s.emberstack.com/secret-reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/secret-reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/secret-reflection-auto-namespaces: "cert-manager,nginx"
