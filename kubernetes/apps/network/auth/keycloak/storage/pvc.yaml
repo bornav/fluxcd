@@ -48,7 +48,7 @@ metadata:
 spec:
   sourcePVC: data-keycloak-postgresql-0
   trigger:
-    schedule: "*/2 * * * *"
+    schedule: "*/30 * * * *"
   restic:
     pruneIntervalDays: 14
     repository: restic-keycloak-data
