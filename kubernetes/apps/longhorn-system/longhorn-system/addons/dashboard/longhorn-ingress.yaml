@@ -28,4 +28,4 @@ spec:
   tls:
   - hosts:
       - longhorn.cloud.icylair.com
-    secretName: cloud-icylair-com-prod
+    secretName: icylair-com-all-prod

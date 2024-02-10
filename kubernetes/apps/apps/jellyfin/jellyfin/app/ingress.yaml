@@ -27,4 +27,4 @@ spec:
   tls:
   - hosts:
       - jelly.icylair.com
-    secretName: icylair-com-prod
+    secretName: icylair-com-all-prod

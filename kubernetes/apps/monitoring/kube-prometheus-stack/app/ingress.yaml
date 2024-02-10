@@ -44,4 +44,4 @@ spec:
   tls:
   - hosts:
       - grafana.cloud.icylair.com
-    secretName: cloud-icylair-com-prod
+    secretName: icylair-com-all-prod

@@ -23,5 +23,5 @@ spec:
   tls:
   - hosts:
       - nginx.cloud.icylair.com
-    secretName: cloud-icecoldlair-com-staging
+    secretName: icylair-com-all-staging
 ---

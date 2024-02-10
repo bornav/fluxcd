@@ -51,4 +51,4 @@ spec:
   tls:
   - hosts:
       - matrix.icylair.com
-    secretName: icylair-com-prod
+    secretName: icylair-com-all-prod

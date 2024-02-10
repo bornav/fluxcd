@@ -48,7 +48,7 @@ spec:
   tls:
   - hosts:
       - dashboard.cloud.icylair.com
-    secretName: cloud-icylair-com-prod
+    secretName: icylair-com-all-prod
 # ---
 # apiVersion: v1
 # kind: Service

@@ -47,9 +47,7 @@ spec:
   tls:
   - hosts:
       - element.icylair.com
-    secretName: icylair-com-prod
-  - hosts:
       - element.cloud.icylair.com
       - element2.cloud.icylair.com
-    secretName: cloud-icylair-com-prod
+    secretName: icylair-com-all-prod
   
