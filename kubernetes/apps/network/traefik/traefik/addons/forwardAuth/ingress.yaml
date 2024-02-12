@@ -1,0 +1,42 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app traefik-forward-auth
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    # kubernetes.io/ingress.class: traefik
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+spec:
+  # ingressClassName: traefik
+  ingressClassName: traefik
+  rules:
+    - host: &host traefik-forward-auth.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik-forward-auth
+                port:
+                  number: 4181
+  tls:
+  - hosts:
+      - traefik-forward-auth.cloud.icylair.com
+    secretName: icylair-com-all-prod
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &name traefik-forward-auth
+spec:
+  selector:
+    app: *name
+  ports:
+    - name: http
+      port: 4181
+      targetPort: 4181

@@ -59,7 +59,8 @@ metadata:
     # app.kubernetes.io/instance: *app
     # kubernetes.io/ingress.class: traefik
     kubernetes.io/ingress.class: traefik
-    nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
 spec:
   # ingressClassName: traefik
   ingressClassName: traefik

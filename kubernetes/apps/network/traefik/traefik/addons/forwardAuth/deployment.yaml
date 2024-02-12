@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name traefik-forward-auth
+  labels:
+    app: *name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - name: *name
+          # command:
+          #   - sh
+          #   - -c
+          #   - sleep 8000s
+          image: ghcr.io/jordemort/traefik-forward-auth:latest
+          envFrom:
+          - secretRef:
+              name: keycloak-sso-data
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '500Mi'
+              cpu: '800m'
+      restartPolicy: Always
+status: {}
