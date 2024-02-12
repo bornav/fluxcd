@@ -5,7 +5,7 @@ metadata:
   name: dashboard-app
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/dashboard/dashboard/app
+  path: ./kubernetes/apps/apps/dashboard/dashboard/app
   prune: true
   # dependsOn:
   #   - name: traefik-addons

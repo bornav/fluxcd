@@ -5,3 +5,4 @@ resources:
   - navidrome
   - nextcloud
   - namespace.yaml
+  - dashboard

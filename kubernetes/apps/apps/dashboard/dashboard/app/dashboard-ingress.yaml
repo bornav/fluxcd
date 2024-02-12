@@ -49,6 +49,35 @@ spec:
   - hosts:
       - dashboard.cloud.icylair.com
     secretName: icylair-com-all-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app dashboard-homepage-cloud-auth
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    # kubernetes.io/ingress.class: traefik
+    kubernetes.io/ingress.class: traefik
+    nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
+spec:
+  # ingressClassName: traefik
+  ingressClassName: traefik
+  rules:
+    - host: &host dashboard-auth.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-homepage
+                port:
+                  number: 3000
+  tls:
+  - hosts:
+      - dashboard-auth.cloud.icylair.com
+    secretName: icylair-com-all-prod
 # ---
 # apiVersion: v1
 # kind: Service
