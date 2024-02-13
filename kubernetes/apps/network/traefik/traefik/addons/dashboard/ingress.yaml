@@ -21,7 +21,8 @@ metadata:
     kubernetes.io/ingress.class: traefik
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.middlewares: traefik-dashboard-auth@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: traefik-dashboard-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:
