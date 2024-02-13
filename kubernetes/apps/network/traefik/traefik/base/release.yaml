@@ -89,7 +89,8 @@ spec:
           name: traefik-dashboard
           annotations:
             traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            traefik.ingress.kubernetes.io/router.middlewares: network-traefik-dashboard-auth@kubernetescrd
+            # traefik.ingress.kubernetes.io/router.middlewares: network-traefik-dashboard-auth@kubernetescrd
+            traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
         spec:
           rules:
           - host: traefik.cloud.icylair.com
