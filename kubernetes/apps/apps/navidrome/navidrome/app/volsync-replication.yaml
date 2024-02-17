@@ -70,5 +70,5 @@ spec:
     repository: restic-navidrome-config-music
     storageClassName: longhorn
     accessModes: ["ReadWriteOnce"]
-    copyMethod: Snapshot
+    copyMethod: Direct
     capacity: 8Gi
