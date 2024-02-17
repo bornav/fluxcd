@@ -7,7 +7,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/apps/nextcloud/nextcloud/app
   prune: true
-  suspend: false
+  suspend: true
   dependsOn:
     - name: nextcloud-storage
   sourceRef:
