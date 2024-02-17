@@ -76,7 +76,8 @@ spec:
     storageClassName: longhorn
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
-    capacity: 2Gi
+    destinationPVC: pv-navidrome-data
+    # capacity: 2Gi
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
@@ -113,4 +114,5 @@ spec:
     storageClassName: longhorn
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
-    capacity: 8Gi
+    destinationPVC: pv-navidrome-music
+    # capacity: 8Gi
