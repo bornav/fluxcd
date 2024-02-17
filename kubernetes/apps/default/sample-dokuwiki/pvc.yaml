@@ -30,7 +30,7 @@ spec:
   trigger:
     schedule: "*/2 * * * *"
   restic:
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: restic-config-data
     retain:
       hourly: 6

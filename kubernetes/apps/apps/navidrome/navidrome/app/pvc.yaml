@@ -51,7 +51,7 @@ spec:
   trigger:
     schedule: "*/10 * * * *"
   restic:
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: restic-navidrome-config-data
     retain:
       hourly: 6
@@ -89,7 +89,7 @@ spec:
   trigger:
     schedule: "*/60 * * * *"
   restic:
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: restic-navidrome-config-music
     retain:
       hourly: 6

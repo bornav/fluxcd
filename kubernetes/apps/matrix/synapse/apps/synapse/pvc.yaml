@@ -48,7 +48,7 @@ spec:
   trigger:
     schedule: "*/15 * * * *"
   restic:
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: restic-matrix-synapse-data
     retain:
       hourly: 6
@@ -83,7 +83,7 @@ spec:
 #   trigger:
 #     schedule: "*/35 * * * *"
 #   restic:
-#     pruneIntervalDays: 14
+#     pruneIntervalDays: 1
 #     repository: restic-matrix-bridges-data
 #     retain:
 #       hourly: 6

@@ -50,7 +50,7 @@ spec:
   trigger:
     schedule: "*/30 * * * *"
   restic:
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: restic-keycloak-data
     retain:
       hourly: 6

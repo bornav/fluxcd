@@ -29,7 +29,7 @@ spec:
   trigger:
     schedule: "*/15 * * * *"
   restic:
-    pruneIntervalDays: 14
+    pruneIntervalDays: 1
     repository: restic-matrix-database-data
     retain:
       hourly: 6
