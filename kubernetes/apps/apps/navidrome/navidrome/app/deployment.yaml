@@ -50,7 +50,7 @@ spec:
               subPath: startup.sh
       containers:
         - name: navidrome
-          image: bornav/navidrome-bornav-test-cloud-sync:v0.0
+          image: bornav/navidrome-bornav-test-cloud-sync:0.0.52
           # command: ["/bin/sh"]  # Override the entrypoint
           # args: ["-c", "sleep 8400" ]
           env:

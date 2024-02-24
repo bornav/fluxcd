@@ -15,7 +15,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
-    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd    
+    # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd    
 spec:
   ingressClassName: traefik
   rules:
@@ -75,4 +75,3 @@ spec:
   #     - music.cloud.icylair.com
   #     - navidrome.cloud.icylair.com
   #   secretName: cloud-icylair-com-prod
-
