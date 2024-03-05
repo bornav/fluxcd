@@ -91,7 +91,7 @@ spec:
               # mountPath: /opt  # Path in the pod where the PVC data will be mounted
           #     subPath: keycloak  # Path within the PVC to be mounted
         - name: databases
-          image: postgres:16.1-alpine
+          image: postgres:16.2-alpine
           env:
             - name: POSTGRES_USER
               valueFrom:
