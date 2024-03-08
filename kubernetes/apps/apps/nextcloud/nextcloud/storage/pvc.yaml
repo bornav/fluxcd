@@ -48,7 +48,7 @@ metadata:
 spec:
   sourcePVC: nextcloud-data
   trigger:
-    schedule: "*/10 * * * *"
+    schedule: "*/14 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-nextcloud-data
@@ -83,7 +83,7 @@ metadata:
 spec:
   sourcePVC: nextcloud-database
   trigger:
-    schedule: "*/60 * * * *"
+    schedule: "*/63 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-nextcloud-database

@@ -28,7 +28,7 @@ metadata:
 spec:
   sourcePVC: my-release-dokuwiki
   trigger:
-    schedule: "*/2 * * * *"
+    schedule: "*/7 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-config-data
