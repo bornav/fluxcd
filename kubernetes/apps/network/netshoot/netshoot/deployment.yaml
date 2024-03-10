@@ -28,9 +28,6 @@ spec:
             cpu: '2500m'
         securityContext:
             privileged: true
-            capabilities:
-              add:
-                - NET_ADMIN
       - name: netshoot
         image: nicolaka/netshoot
         command: ["/bin/bash"]
@@ -44,6 +41,3 @@ spec:
             cpu: '2500m'
         securityContext:
             privileged: true
-            capabilities:
-              add:
-                - NET_ADMIN
