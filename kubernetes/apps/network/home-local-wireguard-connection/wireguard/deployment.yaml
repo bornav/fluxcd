@@ -90,5 +90,6 @@ spec:
         - name: wireguard-secret
           secret:
             secretName: wireguard
+            defaultMode: 0777
       imagePullSecrets:
         - name: docker-registry
