@@ -36,7 +36,8 @@ spec:
         - name: 'prepare-music'
           image: 'instrumentisto/rsync-ssh:alpine3.18.3'
           command: ["/bin/sh"]  # Override the entrypoint
-          args: ["-c", "/startup.sh" ]
+          args: ["-c", "sleep 9999" ] 
+          # args: ["-c", "/startup.sh" ]
           envFrom:
           - secretRef:
               name: home-local-syncthing-env
@@ -48,6 +49,8 @@ spec:
             - name: sync-music
               mountPath: /startup.sh
               subPath: startup.sh
+            - name: nfs-vol
+              mountPath: /mnt
       containers:
         - name: navidrome
           image: bornav/navidrome-bornav-test-cloud-sync:0.0.52
@@ -123,4 +126,11 @@ spec:
           secret:
             secretName: sync-data
             defaultMode: 0777
+        - name: nfs-vol
+          nfs:
+            server: 10.43.255.250 # IP to our NFS server
+            # server: wireguard.network.svc.cluster.local # IP to our NFS server
+            path: /mnt/vega/vega/multimedia/MusicLibrary # The exported directory
+            # path: /mnt/vega/vega/multimedia # The exported directory
+            readOnly: true
       restartPolicy: Always
