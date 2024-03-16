@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: teamspeak
+  name: teamspeak
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  selector:
+    matchLabels:
+      app: teamspeak
+  template:
+    metadata:
+      labels:
+        app: teamspeak
+    spec:
+      containers:
+      - name: teamspeak-server
+        image: ertagh/teamspeak3-server:latest-box
+        # image: ertagh/teamspeak3-server:latest
+        env:
+        - name: TIME_ZONE
+          value: Europe/Vienna
+        - name: INIFILE
+          value: "1"
+        - name: TS_UPDATE
+          value: "0"
+        # - name: DEBUG
+        #   value: "1"
+        # - name: UID
+        #   value: "1000"
+        # - name: GID
+        #   value: "1000"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9987
+          protocol: UDP
+        - containerPort: 10011
+          protocol: TCP
+        - containerPort: 30033
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 250m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        # securityContext:
+        #   # runAsGroup: 1000
+        #   # runAsUser: 0
+        #   privileged: true
+        volumeMounts:
+        # - mountPath: /var/ts3server/
+        - mountPath: /ts3server/save
+          name: teamspeak-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: teamspeak-data
+        persistentVolumeClaim:
+          claimName: teamspeak

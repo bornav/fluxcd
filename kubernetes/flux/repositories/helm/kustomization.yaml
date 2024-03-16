@@ -25,3 +25,4 @@ resources:
   - ./piraeus.yaml
   - ./bitnami.yaml
   - ./istio.yaml
+  - ./teamspeak.yaml

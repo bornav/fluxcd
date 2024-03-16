@@ -1,0 +1,71 @@
+image:
+  repository: ertagh/teamspeak3-server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest-box
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+## only NodePort and LoadBalancer supported, as this is UDP traffic
+service:
+  type: LoadBalancer
+  ## ip requests a specific IP address from the LoadBalancer (Supported only for LoadBalancer)
+  #ip: "IPAddress"
+  ## externalIPs define a manual value if you are using a Bare-Metal Kubernetes cluster (Supported only for LoadBalancer)
+  #externalIPs:
+  #  - 1.2.3.4
+  #  - 4.5.6.7
+
+  ## tcp.enabled creates the TCP service if true (supported only if your LB implementation suports both TCP and UDP)
+  ## Needed until https://github.com/kubernetes/kubernetes/issues/23880 is implemented
+  ## See https://github.com/janosi/enhancements/blob/mixedprotocollb/keps/sig-network/20200103-mixed-protocol-lb.md#implementation-detailsnotesconstraints
+  ## Some mixed ports implementations use an annotation to merge services
+  ## known anotations:
+  ## MetalLB - metallb.universe.tf/allow-shared-ip: [string]
+  ## Azure CPI LB - service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: [bool] (Not tested)
+
+  tcp:
+    enabled: false
+    ## type sets the implementation type. Values either combined | separate. See docs.
+    type: "separate"
+  annotations:
+  # metallb.universe.tf/allow-shared-ip: "{{ .Release.Name }}"
+  #service.beta.kubernetes.io/azure-load-balancer-mixed-protocols: "true"
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+extraEnv: []
+
+extraVolumes: []
+
+extraVolumeMounts: []
+
+voicePorts:
+- containerPort: 9987
+  nodePort: 30987
+  # nodePort: 9987
+configs:
+  allowlist: []
+
+persistence:
+  enabled: false
+  accessMode: ReadWriteOnce
+  existingClaim: teamspeak
+  # annotations:
+  #  "helm.sh/resource-policy": keep
+  #storageClass: "azure-managed-ssd"
+  storageSize: 1Gi
