@@ -51,11 +51,11 @@ spec:
         cpu: '3000m'
     ports:
       web:
-        hostPort: 80
+        # hostPort: 80
         redirectTo:
           port: websecure
       websecure:
-        hostPort: 443
+        # hostPort: 443
         # nodePort: 42443
         tls:
           enabled: true
