@@ -26,7 +26,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/apps/teamspeak/teamspeak/storage
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
