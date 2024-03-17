@@ -17,7 +17,7 @@ spec:
     name: matrix-database-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
-      storage: 6Gi
+      storage: 3Gi
 status: {}
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -53,4 +53,4 @@ spec:
     storageClassName: longhorn
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
-    capacity: 6Gi
+    capacity: 3Gi
