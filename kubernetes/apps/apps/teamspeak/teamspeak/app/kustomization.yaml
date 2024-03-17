@@ -4,3 +4,4 @@ namespace: default
 resources:
   # - old_release.yaml
   - deployment.yaml
+  - service.yaml

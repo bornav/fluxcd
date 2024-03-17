@@ -5,15 +5,14 @@ metadata:
   labels:
     app: teamspeak
   name: teamspeak
-  namespace: default
 spec:
+  selector:
+    app: teamspeak
   ports:
   - name: ts3-voice-9987
-    # nodePort: 30987
-    nodePort: 30989
+    nodePort: 30987
+    # nodePort: 30989
     port: 9987
     protocol: UDP
     targetPort: 9987
-  selector:
-    app: teamspeak
   type: LoadBalancer
