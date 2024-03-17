@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: teamspeak
+  name: teamspeak
+spec:
+  selector:
+    matchLabels:
+      app: teamspeak
+  template:
+    metadata:
+      labels:
+        app: teamspeak
+    spec:
+      containers:
+      - name: teamspeak-server
+        image: ertagh/teamspeak3-server:latest-box
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: TIME_ZONE
+          value: Europe/Vienna
+        - name: INIFILE
+          value: "1"
+        - name: TS_UPDATE
+          value: "0"
+        # - name: DEBUG
+        #   value: "1"
+        # - name: UID
+        #   value: "1000"
+        # - name: GID
+        #   value: "1000"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9987
+          protocol: UDP
+          hostPort: 9987
+        - containerPort: 10011
+          protocol: TCP
+          hostPort: 10011
+        - containerPort: 30033
+          protocol: TCP
+          hostPort: 30033
+        resources:
+          limits:
+            cpu: 250m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        # securityContext:
+        #   # runAsGroup: 1000
+        #   # runAsUser: 0
+        #   privileged: true
+        volumeMounts:
+        - mountPath: /teamspeak
+          name: teamspeak-data
+        # - mountPath: /var/ts3server/
+        # - mountPath: /teamspeak
+        #   name: teamspeak-data2
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: teamspeak-data
+          persistentVolumeClaim:
+            claimName: teamspeak
