@@ -5,3 +5,10 @@ metadata:
   name: apps
   annotations:
     volsync.backube/privileged-movers: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: default
+  annotations:
+    volsync.backube/privileged-movers: "true"

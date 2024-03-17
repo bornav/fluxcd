@@ -6,4 +6,4 @@ resources:
   - nextcloud
   - namespace.yaml
   - dashboard
-  # - teamspeak
+  - teamspeak

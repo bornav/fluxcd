@@ -11,46 +11,46 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
-  # dataSourceRef:
-  #   kind: ReplicationDestination
-  #   apiGroup: volsync.backube
-  #   name: teamspeak-restore  # Name of the ReplicationDestination
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: teamspeak-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 1Gi
 status: {}
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name:  teamspeak-backup
-# spec:
-#   sourcePVC: teamspeak
-#   trigger:
-#     schedule: "*/16 * * * *"
-#   restic:
-#     pruneIntervalDays: 1
-#     repository: restic-teamspeak
-#     retain:
-#       hourly: 1
-#       daily: 1
-#       weekly: 1
-#       monthly: 1
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn
-#     unlock: "something"
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationDestination
-# metadata:
-#   name: teamspeak-restore
-# spec:
-#   trigger:
-#     manual: restore-once
-#   restic:
-#     repository: restic-teamspeak
-#     storageClassName: longhorn
-#     accessModes: ["ReadWriteOnce"]
-#     copyMethod: Snapshot
-#     capacity: 1Gi
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  teamspeak-backup
+spec:
+  sourcePVC: teamspeak
+  trigger:
+    schedule: "*/16 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-teamspeak
+    retain:
+      hourly: 1
+      daily: 1
+      weekly: 1
+      monthly: 1
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: teamspeak-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-teamspeak
+    storageClassName: longhorn
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 1Gi

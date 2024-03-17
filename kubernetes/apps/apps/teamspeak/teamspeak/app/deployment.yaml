@@ -4,7 +4,6 @@ metadata:
   labels:
     app: teamspeak
   name: teamspeak
-  namespace: default
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -19,7 +18,8 @@ spec:
       containers:
       - name: teamspeak-server
         image: ertagh/teamspeak3-server:latest-box
-        # image: ertagh/teamspeak3-server:latest
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
         env:
         - name: TIME_ZONE
           value: Europe/Vienna
@@ -53,9 +53,11 @@ spec:
         #   # runAsUser: 0
         #   privileged: true
         volumeMounts:
-        # - mountPath: /var/ts3server/
-        - mountPath: /ts3server/save
+        - mountPath: /teamspeak
           name: teamspeak-data
+        # - mountPath: /var/ts3server/
+        # - mountPath: /teamspeak
+        #   name: teamspeak-data2
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
