@@ -8,14 +8,11 @@ metadata:
     # app.kubernetes.io/instance: *app
     kubernetes.io/ingress.class: traefik
   annotations:
-    # traefik.ingress.kubernetes.io/router.middlewares: network-test-auth@kubernetescrd
-    # ingress.kubernetes.io/auth-type: forward
-    # # ingress.kubernetes.io/auth-url: http://traefik-forward-auth:4181
-    # ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
-    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
-    # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd    
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"    
+    # ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
+    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd  
 spec:
   ingressClassName: traefik
   rules:
@@ -49,6 +46,54 @@ spec:
                 name: navidrome-service
                 port:
                   number: 4533
+    # - host: music.cloud.icylair.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: navidrome-service
+    #             port:
+    #               number: 4533
+  tls:
+  - hosts:
+      - navidrome.icylair.com
+      - music.icylair.com
+      - music.cloud.icylair.com
+      - navidrome.cloud.icylair.com
+    secretName: icylair-com-all-prod
+  # tls:
+  # - hosts:
+  #     - navidrome.icylair.com
+  #     - music.icylair.com
+  #   secretName: icylair-com-prod
+  # - hosts:
+  #     - music.cloud.icylair.com
+  #     - navidrome.cloud.icylair.com
+  #   secretName: cloud-icylair-com-prod
+  
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app navidrome-navidrome-special
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    # traefik.ingress.kubernetes.io/router.middlewares: network-test-auth@kubernetescrd
+    # ingress.kubernetes.io/auth-type: forward
+    # # ingress.kubernetes.io/auth-url: http://traefik-forward-auth:4181
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+    ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
+    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd    
+spec:
+  ingressClassName: traefik
+  rules:
     - host: music.cloud.icylair.com
       http:
         paths:
@@ -61,10 +106,7 @@ spec:
                   number: 4533
   tls:
   - hosts:
-      - navidrome.icylair.com
-      - music.icylair.com
       - music.cloud.icylair.com
-      - navidrome.cloud.icylair.com
     secretName: icylair-com-all-prod
   # tls:
   # - hosts:
