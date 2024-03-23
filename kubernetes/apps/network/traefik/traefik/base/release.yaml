@@ -141,7 +141,7 @@ spec:
         publishedService:
           enabled: false
     rbac:
-      enabled: false
+      enabled: true
     tlsStore:
       default:
         defaultCertificate:
