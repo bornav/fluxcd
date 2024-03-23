@@ -1,1 +1,0 @@
-this is here as a workaround for porting all the certificates to different namespaces, without this traefik does not have acces to the tls certificates stored in the default namespace
