@@ -96,7 +96,7 @@ spec:
             name: traefik
             targetPort: 9000
             protocol: TCP
-            
+
       # - apiVersion: traefik.io/v1alpha1
       #   kind: Middleware
       #   metadata:
@@ -114,6 +114,7 @@ spec:
             # traefik.ingress.kubernetes.io/router.middlewares: network-traefik-dashboard-auth@kubernetescrd
             traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
         spec:
+          ingressClassName: traefik-external
           rules:
           - host: traefik.cloud.icylair.com
             http:
