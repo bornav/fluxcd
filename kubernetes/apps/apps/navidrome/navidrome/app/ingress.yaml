@@ -14,7 +14,7 @@ metadata:
     # ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd  
 spec:
-  ingressClassName: traefik
+  ingressClassName: traefik-external
   rules:
     - host: navidrome.icylair.com
       http:
@@ -92,7 +92,7 @@ metadata:
     ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd    
 spec:
-  ingressClassName: traefik
+  ingressClassName: traefik-external
   rules:
     - host: music.cloud.icylair.com
       http:

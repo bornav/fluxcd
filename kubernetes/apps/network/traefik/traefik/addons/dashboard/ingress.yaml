@@ -24,7 +24,7 @@ metadata:
     # traefik.ingress.kubernetes.io/router.middlewares: traefik-dashboard-auth@kubernetescrd
     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
 spec:
-  ingressClassName: traefik
+  ingressClassName: traefik-external
   rules:
   - host: traefik.cloud.icylair.com
     http:

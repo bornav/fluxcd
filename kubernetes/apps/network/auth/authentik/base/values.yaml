@@ -9,7 +9,7 @@ authentik:
 
 ingress:
     # Specify kubernetes ingress controller class name
-    ingressClassName: traefik
+    ingressClassName: traefik-external
     enabled: true
     hosts:
         # Specify external host name

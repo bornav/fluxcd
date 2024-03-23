@@ -32,8 +32,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
     nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
 spec:
-  # ingressClassName: traefik
-  ingressClassName: traefik
+  ingressClassName: traefik-external
   rules:
     - host: &host dashboard.cloud.icylair.com
       http:
@@ -62,8 +61,7 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
 spec:
-  # ingressClassName: traefik
-  ingressClassName: traefik
+  ingressClassName: traefik-external
   rules:
     - host: &host dashboard-auth.cloud.icylair.com
       http:

@@ -11,8 +11,8 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
 spec:
-  # ingressClassName: traefik
-  ingressClassName: traefik
+  # ingressClassName: traefik-external
+  ingressClassName: traefik-external
   rules:
     - host: &host traefik-forward-auth.cloud.icylair.com
       http:

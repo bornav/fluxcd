@@ -8,7 +8,7 @@ metadata:
     # app.kubernetes.io/instance: *app
     kubernetes.io/ingress.class: traefik
 spec:
-  ingressClassName: traefik
+  ingressClassName: traefik-external
   rules:
     - host: &host nginx.cloud.icylair.com
       http:

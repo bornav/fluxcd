@@ -447,7 +447,7 @@ spec:
 #     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
 #     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
 # spec:
-#   ingressClassName: traefik
+#   ingressClassName: traefik-external
 #   rules:
 #     - host: &host matrix.icylair.com
 #       http:
