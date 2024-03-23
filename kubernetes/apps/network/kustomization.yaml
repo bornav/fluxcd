@@ -4,7 +4,6 @@ resources:
 - namespace.yaml
 # - cert-manager
 - nginx
-- reflector
 - traefik
 - auth
 - netshoot/ks.yaml
