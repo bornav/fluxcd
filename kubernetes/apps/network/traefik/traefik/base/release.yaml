@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 26.0.0 #chart version not app
+      version: 26.1.0 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -26,14 +26,12 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    #https://github.com/traefik/traefik-helm-chart/blob/master/traefik/VALUES.md
-    #apiVersion: traefik.containo.us/v1alpha1
     globalArguments:
       - '--global.sendanonymoususage=false'
       - '--global.checknewversion=false'
     additionalArguments:
       - '--serversTransport.insecureSkipVerify=true'
-      - '--log.level=INFO' # TODO: change to
+      - '--log.level=INFO'
       - "--api.insecure=true"
     deployment:
       enabled: true
@@ -50,6 +48,17 @@ spec:
         memory: '6Gi'
         cpu: '3000m'
     ports:
+      p-9987-udp:
+        port: 9987
+        exposedPort: 9987
+        # hostPort: 9987
+        protocol: "UDP"
+      p-9987-tcp:
+        port: 9987
+        exposedPort: 9987
+        # hostPort: 9987
+        protocol: "TCP"
+        # expose: true
       web:
         # hostPort: 80
         redirectTo:
@@ -59,10 +68,20 @@ spec:
         # nodePort: 42443
         tls:
           enabled: true
+    ingressClass:
+      enabled: true
+      isDefaultClass: true
+      name: &ingress-class-name traefik
     ingressRoute:
       dashboard:
-        enabled: true
+        enabled: false
+        annotations: {}
+        matchRule: Host(`traefik.cloud.icylair.com`)
+        entryPoints: ["websecure"]
+        middlewares: {}
+        tls: {}
     extraObjects:
+    ###########################################################################
       - apiVersion: v1
         kind: Service
         metadata:
@@ -109,11 +128,12 @@ spec:
           tls:
           - hosts:
               - traefik.cloud.icylair.com
-            secretName: cloud-icylair-com-prod
+            secretName: icylair-com-all-prod
+    ###########################################################################
     providers:
       kubernetesCRD:
         enabled: true
-        ingressClass: traefik-external
+        ingressClass: *ingress-class-name 
         allowExternalNameServices: true
       kubernetesIngress:
         enabled: true
@@ -121,7 +141,11 @@ spec:
         publishedService:
           enabled: false
     rbac:
-      enabled: true
+      enabled: false
+    tlsStore:
+      default:
+        defaultCertificate:
+          secretName: icylair-com-all-prod
     service:
       enabled: true
       type: LoadBalancer
@@ -129,6 +153,6 @@ spec:
       labels: {}
       spec:
         loadBalancerIP: 10.0.0.230
-       #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
+        #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
       loadBalancerSourceRanges: []
       externalIPs: []
