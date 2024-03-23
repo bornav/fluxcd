@@ -18,5 +18,5 @@ spec:
               key: cloudflare-token
         selector:
           dnsZones:
-            - 'icecoldlair.com'
+            # - 'icecoldlair.com'
             - 'icylair.com'

@@ -5,7 +5,7 @@ metadata:
   name: cert-manager-base
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/network/cert-manager/cert-manager/base
+  path: ./kubernetes/apps/xauth/cert-manager/cert-manager/base
   prune: true
   sourceRef:
     kind: GitRepository
@@ -15,7 +15,7 @@ spec:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
       name: cert-manager
-      namespace: cert-manager
+      namespace: xauth
   interval: 15m
   retryInterval: 15m
   timeout: 5m
@@ -28,7 +28,7 @@ metadata:
 spec:
   dependsOn:
     - name: cert-manager-base
-  path: ./kubernetes/apps/network/cert-manager/cert-manager/addons
+  path: ./kubernetes/apps/xauth/cert-manager/cert-manager/addons
   prune: true
   sourceRef:
     kind: GitRepository
