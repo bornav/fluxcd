@@ -1,0 +1,86 @@
+---
+- hosts: "all"
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+    - name: Gathering facts
+      setup:
+      become: true
+    - name: install debug packages and qol
+      apt:
+        name: 
+          - iputils-ping
+          # - arping
+          # - traceroute
+          - nano
+          - vim
+          - tcpdump
+          # - netcat
+          # - iptables-persistent
+          - net-tools
+      become: true
+    - name: Purge builting firewall rules and packages
+      apt:
+        name:
+          - netfilter-persistent
+        state: absent
+        purge: true
+    - name: Flush all existing iptables rules
+      iptables:
+        flush: yes
+    - name: Enable IP forwarding
+      sysctl:
+        name: "net.ipv4.ip_forward"
+        value: 1
+    - name: OPEN 22 for ssh and k9s
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_ports: "22"
+        jump: ACCEPT
+        #ctstate: NEW
+        #syn: match
+        comment: opens port 22
+    - name: OPEN 6443 for k9s
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_ports: "6443"
+        jump: ACCEPT
+        #ctstate: NEW
+        #syn: match
+        comment: opens port 6443
+    - name: OPEN 443 for https
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_ports: "443"
+        jump: ACCEPT
+        #ctstate: NEW
+        #syn: match
+        comment: opens port 443
+    - name: OPEN 80 for http
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_ports: "80"
+        jump: ACCEPT
+        #ctstate: NEW
+        #syn: match
+        comment: opens port 80
+    # - name: Allow connections on multiple ports
+    #   ansible.builtin.iptables:
+    #     chain: INPUT
+    #     protocol: tcp
+    #     destination_ports:
+    #       - "80"
+    #       - "443"
+    #       - "8081:8083"
+    #     jump: ACCEPT
+    - name: iptables save current rules
+      shell: | 
+        mkdir -p /etc/iptables/
+        iptables-save > /etc/iptables/rules.v4
+
