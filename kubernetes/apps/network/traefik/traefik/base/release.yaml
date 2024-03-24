@@ -35,11 +35,10 @@ spec:
       - "--api.insecure=true"
     deployment:
       enabled: true
+      kind: DaemonSet
       replicas: 1
-      annotations: {}
-      podAnnotations: {}
-      additionalContainers: []
-      initContainers: []
+      terminationGracePeriodSeconds: 10
+      minReadySeconds: 3
     resources:
       requests:
         memory: '1Mi'
@@ -60,10 +59,15 @@ spec:
         protocol: "TCP"
         # expose: true
       web:
-        # hostPort: 80
+        hostPort: 80
         redirectTo:
           port: websecure
       websecure:
+        hostPort: 443
+        port: 8443
+        containerPort: 8443
+        expose: true
+        exposedPort: 443
         # hostPort: 443
         # nodePort: 42443
         tls:
@@ -153,7 +157,7 @@ spec:
       annotations: {}
       labels: {}
       spec:
-        loadBalancerIP: 10.0.0.230
+        loadBalancerIP: 10.99.20.230
         #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
       loadBalancerSourceRanges: []
       externalIPs: []

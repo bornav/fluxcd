@@ -50,3 +50,4 @@ spec:
       tls:
         - hosts:
             - weave-gitops.cloud.icylair.com
+          secretName: icylair-com-all-prod
