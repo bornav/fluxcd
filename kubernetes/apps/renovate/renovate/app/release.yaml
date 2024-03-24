@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: renovate
-      version: 37.262.2
+      version: 37.267.1
       sourceRef:
         kind: HelmRepository
         name: renovate
