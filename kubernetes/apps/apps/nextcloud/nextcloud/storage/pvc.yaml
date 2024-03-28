@@ -53,10 +53,10 @@ spec:
     pruneIntervalDays: 1
     repository: restic-nextcloud-data
     retain:
-      hourly: 1
-      daily: 1
-      weekly: 1
-      monthly: 1
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
       yearly: 1
     copyMethod: Snapshot
     storageClassName: longhorn
@@ -88,10 +88,10 @@ spec:
     pruneIntervalDays: 1
     repository: restic-nextcloud-database
     retain:
-      hourly: 1
-      daily: 1
-      weekly: 1
-      monthly: 1
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
       yearly: 1
     copyMethod: Snapshot
     storageClassName: longhorn
