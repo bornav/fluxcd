@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   annotations:
-    numberOfReplicas: '1'
+    numberOfReplicas: '2'
   labels:
     app: my-release-dokuwiki
   name: my-release-dokuwiki

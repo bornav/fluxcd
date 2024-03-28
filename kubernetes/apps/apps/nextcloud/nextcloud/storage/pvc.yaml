@@ -6,7 +6,7 @@ metadata:
   labels:
     app: nextcloud-data
   annotations:
-    numberOfReplicas: '1'
+    numberOfReplicas: '2'
 spec:
   accessModes:
     - ReadWriteOnce
@@ -27,7 +27,7 @@ metadata:
     app: nextcloud-database
   name: nextcloud-database
   annotations:
-    numberOfReplicas: '1'
+    numberOfReplicas: '2'
 spec:
   accessModes:
     - ReadWriteOnce

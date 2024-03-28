@@ -6,7 +6,7 @@ metadata:
     app: matrix-database-data
   name: matrix-database-data
   annotations:
-    numberOfReplicas: '1'
+    numberOfReplicas: '2'
 spec:
   accessModes:
     - ReadWriteOnce

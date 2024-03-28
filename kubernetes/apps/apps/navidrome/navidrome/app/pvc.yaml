@@ -6,7 +6,7 @@ metadata:
   labels:
     app: pv-navidrome-data
   annotations:
-    numberOfReplicas: '1'
+    numberOfReplicas: '2'
 spec:
   accessModes:
     - ReadWriteOnce
@@ -27,7 +27,7 @@ metadata:
     app: pv-navidrome-music
   name: pv-navidrome-music
   annotations:
-    numberOfReplicas: '1'
+    numberOfReplicas: '2'
 spec:
   accessModes:
     - ReadWriteOnce
