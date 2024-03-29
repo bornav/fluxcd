@@ -1,0 +1,41 @@
+all:
+  hosts:
+
+    host1:
+      pipelining: true
+      ansible_ssh_user: root
+      ansible_host: "10.2.11.19"
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      wireguard_ip: 10.99.11.10
+
+    host2:
+      pipelining: true
+      ansible_ssh_user: root
+      ansible_host: "10.2.11.20"
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      wireguard_ip: 10.99.11.11
+
+    # host3:
+    #   pipelining: true
+    #   ansible_ssh_user: root
+    #   ansible_host: "10.2.11.21"
+    #   ansible_ssh_port: 22
+    #   ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+    #   wireguard_ip: 10.99.11.12
+
+    host3:
+      pipelining: true
+      ansible_ssh_user: root
+      ansible_host: "138.3.244.139"
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      wireguard_ip: 10.99.11.12
+
+  vars:
+    ufw_enabled: false
+    ansible_become_method: su 
+    wireguard_mask_bits: 24
+    wireguard_port: 51871
+
