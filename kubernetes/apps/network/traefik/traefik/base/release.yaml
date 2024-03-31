@@ -49,13 +49,13 @@ spec:
     ports:
       udp:
         port: 9987
-        exposedPort: 9987
-        hostPort: 9987
+        # exposedPort: 9987
+        # hostPort: 9987
         protocol: "UDP"
       tcp:
         port: 9987
-        exposedPort: 9987
-        hostPort: 9987
+        # exposedPort: 9987
+        # hostPort: 9987
         protocol: "TCP"
         # expose: true
       web:
