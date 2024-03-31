@@ -68,3 +68,37 @@ spec:
   - name: teamspeak-data
     persistentVolumeClaim:
       claimName: teamspeak
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # labels:
+  #   app: teamspeak
+  name: teamspeak
+spec:
+  selector:
+    app: teamspeak
+  ports:
+  - name: udp
+    # nodePort: 30987
+    # nodePort: 30989
+    port: 9988
+    protocol: UDP
+    targetPort: 9987
+  type: LoadBalancer
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteUDP
+metadata:
+   name: ingressrouteudpfoo
+  #  namespace: network
+spec:
+  entryPoints:
+     - udp
+  routes:
+  - services:
+    - name: teamspeak
+      port: 9988
+      weight: 10
+      # nativeLB: true
+---
