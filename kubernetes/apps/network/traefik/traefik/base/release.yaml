@@ -52,12 +52,12 @@ spec:
         exposedPort: 9987
         # hostPort: 9987
         protocol: "UDP"
-      # p-9987-tcp:
-      #   port: 9987
-      #   exposedPort: 9987
-      #   # hostPort: 9987
-      #   protocol: "TCP"
-      #   # expose: true
+      tcp:
+        port: 9987
+        exposedPort: 9987
+        # hostPort: 9987
+        protocol: "TCP"
+        # expose: true
       web:
         hostPort: 80
         redirectTo:
