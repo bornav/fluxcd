@@ -7,4 +7,4 @@ resources:
   # - daemonset.yaml
   # - deployment.yaml
   - pod.yaml
-  - service.yaml
+  # - service.yaml
