@@ -31,7 +31,7 @@ spec:
       - '--global.checknewversion=false'
     additionalArguments:
       - '--serversTransport.insecureSkipVerify=true'
-      - '--log.level=INFO'
+      - '--log.level=DEBUG'
       - "--api.insecure=true"
     deployment:
       enabled: true
@@ -50,12 +50,12 @@ spec:
       udp:
         port: 9987
         exposedPort: 9987
-        # hostPort: 9987
+        hostPort: 9987
         protocol: "UDP"
       tcp:
         port: 9987
         exposedPort: 9987
-        # hostPort: 9987
+        hostPort: 9987
         protocol: "TCP"
         # expose: true
       web:

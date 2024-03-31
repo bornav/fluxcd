@@ -34,16 +34,16 @@ spec:
                 name: element
                 port:
                   number: 80
-    - host: element2.cloud.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: element-default
-                port:
-                  number: 80
+    # - host: element2.cloud.icylair.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: element-default
+    #             port:
+    #               number: 80
   tls:
   - hosts:
       - element.icylair.com
