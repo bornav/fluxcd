@@ -8,3 +8,16 @@ spec:
     trustForwardHeader: true
     authResponseHeaders:
       - "X-Forwarded-User"
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: forward-auth-extended
+spec:
+  forwardAuth:
+    address: "http://traefik-forward-auth.network.svc.cluster.local:4181"
+    trustForwardHeader: true
+    authResponseHeaders:
+      - "X-Forwarded-User"
+      - "X-Auth-User"
+      - "X-Secret"
