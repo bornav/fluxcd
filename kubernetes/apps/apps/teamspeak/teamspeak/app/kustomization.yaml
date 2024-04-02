@@ -4,7 +4,7 @@ namespace: default
 resources:
   #daemonset here until i figure out how to forward udp/tcp traffic properly
   #daemonset supports hostport(nodeport limitation)
-  # - daemonset.yaml
+  - daemonset.yaml
   # - deployment.yaml
-  - pod.yaml
+  # - pod.yaml
   # - service.yaml
