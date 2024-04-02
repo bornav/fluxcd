@@ -4,4 +4,4 @@ namespace: monitoring
 resources:
   - release.yaml
   - rbac.yaml
-  - secret.yaml
+  # - secret.yaml
