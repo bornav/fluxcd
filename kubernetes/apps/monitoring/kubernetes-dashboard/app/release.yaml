@@ -41,7 +41,7 @@ spec:
         useDefaultIngressClass: false
         annotations:
           # traefik.ingress.kubernetes.io/router.middlewares:   
-          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd,kube-system-auth-middleware@kubernetescrd 
+          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd,monitoring-auth-middleware@kubernetescrd 
           ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
         # This will append our Ingress with annotations required by our default configuration.
         #    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
