@@ -5,6 +5,9 @@ metadata:
   name: kubernetes-dashboard-app
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: traefik-base
+    - name: longhorn-system-base
   path: ./kubernetes/apps/monitoring/kubernetes-dashboard/app
   prune: true
   sourceRef:

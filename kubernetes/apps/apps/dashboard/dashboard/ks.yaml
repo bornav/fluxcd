@@ -5,6 +5,8 @@ metadata:
   name: dashboard-app
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: traefik-base
   path: ./kubernetes/apps/apps/dashboard/dashboard/app
   prune: true
   # dependsOn:
