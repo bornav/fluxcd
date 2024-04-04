@@ -7,10 +7,9 @@ metadata:
 spec:
   dependsOn:
     - name: traefik-base
+    - name: traefik-addons
   path: ./kubernetes/apps/apps/dashboard/dashboard/app
   prune: true
-  # dependsOn:
-  #   - name: traefik-addons
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes

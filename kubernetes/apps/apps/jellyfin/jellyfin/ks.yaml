@@ -5,8 +5,9 @@ metadata:
   name: jellyfin-access
   namespace: flux-system
 spec:
-  # dependsOn:
-  #   - name: navidrome-dependancies
+  dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
   path: ./kubernetes/apps/apps/jellyfin/jellyfin/app
   suspend: false
   prune: true

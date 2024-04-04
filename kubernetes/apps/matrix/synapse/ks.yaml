@@ -6,7 +6,10 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
     - name: longhorn-system-base
+    - name: volsync
   path: ./kubernetes/apps/matrix/synapse/database
   prune: true
   suspend: false

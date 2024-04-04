@@ -25,7 +25,10 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    # - name: traefik-base
+    # - name: traefik-addons
     - name: longhorn-system-base
+    - name: volsync
   path: ./kubernetes/apps/apps/teamspeak/teamspeak/storage
   prune: true
   suspend: false

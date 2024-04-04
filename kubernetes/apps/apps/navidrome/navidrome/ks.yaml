@@ -25,9 +25,10 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: volsync
+    - name: traefik-base
+    - name: traefik-addons
     - name: longhorn-system-base
-  #   - name: navidrome-dependancies
+    - name: volsync
   path: ./kubernetes/apps/apps/navidrome/navidrome/app
   suspend: false
   prune: true

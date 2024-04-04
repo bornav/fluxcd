@@ -5,6 +5,9 @@ metadata:
   name: keycloak-storage
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: longhorn-system-base
+    - name: volsync
   path: ./kubernetes/apps/network/auth/keycloak/storage
   prune: true
   suspend: false
@@ -24,7 +27,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: keycloak-storage
+    - name: traefik-base
   path: ./kubernetes/apps/network/auth/keycloak/base
   suspend: false
   prune: true
