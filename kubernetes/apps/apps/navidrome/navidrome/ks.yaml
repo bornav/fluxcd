@@ -26,6 +26,7 @@ metadata:
 spec:
   dependsOn:
     - name: volsync
+    - name: longhorn-system-base
   #   - name: navidrome-dependancies
   path: ./kubernetes/apps/apps/navidrome/navidrome/app
   suspend: false

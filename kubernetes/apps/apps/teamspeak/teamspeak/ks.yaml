@@ -24,6 +24,8 @@ metadata:
   name: teamspeak-storage
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: longhorn-system-base
   path: ./kubernetes/apps/apps/teamspeak/teamspeak/storage
   prune: true
   suspend: false

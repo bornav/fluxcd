@@ -24,6 +24,8 @@ metadata:
   name: nextcloud-storage
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: longhorn-system-base
   path: ./kubernetes/apps/apps/nextcloud/nextcloud/storage
   prune: true
   suspend: true

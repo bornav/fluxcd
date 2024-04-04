@@ -28,6 +28,7 @@ spec:
   suspend: false
   dependsOn:
     - name: traefik-base
+    - name: keycloak-app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -5,6 +5,8 @@ metadata:
   name: synapse-databases
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: longhorn-system-base
   path: ./kubernetes/apps/matrix/synapse/database
   prune: true
   suspend: false
