@@ -52,7 +52,7 @@ spec:
       extraTls:
       - hosts:
         - keycloak.cloud.icylair.com
-        secretName: icylair-com=all-prod
+        secretName: icylair-com-all-prod
     postgresql:
       enabled: true
       auth:
