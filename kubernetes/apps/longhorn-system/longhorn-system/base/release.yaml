@@ -29,6 +29,16 @@ spec:
       backupTarget: "s3://kubernetes-backup-bucket@us-east-1/"
       backupTargetCredentialSecret: s3-minio-secret
       backupstorePollInterval: 30
+    ingress:
+      enabled: true
+      ingressClassName: traefik-external
+      host: longhorn.cloud.icylair.com
+      tls: true
+      tlsSecret: icylair-com-all-prod 
+      path: /
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+
       
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
