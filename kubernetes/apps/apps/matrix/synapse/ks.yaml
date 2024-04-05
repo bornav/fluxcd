@@ -10,7 +10,7 @@ spec:
     - name: traefik-addons
     - name: longhorn-system-base
     - name: volsync
-  path: ./kubernetes/apps/matrix/synapse/database
+  path: ./kubernetes/apps/apps/matrix/synapse/database
   prune: true
   suspend: false
   # targetNamespace: matrix-dev
@@ -36,7 +36,7 @@ spec:
   dependsOn:
     - name: synapse-databases
   # targetNamespace: matrix-dev
-  path: ./kubernetes/apps/matrix/synapse/apps
+  path: ./kubernetes/apps/apps/matrix/synapse/apps
   suspend: false
   prune: true
   sourceRef:
