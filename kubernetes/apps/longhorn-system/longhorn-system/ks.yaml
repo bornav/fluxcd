@@ -33,7 +33,7 @@ spec:
   dependsOn:
     - name: longhorn-system-base
   path: ./kubernetes/apps/longhorn-system/longhorn-system/addons
-  suspended: true
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository
