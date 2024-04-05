@@ -24,7 +24,48 @@ spec:
                 name: jellyfin-service
                 port:
                   number: 8097
+    - host: &host jelly.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin-service
+                port:
+                  number: 8097
   tls:
   - hosts:
       - jelly.icylair.com
+      - jelly.cloud.icylair.com
+    secretName: icylair-com-all-prod
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app jellyfin-sso
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: traefik-external
+  rules:
+    - host: &host jellyfin.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin-service
+                port:
+                  number: 8097
+  tls:
+  - hosts:
+      - jellyfin.icylair.com
     secretName: icylair-com-all-prod
