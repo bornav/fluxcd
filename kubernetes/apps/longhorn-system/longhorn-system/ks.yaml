@@ -10,6 +10,7 @@ spec:
     - name: traefik-base
   path: ./kubernetes/apps/longhorn-system/longhorn-system/base
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -32,6 +33,7 @@ spec:
   dependsOn:
     - name: longhorn-system-base
   path: ./kubernetes/apps/longhorn-system/longhorn-system/addons
+  suspended: true
   prune: true
   sourceRef:
     kind: GitRepository

@@ -12,6 +12,7 @@ spec:
   path: ./kubernetes/apps/volsync/volsync/app
   suspend: false
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes

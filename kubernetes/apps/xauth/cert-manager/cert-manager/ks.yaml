@@ -30,6 +30,7 @@ spec:
     - name: cert-manager-base
   path: ./kubernetes/apps/xauth/cert-manager/cert-manager/addons
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
