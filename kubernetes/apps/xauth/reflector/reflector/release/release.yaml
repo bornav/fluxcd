@@ -25,24 +25,5 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # values:
-    # configuration:
-    #   logging:
-    #     minimumLevel: Debug
-  #   installCRDs: true
-  #   replicaCount: 1
-  #   extraArgs:
-  #     - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
-  #     - --dns01-recursive-nameservers-only
-  #   podDnsPolicy: None
-  #   podDnsConfig:
-  #     nameservers:
-  #       - '1.1.1.1'
-  #       - '9.9.9.9'
-  #   resources:
-  #     requests:
-  #       memory: '1Mi'
-  #       cpu: '1m'
-  #     limits:
-  #       memory: '500Mi'
-  #       cpu: '500m'
+  values:
+    replicaCount: 2

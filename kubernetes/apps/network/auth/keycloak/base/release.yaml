@@ -33,6 +33,7 @@ spec:
   #     namespace: kube-system
   values:
     production: true
+    replicaCount: 2
     proxy: edge
     global:
       storageClass: "longhorn"
