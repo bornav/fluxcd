@@ -14,7 +14,7 @@ spec:
     - name: smb
       port: 445
       targetPort: 445
-    - name: http
+    - name: http  # curling this wireguard.network.svc.cluster.local:5800 should get a nice response
       port: 5800
       targetPort: 5800
     - name: nfs
