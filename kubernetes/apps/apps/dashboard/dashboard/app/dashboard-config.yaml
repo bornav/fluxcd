@@ -32,20 +32,23 @@ data:
             href: https://keycloak.cloud.icylair.com/
 
     - Cloud:
-        - traefik_cloud:
+        - Traefik_cloud:
             icon: traefik.png
             href: https://traefik.cloud.icylair.com
             #ping: http://traefik.traefik.svc.cluster.local
         - Longhorn:
             icon: longhorn.png
             href: https://longhorn.cloud.icylair.com
-        - portainerDB:
+        - PortainerDB:
             icon: portainer.png
             href: https://oracle2.cloud.icylair.com:9443/
             #ping: https://oracle2.cloud.icylair.com:9443/
-        - netmaker:
+        - Netmaker:
             icon: netmaker.png
             hfer: https://dashboard.netmaker.cloud.icylair.com/
+        - Hubble:
+            icon: hubble.png
+            hfer: https://hubble.netmaker.cloud.icylair.com/
     - DevOps:
         - jenkins:
             icon: jenkins.png
