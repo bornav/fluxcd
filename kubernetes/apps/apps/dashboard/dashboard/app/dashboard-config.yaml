@@ -43,12 +43,12 @@ data:
             icon: portainer.png
             href: https://oracle2.cloud.icylair.com:9443/
             #ping: https://oracle2.cloud.icylair.com:9443/
+        - Hubble:
+            icon: hubble.png
+            hfer: https://hubble.cloud.icylair.com
         - Netmaker:
             icon: netmaker.png
             hfer: https://dashboard.netmaker.cloud.icylair.com
-        - Hubble:
-            icon: hubble.png
-            hfer: https://hubble.netmaker.cloud.icylair.com
     - DevOps:
         - jenkins:
             icon: jenkins.png
