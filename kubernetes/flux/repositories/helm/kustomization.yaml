@@ -6,7 +6,7 @@ resources:
   - ./cert-manager.yaml
   - ./traefik.yaml
   - ./longhorn.yaml
-  - ./weave-gitops.yaml
+  # - ./weave-gitops.yaml
   - ./jenkins.yaml
   - ./actions-runner-controller.yaml
   - ./renovate.yaml
