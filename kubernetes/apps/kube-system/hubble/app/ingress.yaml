@@ -24,7 +24,7 @@ spec:
               service:
                 name: hubble-ui
                 port:
-                  number: 8081
+                  number: 80
   tls:
   - hosts:
       - hubble.cloud.icylair.com
