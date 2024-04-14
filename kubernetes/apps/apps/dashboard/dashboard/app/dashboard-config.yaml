@@ -18,9 +18,9 @@ data:
             icon: kubernetes-dashboard.png
             href: https://kubernetes-dashboard.cloud.icylair.com/
             #htef: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
-        - WeaveGitOps:
-            #icon: kubernetes-dashboard.png
-            href: https://weave-gitops.cloud.icylair.com/
+        # - WeaveGitOps:
+        #     #icon: kubernetes-dashboard.png
+        #     href: https://weave-gitops.cloud.icylair.com/
         - Renovate:
             #icon: kubernetes-dashboard.png
             href: https://app.renovatebot.com/dashboard#github/bornav/fluxcd
@@ -44,13 +44,13 @@ data:
             href: https://oracle2.cloud.icylair.com:9443
         - Hubble:
             icon: hubble.png
-            hfer: https://hubble.cloud.icylair.com
+            href: https://hubble.cloud.icylair.com
         - Capacitor:
             icon: capacitor.png
             href: https://capacitor.cloud.icylair.com
-        - Netmaker:
-            icon: netmaker.png
-            hfer: https://dashboard.netmaker.cloud.icylair.com
+        # - Netmaker:
+        #     icon: netmaker.png
+        #     href: https://dashboard.netmaker.cloud.icylair.com
     - DevOps:
         - jenkins:
             icon: jenkins.png
