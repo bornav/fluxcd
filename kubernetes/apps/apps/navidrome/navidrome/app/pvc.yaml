@@ -60,7 +60,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -73,7 +73,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-navidrome-config-data
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-data
@@ -98,7 +98,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -111,7 +111,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-navidrome-config-music
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-music

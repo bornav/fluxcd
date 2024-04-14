@@ -38,7 +38,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -50,7 +50,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-matrix-database-data
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 3Gi

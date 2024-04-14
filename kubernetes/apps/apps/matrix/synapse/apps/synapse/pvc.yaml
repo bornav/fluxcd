@@ -30,10 +30,6 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: longhorn
-  # dataSourceRef:
-  #   kind: ReplicationDestination
-  #   apiGroup: volsync.backube
-  #   name: matrix-bridges-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 100Mi
@@ -57,7 +53,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -69,7 +65,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-matrix-synapse-data
-    storageClassName: longhorn
+    storageClassName: longhorn-backup
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 2Gi
@@ -92,7 +88,7 @@ spec:
 #       monthly: 2
 #       yearly: 1
 #     copyMethod: Snapshot
-#     storageClassName: longhorn
+#     storageClassName: longhorn-backup
 #     unlock: "something"
 # ---
 # apiVersion: volsync.backube/v1alpha1
@@ -104,7 +100,7 @@ spec:
 #     manual: restore-once
 #   restic:
 #     repository: restic-matrix-bridges-data
-#     storageClassName: longhorn
+#     storageClassName: longhorn-backup
 #     accessModes: ["ReadWriteOnce"]
 #     copyMethod: Snapshot
 #     capacity: 100Mi
