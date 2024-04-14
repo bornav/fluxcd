@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: wireguard
 spec:
-  clusterIP: 10.43.255.250 ## only needed for fqdn nfs mounting, since it is not resolving in kubernetes manifests
+  # clusterIP: 10.43.255.250 ## only needed for fqdn nfs mounting, since it is not resolving in kubernetes manifests
   selector:
     name: wireguard
   ports:
