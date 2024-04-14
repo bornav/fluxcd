@@ -1,4 +1,3 @@
----
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
@@ -29,11 +28,11 @@ spec:
     app:
       ingress:
         enabled: true
-        hosts:
-          # Keep 'localhost' host only if you want to access Dashboard using 'kubectl port-forward ...' on:
-          # https://localhost:8443
-          - kubernetes-dashboard.cloud.icylair.com
+        # Keep 'localhost' host only if you want to access Dashboard using 'kubectl port-forward ...' on:
+        # https://localhost:8443
         # - kubernetes.dashboard.domain.com
+        hosts:
+        - kubernetes-dashboard.cloud.icylair.com
         ingressClassName: traefik-external
         # Use only if your ingress controllers support default ingress classes.
         # If set to true ingressClassName will be ignored and not added to the Ingress resources.
@@ -65,11 +64,11 @@ spec:
           secretName: "icylair-com-all-prod"
     api:
       containers:
-        # args:
-          # - --enable-skip-login
+        args:
+        # - --enable-skip-login
     auth:
       containers:
-        # args:
-          # - --enable-skip-login
+        args:
+        # - --enable-skip-login
     cert-manager:
-      enabled: false 
+      enabled: false
