@@ -1,5 +1,6 @@
 # # For dashboard sign in token:
 # # kubectl -n monitoring get secret kubernetes-dashboard -o jsonpath='{.data.token}' | base64 -d
+# kubectl -n monitoring create token admin-user
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -22,7 +23,7 @@ apiVersion: traefik.io/v1alpha1
 kind: ServersTransport
 metadata:
   name: mytransport
-  namespace: default
+  namespace: monitoring
 spec:
     certificatesSecrets:
     - admin-user
