@@ -1,5 +1,5 @@
-# For dashboard sign in token:
-# kubectl -n monitoring get secret kubernetes-dashboard -o jsonpath='{.data.token}' | base64 -d
+# # For dashboard sign in token:
+# # kubectl -n monitoring get secret kubernetes-dashboard -o jsonpath='{.data.token}' | base64 -d
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -17,3 +17,20 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: admin-user
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: mytransport
+  namespace: default
+spec:
+    certificatesSecrets:
+    - admin-user
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#     name: admin-user
+#     namespace: monitoring
+#     annotations:
+#         kubernetes.io/service-account.name: admin-user
