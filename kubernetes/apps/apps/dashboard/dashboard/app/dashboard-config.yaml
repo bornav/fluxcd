@@ -46,7 +46,7 @@ data:
             href: https://oracle2.cloud.icylair.com:9443
         - Hubble:
             icon: hubble.png
-            href: https://hubble.cloud.icylair.com
+            href: https://hubble.cloud.icylair.com/?namespace=
         - Capacitor:
             icon: capacitor.png
             href: https://capacitor.cloud.icylair.com
