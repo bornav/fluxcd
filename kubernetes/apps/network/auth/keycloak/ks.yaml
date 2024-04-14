@@ -15,7 +15,7 @@ spec:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
-  wait: false # no flux ks dependents
+  wait: true # no flux ks dependents
   interval: 30m
   retryInterval: 15m
   timeout: 5m
