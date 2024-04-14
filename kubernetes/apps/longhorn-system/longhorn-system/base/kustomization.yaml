@@ -5,3 +5,4 @@ resources:
   - release.yaml
   - backupstore-secret.yaml
   - volumesnapshotclass.yaml
+  - storageClass.yaml
