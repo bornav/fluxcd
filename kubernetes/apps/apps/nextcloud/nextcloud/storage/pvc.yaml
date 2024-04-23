@@ -10,7 +10,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -35,7 +35,7 @@ spec:
     kind: ReplicationDestination
     apiGroup: volsync.backube
     name: nextcloud-database-restore  # Name of the ReplicationDestination
-  storageClassName: longhorn
+  storageClassName: longhorn-storage
   resources:
     requests:
       storage: 1Gi

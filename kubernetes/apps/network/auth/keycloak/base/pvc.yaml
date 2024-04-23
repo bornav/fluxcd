@@ -40,7 +40,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube

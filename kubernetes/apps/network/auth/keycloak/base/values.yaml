@@ -1,7 +1,7 @@
 # namespaceOverride: default
 production: true
 global:
-  storageClass: "longhorn"
+  storageClass: longhorn-storage
 auth:
   createAdminUser: true
   adminUser: bornav
