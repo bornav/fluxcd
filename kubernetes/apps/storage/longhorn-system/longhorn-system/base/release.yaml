@@ -18,9 +18,9 @@ spec:
       interval: 15m
   values:
     persistence:
-      defaultClass: true
-      reclaimPolicy: Delete
-      defaultClassReplicaCount: 2
+      defaultClass: false
+      # reclaimPolicy: Delete
+      # defaultClassReplicaCount: 2
     defaultSettings:
       ##CIFS
       # backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
