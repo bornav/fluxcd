@@ -394,7 +394,7 @@ spec:
             - -c
             # - sleep 99999
             - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
-          image: dock.mau.dev/mautrix/meta:v0.1.0
+          image: dock.mau.dev/mautrix/meta:v0.3.0
           name: mautrix-meta
           resources:
             requests:
