@@ -39,5 +39,5 @@ parameters:
   fsType: "ext4"
   dataLocality: "best-effort"
   # replicaAutoBalance: ignored
-  migratable: true
+  migratable: "true"
   unmapMarkSnapChainRemoved: "ignored"
