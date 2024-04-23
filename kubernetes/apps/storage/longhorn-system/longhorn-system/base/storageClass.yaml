@@ -11,7 +11,7 @@ reclaimPolicy: "Delete"
 volumeBindingMode: Immediate
 parameters:
   numberOfReplicas: "1"
-  staleReplicaTimeout: "30"
+  staleReplicaTimeout: "15"
   fromBackup: ""
   fsType: "ext4"
   dataLocality: "disabled"
@@ -34,7 +34,7 @@ reclaimPolicy: "Delete"
 volumeBindingMode: Immediate
 parameters:
   numberOfReplicas: "2"
-  staleReplicaTimeout: "30"
+  staleReplicaTimeout: "15"
   fromBackup: ""
   fsType: "ext4"
   dataLocality: "best-effort"
