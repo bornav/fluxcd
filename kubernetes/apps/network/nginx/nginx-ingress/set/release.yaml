@@ -83,7 +83,7 @@ spec:
         resources: {}
       resources:
         requests:
-          cpu: 100m
+          cpu: 1m
           memory: 250Mi
     # defaultBackend:
     #   enabled:  false

@@ -38,6 +38,9 @@ spec:
             limits:
               cpu: 1000m
               memory: 200M
+            reuests:
+              cpu: 1m
+              memory: 1M
           securityContext:
             # runAsUser: 1000
             # runAsGroup: 1000

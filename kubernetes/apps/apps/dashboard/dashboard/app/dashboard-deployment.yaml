@@ -22,6 +22,9 @@ spec:
         - image: ghcr.io/gethomepage/homepage:v0.8.10
           name: dashboard-homepage
           resources:
+            reuests:
+              cpu: 1m
+              memory: 1M
             limits:
               cpu: 300m
               memory: 200M
