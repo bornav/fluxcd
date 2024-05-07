@@ -110,7 +110,7 @@ pycparser==2.21
     # via cffi
 pygments==2.17.2
     # via rich
-python-dateutil==2.8.2
+python-dateutil==2.9.0.post0
     # via kubernetes
 python-vagrant==1.0.0
     # via molecule-plugins
