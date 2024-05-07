@@ -160,7 +160,7 @@ urllib3==2.1.0
     #   requests
 virtualenv==20.25.0
     # via pre-commit
-wcmatch==8.5
+wcmatch==8.5.1
     # via molecule
 websocket-client==1.7.0
     # via kubernetes
