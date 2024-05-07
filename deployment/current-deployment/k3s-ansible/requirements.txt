@@ -162,7 +162,7 @@ virtualenv==20.25.0
     # via pre-commit
 wcmatch==8.5
     # via molecule
-websocket-client==1.7.0
+websocket-client==1.8.0
     # via kubernetes
 
 # The following packages are considered to be unsafe in a requirements file:
