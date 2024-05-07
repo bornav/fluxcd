@@ -45,7 +45,7 @@ filelock==3.13.1
     # via virtualenv
 google-auth==2.26.2
     # via kubernetes
-identify==2.5.33
+identify==2.5.36
     # via pre-commit
 idna==3.6
     # via requests
