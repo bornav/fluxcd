@@ -144,7 +144,7 @@ rpds-py==0.17.1
     #   referencing
 rsa==4.9
     # via google-auth
-ruamel-yaml==0.18.5
+ruamel-yaml==0.18.6
     # via pre-commit-hooks
 ruamel-yaml-clib==0.2.8
     # via ruamel-yaml
