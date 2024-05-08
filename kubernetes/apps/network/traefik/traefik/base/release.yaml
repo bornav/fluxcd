@@ -47,11 +47,11 @@ spec:
         memory: '6Gi'
         cpu: '3000m'
     ports:
-      udp:
-        port: 9988
-        # exposedPort: 9987
-        # hostPort: 9987
-        protocol: "UDP"
+      # udp:
+      #   port: 9988
+      #   # exposedPort: 9987
+      #   # hostPort: 9987
+      #   protocol: "UDP"
       # tcp:
       #   port: 9987
       #   # exposedPort: 9987
