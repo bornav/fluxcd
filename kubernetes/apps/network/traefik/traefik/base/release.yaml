@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 26.1.0 #chart version not app
+      version: 28.0.0 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -31,14 +31,14 @@ spec:
       - '--global.checknewversion=false'
     additionalArguments:
       - '--serversTransport.insecureSkipVerify=true'
-      - '--log.level=DEBUG'
+      # - '--log.level=DEBUG'
       - "--api.insecure=true"
     deployment:
       enabled: true
       kind: DaemonSet
       replicas: 1
       terminationGracePeriodSeconds: 10
-      minReadySeconds: 3
+      minReadySeconds: 2
     resources:
       requests:
         memory: '1Mi'
@@ -163,3 +163,11 @@ spec:
         #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
       loadBalancerSourceRanges: []
       externalIPs: []
+    logs:
+      general:
+        # -- By default, the logs use a text format (common), but you can
+        # also ask for the json format in the format option
+        # format: json
+        # By default, the level is set to ERROR.
+        # -- Alternative logging levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
+        level: DEBUG
