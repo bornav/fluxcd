@@ -28,6 +28,7 @@ metadata:
 spec:
   dependsOn:
     - name: traefik-base
+    - name: keycloak-storage
   path: ./kubernetes/apps/network/auth/keycloak/base
   suspend: false
   prune: true
