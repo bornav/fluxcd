@@ -1,0 +1,190 @@
+---
+- name: Get remote kube config
+  hosts: cloud  # Replace with the name or IP of your remote host
+  become: yes
+  tasks:
+    - name: Fetch the remote kube config file
+      fetch:
+        src: /home/kube/.kube/config #replace with dynamic
+        dest: /tmp/remote_config
+        flat: yes
+
+- name: Update JSON file
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Read kube config file
+      slurp:
+        path: /tmp/remote_config ## change to dynamic
+      register: kube_config_file
+    - name: Save JSON locally
+      copy:
+        content: "{{ kube_config_file.content | b64decode | from_yaml | to_json }}"
+        dest: /tmp/remote_config
+    - name: jq command
+      shell: >
+        jq '.clusters[0].cluster.server = "{{ new_server_name }}" | .clusters[0].name = "{{ new_cluster_name }}" | .users[0].name = "{{ new_user_name }}"' /tmp/remote_config > /tmp/remote_config2
+      register: out
+
+- name: Update local kube config
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Read the fetched remote kube config file
+      slurp:
+        src: /tmp/remote_config2
+      register: remote_config_content
+
+    - name: Parse the fetched remote kube config content
+      set_fact:
+        remote_config_data: "{{ remote_config_content['content'] | b64decode | from_yaml }}"
+
+    - name: Read the local kube config file
+      slurp:
+        path: "{{ lookup('env', 'HOME') }}/.kube/config"
+      register: local_config_content
+
+    - name: Parse the local kube config content
+      set_fact:
+        local_config_data: "{{ local_config_content['content'] | b64decode | from_yaml }}"
+
+    - name: Update clusters and users in the local kube config
+      set_fact:
+        local_config_data: |
+          {{ local_config_data | combine({'clusters': remote_config_data.clusters}, recursive=True) | combine({'users': remote_config_data.users}, recursive=True) }}
+
+    - name: Save the updated kube config back to the local file
+      copy:
+        content: "{{ local_config_data }}"
+        dest: "{{ lookup('env', 'HOME') }}/.kube/config"
+        # dest: /tmp/remote_config3
+
+
+- name: Convert kube config from JSON to YAML
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Read kube config file
+      set_fact:
+        kube_config_content: /tmp/remote_config3
+      register: result
+
+    - name: Convert JSON to YAML
+      set_fact:
+        kube_config_yaml: "{{ kube_config_content | to_nice_yaml }}"
+
+    - name: Save converted YAML to a file
+      copy:
+        content: "{{ kube_config_yaml }}"
+        dest: "{{ lookup('env', 'HOME') }}/.kube/config2"
+        #dest: /tmp/remote_config
+#jq '.clusters[0].cluster.server = "https://thisisatest" | .clusters[0].name = "new-cluster-name" | .users[0].name = "new-user-name"' /tmp/remote_config
+
+
+
+
+
+
+
+# ---
+# - name: Update kube config on local machine
+#   hosts: cloud   # Replace 'your_target_server' with the actual target server's hostname or IP address
+#   gather_facts: no
+#   become: true
+#   tasks:
+#     - name: Read kube config file
+#       slurp:
+#         path: /home/kube/.kube/config ## change to dynamic
+#       register: kube_config_file
+#     - name: Parse kube config file
+#       set_fact:
+#         kube_config_content: "{{ kube_config_file.content | b64decode | from_yaml }}"
+
+# - name: Update kube config on local machine
+#   hosts: localhost
+#   debugger: always
+#   tasks:
+#     - name: Ensure the local directory exists
+#       file:
+#         path: "{{ lookup('env', 'HOME') }}/.kube"
+#         state: directory
+
+#     - name: Read local kube config file
+#       slurp:
+#         path: "{{ lookup('env', 'HOME') }}/.kube/config"
+#       register: local_kube_config_file
+#       ignore_errors: yes
+
+#     - name: Set kube config content (if local file exists)
+#       set_fact:
+#         local_kube_config_content: "{{ local_kube_config_file.content | b64decode | from_yaml }}"
+#       when: local_kube_config_file is succeeded
+
+    # - name: Update users in local kube config
+    #   blockinfile:
+    #     dest: "{{ lookup('env', 'HOME') }}/.kube/config"
+    #     block: |
+    #       users:
+    #         - name: user-prod
+    #         # Add other user properties here as needed
+    #     marker: "# {mark} ANSIBLE MANAGED BLOCK - DO NOT EDIT THIS SECTION"
+    #     insertafter: '^users:'
+    #   loop: "{{ kube_config_content.users | default([]) }}"
+    #   when: item.name == 'default'
+
+    # - name: Update clusters in local kube config
+    #   blockinfile:
+    #     dest: "{{ lookup('env', 'HOME') }}/.kube/config"
+    #     block: |
+    #       - name: cluster-prod
+    #         # Add other cluster properties here as needed
+    #     marker: "# {mark} ANSIBLE MANAGED BLOCK - DO NOT EDIT THIS SECTION"
+    #     insertafter: '^clusters:'
+    #   loop: "{{ kube_config_content.clusters | default([]) }}"
+    #   when: item.cluster.name == 'default'
+# ---
+# - name: Update kubeconfig
+#   hosts: cloud
+#   gather_facts: false
+#   tasks:
+#     - name: Fetching kubeconfig values
+#       become: true
+#       fetch:
+#         src: /home/kube/.kube/config
+#         dest: /tmp/config
+#         flat: yes
+
+#     - name: Editing kubeconfig
+#       become: true
+#       blockinfile:
+#         path: "{{ lookup('env', 'HOME') }}/.kube/config"
+#         block: |
+#           - name: user-prod
+#           # Add the content of user-prod block fetched from /home/kube/.kube/config
+#           # This will ensure that the user-prod section exists and matches the original one.
+
+#           - cluster:
+#               name: cluster-prod
+#             # Add the content of cluster-prod block fetched from /home/kube/.kube/config
+#             # This will ensure that the cluster-prod section exists and matches the original one.
+#       when: "'users:\n- name: default' in lookup('file', '/tmp/config')"
+# apiVersion: v1
+# clusters:
+# - cluster:
+#     certificate-authority-data: 
+#     server: 
+#   name: 
+# contexts:
+# - context:
+#     cluster: 
+#     user: 
+#   name: 
+# current-context: 
+# kind: 
+# preferences: {}
+# users:
+# - name: 
+#   user:
+#     client-certificate-data: 
+#     client-key-data: 

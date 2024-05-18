@@ -1,0 +1,16 @@
+---
+- hosts: "cloud"
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+    - name: Gathering facts
+      setup:
+    - name: install k3s
+      shell: | 
+        curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --flannel-iface enp0s6 --node-ip 10.0.0.163 --disable traefik INSTALL_K3S_VERSION=v1.25.9+k3s1" sh -s -
+    - name: copy the config
+      shell: |
+        mkdir -p /home/kube/.kube/
+        cp /etc/rancher/k3s/k3s.yaml /home/kube/.kube/config     

@@ -1,0 +1,49 @@
+all:
+  hosts:
+    host1:
+      pipelining: true
+      ansible_ssh_user: root
+      ansible_host: &host1 10.99.7.2
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      wireguard_ip: 10.99.12.10
+    host2:
+      pipelining: true
+      ansible_ssh_user: root
+      ansible_host: &host2 10.99.7.10
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      wireguard_ip: 10.99.12.11
+    host3:
+      pipelining: true
+      ansible_ssh_user: root
+      ansible_host: &host3 10.99.7.18
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      wireguard_ip: 10.99.12.12
+  vars:
+    ufw_enabled: false
+    ansible_become_method: su 
+    wireguard_mask_bits: 24
+    wireguard_port: 51871
+
+master:
+  hosts:
+    master1:
+      ansible_host: *host1
+      flannel_iface: "wg0"
+    master2:
+      ansible_host: *host2
+      flannel_iface: "wg0"
+    master3:
+      ansible_host: *host3
+      flannel_iface: "wg0"
+node: 
+  []
+k3s_cluster:
+  children:
+    master: true
+    node: true
+
+# ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+# flannel_iface: "wg0"

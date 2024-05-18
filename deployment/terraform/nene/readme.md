@@ -15,7 +15,3 @@ everything continued to work
 
 for nex expansions / modifications change hosts in the inventory in the wg mesh and apply
 next change the inventory of the k3s folder to conform to the change in wg mesh and done
-
-## update 14.04
-
-this is deployed using readme in the new_self

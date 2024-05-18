@@ -1,0 +1,2 @@
+gcp_01:
+terraform plan -var-file=./gcp/gcp_01.auto.tfvars -var 'credentials_gpc_01=./credentials/gcp-01-creds.json'

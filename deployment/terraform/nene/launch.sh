@@ -41,8 +41,6 @@ cleanup(){
 if [[ $1 == prepare-sys ]]; then
     prepare-sys
 elif [[ $1 == wg-mesh ]]; then
-    clone
-    prepare-inv
     wg-mesh
     exit
 elif [[ $1 == deploy ]]; then

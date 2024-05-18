@@ -1,0 +1,87 @@
+
+# dnsPolicy: ClusterFirst  #?
+rollOutCiliumPods: true
+operator:
+  # replicas: 1  # Uncomment this if you only have one node
+  rollOutPods: true
+# devices: "wg1" ?
+ipam:
+  operator:
+    clusterPoolIPv4PodCIDRList: '10.52.0.0/16'
+ipv4NativeRoutingCIDR: '10.52.0.0/16'
+k8sServiceHost: "127.0.0.1"
+k8sServicePort: "6444"
+# routingMode: "native"
+# autoDirectNodeRoutes: true
+kubeProxyReplacement: "true"
+bpf:
+  masquerade: true
+  lbExternalClusterIP: true
+# bgpControlPanel:
+bgpControlPlane:
+  enabled: true
+bgp:
+  enabled: false
+  # announce:
+  #   # -- Enable allocation and announcement of service LoadBalancer IPs
+  #   loadbalancerIP: true
+  #   # -- Enable announcement of node pod CIDR
+  #   podCIDR: true
+
+l2announcements:
+  enabled: true
+externalIPs:
+  enabled: true
+hubble:
+  enabled: true
+  relay: ##LOOK INTO FIXING THIS, until done no observability :( ##UPDATE2, changed nothing now works ##UPDATE3 does not work on local node
+    rollOutPods: true
+    enabled: true
+    replicas: 3
+    tls:
+      server:
+        enabled: false
+  ui:
+    rollOutPods: true
+    enabled: true
+    standalone:
+      enabled: true
+  tls:
+    enabled: false
+    # auto:
+    #   enabled: true
+    #   method: helm
+    #   certValidityDuration: 1095
+  dashboards: #grafana dashboard:  # grafana can import dashboards based on the label and value
+    enabled: true
+  metrics:
+    enabled:
+    - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+    - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+    enableOpenMetrics: true
+    serviceMonitor:
+      enabled: true
+    dashboards:
+      enabled: true
+      namespace: monitoring
+  peerService:
+    clusterDomain: cluster.local
+k8sClientRateLimit: # so we dont get rate limited
+  qps: 50
+  burst: 200
+ingressController:
+  enabled: false
+  default: true
+  loadbalancerMode: shared
+  service:
+    annotations:
+      io.cilium/lb-ipam-ips: 10.49.20.55
+
+
+# enableMasqueradeRouteSource: true
+# enableIPv4BIGTCP: true
+
+# loadBalancer:
+#   acceleration: disabled
+#   l7:
+#     backend: envoy

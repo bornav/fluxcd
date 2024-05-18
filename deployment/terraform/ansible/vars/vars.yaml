@@ -1,0 +1,20 @@
+username: "ubuntu"
+username_k8s: "kube"
+public_key_location: "https://raw.githubusercontent.com/bornav/fluxcd/main/deployment/authorized.keys"
+
+new_server_name: "https://oraclearm1.cloud.icylair.com:6443"
+new_cluster_name: "cluster-prod"
+new_user_name: "user-prod"
+
+
+##netmaker
+NM_RELEASE: "v0.20.4"
+NM_AARCH: "amd64"
+NM_ROOT_DIR: "/root"
+NM_SCRIPT_NAME: "nm-quick.sh"
+
+#traffic forward
+port_http: "80"
+port_https: "443"
+port_api: "6443"
+reverse_proxy_ip: "10.0.0.230"
