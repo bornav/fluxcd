@@ -87,7 +87,7 @@ spec:
     targetPort: 9987
   type: LoadBalancer
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteUDP
 metadata:
    name: ingressrouteudpfoo

@@ -1,5 +1,5 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx-cloud
@@ -25,7 +25,7 @@ spec:
   tls:
     secretName: cloud-icylair-com-prod
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx-local
@@ -51,7 +51,7 @@ spec:
   tls:
     secretName: local-icecoldlair-com-prod
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: nginx
