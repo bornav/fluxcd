@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -8,8 +9,8 @@ spec:
   path: ./kubernetes/apps/apps/immich/immich/app
   prune: true
   suspend: true
-  # dependsOn:
-  #   - name: immich-storage
+  dependsOn:
+    - name: immich-storage
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -17,25 +18,26 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: immich-storage
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: traefik-base
-#     - name: traefik-addons
-#     - name: longhorn-system-base
-#     - name: volsync
-#   path: ./kubernetes/apps/apps/immich/immich/storage
-#   prune: true
-#   suspend: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: fluxcd-kubernetes
-#     namespace: flux-system
-#   interval: 15m
-#   retryInterval: 15m
-#   timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: immich-storage
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
+    - name: longhorn-system-base
+    - name: volsync
+  path: ./kubernetes/apps/apps/immich/immich/storage
+  prune: true
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
