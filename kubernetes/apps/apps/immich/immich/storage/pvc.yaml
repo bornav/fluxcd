@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-data
+  labels:
+    app: immich-data
+  annotations:
+    numberOfReplicas: '2'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn-storage
+  # dataSourceRef:
+  #   kind: ReplicationDestination
+  #   apiGroup: volsync.backube
+  #   name: immich-data-restore  # Name of the ReplicationDestination
+  resources:
+    requests:
+      storage: 2Gi
+status: {}
+# ---
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  immich-data-backup
+# spec:
+#   sourcePVC: immich-data
+#   trigger:
+#     schedule: "*/14 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-immich-data
+#     retain:
+#       hourly: 5
+#       daily: 4
+#       weekly: 3
+#       monthly: 2
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-backup
+#     unlock: "something"
+# ---
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationDestination
+# metadata:
+#   name: immich-data-restore
+# spec:
+#   trigger:
+#     manual: restore-once
+#   restic:
+#     repository: restic-immich-data
+#     storageClassName: longhorn-backup
+#     accessModes: ["ReadWriteOnce"]
+#     copyMethod: Snapshot
+#     capacity: 10Gi
