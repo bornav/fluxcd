@@ -38,6 +38,9 @@ spec:
       path: /
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    longhornUI:
+      # -- Replica count for Longhorn UI.
+      replicas: 1
 
       
     #   allowRecurringJobWhileVolumeDetached: false
