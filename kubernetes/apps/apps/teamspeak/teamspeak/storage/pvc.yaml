@@ -9,7 +9,7 @@ metadata:
     numberOfReplicas: '2'
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: longhorn-storage-rwm
   dataSourceRef:
     kind: ReplicationDestination
