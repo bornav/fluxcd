@@ -41,3 +41,19 @@ parameters:
   # replicaAutoBalance: ignored
   migratable: "true"
   unmapMarkSnapChainRemoved: "ignored"
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-storage-rwm
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: "Delete"
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "1"
+  staleReplicaTimeout: "15"
+  fromBackup: ""
+  fsType: "ext4"
+  dataLocality: "best-effort"
+  nfsOptions: "vers=4.2,noresvport,softerr,timeo=600,retrans=5"
