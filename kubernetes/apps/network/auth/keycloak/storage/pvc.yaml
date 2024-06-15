@@ -75,3 +75,4 @@ spec:
     accessModes: ["ReadWriteMany"]
     copyMethod: Snapshot
     capacity: 1Gi
+    # previous: 2

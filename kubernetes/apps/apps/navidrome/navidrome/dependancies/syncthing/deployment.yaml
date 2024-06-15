@@ -99,7 +99,7 @@ spec:
       imagePullSecrets:
         - name: docker-registry
         
----
+# ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
@@ -116,4 +116,3 @@ spec:
 #     requests:
 #       storage: 8Gi
 # status: {}
-# ---
