@@ -13,6 +13,7 @@ spec:
     - name: volsync
   path: ./kubernetes/apps/monitoring/kubernetes-dashboard/app
   prune: true
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes

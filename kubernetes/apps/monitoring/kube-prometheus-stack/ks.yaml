@@ -11,7 +11,7 @@ spec:
   - name: volsync
   path: ./kubernetes/apps/monitoring/kube-prometheus-stack/app
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
