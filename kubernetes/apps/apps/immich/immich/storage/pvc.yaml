@@ -9,8 +9,8 @@ metadata:
     numberOfReplicas: '2'
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn-storage
+    - ReadWriteMany
+  storageClassName: longhorn-storage-rwm
   # dataSourceRef:
   #   kind: ReplicationDestination
   #   apiGroup: volsync.backube
@@ -38,7 +38,7 @@ status: {}
 #       monthly: 2
 #       yearly: 1
 #     copyMethod: Snapshot
-#     storageClassName: longhorn-backup
+#     storageClassName: longhorn-storage-rwm
 #     unlock: "something"
 # ---
 # apiVersion: volsync.backube/v1alpha1
@@ -50,7 +50,7 @@ status: {}
 #     manual: restore-once
 #   restic:
 #     repository: restic-immich-data
-#     storageClassName: longhorn-backup
-#     accessModes: ["ReadWriteOnce"]
+#     storageClassName: longhorn-storage-rwm
+#     accessModes: ["ReadWriteMany"]
 #     copyMethod: Snapshot
 #     capacity: 10Gi

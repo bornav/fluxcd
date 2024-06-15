@@ -9,8 +9,8 @@ metadata:
     numberOfReplicas: '2'
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn-storage
+    - ReadWriteMany
+  storageClassName: longhorn-storage-rwm
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -29,7 +29,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: longhorn-storage
+  storageClassName: longhorn-storage-rwm
   resources:
     requests:
       storage: 100Mi
@@ -53,7 +53,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn-backup
+    storageClassName: longhorn-storage-rwm
     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -65,8 +65,8 @@ spec:
     manual: restore-once
   restic:
     repository: restic-matrix-synapse-data
-    storageClassName: longhorn-backup
-    accessModes: ["ReadWriteOnce"]
+    storageClassName: longhorn-storage-rwm
+    accessModes: ["ReadWriteMany"]
     copyMethod: Snapshot
     capacity: 2Gi
 # ---
@@ -88,7 +88,7 @@ spec:
 #       monthly: 2
 #       yearly: 1
 #     copyMethod: Snapshot
-#     storageClassName: longhorn-backup
+#     storageClassName: longhorn-storage-rwm
 #     unlock: "something"
 # ---
 # apiVersion: volsync.backube/v1alpha1
@@ -100,7 +100,7 @@ spec:
 #     manual: restore-once
 #   restic:
 #     repository: restic-matrix-bridges-data
-#     storageClassName: longhorn-backup
-#     accessModes: ["ReadWriteOnce"]
+#     storageClassName: longhorn-storage-rwm
+#     accessModes: ["ReadWriteMany"]
 #     copyMethod: Snapshot
 #     capacity: 100Mi

@@ -110,8 +110,8 @@ spec:
 #     numberOfReplicas: '2'
 # spec:
 #   accessModes:
-#     - ReadWriteOnce
-#   storageClassName: longhorn-storage
+#     - ReadWriteMany
+#   storageClassName: longhorn-storage-rwm
 #   resources:
 #     requests:
 #       storage: 8Gi
