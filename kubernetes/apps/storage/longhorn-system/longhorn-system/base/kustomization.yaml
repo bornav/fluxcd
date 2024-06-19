@@ -6,3 +6,4 @@ resources:
   - backupstore-secret.yaml
   - volumesnapshotclass.yaml
   - storageClass.yaml
+  - https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/prerequisite/longhorn-nfs-installation.yaml
