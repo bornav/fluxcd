@@ -1,0 +1,26 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: snapshot-controller
+  namespace: kube-system
+spec:
+  repo: https://rke2-charts.rancher.io
+  chart: rke2-snapshot-controller
+---    
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: snapshot-controller-crd
+  namespace: kube-system
+spec:
+  repo: https://rke2-charts.rancher.io
+  chart: rke2-snapshot-controller-crd
+--- 
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: snapshot-validation-webhook
+  namespace: kube-system
+spec:
+  repo: https://rke2-charts.rancher.io
+  chart: rke2-snapshot-validation-webhook
