@@ -21,9 +21,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: immich-service
+                name: tachi-service
                 port:
-                  number: 2283
+                  number: 4568
   tls:
   - hosts:
       - tachi.icylair.com
