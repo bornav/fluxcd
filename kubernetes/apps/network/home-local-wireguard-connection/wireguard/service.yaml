@@ -8,6 +8,12 @@ spec:
   selector:
     name: wireguard
   ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
     - name: smb-old
       port: 139
       targetPort: 139
