@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-service
+spec:
+  type: ExternalName
+  externalName: wireguard.network.svc.cluster.local
+  ports:
+    - name: http
+      targetPort: 2283
+      port: 2283
