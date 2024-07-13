@@ -9,7 +9,7 @@ spec:
     - name: traefik-base
     - name: traefik-addons
   path: ./kubernetes/apps/apps/tachi/tachi/access
-  suspend: false
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository
