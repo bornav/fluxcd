@@ -35,6 +35,9 @@ spec:
     - name: immich
       port: 2283
       targetPort: 2283
+    - name: tachidesk
+      port: 4568
+      targetPort: 4568
     - name: minio-api
       port: 9010
       targetPort: 9010
