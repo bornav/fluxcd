@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tachi-service
+spec:
+  type: ExternalName
+  externalName: wireguard.network.svc.cluster.local
+  ports:
+    - name: http
+      targetPort: 4568
+      port: 4568

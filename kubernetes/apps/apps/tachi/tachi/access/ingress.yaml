@@ -1,0 +1,30 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app tachi-access
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: traefik-external
+  rules:
+    - host: &host tachi.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: immich-service
+                port:
+                  number: 2283
+  tls:
+  - hosts:
+      - tachi.icylair.com
+    secretName: icylair-com-all-prod
