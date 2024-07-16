@@ -9,7 +9,7 @@ spec:
   targetNamespace: kube-system
   path: ./kubernetes/apps/kube-system/snapshot-controller/app
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
