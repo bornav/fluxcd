@@ -21,9 +21,9 @@ spec:
               - key: metadata.name
                 operator: In
                 values:
-                - k3s-oraclearm2
+                # - k3s-oraclearm2
                 # - instance-20210714-1042 
-                # - instance-arm-01
+                - instance-arm-01
       containers:
       - name: teamspeak-server
         image: ertagh/teamspeak3-server:latest-box

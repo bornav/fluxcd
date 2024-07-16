@@ -6,7 +6,7 @@ all:
       # ansible_host: "141.144.255.9"
       ansible_host: "oraclearm2.cloud.icylair.com"
       ansible_ssh_port: 22
-      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.11
 
     host2:
@@ -18,14 +18,23 @@ all:
       ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
       wireguard_ip: 10.99.10.12
 
-    host3:
+    # host3:
+    #   pipelining: true
+    #   ansible_ssh_user: root
+    #   # ansible_host: "10.99.7.3"
+    #   ansible_host: "10.2.11.36" 
+    #   ansible_ssh_port: 22
+    #   ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+    #   wireguard_ip: 10.99.10.10
+
+    host4: # k3s-local-01
       pipelining: true
       ansible_ssh_user: root
       # ansible_host: "10.99.7.3"
-      ansible_host: "10.2.11.24" 
+      ansible_host: "10.2.11.25" 
       ansible_ssh_port: 22
-      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
-      wireguard_ip: 10.99.10.10
+      ansible_ssh_private_key_file: ~/.ssh/id_local
+      wireguard_ip: 10.99.10.13
 
   vars:
     ufw_enabled: false

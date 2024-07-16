@@ -3,11 +3,11 @@
   any_errors_fatal: true
   gather_facts: yes
   tasks:
-    - name: update packages
-      apt:
-        update_cache: yes
-        cache_valid_time: 3600
-      become: yes
+    # - name: update packages
+    #   apt:
+    #     update_cache: yes
+    #     cache_valid_time: 3600
+    #   become: yes
 
     - name: Allow SSH in UFW
       ufw:
@@ -39,12 +39,24 @@
       become: yes
       when: ufw_enabled
 
-    - name: Install wireguard
-      apt:
-        name: wireguard
-        state: present
-      become: yes
+    # - name: Install wireguard
+    #   apt:
+    #     name: wireguard
+    #     state: present
+    #   become: yes
 
+    - name: Create /etc/wireguard if it does not exist
+      file:
+        path: /etc/wireguard
+        state: directory
+        mode: '0755'
+        
+    - name: Create /etc/systemd/network if it does not exist
+      file:
+        path: /etc/systemd/network
+        state: directory
+        mode: '0755'
+        
     - name: Generate Wireguard keypair
       shell: wg genkey | tee /etc/wireguard/privatekey | wg pubkey | tee /etc/wireguard/publickey
       args:
