@@ -7,8 +7,8 @@ metadata:
   namespace: flux-system
 spec:
   # targetNamespace: matrix-dev
-  dependsOn:
-    - name: snapshot-controller	
+  # dependsOn:
+  #   - name: snapshot-controller	
       # namespace: kube-system
   path: ./kubernetes/apps/volsync/volsync/app
   suspend: false
