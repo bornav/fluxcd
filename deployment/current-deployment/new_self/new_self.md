@@ -5,13 +5,13 @@ before run wireguard mesh thingie to bridge it all together
 
 ## deploy first master
 copy install_config.yaml master 1 section to target system and run
-`curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.29.3+k3s1 sh -s - --config=/root/install_config.yaml`
+`curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.30.0+k3s1 sh -s - --config=/root/install_config.yaml`
 ## deploy second master
 copy install_config.yaml master 2 section to target system and run
-`curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.29.3+k3s1 sh -s - --config=/root/install_config.yaml`
+`curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.30.0+k3s1 sh -s - --config=/root/install_config.yaml`
 ## deploy third master
 copy install_config.yaml master 3 section to target system and run
-`curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.29.3+k3s1 sh -s - --config=/root/install_config.yaml`
+`curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.30.0+k3s1 sh -s - --config=/root/install_config.yaml`
 ### note, it will be unhealthy untill cilium is deployed with the values, but the nodes will join(notready)
 
 ## run on master1 to get cli for cilium | optional | can also be run on other nodes
