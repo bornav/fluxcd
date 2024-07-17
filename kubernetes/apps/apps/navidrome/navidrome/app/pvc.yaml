@@ -74,7 +74,7 @@ spec:
   restic:
     repository: restic-navidrome-config-data
     storageClassName: longhorn-storage
-    accessModes: ["ReadWriteMany"]
+    accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-data
     capacity: 2Gi
@@ -112,7 +112,7 @@ spec:
   restic:
     repository: restic-navidrome-config-music
     storageClassName: longhorn-storage
-    accessModes: ["ReadWriteMany"]
+    accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-music
     capacity: 8Gi
