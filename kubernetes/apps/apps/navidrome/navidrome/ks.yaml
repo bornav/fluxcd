@@ -1,23 +1,23 @@
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: navidrome-dependancies
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/apps/navidrome/navidrome/dependancies
-  dependsOn:
-    - name: volsync
-  suspend: true
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: fluxcd-kubernetes
-    namespace: flux-system
-  interval: 15m
-  retryInterval: 15m
-  timeout: 5m
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: navidrome-dependancies
+#   namespace: flux-system
+# spec:
+#   path: ./kubernetes/apps/apps/navidrome/navidrome/dependancies
+#   dependsOn:
+#     - name: volsync
+#   suspend: true
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: fluxcd-kubernetes
+#     namespace: flux-system
+#   interval: 15m
+#   retryInterval: 15m
+#   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -39,5 +39,5 @@ spec:
     name: fluxcd-kubernetes
     namespace: flux-system
   interval: 15m
-  retryInterval: 15m
-  timeout: 5m
+  retryInterval: 35m
+  timeout: 30m
