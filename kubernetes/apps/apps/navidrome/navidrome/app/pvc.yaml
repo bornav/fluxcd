@@ -8,8 +8,7 @@ metadata:
   annotations:
     numberOfReplicas: '2'
 spec:
-  accessModes:
-    - ReadWriteMany
+  accessModes: ["ReadWriteOnce"]
   storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
@@ -29,8 +28,7 @@ metadata:
   annotations:
     numberOfReplicas: '2'
 spec:
-  accessModes:
-    - ReadWriteMany
+  accessModes: ["ReadWriteOnce"]
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
