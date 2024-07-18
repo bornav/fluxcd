@@ -29,9 +29,8 @@ metadata:
     app.kubernetes.io/instance: keycloak
     app.kubernetes.io/name: postgresql
 spec:
-  accessModes:
-  - ReadWriteMany
-  storageClassName: longhorn-storage-rwm
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -40,27 +39,27 @@ spec:
     requests:
       storage: 1Gi
 status: {}
----
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name:  keycloak-data-backup
-spec:
-  sourcePVC: data-keycloak-postgresql-0
-  trigger:
-    schedule: "*/31 * * * *"
-  restic:
-    pruneIntervalDays: 1
-    repository: restic-keycloak-data
-    retain:
-      hourly: 5
-      daily: 4
-      weekly: 3
-      monthly: 2
-      yearly: 1
-    copyMethod: Snapshot
-    storageClassName: longhorn-storage-rwm
-    unlock: "something"
+# ---
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  keycloak-data-backup
+# spec:
+#   sourcePVC: data-keycloak-postgresql-0
+#   trigger:
+#     schedule: "*/31 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-keycloak-data
+#     retain:
+#       hourly: 5
+#       daily: 4
+#       weekly: 3
+#       monthly: 2
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-storage-rwm
+#     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
@@ -72,7 +71,7 @@ spec:
   restic:
     repository: restic-keycloak-data
     storageClassName: longhorn-storage-rwm
-    accessModes: ["ReadWriteMany"]
+    accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 1Gi
     # previous: 2
