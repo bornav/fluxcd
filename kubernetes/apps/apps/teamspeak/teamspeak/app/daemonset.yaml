@@ -21,9 +21,8 @@ spec:
               - key: metadata.name
                 operator: In
                 values:
-                # - k3s-oraclearm2
-                # - instance-20210714-1042 
-                - instance-arm-01
+                - k3s-oraclearm2
+                # - instance-arm-01
       containers:
       - name: teamspeak-server
         image: ertagh/teamspeak3-server:latest-box
@@ -70,6 +69,34 @@ spec:
         # - mountPath: /var/ts3server/
         # - mountPath: /teamspeak
         #   name: teamspeak-data2
+      - name: dns-ip-update
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        image: qmcgaw/ddns-updater:v2.7.0 # TODO test what is correct imave version
+        env:
+        - name: TIME_ZONE
+          value: Europe/Vienna
+        - name: CONFIG_FILEPATH
+          value: "/config.json"
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 1m
+            memory: 64Mi
+        # securityContext:
+        #   # runAsGroup: 1000
+        #   # runAsUser: 0
+        #   privileged: true
+        volumeMounts:
+        - mountPath: /config.json
+          name: config
+          subPath: config.json
+        # - mountPath: /var/ts3server/
+        # - mountPath: /teamspeak
+        #   name: teamspeak-data2
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -78,6 +105,9 @@ spec:
         - name: teamspeak-data
           persistentVolumeClaim:
             claimName: teamspeak
+        - name: config
+          configMap:
+            name: teamspeak-dns-update
 ---
 apiVersion: v1
 kind: Service

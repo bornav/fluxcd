@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+    config.json: ENC[AES256_GCM,data:wbQmhoszEjuiWKyOYVmJ2vPhmvn2XHMPbRqZFR01JP/xt4L9npeWmV1w9SmFDKsO6cKR8cT/OyPmleFYkdup3Yqwl41sdsT1HvAx0ktf2K/vK4M9dd26ICARKB+IKRH2cdnSgo+TyBcJVGBODdiNwOlJV8PD1rfZUrM4jhHaKLNZtTZv8HE1E1Ncr22/uBfD2s5OocYX55/ZDznp0iy1W1vC9o8CsGhtUjeVkgwJDYpQYGVoahYjwEUmfvdHAw3MmIHQJ/6lWwpwTqPdHy/WVVNe5MEshgfz7yaDTvd6t3HHIPRsqWf1bLNkBOdS5td96+4qRHycuHirA9WVvfkufLcem/b+ZVgIYzti3bTsliQfQvk7x29R9mYS9qzsmf6wfZEq430a2c+TRdGB0kJa4MzlKQ==,iv:/dUSbIsP9P6Av2dTmKtBaJBFoAULpZJInK3FaDocyFc=,tag:67o7kNigbzlz9Qi+MGbtKg==,type:str]
+kind: ConfigMap
+metadata:
+    name: teamspeak-dns-update
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnSTVacnZNZUVwTTR3RFFi
+            RnFGMys4SGFKYnNhTkF1RGRyUnlQa1E3V0cwCm1QTmNORWV3Y2VUZXlRblFqWSsw
+            c3hDVmJ0TVcvVUt4eGJYYm1NWm1jdG8KLS0tIHVnZjcvTHAvemNDOTJHVFplR0pu
+            M3V3NWwxOE5vUjBzT1NhVDhYVm9zVUUKGIXqk+M54eufekUzW6hZaIuQoXgzVP9V
+            eXttiiOrSoftAbvlt+Zrk6x7pwzPzine5QmCvXXjPn5dDuraJ0YsDg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-07-18T12:06:40Z"
+    mac: ENC[AES256_GCM,data:hKL0mkwcjtMKhxQB/k7GzWrrPYPRcxW3dTnsdHcACHDHAT5LKD+j5FCt8TLcQy49uWRRvSYN2fvyqFDGLzopQpv7pXfO3orqyL9rQI0T0Wapq4UXpF5SUUBFq1aVCcsD0mI9yhXMD/ZIj++HWJ9RZidxUpg5AIwg5B90NMaycXg=,iv:HJhQ1Q5Ms/eXWeQHX0n5VVEjM8MwWCv4anqgA/SopMk=,tag:yI+2+9+7AyQO2BXREoesCw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|data)$
+    version: 3.9.0
