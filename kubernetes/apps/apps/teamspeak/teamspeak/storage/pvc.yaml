@@ -8,9 +8,8 @@ metadata:
   annotations:
     numberOfReplicas: '2'
 spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: longhorn-storage-rwm
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -19,27 +18,27 @@ spec:
     requests:
       storage: 1Gi
 status: {}
----
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name:  teamspeak-backup
-spec:
-  sourcePVC: teamspeak
-  trigger:
-    schedule: "*/16 * * * *"
-  restic:
-    pruneIntervalDays: 1
-    repository: restic-teamspeak
-    retain:
-      hourly: 5
-      daily: 4
-      weekly: 3
-      monthly: 2
-      yearly: 1
-    copyMethod: Snapshot
-    storageClassName: longhorn-storage-rwm
-    unlock: "something"
+# ---
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  teamspeak-backup
+# spec:
+#   sourcePVC: teamspeak
+#   trigger:
+#     schedule: "*/16 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-teamspeak
+#     retain:
+#       hourly: 5
+#       daily: 4
+#       weekly: 3
+#       monthly: 2
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-storage-rwm
+#     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
@@ -50,7 +49,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-teamspeak
-    storageClassName: longhorn-storage-rwm 
-    accessModes: ["ReadWriteMany"]
+    storageClassName: longhorn-storage
+    accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 1Gi
