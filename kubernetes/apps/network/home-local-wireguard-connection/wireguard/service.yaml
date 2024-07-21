@@ -26,6 +26,9 @@ spec:
     - name: nfs
       port: 2049
       targetPort: 2049
+    - name: rsync
+      port: 873
+      targetPort: 873
     - name: portmapper
       port: 111
       targetPort: 111
