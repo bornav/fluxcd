@@ -1,23 +1,23 @@
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: pv-navidrome-data
-#   labels:
-#     app: pv-navidrome-data
-#   annotations:
-#     numberOfReplicas: '2'
-# spec:
-#   accessModes: ["ReadWriteOnce"]
-#   storageClassName: longhorn-storage
-#   dataSourceRef:
-#     kind: ReplicationDestination
-#     apiGroup: volsync.backube
-#     name: pv-navidrome-data-restore  # Name of the ReplicationDestination
-#   resources:
-#     requests:
-#       storage: 2Gi
-# status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-navidrome-data
+  labels:
+    app: pv-navidrome-data
+  annotations:
+    numberOfReplicas: '2'
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: pv-navidrome-data-restore  # Name of the ReplicationDestination
+  resources:
+    requests:
+      storage: 2Gi
+status: {}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -38,45 +38,45 @@ spec:
     requests:
       storage: 8Gi
 status: {}
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name:  pv-navidrome-data-backup
-#   namespace: navidrome
-# spec:
-#   sourcePVC: pv-navidrome-data
-#   trigger:
-#     schedule: "*/10 * * * *"
-#   restic:
-#     pruneIntervalDays: 1
-#     repository: restic-navidrome-config-data
-#     retain:
-#       hourly: 5
-#       daily: 4
-#       weekly: 3
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn-storage
-#     unlock: "something"
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationDestination
-# metadata:
-#   name: pv-navidrome-data-restore
-#   namespace: navidrome
-# spec:
-#   trigger:
-#     manual: restore-once
-#   restic:
-#     repository: restic-navidrome-config-data
-#     storageClassName: longhorn-storage
-#     accessModes: ["ReadWriteOnce"]
-#     copyMethod: Snapshot
-#     # destinationPVC: pv-navidrome-data
-#     capacity: 2Gi
-# ---
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  pv-navidrome-data-backup
+  namespace: navidrome
+spec:
+  sourcePVC: pv-navidrome-data
+  trigger:
+    schedule: "*/10 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-navidrome-config-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-storage
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: pv-navidrome-data-restore
+  namespace: navidrome
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-navidrome-config-data
+    storageClassName: longhorn-storage
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    # destinationPVC: pv-navidrome-data
+    capacity: 2Gi
+---
 # apiVersion: volsync.backube/v1alpha1
 # kind: ReplicationSource
 # metadata:
