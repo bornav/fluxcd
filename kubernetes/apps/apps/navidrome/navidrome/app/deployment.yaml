@@ -113,7 +113,7 @@ spec:
           privileged: true
         resources:
           limits:
-            cpu: 1G
+            # cpu: 1G
             memory: 100M
           requests:
             cpu: 1m
