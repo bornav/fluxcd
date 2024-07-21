@@ -33,7 +33,7 @@ spec:
     # kind: ReplicationDestination
     # apiGroup: volsync.backube
     # name: pv-navidrome-music-restore  # Name of the ReplicationDestination
-  storageClassName: longhorn-storage-rwm
+  storageClassName: longhorn-storage
   resources:
     requests:
       storage: 8Gi
