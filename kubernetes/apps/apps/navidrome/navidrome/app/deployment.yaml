@@ -102,30 +102,30 @@ spec:
           #     - name: sync-data
           #       mountPath: /startup.sh
           #       subPath: startup.sh
-          # - name: 'sync-music'
-          #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-          #   command: ["/bin/sh"]  # Override the entrypoint
-          #   args: ["-c", "/startup.sh" ]
-          #   envFrom:
-          #   - secretRef:
-          #       name: home-local-syncthing-env
-          #   securityContext:
-          #     privileged: true
-          #   resources:
-          #     limits:
-          #       cpu: 100G
-          #       memory: 1000M
-          #     requests:
-          #       cpu: 100m
-          #       memory: 500M
-          #   volumeMounts:
-          #     - name: pv-navidrome-music
-          #       mountPath: /music
-          #     - name: sync-music-continuous
-          #       mountPath: /startup.sh
-          #       subPath: startup.sh
-          #     - name: nfs-vol
-          #       mountPath: /mnt
+        # - name: 'sync-music'
+        #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
+        #   command: ["/bin/sh"]  # Override the entrypoint
+        #   args: ["-c", "/startup.sh" ]
+        #   envFrom:
+        #   - secretRef:
+        #       name: home-local-syncthing-env
+        #   securityContext:
+        #     privileged: true
+        #   resources:
+        #     limits:
+        #       cpu: 100G
+        #       memory: 1000M
+        #     requests:
+        #       cpu: 100m
+        #       memory: 500M
+        #   volumeMounts:
+        #     - name: pv-navidrome-music
+        #       mountPath: /music
+        #     - name: sync-music-continuous
+        #       mountPath: /startup.sh
+        #       subPath: startup.sh
+        #     - name: nfs-vol
+        #       mountPath: /mnt
       volumes:
       - name: navidrome-configuration
         configMap:
