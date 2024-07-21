@@ -15,7 +15,7 @@ all:
       # ansible_host: "138.3.244.139"
       ansible_host: "oraclearm1.cloud.icylair.com"
       ansible_ssh_port: 22
-      ansible_ssh_private_key_file: ~/.ssh/cdn_key_pwless
+      ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.12
 
     # host3:
