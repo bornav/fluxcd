@@ -9,7 +9,7 @@ metadata:
     numberOfReplicas: '2'
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: longhorn-storage-strict
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -37,7 +37,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn-storage-strict
+    storageClassName: longhorn-storage
     unlock: "something"
 ---
 apiVersion: volsync.backube/v1alpha1
@@ -49,7 +49,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-matrix-database-data
-    storageClassName: longhorn-storage-strict
+    storageClassName: longhorn-storage
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 3Gi
