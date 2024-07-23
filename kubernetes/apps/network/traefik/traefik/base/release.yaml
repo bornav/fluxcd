@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 29.0.0 #chart version not app
+      version: 29.0.1 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: traefik
@@ -153,16 +153,16 @@ spec:
       default:
         defaultCertificate:
           secretName: icylair-com-all-prod
-    service:
-      enabled: true
-      type: LoadBalancer
-      annotations: {}
-      labels: {}
-      spec:
-        # loadBalancerIP: 10.99.20.230
-        #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
-      loadBalancerSourceRanges: []
-      externalIPs: []
+    # service:
+    #   enabled: true
+    #   type: LoadBalancer
+    #   annotations: {}
+    #   labels: {}
+    #   spec:
+    #     # loadBalancerIP: 10.99.20.230
+    #     #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
+    #   loadBalancerSourceRanges: []
+    #   externalIPs: []
     logs:
       general:
         # -- By default, the logs use a text format (common), but you can
