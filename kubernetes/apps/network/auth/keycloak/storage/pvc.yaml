@@ -52,10 +52,10 @@ spec:
     pruneIntervalDays: 1
     repository: restic-keycloak-data
     retain:
-      hourly: 5
-      daily: 4
-      weekly: 3
-      monthly: 2
+      hourly: 2
+      daily: 1
+      weekly: 7
+      monthly: 30
       yearly: 1
     copyMethod: Snapshot
     storageClassName: longhorn-storage
