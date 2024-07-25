@@ -45,6 +45,26 @@ parameters:
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
+  name: longhorn-storage-im
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: "Delete"
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "2"
+  staleReplicaTimeout: "15"
+  fromBackup: ""
+  fsType: "ext4"
+  dataLocality: "best-effort"
+  # replicaAutoBalance: ignored
+  migratable: "true"
+  unmapMarkSnapChainRemoved: "ignored"
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
   name: longhorn-storage-strict
   # annotations:
     # storageclass.kubernetes.io/is-default-class: "true"
