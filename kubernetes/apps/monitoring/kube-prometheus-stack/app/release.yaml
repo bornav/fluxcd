@@ -27,17 +27,11 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  # dependsOn:
-  #   - name: local-path-provisioner
-  #     namespace: kube-system
   values:
     nameOverride: "prometheus"
     namespaceOverride: "monitoring"
-    ## Install Prometheus Operator CRDs
     crds:
       enabled: true
-    ## Create default rules for monitoring the cluster
-    ##
     defaultRules:
       create: true
       rules:
@@ -77,10 +71,7 @@ spec:
         windows: true
 
     alertmanager:
-      ## Deploy alertmanager
-      ##
       enabled: true
-
       ingress:
         enabled: true
         ingressClassName: traefik-external
@@ -95,8 +86,6 @@ spec:
         - hosts:
           - alertmanager.cloud.icylair.com
           secretName: icylair-com-all-prod
-    ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
-    ##
     grafana:
       enabled: true
       defaultDashboardsTimezone: Europe/Vienna
@@ -106,9 +95,6 @@ spec:
       #   userKey: admin-user
       #   passwordKey: admin-password
       adminPassword: prom-operator
-      # rbac:
-      #   ## If true, Grafana PSPs will be created
-      #   pspEnabled: false
       ingress:
         enabled: true
         ingressClassName: traefik-external
@@ -126,15 +112,15 @@ spec:
 
       # # To make Grafana persistent (Using Statefulset)
       # #
-      # persistence:
-      #   enabled: true
-      #   type: sts
-      #   storageClassName: "storageClassName"
-      #   accessModes:
-      #     - ReadWriteOnce
-      #   size: 20Gi
-      #   finalizers:
-      #     - kubernetes.io/pvc-protection
+      persistence:
+        enabled: true
+        type: sts
+        storageClassName: "longhorn-storage"
+        accessModes:
+          - ReadWriteOnce
+        size: 20Gi
+        # finalizers:
+          # - kubernetes.io/pvc-protection
 
     ## Component scraping coreDns. Use either this or kubeDns
     ##
@@ -148,85 +134,29 @@ spec:
         #   k8s-app: kube-dns
       serviceMonitor:
         enabled: true
-        ## Scrape interval. If not set, the Prometheus default scrape interval is used.
-        ##
         interval: ""
-
-        ## SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
-        ##
         sampleLimit: 0
-
-        ## TargetLimit defines a limit on the number of scraped targets that will be accepted.
-        ##
         targetLimit: 0
-
-        ## Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
-        ##
         labelLimit: 0
-
-        ## Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
-        ##
         labelNameLengthLimit: 0
-
-        ## Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer.
-        ##
         labelValueLengthLimit: 0
-
-        ## proxyUrl: URL of a proxy that should be used for scraping.
-        ##
         proxyUrl: ""
-
-        ## port: Name of the port the metrics will be scraped from
-        ##
         port: http-metrics
-
         jobLabel: jobLabel
-        selector: {}
-        #  matchLabels:
-        #    k8s-app: kube-dns
-
-        ## MetricRelabelConfigs to apply to samples after scraping, but before ingestion.
-        ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
-        ##
-        metricRelabelings: []
-        # - action: keep
-        #   regex: 'kube_(daemonset|deployment|pod|namespace|node|statefulset).+'
-        #   sourceLabels: [__name__]
-
-        ## RelabelConfigs to apply to samples before scraping
-        ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
-        ##
-        relabelings: []
-        # - sourceLabels: [__meta_kubernetes_pod_node_name]
-        #   separator: ;
-        #   regex: ^(.*)$
-        #   targetLabel: nodename
-        #   replacement: $1
-        #   action: replace
-
-        ## Additional labels
-        ##
-        additionalLabels: {}
-        #  foo: bar
-    ## Component scraping kube proxy
-    ##
     kubeProxy:
       enabled: false
 
-    ## Deploy a Prometheus instance
-    ##
     prometheus:
       enabled: true
       agentMode: false
       annotations: {}
-      ## Configure network policy for the prometheus
       networkPolicy:
         enabled: true
         ## Flavor of the network policy to use.
         #  Can be:
         #  * kubernetes for networking.k8s.io/v1/NetworkPolicy
         #  * cilium     for cilium.io/v2/CiliumNetworkPolicy
-        # flavor: cilium
+        flavor: cilium
         # cilium:
         #   endpointSelector:
         #   egress:
