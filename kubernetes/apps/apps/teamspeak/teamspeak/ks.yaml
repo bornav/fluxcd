@@ -27,7 +27,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    # - name: traefik-base
+    - name: traefik-base
     # - name: traefik-addons
     - name: longhorn-system-base
     - name: volsync
