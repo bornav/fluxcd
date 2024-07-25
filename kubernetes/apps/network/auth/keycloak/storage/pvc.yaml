@@ -30,11 +30,11 @@ metadata:
     app.kubernetes.io/name: postgresql
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: longhorn-storage
+  storageClassName: longhorn-storage-im
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: keycloak-data-restore  # Name of the ReplicationDestination
+    name: keycloak-data-restore
   resources:
     requests:
       storage: 1Gi
