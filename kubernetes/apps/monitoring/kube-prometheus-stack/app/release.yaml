@@ -90,11 +90,11 @@ spec:
       enabled: true
       defaultDashboardsTimezone: Europe/Vienna
       defaultDashboardsEditable: true
-      # admin:
-      #   existingSecret: grafana-admin-credentials
-      #   userKey: admin-user
-      #   passwordKey: admin-password
-      adminPassword: prom-operator
+      admin:
+        existingSecret: grafana-admin-credentials
+        userKey: admin-user
+        passwordKey: admin-password
+      # adminPassword: prom-operator
       ingress:
         enabled: true
         ingressClassName: traefik-external
