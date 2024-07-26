@@ -1,0 +1,61 @@
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: kube-prometheus-stack
+# spec:
+#   interval: 30m
+#   timeout: 15m
+#   chart:
+#     spec:
+#       chart: kube-prometheus-stack
+#       version: 61.3.2
+#       sourceRef:
+#         kind: HelmRepository
+#         name: prometheus-community
+#         namespace: flux-system
+#   maxHistory: 2
+#   install:
+#     createNamespace: true
+#     crds: CreateReplace
+#     remediation:
+#       retries: 3
+#   upgrade:
+#     cleanupOnFail: true
+#     crds: CreateReplace
+#     remediation:
+#       retries: 3
+#   uninstall:
+#     keepHistory: false
+#   values:
+#     hubble:
+#       enabled: true
+#       relay: ##LOOK INTO FIXING THIS, until done no observability :( ##UPDATE2, changed nothing now works ##UPDATE3 does not work on local node
+#         rollOutPods: true
+#         enabled: true
+#         replicas: 3
+#         tls:
+#           server:
+#             enabled: false
+#       ui:
+#         rollOutPods: true
+#         enabled: true
+#         standalone:
+#           enabled: true
+#       tls:
+#         enabled: false
+#         # auto:
+#         #   enabled: true
+#         #   method: helm
+#         #   certValidityDuration: 1095
+#       dashboards: #grafana dashboard:  # grafana can import dashboards based on the label and value
+#         enabled: true
+#       metrics:    #this works only on already install cluster
+#         enabled:
+#         - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+#         - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+#         enableOpenMetrics: true
+#         serviceMonitor:
+#           enabled: true
+#         dashboards:
+#           enabled: true
+#           namespace: monitoring

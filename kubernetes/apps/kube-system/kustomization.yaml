@@ -2,8 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ./csi-driver-smb/ks.yaml
-  - ./csi-driver-nfs/ks.yaml
-  - ./snapshot-controller/ks.yaml
-  - ./hubble/ks.yaml
+resources: []
+  # - ./csi-driver-smb/ks.yaml
+  # - ./csi-driver-nfs/ks.yaml
+  # - ./snapshot-controller/ks.yaml
+  # - ./hubble/ks.yaml

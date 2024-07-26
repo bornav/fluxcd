@@ -16,6 +16,7 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: devops-tools
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -34,6 +35,7 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: devops-tools
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -54,3 +56,24 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: devops-tools
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: renovate-app
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/devops-tools/devops-tools/renovate
+  prune: true
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: devops-tools
+
