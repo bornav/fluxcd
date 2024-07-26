@@ -4,7 +4,6 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
   name:  pv-navidrome-data-backup
-  namespace: navidrome
 spec:
   sourcePVC: pv-navidrome-data
   trigger:

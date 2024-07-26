@@ -11,7 +11,6 @@ spec:
       targetPort: 2283
       port: 2283
 ---
----
 apiVersion: v1
 kind: Service
 metadata:
