@@ -1,0 +1,42 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  matrix-synapse-data-backup
+spec:
+  sourcePVC: matrix-synapse-data
+  trigger:
+    schedule: "*/13 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-matrix-synapse-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  matrix-database-data-backup
+spec:
+  sourcePVC: matrix-database-data
+  trigger:
+    schedule: "*/16 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-matrix-database-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"

@@ -8,6 +8,30 @@ metadata:
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 reclaimPolicy: "Delete"
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  numberOfReplicas: "1"
+  staleReplicaTimeout: "15"
+  fromBackup: ""
+  fsType: "ext4"
+  dataLocality: "disabled"
+  unmapMarkSnapChainRemoved: "ignored"
+  migratable: "true"
+  # nodeSelector: |
+  #   isLocal: true
+  # nodeSelector: |
+  #   kubernetes.io/hostname: k3s-local-cloud-01
+  # nodeSelector: "isLocal"
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-backup-im
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: "Delete"
 volumeBindingMode: Immediate
 parameters:
   numberOfReplicas: "1"
@@ -16,6 +40,7 @@ parameters:
   fsType: "ext4"
   dataLocality: "disabled"
   unmapMarkSnapChainRemoved: "ignored"
+  migratable: "true"
   # nodeSelector: |
   #   isLocal: true
   # nodeSelector: |
@@ -46,8 +71,6 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: longhorn-storage-im
-  annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 reclaimPolicy: "Delete"
@@ -66,8 +89,6 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: longhorn-storage-strict
-  # annotations:
-    # storageclass.kubernetes.io/is-default-class: "true"
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
 reclaimPolicy: "Delete"
