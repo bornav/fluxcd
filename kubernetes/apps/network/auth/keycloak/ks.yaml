@@ -20,6 +20,7 @@ spec:
   interval: 30m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: network
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -41,3 +42,25 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: network
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: keycloak-backups
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: keycloak-app
+  path: ./kubernetes/apps/network/auth/keycloak/backup
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: network

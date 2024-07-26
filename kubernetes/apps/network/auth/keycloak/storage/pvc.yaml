@@ -20,7 +20,6 @@
 #       storage: 1Gi
 # status: {}
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1.14.0/persistantvolumeclaim_v1.json
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -41,27 +40,27 @@ spec:
       storage: 1Gi
 status: {}
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name:  keycloak-data-backup
-spec:
-  sourcePVC: data-keycloak-postgresql-0
-  trigger:
-    schedule: "*/31 * * * *"
-  restic:
-    pruneIntervalDays: 1
-    repository: restic-keycloak-data
-    retain:
-      hourly: 2
-      daily: 1
-      weekly: 7
-      monthly: 30
-      yearly: 1
-    copyMethod: Snapshot
-    storageClassName: longhorn-storage
-    unlock: "something"
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  keycloak-data-backup
+# spec:
+#   sourcePVC: data-keycloak-postgresql-0
+#   trigger:
+#     schedule: "*/31 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-keycloak-data
+#     retain:
+#       hourly: 2
+#       daily: 1
+#       weekly: 7
+#       monthly: 30
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-storage
+#     unlock: "something"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
