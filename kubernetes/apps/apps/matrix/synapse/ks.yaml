@@ -53,12 +53,12 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: synapse-apps
+  name: synapse-backups
   namespace: flux-system
 spec:
   dependsOn:
     - name: synapse-apps
-  path: ./kubernetes/apps/apps/matrix/synapse/apps/pvc-backup.yaml
+  path: ./kubernetes/apps/apps/matrix/synapse/apps/backup
   suspend: false
   prune: true
   sourceRef:
