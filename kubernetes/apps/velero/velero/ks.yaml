@@ -20,3 +20,4 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: velero
