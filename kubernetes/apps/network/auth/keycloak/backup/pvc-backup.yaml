@@ -17,5 +17,5 @@ spec:
       monthly: 30
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: longhorn-storage
+    storageClassName: longhorn-backup
     unlock: "something"
