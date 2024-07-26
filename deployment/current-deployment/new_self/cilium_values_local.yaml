@@ -5,6 +5,8 @@ operator:
   replicas: 1 # Uncomment this if you only have one node
   rollOutPods: true
 # devices: "wg1" ?
+ipv4:
+  enabled: true
 ipam:
   operator:
     clusterPoolIPv4PodCIDRList: '10.52.0.0/16'
