@@ -16,6 +16,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
+  targetNamespace: rook-ceph
 # ---
 # apiVersion: kustomize.toolkit.fluxcd.io/v1
 # kind: Kustomization
@@ -35,3 +36,4 @@ spec:
 #   interval: 30m
 #   retryInterval: 1m
 #   timeout: 15m
+#   targetNamespace: rook-ceph

@@ -23,6 +23,7 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: longhorn-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -44,3 +45,4 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
+  targetNamespace: longhorn-system
