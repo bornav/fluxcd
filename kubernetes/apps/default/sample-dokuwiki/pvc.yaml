@@ -21,6 +21,7 @@ spec:
   # volumeName: pvc-34aebad8-c902-43e0-8d38-ef3434ce6a65
 status: {}
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
@@ -42,6 +43,7 @@ spec:
     storageClassName: longhorn-storage-rwm
     unlock: "something"
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:

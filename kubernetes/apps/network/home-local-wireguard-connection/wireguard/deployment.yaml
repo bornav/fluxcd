@@ -90,6 +90,15 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
+        - name: nginx
+          image: nginx:1.26.0
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
       volumes:
         - name: wireguard-config
           emptyDir: {}

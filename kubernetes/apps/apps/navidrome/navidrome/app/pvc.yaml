@@ -39,6 +39,7 @@ spec:
       storage: 8Gi
 status: {}
 # ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
 # kind: ReplicationSource
 # metadata:
@@ -61,6 +62,7 @@ status: {}
 #     storageClassName: longhorn-storage
 #     unlock: "something"
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
@@ -76,7 +78,8 @@ spec:
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-data
     capacity: 2Gi
----
+# ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
 # kind: ReplicationSource
 # metadata:
@@ -99,6 +102,7 @@ spec:
 #     storageClassName: longhorn-storage
 #     unlock: "something"
 # ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
 # kind: ReplicationDestination
 # metadata:

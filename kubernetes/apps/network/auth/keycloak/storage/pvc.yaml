@@ -20,6 +20,7 @@
 #       storage: 1Gi
 # status: {}
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1.14.0/persistantvolumeclaim_v1.json
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -40,6 +41,7 @@ spec:
       storage: 1Gi
 status: {}
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
@@ -61,6 +63,7 @@ spec:
     storageClassName: longhorn-storage
     unlock: "something"
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
