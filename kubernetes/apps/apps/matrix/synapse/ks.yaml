@@ -58,7 +58,7 @@ metadata:
 spec:
   dependsOn:
     - name: synapse-apps
-  path: ./kubernetes/apps/apps/matrix/synapse/apps/backup
+  path: ./kubernetes/apps/apps/matrix/synapse/backup
   suspend: false
   prune: true
   sourceRef:
