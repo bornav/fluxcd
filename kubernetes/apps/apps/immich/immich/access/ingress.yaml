@@ -24,7 +24,18 @@ spec:
                 name: immich-service
                 port:
                   number: 2283
+    - host: &host immich.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: immich-service-http
+                port:
+                  number: 443
   tls:
   - hosts:
       - immich.icylair.com
+      - immich.cloud.icylair.com
     secretName: icylair-com-all-prod
