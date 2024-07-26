@@ -5,3 +5,10 @@ metadata:
   name: volsync-systems
   annotations:
     volsync.backube/privileged-movers: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage
+  annotations:
+    volsync.backube/privileged-movers: "true"

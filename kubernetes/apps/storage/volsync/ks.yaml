@@ -6,8 +6,7 @@ metadata:
   name: volsync
   namespace: flux-system
 spec:
-  # targetNamespace: matrix-dev
-  path: ./kubernetes/apps/volsync/volsync/app
+  path: ./kubernetes/apps/storage/volsync/app
   suspend: false
   prune: true
   wait: true
@@ -18,4 +17,4 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
-  targetNamespace: volsync-systems
+  targetNamespace: storage
