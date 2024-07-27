@@ -27,3 +27,4 @@ resources:
   - ./bitnami.yaml
   - ./istio.yaml
   - ./teamspeak.yaml
+  - ./opentelemetry.yaml
