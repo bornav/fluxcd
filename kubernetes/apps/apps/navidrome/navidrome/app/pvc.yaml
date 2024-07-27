@@ -67,7 +67,6 @@ apiVersion: volsync.backube/v1alpha1
 kind: ReplicationDestination
 metadata:
   name: pv-navidrome-data-restore
-  namespace: navidrome
 spec:
   trigger:
     manual: restore-once
