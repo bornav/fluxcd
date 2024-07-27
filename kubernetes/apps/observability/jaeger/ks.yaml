@@ -1,17 +1,14 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kube-prometheus-stack
+  name: jaeger
   namespace: flux-system
 spec:
-  dependsOn:
-  - name: traefik-base
-  - name: traefik-addons
-  - name: longhorn-system-base
-  - name: volsync
-  path: ./kubernetes/apps/monitoring/kube-prometheus-stack/app
+  path: ./kubernetes/apps/observability/jaeger/app
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -20,4 +17,4 @@ spec:
   interval: 30m
   retryInterval: 15m
   timeout: 5m
-  targetNamespace: monitoring
+  targetNamespace: observability
