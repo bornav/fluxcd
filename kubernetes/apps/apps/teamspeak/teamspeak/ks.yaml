@@ -45,3 +45,26 @@ spec:
   timeout: 5m
   targetNamespace: default
   # targetNamespace: apps
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: teamspeak-backups
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: teamspeak-app
+  path: ./kubernetes/apps/apps/teamspeak/teamspeak/backup
+  prune: true
+  suspend: false
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: default
+  # targetNamespace: apps
+

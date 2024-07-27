@@ -18,28 +18,6 @@ spec:
     requests:
       storage: 1Gi
 status: {}
-# ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name:  teamspeak-backup
-# spec:
-#   sourcePVC: teamspeak
-#   trigger:
-#     schedule: "*/16 * * * *"
-#   restic:
-#     pruneIntervalDays: 1
-#     repository: restic-teamspeak
-#     retain:
-#       hourly: 5
-#       daily: 4
-#       weekly: 3
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn-storage-rwm
-#     unlock: "something"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
