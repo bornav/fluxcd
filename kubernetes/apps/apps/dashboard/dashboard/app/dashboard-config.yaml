@@ -26,8 +26,8 @@ data:
         - Grafana:
             icon: grafana.png
             href: https://grafana.cloud.icylair.com/
-        - Grafana:
-            icon: grafana.png
+        - Alertmanager:
+            icon: alertmanager.png
             href: https://alertmanager.cloud.icylair.com/
         - KeyCloak:
             icon: keycloak.png
@@ -41,15 +41,18 @@ data:
         - Longhorn:
             icon: longhorn.png
             href: https://longhorn.cloud.icylair.com
-        - PortainerDB:
-            icon: portainer.png
-            href: https://oracle2.cloud.icylair.com:9443
+        # - PortainerDB:
+        #     icon: portainer.png
+        #     href: https://oracle2.cloud.icylair.com:9443
         - Hubble:
             icon: hubble.png
             href: https://hubble.cloud.icylair.com/?namespace=
         - Capacitor:
             icon: capacitor.png
             href: https://capacitor.cloud.icylair.com
+        - Jaeger:
+            icon: jaeger.png
+            href: https://jaeger.cloud.icylair.com
         # - Netmaker:
         #     icon: netmaker.png
         #     href: https://dashboard.netmaker.cloud.icylair.com

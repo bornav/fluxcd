@@ -146,6 +146,17 @@ spec:
         allowExternalNameServices: true
         publishedService:
           enabled: false
+      file:
+        # -- Create a file provider
+        enabled: true
+        # -- Allows Traefik to automatically watch for file changes
+        watch: true
+        # -- File content (YAML format, go template supported) (see https://doc.traefik.io/traefik/providers/file/)
+        # content: # TODO look how to set this
+        #   tracing:
+        #     otlp:
+        #       http:
+        #         endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
     rbac:
       enabled: true
     tlsStore:
@@ -170,3 +181,10 @@ spec:
         # By default, the level is set to ERROR.
         # -- Alternative logging levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
         level: DEBUG
+    tracing:
+      otlp:
+        enabled: true
+        http:
+          enabled: true
+          # http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
+          endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
