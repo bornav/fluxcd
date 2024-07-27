@@ -43,6 +43,6 @@ spec:
         app: jaeger
       tls:
         # Secrets must be manually created in the namespace.
-        - secretName: cloud-icylair-com-prod
+        - secretName: icylair-com-all-prod
           hosts:
             - jaeger.cloud.icylair.com
