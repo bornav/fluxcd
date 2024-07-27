@@ -8,7 +8,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/observability/otel/otel-collector
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
