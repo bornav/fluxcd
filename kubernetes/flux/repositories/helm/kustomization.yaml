@@ -28,3 +28,4 @@ resources:
   - ./istio.yaml
   - ./teamspeak.yaml
   - ./opentelemetry.yaml
+  - ./zipkin.yaml

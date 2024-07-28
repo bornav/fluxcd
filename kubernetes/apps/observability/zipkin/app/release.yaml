@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zipkin
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: zipkin
+      version: 0.3.3  
+      sourceRef:
+        kind: HelmRepository
+        name: zipkin
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    ingress:
+      enabled: true
+      ingressClassName: traefik-external
+      hosts:
+        - zipkin.cloud.icylair.com
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+      labels:
+        app: zipkin
+      tls:
+        - secretName: icylair-com-all-prod
+          hosts:
+            - zipkin.cloud.icylair.com
