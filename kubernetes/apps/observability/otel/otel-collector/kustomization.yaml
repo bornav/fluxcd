@@ -5,3 +5,4 @@ namespace: observability
 resources:
   - release.yaml
   - otel-configmap.yaml
+  # - otel-col-inress.yaml

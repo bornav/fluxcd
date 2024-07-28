@@ -30,6 +30,7 @@ spec:
     command:
       name: otelcol-k8s
     mode: deployment
+    replicaCount: 1
     configMap:
       create: false
       existingName: otelcol
