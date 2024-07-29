@@ -29,3 +29,4 @@ resources:
   - ./teamspeak.yaml
   - ./opentelemetry.yaml
   - ./zipkin.yaml
+  - ./signoz.yaml
