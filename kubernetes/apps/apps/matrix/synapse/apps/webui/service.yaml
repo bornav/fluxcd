@@ -13,6 +13,22 @@ spec:
   selector:
     app: element
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: element
+  name: element
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: element
+  type: LoadBalancer
+
 # ---
 # apiVersion: v1
 # kind: Service
