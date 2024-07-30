@@ -48,7 +48,7 @@ metadata:
   labels:
     app: matrix-synapse-federation
 spec:
-  loadBalancerIP: 10.0.0.239
+  # loadBalancerIP: 10.0.0.239
   ports:
     - name: https
       protocol: TCP
