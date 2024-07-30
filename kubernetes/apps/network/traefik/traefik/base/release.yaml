@@ -190,4 +190,4 @@ spec:
           endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
     env:
     - name: OTEL_PROPAGATORS
-      value: b3,jaeger
+      value: tracecontext,baggage,b3,jaeger
