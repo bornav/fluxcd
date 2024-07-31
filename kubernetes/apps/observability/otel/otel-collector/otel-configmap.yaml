@@ -34,8 +34,12 @@ data:
         endpoint: jaegertracing-collector.observability.svc.cluster.local:4317
         tls:
           insecure: true
-      otlp/grafana_cloud:
+      otlp/grafana_cloud_tempo:
         endpoint: tempo.observability.svc.cluster.local:4317
+        tls:
+          insecure: true
+      otlphttp:
+        endpoint: http://loki.observability.svc.cluster.local:3100/otlp
         tls:
           insecure: true
     processors:
@@ -70,7 +74,7 @@ data:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp, debug, spanmetrics,otlp/grafana_cloud]
+          exporters: [otlp, debug, spanmetrics,otlp/grafana_cloud_tempo]
         metrics:
           receivers: [otlp, spanmetrics]
           processors: [batch, k8sattributes]
@@ -78,7 +82,7 @@ data:
         logs:
           receivers: [otlp]
           processors: [batch, k8sattributes]
-          exporters: [debug]
+          exporters: [debug, otlphttp]
       telemetry:
         metrics:
           address: ${env:MY_POD_IP}:8888
