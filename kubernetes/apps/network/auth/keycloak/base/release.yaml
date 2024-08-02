@@ -58,3 +58,10 @@ spec:
       enabled: true
       auth:
         existingSecret: keycloak-auth
+    resources:
+##   requests:
+##     cpu: 2
+##     memory: 512Mi
+      limits:
+        cpu: 1500m
+        memory: 1024Mi
