@@ -5,6 +5,6 @@ kind: Kustomization
 resources:
   # - deployment.yaml
   # - ingress.yaml
-  # - secret.yaml
+  - secret.yaml
   # - pvc.yaml
   - release.yaml
