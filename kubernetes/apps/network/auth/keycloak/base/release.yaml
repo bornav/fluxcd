@@ -66,3 +66,5 @@ spec:
         cpu: 1500m
         memory: 1024Mi
     extraEnvVarsSecret: "telemetry"
+    service:
+      type: LoadBalancer
