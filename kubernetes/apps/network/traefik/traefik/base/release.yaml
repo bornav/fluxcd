@@ -34,8 +34,8 @@ spec:
       - "--api.insecure=true"
     deployment:
       enabled: true
-      kind: DaemonSet
-      replicas: 1
+      kind: Deployment
+      replicas: 2
       terminationGracePeriodSeconds: 10
       minReadySeconds: 2
     resources:
@@ -58,17 +58,17 @@ spec:
       #   protocol: "TCP"
       #   # expose: true
       web:
-        hostPort: 80
+        # hostPort: 80
         redirectTo:
           port: websecure
       websecure:
-        hostPort: 443
+        # hostPort: 443
         port: 8443
         containerPort: 8443
         # expose: 
           # default: true
         # expose: true
-        exposedPort: 443
+        # exposedPort: 443
         # hostPort: 443
         # nodePort: 42443
         tls:
