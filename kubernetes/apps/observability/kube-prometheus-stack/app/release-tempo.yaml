@@ -26,27 +26,29 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    tempo:
-      metricsGenerator:
-        # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
-        enabled: true
-        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
-    # this is jaeger
-    # tempoQuery:
-    #   enabled: true
-    #   ingress:
+    replicas: 2
+    reportingEnabled: false
+    # tempo:
+    #   metricsGenerator:
+    #     # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
     #     enabled: true
-    #     className: traefik-external
-    #     hosts:
-    #       - tempo-query.cloud.icylair.com
-    #     annotations:
-    #       traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
-    #     #   kubernetes.io/ingress.class: nginx
-    #     #   kubernetes.io/tls-acme: "true"
-    #     labels:
-    #       app: signoz
-    #     tls:
-    #       # Secrets must be manually created in the namespace.
-    #       - secretName: icylair-com-all-prod
-    #         hosts:
-    #           - tempo-query.cloud.icylair.com
+    #     remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
+    # # this is jaeger
+    # # tempoQuery:
+    # #   enabled: true
+    # #   ingress:
+    # #     enabled: true
+    # #     className: traefik-external
+    # #     hosts:
+    # #       - tempo-query.cloud.icylair.com
+    # #     annotations:
+    # #       traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    # #     #   kubernetes.io/ingress.class: nginx
+    # #     #   kubernetes.io/tls-acme: "true"
+    # #     labels:
+    # #       app: signoz
+    # #     tls:
+    # #       # Secrets must be manually created in the namespace.
+    # #       - secretName: icylair-com-all-prod
+    # #         hosts:
+    # #           - tempo-query.cloud.icylair.com
