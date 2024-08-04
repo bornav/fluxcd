@@ -22,12 +22,18 @@ spec:
         - image: ghcr.io/gethomepage/homepage:v0.9.5
           name: dashboard-homepage
           resources:
-            reuests:
+            requests:
               cpu: 1m
               memory: 1M
             limits:
-              cpu: 300m
+              cpu: 500m
               memory: 200M
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 5
           volumeMounts:
             - mountPath: /app/config/settings.yaml
               name: dashboard-homepage-settings
