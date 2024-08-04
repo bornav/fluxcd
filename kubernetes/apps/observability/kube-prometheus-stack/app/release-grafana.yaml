@@ -1,0 +1,178 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: observability
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: grafana
+      version: 8.3.6 
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    env:
+      GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
+      GF_EXPLORE_ENABLED: true
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
+      GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
+    grafana.ini:
+      analytics:
+        check_for_updates: false
+        check_for_plugin_updates: false
+        reporting_enabled: false
+      news:
+        news_feed_enabled: false
+      auth.anonymous:
+        enabled: true
+      #   # org_id: 1
+      #   # org_name: Main Org.
+      #   # org_role: Viewer
+      auth.generic_oauth:
+        enabled: true
+        name: Keycloak-OAuth
+        allow_sign_up: true
+        client_id: grafana-oauth
+        client_secret: ${client_secret}
+        scopes: openid email profile offline_access roles
+        email_attribute_path: email
+        login_attribute_path: username
+        name_attribute_path: full_name
+        auth_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/auth
+        token_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/token
+        api_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/userinfo
+        # role_attribute_path: contains(roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+        role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+        # allow_assign_grafana_admin: true # TODO this does not work
+      server:
+      # The full public facing url you use in browser, used for redirects and emails
+        root_url: https://grafana.cloud.icylair.com
+    envFromSecret: "grafana-oauth"
+    # assertNoLeakedSecrets: false
+    ingress:
+      enabled: true
+      className: traefik-external
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+      labels:
+        app: grafana
+      hosts:
+        - &host grafana.cloud.icylair.com
+      tls:
+        - secretName: icylair-com-all-prod
+          hosts:
+            - *host
+    persistence:
+      enabled: false
+    # persistence:
+    #   type: pvc
+    #   enabled: true
+    #   storageClassName: longhorn-storage
+    #   accessModes:
+    #     - ReadWriteOnce
+    #   size: 10Gi
+    #   finalizers:
+    #     - kubernetes.io/pvc-protection
+    #   extraPvcLabels: {}
+    #   disableWarning: false
+    admin:
+      ## Name of the secret. Can be templated.
+      existingSecret: "grafana-ingress-crets"
+      userKey: admin-user
+      passwordKey: admin-password
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - { name: Alertmanager, orgId: 1 }
+          - { name: Loki, orgId: 1 }
+          - { name: Prometheus, orgId: 1 }
+          - { name: Tempo, orgId: 1 }
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            uid: prometheus
+            access: proxy
+            url: http://prometheus-operated.observability.svc.cluster.local:9090
+            jsonData:
+              timeInterval: 1m
+            isDefault: true
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki-headless.observability.svc.cluster.local:3100
+            jsonData:
+              maxLines: 250
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://alertmanager-operated.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
+          - name: Tempo
+            type: tempo
+            uid: tempo
+            access: proxy
+            url: http://tempo.observability.svc.cluster.local:3100
+            jsonData:
+              tracesToMetrics:
+                datasourceUid: prometheus
+              # search:
+              #   filters:
+              #   - id: service-name
+              #     tag: service.name
+              #     operator: "="
+              #     scope: resource
+              #   - id: span-name
+              #     tag: name
+              #     operator: "="
+              #     scope: span
+              serviceMap:
+                datasourceUid: prometheus
+              nodeGraph:
+                enabled: true
+              tracesToLogsV2:
+                customQuery: false
+                datasourceUid: loki
+        dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+              - name: default
+                orgId: 1
+                folder: ""
+                type: file
+                disableDeletion: false
+                editable: true
+                options:
+                  path: /var/lib/grafana/dashboards/default
+    sidecar:
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+        label: grafana_dashboard
+        folderAnnotation: grafana_folder
+        provider:
+          disableDelete: true
+          foldersFromFilesStructure: true
+      datasources:
+        enabled: true
+        searchNamespace: ALL
+        labelValue: ""

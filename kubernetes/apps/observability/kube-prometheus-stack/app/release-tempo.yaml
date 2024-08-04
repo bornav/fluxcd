@@ -1,0 +1,52 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tempo
+  namespace: observability
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: tempo
+      version: 1.10.1
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    tempo:
+      metricsGenerator:
+        # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
+        enabled: true
+        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
+    # this is jaeger
+    # tempoQuery:
+    #   enabled: true
+    #   ingress:
+    #     enabled: true
+    #     className: traefik-external
+    #     hosts:
+    #       - tempo-query.cloud.icylair.com
+    #     annotations:
+    #       traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    #     #   kubernetes.io/ingress.class: nginx
+    #     #   kubernetes.io/tls-acme: "true"
+    #     labels:
+    #       app: signoz
+    #     tls:
+    #       # Secrets must be manually created in the namespace.
+    #       - secretName: icylair-com-all-prod
+    #         hosts:
+    #           - tempo-query.cloud.icylair.com

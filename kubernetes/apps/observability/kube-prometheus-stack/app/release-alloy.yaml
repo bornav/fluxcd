@@ -1,0 +1,44 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana-alloy
+  namespace: observability
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: alloy
+      version: 0.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    ingress:
+      enabled: true
+      className: traefik-external
+      hosts:
+        - alloy.cloud.icylair.com
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+      #   kubernetes.io/ingress.class: nginx
+      #   kubernetes.io/tls-acme: "true"
+      labels:
+        app: alloy
+      tls:
+        # Secrets must be manually created in the namespace.
+        - secretName: icylair-com-all-prod
+          hosts:
+            - alloy.cloud.icylair.com

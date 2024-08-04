@@ -1,0 +1,102 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: observability
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: loki
+      version: 6.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    deploymentMode: SingleBinary
+    loki:
+      auth_enabled: false
+      analytics:
+        reporting_enabled: false
+      server:
+        log_level: info
+      commonConfig:
+        replication_factor: 1
+      ingester:
+        chunk_encoding: snappy
+      storage:
+        type: filesystem
+      schemaConfig:
+        configs:
+          - from: "2024-04-01" # quote
+            store: tsdb
+            object_store: filesystem
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
+      limits_config:
+        retention_period: 14d
+        allow_structured_metadata: true
+        otlp_config:
+          resource_attributes:
+            attributes_config:
+              - action: index_label
+                regex: service.group
+          scope_attributes:
+            - action: drop
+              attributes:
+                - method.name
+          log_attributes:
+            - action: structured_metadata
+              attributes:
+                - user.id
+            - action: drop
+              regex: .*
+    singleBinary:
+      replicas: 1
+      persistence:
+        enabled: true
+        storageClass: longhorn-storage
+        size: 5Gi
+    # ingress:
+    #   enabled: true
+    #   ingressClassName: "traefik-external"
+    #   annotations:
+    #       traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    #   hosts:
+    #     - &host loki.cloud.icylair.com
+    #   # -- TLS configuration for the ingress. Hosts passed through the `tpl` function to allow templating
+    #   tls:
+    #     - secretName: icylair-com-all-prod
+    #       hosts:
+    #         - *host
+    gateway:
+      replicas: 0
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
+    lokiCanary:
+      enabled: false
+    test:
+      enabled: false

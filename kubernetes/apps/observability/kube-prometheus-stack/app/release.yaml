@@ -1,14 +1,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: kube-prometheus-stack
+  name: prometheus-stack
+  namespace: observability
 spec:
   interval: 30m
   timeout: 15m
   chart:
     spec:
       chart: kube-prometheus-stack
-      version: 61.6.1
+      version: 61.3.2
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
@@ -27,192 +28,161 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    nameOverride: "prometheus"
-    namespaceOverride: "monitoring"
     crds:
       enabled: true
     defaultRules:
       create: true
       rules:
-        alertmanager: true
-        etcd: true
-        configReloaders: true
-        general: true
+        alertmanager:                     false
+        etcd:                             true
+        configReloaders:                  true
+        general:                          true
         k8sContainerCpuUsageSecondsTotal: true
-        k8sContainerMemoryCache: true
-        k8sContainerMemoryRss: true
-        k8sContainerMemorySwap: true
-        k8sContainerResource: true
+        k8sContainerMemoryCache:          true
+        k8sContainerMemoryRss:            true
+        k8sContainerMemorySwap:           true
+        k8sContainerResource:             true
         k8sContainerMemoryWorkingSetBytes: true
-        k8sPodOwner: true
-        kubeApiserverAvailability: true
-        kubeApiserverBurnrate: true
-        kubeApiserverHistogram: true
-        kubeApiserverSlos: true
-        kubeControllerManager: true
-        kubelet: true
-        kubeProxy: true
-        kubePrometheusGeneral: true
-        kubePrometheusNodeRecording: true
-        kubernetesApps: true
-        kubernetesResources: true
-        kubernetesStorage: true
-        kubernetesSystem: true
-        kubeSchedulerAlerting: true
-        kubeSchedulerRecording: true
-        kubeStateMetrics: true
-        network: true
-        node: true
-        nodeExporterAlerting: true
-        nodeExporterRecording: true
-        prometheus: true
-        prometheusOperator: true
-        windows: true
+        k8sPodOwner:                      true
+        kubeApiserverAvailability:        true
+        kubeApiserverBurnrate:            true
+        kubeApiserverHistogram:           true
+        kubeApiserverSlos:                true
+        kubeControllerManager:            true
+        kubelet:                          true
+        kubeProxy:                        true
+        kubePrometheusGeneral:            true
+        kubePrometheusNodeRecording:      true
+        kubernetesApps:                   true
+        kubernetesResources:              true
+        kubernetesStorage:                true
+        kubernetesSystem:                 true
+        kubeSchedulerAlerting:             true
+        kubeSchedulerRecording:           true
+        kubeStateMetrics:                 true
+        network:                         true
+        node:                             true
+        nodeExporterAlerting:            true
+        nodeExporterRecording:             true
+        prometheus:                      true
+        prometheusOperator:               true
+        windows:                        true
+    ## Setting to true produces cleaner resource names, but requires a data migration because the name of the persistent volume changes. Therefore this should only be set once on initial installation.
+    ##
+    cleanPrometheusOperatorObjectNames: true
 
+    ## Extra manifests to deploy as an array
+    extraManifests: []
+
+    # kubeApiServer:
+    #   enabled: false
+    # kubelet:
+    #   enabled: false
+    # kubeControllerManager:
+    #   enabled: false
+    # coreDns:
+    #   enabled: false
+    # kubeDns:
+    #   enabled: false
+    # kubeEtcd:
+    #   enabled: false
+    # kubeScheduler:
+    #   enabled: false
+    # kubeProxy:
+    #   enabled: false
+    # kubeStateMetrics:
+    #   enabled: false
+    # ## Deploy node exporter as a daemonset to all nodes
+    # nodeExporter:
+    #   enabled: false
+    prometheusOperator:
+      enabled: true
+    prometheus:
+      enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: traefik-external
+        hosts:
+          - prometheus.cloud.icylair.com
+        annotations:
+          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        tls:
+          - secretName: icylair-com-all-prod
+            hosts:
+              - prometheus.cloud.icylair.com
+      prometheusSpec:
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        enableAdminAPI: true
+        walCompression: true
+        enableFeatures:
+          - auto-gomemlimit
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+          - exemplar-storage
+        retention: 14d
+        retentionSize: 8GB
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn-storage
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 10Gi
+            selector: {}
+        additionalScrapeConfigs: |
+          - job_name: 'kubernetes-pods'
+            kubernetes_sd_configs:
+            - role: pod
+            relabel_configs:
+              - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+                action: keep
+                regex: true
+              - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+                action: replace
+                regex: ([^:]+)(?::\d+)?;(\d+)
+                replacement: ${1}:${2}
+                target_label: __address__
+          - job_name: 'kubernetes-endpoints'
+            scrape_interval: 30s
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+                action: keep
+                regex: true
+              - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+                action: replace
+                target_label: __address__
+                regex: (.+)(?::\d+);(\d+)
+                replacement: $1:$2
+
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
     alertmanager:
       enabled: true
       ingress:
         enabled: true
-        ingressClassName: traefik-external
+        className: traefik-external
+        hosts:
+          - &host alertmanager.cloud.icylair.com
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
-        labels: {}
-        hosts:
-        - alertmanager.cloud.icylair.com
-        paths:
-        - /
         tls:
-        - hosts:
-          - alertmanager.cloud.icylair.com
-          secretName: icylair-com-all-prod
-    grafana:
-      enabled: true
-      defaultDashboardsTimezone: Europe/Vienna
-      defaultDashboardsEditable: true
-      # admin:
-      #   existingSecret: grafana-admin-credentials
-      #   userKey: admin-user
-      #   passwordKey: admin-password
-      adminPassword: prom-operator
-      ingress:
-        enabled: true
-        ingressClassName: traefik-external
-        annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
-        hosts:
-        - grafana.cloud.icylair.com
-
-        ## Path for grafana ingress
-        path: /
-        tls:
-        - hosts:
-          - grafana.cloud.icylair.com
-          secretName: icylair-com-all-prod
-
-      # # To make Grafana persistent (Using Statefulset)
-      # #
-      persistence:
-        enabled: true
-        type: sts
-        storageClassName: "longhorn-storage"
-        accessModes:
-          - ReadWriteOnce
-        size: 20Gi
-        # finalizers:
-          # - kubernetes.io/pvc-protection
-
-    ## Component scraping coreDns. Use either this or kubeDns
-    ##
-    coreDns:
-      enabled: true
-      service:
-        enabled: true
-        port: 9153
-        targetPort: 9153
-        # selector:
-        #   k8s-app: kube-dns
-      serviceMonitor:
-        enabled: true
-        interval: ""
-        sampleLimit: 0
-        targetLimit: 0
-        labelLimit: 0
-        labelNameLengthLimit: 0
-        labelValueLengthLimit: 0
-        proxyUrl: ""
-        port: http-metrics
-        jobLabel: jobLabel
-    kubeProxy:
-      enabled: false
-
-    prometheus:
-      enabled: true
-      agentMode: false
-      annotations: {}
-      networkPolicy:
-        enabled: true
-        ## Flavor of the network policy to use.
-        #  Can be:
-        #  * kubernetes for networking.k8s.io/v1/NetworkPolicy
-        #  * cilium     for cilium.io/v2/CiliumNetworkPolicy
-        flavor: cilium
-        # cilium:
-        #   endpointSelector:
-        #   egress:
-        #   ingress:
-        # egress:
-        # - {}
-        # ingress:
-        # - {}
-        # podSelector:
-        #   matchLabels:
-        #     app: prometheus
-      ## Service account for Prometheuses to use.
-      serviceAccount:
-        create: true
-        name: ""
-        annotations: {}
-        automountServiceAccountToken: true
-      ingress:
-        enabled: true
-        ingressClassName: traefik-external
-        # annotations:
-        # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
-        hosts:
-        - prometheus.cloud.icylair.com
-        path: /
-        tls:
-        - hosts:
-          - prometheus.cloud.icylair.com
-          secretName: icylair-com-all-prod
-      containers: []
-      # containers:
-      # - name: oauth-proxy
-      #   image: quay.io/oauth2-proxy/oauth2-proxy:v7.5.1
-      #   args:
-      #   - --upstream=http://127.0.0.1:9090
-      #   - --http-address=0.0.0.0:8081
-      #   - --metrics-address=0.0.0.0:8082
-      #   - ...
-      #   ports:
-      #   - containerPort: 8081
-      #     name: oauth-proxy
-      #     protocol: TCP
-      #   - containerPort: 8082
-      #     name: oauth-metrics
-      #     protocol: TCP
-      #   resources: {}
-
-    ## Setting to true produces cleaner resource names, but requires a data migration because the name of the persistent volume changes. Therefore this should only be set once on initial installation.
-    ##
-    cleanPrometheusOperatorObjectNames: false
-
-    ## Extra manifests to deploy as an array
-    extraManifests: []
-    # - apiVersion: v1
-    #   kind: ConfigMap
-    #   metadata:
-    #   labels:
-    #     name: prometheus-extra
-    #   data:
-    #     extra-data: "value"
+          - secretName: icylair-com-all-prod
+            hosts:
+              - *host
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: longhorn-storage
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 8Gi
+            selector: {}

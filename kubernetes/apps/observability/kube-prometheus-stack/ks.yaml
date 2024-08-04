@@ -6,12 +6,10 @@ metadata:
 spec:
   dependsOn:
   - name: traefik-base
-  - name: traefik-addons
   - name: longhorn-system-base
-  - name: volsync
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
