@@ -41,6 +41,17 @@ spec:
       # -- Replica count for Longhorn UI.
       replicas: 1
 
+    longhornDriver:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          value: "true"
+          effect: NoSchedule
+    longhornManager:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          value: "true"
+          effect: NoSchedule
+
       
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
