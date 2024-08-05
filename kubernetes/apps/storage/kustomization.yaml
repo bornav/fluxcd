@@ -6,4 +6,5 @@ resources:
   - ./longhorn-system
   - ./rook-ceph
   - ./volsync/ks.yaml
+  - ./harbor
   - namespace.yaml

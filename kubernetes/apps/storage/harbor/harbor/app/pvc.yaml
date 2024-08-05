@@ -1,0 +1,34 @@
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: harbor-data
+  labels:
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage-im
+  # dataSourceRef:
+  #   kind: ReplicationDestination
+  #   apiGroup: volsync.backube
+  #   name: data-harbor-restore
+  resources:
+    requests:
+      storage: 3Gi
+status: {}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: data-harbor-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-keycloak-data
+    storageClassName: longhorn-storage
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 3Gi
+    # previous: 2
