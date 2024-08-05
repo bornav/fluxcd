@@ -30,6 +30,12 @@ spec:
       backupstorePollInterval: 30
 
       taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
+    global:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: "Equal"
+          value: "true"
+          effect: NoSchedule
     ingress:
       enabled: true
       ingressClassName: traefik-external
@@ -45,11 +51,19 @@ spec:
     longhornDriver:
       tolerations:
         - key: node-role.kubernetes.io/master
+          operator: "Equal"
           value: "true"
           effect: NoSchedule
     longhornManager:
       tolerations:
         - key: node-role.kubernetes.io/master
+          operator: "Equal"
+          value: "true"
+          effect: NoSchedule
+    csi:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: "Equal"
           value: "true"
           effect: NoSchedule
 
