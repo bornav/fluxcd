@@ -63,7 +63,7 @@ spec:
       # The full public facing url you use in browser, used for redirects and emails
         root_url: https://grafana.cloud.icylair.com
     envFromSecret: "grafana-oauth"
-    # assertNoLeakedSecrets: false
+    assertNoLeakedSecrets: false
     ingress:
       enabled: true
       className: traefik-external
