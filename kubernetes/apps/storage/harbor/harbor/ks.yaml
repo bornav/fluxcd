@@ -6,6 +6,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/storage/harbor/harbor/app
   prune: false
+  suspended: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
