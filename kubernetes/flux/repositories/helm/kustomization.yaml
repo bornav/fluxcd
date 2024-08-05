@@ -30,3 +30,4 @@ resources:
   - ./opentelemetry.yaml
   - ./zipkin.yaml
   - ./signoz.yaml
+  - ./harbor.yaml
