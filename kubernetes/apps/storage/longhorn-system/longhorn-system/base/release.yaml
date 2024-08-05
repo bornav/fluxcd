@@ -28,6 +28,8 @@ spec:
       backupTarget: "s3://kubernetes-backup-bucket@us-east-1/"
       backupTargetCredentialSecret: s3-minio-secret
       backupstorePollInterval: 30
+
+      taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
     ingress:
       enabled: true
       ingressClassName: traefik-external
@@ -40,7 +42,6 @@ spec:
     longhornUI:
       # -- Replica count for Longhorn UI.
       replicas: 1
-
     longhornDriver:
       tolerations:
         - key: node-role.kubernetes.io/master
