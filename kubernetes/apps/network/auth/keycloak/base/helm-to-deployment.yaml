@@ -521,7 +521,7 @@ spec:
       enableServiceLinks: true
       initContainers:
         - name: init-quarkus-directory
-          image: docker.io/bitnami/keycloak:24.0.5-debian-12-r8
+          image: docker.io/bitnami/keycloak:25.0.2-debian-12-r2
           imagePullPolicy: IfNotPresent
           command:
             - /bin/bash
@@ -561,7 +561,7 @@ spec:
               subPath: app-quarkus-dir
       containers:
         - name: keycloak
-          image: docker.io/bitnami/keycloak:24.0.5-debian-12-r8
+          image: docker.io/bitnami/keycloak:25.0.2-debian-12-r2
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
