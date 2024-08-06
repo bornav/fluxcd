@@ -112,7 +112,7 @@ spec:
               - prometheus.cloud.icylair.com
       prometheusSpec:
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: true
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
@@ -160,7 +160,6 @@ spec:
                 target_label: __address__
                 regex: (.+)(?::\d+);(\d+)
                 replacement: $1:$2
-
     grafana:
       enabled: false
       forceDeployDashboards: true
