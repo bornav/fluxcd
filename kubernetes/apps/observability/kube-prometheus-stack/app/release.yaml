@@ -111,11 +111,11 @@ spec:
             hosts:
               - prometheus.cloud.icylair.com
       prometheusSpec:
-        ruleSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: true
         serviceMonitorSelectorNilUsesHelmValues: true
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
-        scrapeConfigSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: true
+        probeSelectorNilUsesHelmValues: true
+        scrapeConfigSelectorNilUsesHelmValues: true
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
