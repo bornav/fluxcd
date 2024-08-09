@@ -27,12 +27,12 @@ spec:
     keepHistory: false
   values:
     replicas: 2
-    reportingEnabled: false
-    # tempo:
-    #   metricsGenerator:
-    #     # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
-    #     enabled: true
-    #     remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
+    tempo:
+      reportingEnabled: false
+      metricsGenerator:
+        # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
+        enabled: true
+        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
     # # this is jaeger
     # # tempoQuery:
     # #   enabled: true
@@ -52,3 +52,29 @@ spec:
     # #       - secretName: icylair-com-all-prod
     # #         hosts:
     # #           - tempo-query.cloud.icylair.com
+      extraVolumeMounts:
+        - name: tempo-pvc
+          mountPath: /mnt/volume
+          existingClaim: tempo-pvc
+    # persistence:
+    #   enabled: true
+    #   storageClassName: longhorn-storage
+    #   accessModes:
+    #     - ReadWriteOnce
+    #   size: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: tempo-pvc
+  name: tempo-pvc
+  annotations:
+    numberOfReplicas: '2'
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage
+  resources:
+    requests:
+      storage: 3Gi
+status: {}

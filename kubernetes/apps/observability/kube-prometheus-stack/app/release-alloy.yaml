@@ -42,3 +42,33 @@ spec:
         - secretName: icylair-com-all-prod
           hosts:
             - alloy.cloud.icylair.com
+    alloy:
+      configMap:
+        create: false
+        # -- Name of existing ConfigMap to use. Used when create is false.
+        name: alloy-config   
+        # -- Key in ConfigMap to get config from.
+        key: config
+---
+# Source: opentelemetry-demo/charts/opentelemetry-collector/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alloy-config    
+data:
+  config: |
+    tracing {
+      sampling_fraction = 0.1
+      write_to = [otelcol.exporter.otlp.tempo.input]
+    }
+
+    otelcol.exporter.otlp "tempo" {
+      client {
+        endpoint = env("tempo.observability.svc.cluster.local:4317")
+
+        tls {
+          insecure = true
+        }
+      }
+    }
+    
