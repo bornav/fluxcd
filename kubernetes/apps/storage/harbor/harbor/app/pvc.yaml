@@ -26,7 +26,7 @@ spec:
   trigger:
     manual: restore-once
   restic:
-    repository: restic-keycloak-data
+    repository: restic-harbor-data
     storageClassName: longhorn-storage
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
