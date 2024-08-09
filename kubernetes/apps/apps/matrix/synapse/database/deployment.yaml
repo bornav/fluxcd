@@ -36,7 +36,7 @@ spec:
       #         subPath: startup.sh
       containers:
         - name: databases
-          image: postgres:14.10-alpine
+          image: postgres:16.4-alpine
           env:
             - name: PGDATA
               value: /data/data
