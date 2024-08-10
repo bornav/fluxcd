@@ -17,6 +17,7 @@ spec:
         io.kompose.network/dockerfile-default: 'true'
         app: mautrix-bridge-whatsapp
     spec:
+      shareProcessNamespace: true
       initContainers:
         - name: 'create-db-container-whatsapp'
           image: 'postgres'
@@ -42,12 +43,12 @@ spec:
               while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
               if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
       containers:
-        - command:
+        - name: mautrix-bridge-whatsapp
+          command:
             - sh
             - -c
             - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && ./docker-run.sh
           image: dock.mau.dev/mautrix/whatsapp:v0.10.9
-          name: mautrix-bridge-whatsapp
           resources:
             requests:
               memory: '1Mi'
@@ -62,6 +63,23 @@ spec:
             - mountPath: /config/config.yaml
               name: matrix-bridge-whatsapp-config
               subPath: config.yaml
+        # - name: go-instrumentation-sidecart
+        #   image: otel/autoinstrumentation-go:v0.14.0-alpha
+        #   imagePullPolicy: IfNotPresent
+        #   env:
+        #     - name: OTEL_GO_AUTO_TARGET_EXE
+        #       value: /usr/bin/mautrix-whatsapp
+        #     - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        #       value: "https://otel-col.cloud.icylair.com"
+        #     - name: OTEL_SERVICE_NAME
+        #       value: "matrix-synapse-whatsapp-bridge"
+        #     # - name: OTEL_PROPAGATORS
+        #     #   value: "tracecontext,baggage"
+        #     - name: OTEL_GO_AUTO_SHOW_VERIFIER_LOG
+        #       value: "true"
+        #   securityContext:
+        #     runAsUser: 0
+        #     privileged: true
       restartPolicy: Always
       volumes:
         - name: matrix-bridges-data
