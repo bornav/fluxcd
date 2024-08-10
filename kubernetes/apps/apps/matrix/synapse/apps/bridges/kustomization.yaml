@@ -2,9 +2,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - facebook-config.yaml
-  - facebook-service.yaml
-  - facebook-synapse-bridge.yaml
+  # - facebook-config.yaml
+  # - facebook-service.yaml
+  # - facebook-synapse-bridge.yaml
   # - signal-config.yaml
   # - signal-service.yaml
   # - signal-synapse-bridge.yaml
@@ -14,3 +14,5 @@ resources:
   - whatsapp-config.yaml
   - whatsapp-service.yaml
   - whatsapp-synapse-bridge.yaml
+  - mautrix-meta.yaml
+  - mautrix-meta-config.yaml
