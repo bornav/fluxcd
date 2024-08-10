@@ -56,9 +56,9 @@ spec:
         auth_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/auth
         token_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/token
         api_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/userinfo
-        # role_attribute_path: contains(roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
-        role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
-        # allow_assign_grafana_admin: true # TODO this does not work
+        role_attribute_path: contains(roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+        # role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+        allow_assign_grafana_admin: true # TODO this does not work
       server:
       # The full public facing url you use in browser, used for redirects and emails
         root_url: https://grafana.cloud.icylair.com
