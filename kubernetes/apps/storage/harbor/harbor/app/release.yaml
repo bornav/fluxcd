@@ -24,6 +24,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    updateStrategy:
+      type: Recreate
     existingSecretAdminPassword: harbor-secret
     externalURL: https://harbor.cloud.icylair.com
     expose:
@@ -104,3 +106,14 @@ spec:
     redis:
       internal:
         <<: *tolerations-and-nodelectors
+
+    trace:
+      enabled: true
+      provider: otel
+      otel:
+        endpoint: opentelemetry-collector.observability.svc.cluster.local:4318
+        url_path: /v1/traces
+        compression: false
+        insecure: true
+        # timeout is in seconds
+        timeout: 10
