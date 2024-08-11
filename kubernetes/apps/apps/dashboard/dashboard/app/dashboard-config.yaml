@@ -51,7 +51,7 @@ data:
             icon: cilium.png
             href: https://hubble.cloud.icylair.com/?namespace=
         - Capacitor:
-            icon: capacitor.png
+            icon: flux-cd.png
             href: https://capacitor.cloud.icylair.com
         - Jaeger:
             icon: jaeger.png
