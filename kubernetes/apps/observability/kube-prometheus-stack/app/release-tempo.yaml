@@ -56,12 +56,12 @@ spec:
       #   - name: tempo-pvc
       #     mountPath: /mnt/volume
       #     existingClaim: tempo-pvc
-    persistence:
-      enabled: true
-      storageClassName: longhorn-storage
-      accessModes:
-        - ReadWriteOnce
-      size: 2Gi
+    # persistence:
+    #   enabled: true
+    #   storageClassName: longhorn-storage
+    #   accessModes:
+    #     - ReadWriteOnce
+    #   size: 2Gi
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
