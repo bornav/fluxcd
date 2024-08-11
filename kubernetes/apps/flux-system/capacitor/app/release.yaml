@@ -1,8 +1,25 @@
+# ---
+# apiVersion: source.toolkit.fluxcd.io/v1
+# kind: HelmRepository
+# metadata:
+#   name: onechart
+# spec:
+#   interval: 2h
+#   url: https://chart.onechart.dev
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
 metadata:
-  name: onechart
+  name: capacitor
+  namespace: flux-system
 spec:
-  interval: 2h
-  url: https://chart.onechart.dev
+  targetNamespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  wait: true
+  prune: true
+  path: "./"
+  sourceRef:
+    kind: OCIRepository
+    name: capacitor
