@@ -36,7 +36,7 @@ spec:
   storageClassName: longhorn-storage
   resources:
     requests:
-      storage: 8Gi
+      storage: 14Gi
 status: {}
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
