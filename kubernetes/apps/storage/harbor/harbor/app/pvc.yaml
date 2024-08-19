@@ -43,7 +43,7 @@ spec:
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: restic-harbor-database
+    name: database-harbor-restore
   resources:
     requests:
       storage: 1Gi
