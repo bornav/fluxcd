@@ -51,10 +51,11 @@ spec:
           jobLog:
             existingClaim: "harbor-data"
             subPath: "jobservice"
-        database: # TODO not work
-          # existingClaim: "harbor-data"
-          # subPath: "database"
-          storageClass: "longhorn-storage-im"
+        # database: # TODO not work, droping it and using manual db
+        #   existingClaim: "harbor-data"
+        #   subPath: "database"
+        #   accessMode: "ReadWriteMany"
+        #   storageClass: "longhorn-storage-im"
         redis:
           existingClaim: "harbor-data"
           subPath: "redis"
@@ -102,9 +103,22 @@ spec:
       enabled: false
       <<: *tolerations-and-nodelectors
     database:
-      type: internal
-      internal:
-        <<: *tolerations-and-nodelectors
+      type: external
+      external:
+        host: "harbor-postgres-postgresql"
+        port: "5432"
+        username: "user"
+        coreDatabase: "registry"
+        # if using existing secret, the key must be "password"
+        existingSecret: "harbor-secret"
+        # "disable" - No SSL
+        # "require" - Always SSL (skip verification)
+        # "verify-ca" - Always SSL (verify that the certificate presented by the
+        # server was signed by a trusted CA)
+        # "verify-full" - Always SSL (verify that the certification presented by the
+        # server was signed by a trusted CA and the server host name matches the one
+        # in the certificate)
+        sslmode: "disable"
     redis:
       internal:
         <<: *tolerations-and-nodelectors

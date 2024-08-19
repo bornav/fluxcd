@@ -58,7 +58,7 @@ data:
             href: https://jaeger.cloud.icylair.com
         - Harbor:
             icon: harbor.png
-            href: https://harbor.cloud.icylair.com
+            href: https://harbor.icylair.com
         # - Netmaker:
         #     icon: netmaker.png
         #     href: https://dashboard.netmaker.cloud.icylair.com
