@@ -51,9 +51,9 @@ spec:
           jobLog:
             existingClaim: "harbor-data"
             subPath: "jobservice"
-        database:
-          existingClaim: "harbor-data"
-          subPath: "database"
+        # database: # TODO not work
+        #   existingClaim: "harbor-data"
+        #   subPath: "database"
         redis:
           existingClaim: "harbor-data"
           subPath: "redis"
@@ -101,6 +101,7 @@ spec:
       enabled: false
       <<: *tolerations-and-nodelectors
     database:
+      type: internal
       internal:
         <<: *tolerations-and-nodelectors
     redis:
