@@ -27,7 +27,7 @@ spec:
     updateStrategy:
       type: Recreate
     existingSecretAdminPassword: harbor-secret
-    externalURL: https://harbor.cloud.icylair.com
+    externalURL: https://harbor.icylair.com
     expose:
       tls:
         enabled: true
@@ -38,7 +38,7 @@ spec:
       ingress:
         ingressClassName: traefik-external
         hosts: 
-          core: harbor.cloud.icylair.com
+          core: harbor.icylair.com
         # annotations:
         #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
     persistence:
