@@ -140,10 +140,9 @@ spec:
               - /bin/sh
               - -ec
               - |
-                chown 999:999 /var/lib/postgresql
-                mkdir -p /var/lib/postgresql/pgdata
-                chmod 700 /var/lib/postgresql
-                find /var/lib/postgresql -mindepth 1 -maxdepth 1 -not -name "conf" -not -name ".snapshot" -not -name "lost+found" | \
+                chown 999:999 /temp
+                chmod 700 /temp
+                find /temp -mindepth 1 -maxdepth 1 -not -name "conf" -not -name ".snapshot" -not -name "lost+found" | \
                   xargs -r chown -R 999:999
               # - sleep 8400
             securityContext:
@@ -155,8 +154,8 @@ spec:
                 type: RuntimeDefault
             volumeMounts:
               - name: database-data
-                mountPath: /var/lib/postgresql
-                subPath: database
+                mountPath: /temp
+                # subPath: database
     redis:
       internal:
         <<: *tolerations-and-nodelectors
