@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: storage
 resources:
 - release.yaml
-- release-postgres.yaml
+# - release-postgres.yaml
 - pvc.yaml
 - secret.yaml

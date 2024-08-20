@@ -43,6 +43,7 @@ spec:
         #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
     persistence:
       enabled: true ##temp
+      resourcePolicy: ""
       persistentVolumeClaim:
         registry:
           existingClaim: "harbor-data"
@@ -51,11 +52,11 @@ spec:
           jobLog:
             existingClaim: "harbor-data"
             subPath: "jobservice"
-        # database: # TODO not work, droping it and using manual db
-        #   existingClaim: "harbor-data"
-        #   subPath: "database"
-        #   accessMode: "ReadWriteMany"
-        #   storageClass: "longhorn-storage-im"
+        database: # TODO not work, droping it and using manual db
+          existingClaim: "harbor-data"
+          subPath: "database"
+          # accessMode: "ReadWriteMany"
+          # storageClass: "longhorn-storage-im"
         redis:
           existingClaim: "harbor-data"
           subPath: "redis"
@@ -103,26 +104,62 @@ spec:
       enabled: false
       <<: *tolerations-and-nodelectors
     database:
-      type: external
-      external:
-        host: "harbor-postgres-postgresql"
-        port: "5432"
-        username: "user"
-        coreDatabase: "registry"
-        # if using existing secret, the key must be "password"
-        existingSecret: "harbor-secret"
-        # "disable" - No SSL
-        # "require" - Always SSL (skip verification)
-        # "verify-ca" - Always SSL (verify that the certificate presented by the
-        # server was signed by a trusted CA)
-        # "verify-full" - Always SSL (verify that the certification presented by the
-        # server was signed by a trusted CA and the server host name matches the one
-        # in the certificate)
-        sslmode: "disable"
+      # type: external
+      # external:
+      #   host: "harbor-postgres-postgresql"
+      #   port: "5432"
+      #   username: "user"
+      #   coreDatabase: "registry"
+      #   # if using existing secret, the key must be "password"
+      #   existingSecret: "harbor-secret"
+      #   # "disable" - No SSL
+      #   # "require" - Always SSL (skip verification)
+      #   # "verify-ca" - Always SSL (verify that the certificate presented by the
+      #   # server was signed by a trusted CA)
+      #   # "verify-full" - Always SSL (verify that the certification presented by the
+      #   # server was signed by a trusted CA and the server host name matches the one
+      #   # in the certificate)
+      #   sslmode: "disable"
+      type: internal
+      internal:
+        <<: *tolerations-and-nodelectors
+        extrInitContainers: 
+          - name: init-chmod-data
+            image: docker.io/bitnami/os-shell:12-debian-12-r26
+            imagePullPolicy: "IfNotPresent"
+            resources:
+              limits:
+                cpu: 150m
+                ephemeral-storage: 2Gi
+                memory: 192Mi
+              requests:
+                cpu: 100m
+                ephemeral-storage: 50Mi
+                memory: 128Mi
+            command:
+              - /bin/sh
+              - -ec
+              - |
+                chown 999:999 /var/lib/postgresql
+                mkdir -p /var/lib/postgresql/pgdata
+                chmod 700 /var/lib/postgresql
+                find /var/lib/postgresql -mindepth 1 -maxdepth 1 -not -name "conf" -not -name ".snapshot" -not -name "lost+found" | \
+                  xargs -r chown -R 999:999
+              # - sleep 8400
+            securityContext:
+              runAsGroup: 0
+              runAsNonRoot: false
+              runAsUser: 0
+              seLinuxOptions: {}
+              seccompProfile:
+                type: RuntimeDefault
+            volumeMounts:
+              - name: database-data
+                mountPath: /var/lib/postgresql
+                subPath: database
     redis:
       internal:
         <<: *tolerations-and-nodelectors
-
     trace:
       enabled: true
       provider: otel

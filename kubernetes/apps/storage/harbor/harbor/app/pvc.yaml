@@ -7,10 +7,10 @@ metadata:
 spec:
   accessModes: ["ReadWriteMany"]
   storageClassName: longhorn-storage-im
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: data-harbor-restore
+  # dataSourceRef:
+  #   kind: ReplicationDestination
+  #   apiGroup: volsync.backube
+  #   name: data-harbor-restore
   resources:
     requests:
       storage: 3Gi
@@ -31,36 +31,36 @@ spec:
     copyMethod: Snapshot
     capacity: 3Gi
     # previous: 2
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: harbor-database
-  labels:
-spec:
-  accessModes: ["ReadWriteMany"]
-  storageClassName: longhorn-storage-im
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: database-harbor-restore
-  resources:
-    requests:
-      storage: 1Gi
-status: {}
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationDestination
-metadata:
-  name: database-harbor-restore
-spec:
-  trigger:
-    manual: restore-once
-  restic:
-    repository: restic-harbor-database
-    storageClassName: longhorn-storage
-    accessModes: ["ReadWriteOnce"]
-    copyMethod: Snapshot
-    capacity: 1Gi
-    # previous: 2
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: harbor-database
+#   labels:
+# spec:
+#   accessModes: ["ReadWriteMany"]
+#   storageClassName: longhorn-storage-im
+#   # dataSourceRef:
+#   #   kind: ReplicationDestination
+#   #   apiGroup: volsync.backube
+#   #   name: database-harbor-restore
+#   resources:
+#     requests:
+#       storage: 1Gi
+# status: {}
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationDestination
+# metadata:
+#   name: database-harbor-restore
+# spec:
+#   trigger:
+#     manual: restore-once
+#   restic:
+#     repository: restic-harbor-database
+#     storageClassName: longhorn-storage
+#     accessModes: ["ReadWriteOnce"]
+#     copyMethod: Snapshot
+#     capacity: 1Gi
+#     # previous: 2
