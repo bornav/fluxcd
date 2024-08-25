@@ -86,10 +86,10 @@ spec:
           #multipartcopythresholdsize: "33554432"
             
     tolerations-and-nodelectors: &tolerations-and-nodelectors
-      tolerations: 
-        - key: node-role.kubernetes.io/master
-          value: "true"
-          effect: NoSchedule
+      # tolerations: 
+      #   - key: node-role.kubernetes.io/master
+      #     value: "true"
+      #     effect: NoSchedule
       nodeSelector:
         kubernetes.io/arch: amd64
     portal:
