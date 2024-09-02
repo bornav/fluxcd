@@ -39,7 +39,7 @@ spec:
           value: "443"
         - name: DIAL_TIMEOUT
           value: "4"
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         # - containerPort: 9443
         #   protocol: UDP

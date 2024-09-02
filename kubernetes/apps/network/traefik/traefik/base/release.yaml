@@ -59,11 +59,11 @@ spec:
       #   protocol: "TCP"
       #   # expose: true
       web:
-        hostPort: 80
+        # hostPort: 80
         redirectTo:
           port: websecure
       websecure:
-        hostPort: 443
+        # hostPort: 443
         port: 8443
         containerPort: 8443
         # expose: 
