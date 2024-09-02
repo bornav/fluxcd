@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: network-forward
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/network/network-forward/tcp-forward
+  # dependsOn:
+  #   - name: cert-manager-addons
+  suspend: false
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: network
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: traefik-addons
+#   namespace: flux-system
+# spec:
+#   path: ./kubernetes/apps/network/traefik/traefik/addons
+#   suspend: false
+#   dependsOn:
+#     - name: traefik-base
+#     - name: keycloak-app
+#   prune: true
+#   wait: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: fluxcd-kubernetes
+#     namespace: flux-system
+#   interval: 15m
+#   retryInterval: 15m
+#   timeout: 5m
+#   targetNamespace: network

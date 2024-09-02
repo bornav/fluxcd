@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: net-forwarder
+  name: net-forwarder
+spec:
+  selector:
+    matchLabels:
+      app: net-forwarder
+  template:
+    metadata:
+      labels:
+        app: net-forwarder
+    spec:
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchFields:
+      #         - key: metadata.name
+      #           operator: In
+      #           values:
+      #           - k3s-oraclearm2
+      #           # - instance-arm-01
+      containers:
+      - name: net-forwarder
+        image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "443"
+        - name: REMOTE_HOST
+          value: "traefik.network.svc.cluster.local"
+        - name: REMOTE_PORT
+          value: "443"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        # - containerPort: 9443
+        #   protocol: UDP
+        #   hostPort: 9443
+        - containerPort: 443
+          protocol: TCP
+          hostPort: 443
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        # securityContext:
+        #   # runAsGroup: 1000
+        #   # runAsUser: 0
+        #   privileged: true
+      # - name: dns-ip-update
+      #   # command: ["/bin/sh"]  # Override the entrypoint
+      #   # args: ["-c", "sleep 9999" ] 
+      #   image: qmcgaw/ddns-updater:v2.7.0 # TODO test what is correct imave version
+      #   env:
+      #   - name: TIME_ZONE
+      #     value: Europe/Vienna
+      #   - name: CONFIG_FILEPATH
+      #     value: "/config.json"
+      #   imagePullPolicy: IfNotPresent
+      #   resources:
+      #     limits:
+      #       cpu: 500m
+      #       memory: 128Mi
+      #     requests:
+      #       cpu: 1m
+      #       memory: 64Mi
+      #   volumeMounts:
+      #   - mountPath: /config.json
+      #     name: config
+      #     subPath: config.json
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 300
+      # volumes:
+      #   - name: config
+      #     configMap:
+      #       name: teamspeak-dns-update
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   # labels:
+#   #   app: teamspeak
+#   name: teamspeak
+# spec:
+#   selector:
+#     app: teamspeak
+#   ports:
+#   - name: udp
+#     # nodePort: 30987
+#     # nodePort: 30989
+#     port: 9988
+#     protocol: UDP
+#     targetPort: 9987
+#   type: LoadBalancer
+# ---
+# apiVersion: traefik.io/v1alpha1
+# kind: IngressRouteUDP
+# metadata:
+#    name: ingressrouteudpfoo
+#   #  namespace: network
+# spec:
+#   entryPoints:
+#      - udp
+#   routes:
+#   - services:
+#     - name: teamspeak
+#       port: 9988
+#       weight: 10
+#       # nativeLB: true

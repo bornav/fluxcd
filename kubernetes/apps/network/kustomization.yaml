@@ -9,3 +9,4 @@ resources:
 - dns
 - netshoot/ks.yaml
 - home-local-wireguard-connection/ks.yaml
+- network-forward

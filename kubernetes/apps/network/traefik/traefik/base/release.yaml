@@ -34,8 +34,9 @@ spec:
       - "--api.insecure=true"
     deployment:
       enabled: true
-      kind: DaemonSet
-      replicas: 1
+      # kind: DaemonSet
+      kind: Deployment
+      replicas: 3
       terminationGracePeriodSeconds: 10
       minReadySeconds: 2
     resources:
@@ -72,6 +73,8 @@ spec:
         # hostPort: 443
         # nodePort: 42443
         tls:
+          enabled: true
+        http3:
           enabled: true
     ingressClass:
       enabled: true
