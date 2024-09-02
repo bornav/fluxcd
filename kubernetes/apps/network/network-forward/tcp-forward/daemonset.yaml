@@ -26,7 +26,8 @@ spec:
       shareProcessNamespace: true
       containers:
       - name: net-forwarder
-        image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.1-test
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
