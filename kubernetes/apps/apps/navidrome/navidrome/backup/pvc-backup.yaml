@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: pv-navidrome-data
   trigger:
-    schedule: "*/10 * * * *"
+    schedule: "*/31 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-navidrome-config-data
