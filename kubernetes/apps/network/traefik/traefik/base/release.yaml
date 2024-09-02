@@ -62,7 +62,7 @@ spec:
         # expose:
         #   default: false
         # hostPort: 80
-        # port: 8080
+        port: 8080
         # containerPort: 8080
         exposedPort: 8080
         redirectTo:
@@ -71,7 +71,7 @@ spec:
         # expose:
         #   default: false
         # hostPort: 443
-        # port: 8443
+        port: 8443
         # containerPort: 8443
         # expose: 
           # default: true
