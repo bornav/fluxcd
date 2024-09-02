@@ -25,9 +25,9 @@ spec:
       # backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
       # backupTargetCredentialSecret: cifs-secret
       ##S3
-      backupTarget: "s3://kubernetes-backup-bucket@us-east-1/"
+      backupTarget: "s3://kubernetes-backup-bucket@us-west-1/"
       backupTargetCredentialSecret: s3-minio-secret
-      backupstorePollInterval: 30
+      backupstorePollInterval: 15
 
       taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
     global:
