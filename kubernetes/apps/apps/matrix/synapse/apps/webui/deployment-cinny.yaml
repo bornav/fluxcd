@@ -2,23 +2,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: element
+  name: &name cinny-web
   labels:
-    app: element
+    app: *name
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: element
+      app: *name
   template:
     metadata:
       labels:
-        app: element
+        app: *name
     spec:
       containers:
-        - image: vectorim/element-web:v1.11.40
+        - image: ghcr.io/cinnyapp/cinny:v4.1.0
           imagePullPolicy: IfNotPresent
-          name: element-web
+          name: *name
           readinessProbe:
             tcpSocket:
               port: 80
@@ -29,15 +29,15 @@ spec:
             limits:
               memory: '3000Mi'
               cpu: '2500m'
-          volumeMounts:
-            - mountPath: /app/config.json
-              name: element-config
-              subPath: config.json
+          # volumeMounts:
+          #   - mountPath: /app/config.json
+          #     name: element-config
+          #     subPath: config.json
       restartPolicy: Always
-      volumes:
-        - name: element-config
-          configMap:
-            name: element-config
+      # volumes:
+      #   - name: element-config
+      #     configMap:
+      #       name: element-config
 # ---
 # apiVersion: apps/v1
 # kind: Deployment

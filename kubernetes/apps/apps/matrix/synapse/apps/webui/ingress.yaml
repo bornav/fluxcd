@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app element-cloud
+  name: &app matrix-ingress
   labels:
     app.kubernetes.io/name: *app
     app.kubernetes.io/instance: *app
@@ -21,7 +21,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: element
+                name: element-web
                 port:
                   number: 80
     - host: element.cloud.icylair.com
@@ -31,7 +31,27 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: element
+                name: element-web
+                port:
+                  number: 80
+    - host: cinny.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cinny-web
+                port:
+                  number: 80
+    - host: cinny.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cinny-web
                 port:
                   number: 80
     # - host: element2.cloud.icylair.com
@@ -49,5 +69,7 @@ spec:
       - element.icylair.com
       - element.cloud.icylair.com
       - element2.cloud.icylair.com
+      - cinny.icylair.com
+      - cinny.cloud.icylair.com
     secretName: icylair-com-all-prod
   
