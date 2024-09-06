@@ -5,7 +5,7 @@ metadata:
   name: harbor-data
   labels:
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ["ReadWriteOnce"]
   storageClassName: longhorn-storage-im
   dataSourceRef:
     kind: ReplicationDestination
@@ -38,7 +38,7 @@ spec:
 #   name: harbor-database
 #   labels:
 # spec:
-#   accessModes: ["ReadWriteMany"]
+#   accessModes: ["ReadWriteOnce"]
 #   storageClassName: longhorn-storage-im
 #   # dataSourceRef:
 #   #   kind: ReplicationDestination

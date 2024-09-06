@@ -26,7 +26,7 @@ metadata:
     app: matrix-bridges-data
   name: matrix-bridges-data
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ["ReadWriteOnce"]
   storageClassName: longhorn-storage
   resources:
     requests:

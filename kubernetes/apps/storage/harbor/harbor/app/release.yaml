@@ -55,7 +55,7 @@ spec:
         database: # TODO not work, droping it and using manual db
           existingClaim: "harbor-data"
           subPath: "database"
-          # accessMode: "ReadWriteMany"
+          # accessMode: "ReadWriteOnce"
           # storageClass: "longhorn-storage-im"
         redis:
           existingClaim: "harbor-data"

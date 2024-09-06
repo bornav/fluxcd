@@ -93,8 +93,7 @@ spec:
     #   name: null
     storage:
       data:
-        accessModes:
-        - ReadWriteMany
+        accessModes: ["ReadWriteOnce"]
         class: null
         enabled: true
         existingClaim: teamspeak

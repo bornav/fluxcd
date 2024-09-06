@@ -28,7 +28,7 @@ metadata:
   annotations:
     numberOfReplicas: '2'
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ["ReadWriteOnce"]
   dataSourceRef:
     # kind: ReplicationDestination
     # apiGroup: volsync.backube

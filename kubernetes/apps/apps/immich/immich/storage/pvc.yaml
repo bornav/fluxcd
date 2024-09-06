@@ -8,8 +8,7 @@ metadata:
   annotations:
     numberOfReplicas: '2'
 spec:
-  accessModes:
-    - ReadWriteMany
+  accessModes: ["ReadWriteMany"]
   storageClassName: longhorn-storage-rwm
   # dataSourceRef:
   #   kind: ReplicationDestination
