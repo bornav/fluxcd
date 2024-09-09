@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: whoami
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
 apiVersion: apps/v1
 kind: Deployment
 metadata:

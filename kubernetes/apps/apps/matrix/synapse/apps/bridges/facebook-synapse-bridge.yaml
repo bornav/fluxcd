@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -64,6 +65,23 @@ spec:
             - mountPath: /config/config.yaml
               name: matrix-bridge-facebook-config
               subPath: config.yaml
+        # - name: go-instrumentation-sidecart
+        #   image: otel/autoinstrumentation-go:v0.14.0-alpha
+        #   imagePullPolicy: IfNotPresent
+        #   env:
+        #     - name: OTEL_GO_AUTO_TARGET_EXE
+        #       value: /usr/bin/mautrix-facebook
+        #     - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        #       value: "https://otel-col.cloud.icylair.com"
+        #     - name: OTEL_SERVICE_NAME
+        #       value: "matrix-synapse-facebook-bridge"
+        #     # - name: OTEL_PROPAGATORS
+        #     #   value: "tracecontext,baggage"
+        #     - name: OTEL_GO_AUTO_SHOW_VERIFIER_LOG
+        #       value: "true"
+        #   securityContext:
+        #     runAsUser: 0
+        #     privileged: true
       restartPolicy: Always
       volumes:
         - name: matrix-bridges-data

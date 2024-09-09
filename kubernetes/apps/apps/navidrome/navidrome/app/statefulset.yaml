@@ -1,21 +1,23 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+---
+# yaml-language-server: $schemaasd
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: navidrome
+  name: &name navidrome
   labels:
-    app: &name navidrome-app
+    app: &label navidrome-app
 spec:
+  serviceName: *name
   replicas: 1
   selector:
     matchLabels:
-      app: *name
-  strategy:
-    type: Recreate
+      app: *label
+  # strategy:
+  #   type: Recreate
   template:
     metadata:
       labels:
-        app: *name
+        app: *label
     spec:
       # initContainers:
       #   - name: 'prepare-data'
