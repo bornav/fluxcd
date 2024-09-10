@@ -31,3 +31,4 @@ resources:
   - ./zipkin.yaml
   - ./signoz.yaml
   - ./harbor.yaml
+  - ./descheduler.yaml
