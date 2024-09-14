@@ -16,7 +16,7 @@ spec:
     name: matrix-synapse-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
-      storage: 2Gi
+      storage: 6Gi
 status: {}
 ---
 apiVersion: v1
@@ -68,7 +68,7 @@ spec:
     storageClassName: longhorn-storage
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
-    capacity: 2Gi
+    capacity: 6Gi
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
