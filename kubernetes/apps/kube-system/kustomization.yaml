@@ -8,5 +8,6 @@ resources:
   # - ./csi-driver-nfs/ks.yaml
   # - ./snapshot-controller/ks.yaml
   - ./hubble/ks.yaml
-  - ./linstor-scheduler/ks.yaml
+  # - ./linstor-scheduler/ks.yaml
+  # - ./stork-scheduler/ks.yaml
   - ./descheduler/ks.yaml
