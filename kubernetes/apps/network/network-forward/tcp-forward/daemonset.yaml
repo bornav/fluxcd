@@ -27,7 +27,7 @@ spec:
       containers:
       - name: net-forwarder
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.2-test
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
