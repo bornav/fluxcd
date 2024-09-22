@@ -52,34 +52,34 @@ spec:
   - hosts:
       - matrix.icylair.com
     secretName: icylair-com-all-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app matrix-synapse-protected
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    kubernetes.io/ingress.class: traefik
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
-    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
-    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
-spec:
-  ingressClassName: traefik-external
-  rules:
-    - host: &host matrix.icylair.com
-      http:
-        paths:
-          - path: /_matrix/media/v3/
-            pathType: Prefix
-            backend:
-              service:
-                name: matrix-synapse
-                port:
-                  number: 8008
-  tls:
-  - hosts:
-      - matrix.icylair.com
-    secretName: icylair-com-all-prod
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: &app matrix-synapse-protected
+#   labels:
+#     # app.kubernetes.io/name: *app
+#     # app.kubernetes.io/instance: *app
+#     kubernetes.io/ingress.class: traefik
+#   annotations:
+#     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+#     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+#     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+#     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+# spec:
+#   ingressClassName: traefik-external
+#   rules:
+#     - host: &host matrix.icylair.com
+#       http:
+#         paths:
+#           - path: /_matrix/media/v3/
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: matrix-synapse
+#                 port:
+#                   number: 8008
+#   tls:
+#   - hosts:
+#       - matrix.icylair.com
+#     secretName: icylair-com-all-prod
