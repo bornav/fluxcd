@@ -1,15 +1,50 @@
+# # ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: &app otel-col
+#   labels:
+#     kubernetes.io/ingress.class: traefik
+#   annotations:
+# spec:
+#   ingressClassName: traefik-external
+#   rules:
+#   - host: otel-col.cloud.icylair.com
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: opentelemetry-collector
+#             port:
+#               number: 4318
+#   # tls:
+#   # - hosts:
+#   #   - music.cloud.icylair.com
+#   #   secretName: icylair-com-all-prod
+#   # tls:
+#   # - hosts:
+#   #     - navidrome.icylair.com
+#   #     - music.icylair.com
+#   #   secretName: icylair-com-prod
+#   # - hosts:
+#   #     - music.cloud.icylair.com
+#   #     - navidrome.cloud.icylair.com
+#   #   secretName: cloud-icylair-com-prod
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: &app otel-col
+  name: &app otel-col-secure
   labels:
     kubernetes.io/ingress.class: traefik
   annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: observability-otel-col-bearer-token@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:
-  - host: otel-col.cloud.icylair.com
+  - host: otel-col-secure.cloud.icylair.com
     http:
       paths:
       - path: /
@@ -19,10 +54,10 @@ spec:
             name: opentelemetry-collector
             port:
               number: 4318
-  # tls:
-  # - hosts:
-  #   - music.cloud.icylair.com
-  #   secretName: icylair-com-all-prod
+  tls:
+    - hosts:
+      - otel-col-secure.cloud.icylair.com
+      secretName: icylair-com-all-prod
   # tls:
   # - hosts:
   #     - navidrome.icylair.com
@@ -32,3 +67,5 @@ spec:
   #     - music.cloud.icylair.com
   #     - navidrome.cloud.icylair.com
   #   secretName: cloud-icylair-com-prod
+
+  
