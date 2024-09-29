@@ -197,6 +197,12 @@ spec:
           enabled: true
           # http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
           endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
+    experimental:
+      # -- Enable traefik experimental plugins
+      plugins:
+        traefik-api-key-auth:
+          moduleName: "github.com/Septima/traefik-api-key-auth"
+          version: "v0.3.0"
     env:
     - name: OTEL_PROPAGATORS
       value: tracecontext,baggage,b3,jaeger
