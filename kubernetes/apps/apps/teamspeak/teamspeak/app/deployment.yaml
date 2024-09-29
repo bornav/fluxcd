@@ -34,13 +34,13 @@ spec:
         # - name: GID
         #   value: "1000"
         imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 9987
-          protocol: UDP
-        - containerPort: 10011
-          protocol: TCP
-        - containerPort: 30033
-          protocol: TCP
+        # ports:
+        # - containerPort: 9987
+        #   protocol: UDP
+        # - containerPort: 10011
+        #   protocol: TCP
+        # - containerPort: 30033
+        #   protocol: TCP
         resources:
           limits:
             cpu: 250m
@@ -66,3 +66,33 @@ spec:
       - name: teamspeak-data
         persistentVolumeClaim:
           claimName: teamspeak
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # labels:
+  #   app: teamspeak
+  name: teamspeak
+spec:
+  selector:
+    app: teamspeak
+  ports:
+  - name: udp
+    # nodePort: 30987
+    # nodePort: 30989
+    port: 9987
+    protocol: UDP
+    targetPort: 9987
+  # - name: tcp1
+  #   # nodePort: 30987
+  #   # nodePort: 30989
+  #   port: 10011
+  #   protocol: TCP
+  #   targetPort: 10011
+  - name: tcp2
+    # nodePort: 30987
+    # nodePort: 30989
+    port: 30033
+    protocol: TCP
+    targetPort: 30033
+  type: LoadBalancer

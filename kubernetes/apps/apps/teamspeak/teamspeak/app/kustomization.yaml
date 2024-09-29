@@ -1,11 +1,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: default
 resources:
-  #daemonset here until i figure out how to forward udp/tcp traffic properly
-  #daemonset supports hostport(nodeport limitation)
-  - daemonset.yaml
+  # - daemonset.yaml
   - config.yaml
-  # - deployment.yaml
+  - deployment.yaml
   # - pod.yaml
   # - service.yaml

@@ -27,7 +27,7 @@ spec:
       containers:
       - name: net-forwarder
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.2-test
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
@@ -41,13 +41,13 @@ spec:
           value: "8443"
         - name: DIAL_TIMEOUT
           value: "4"
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         # - containerPort: 9443
         #   protocol: UDP
         #   hostPort: 9443
         - containerPort: 443
-          protocol: TCP
+          # protocol: TCP
           hostPort: 443
         resources:
           limits:
@@ -56,12 +56,110 @@ spec:
           requests:
             cpu: 1m
             memory: 1Mi
-        # securityContext:
-        #   # runAsGroup: 1000
-        #   # runAsUser: 0
-        #   privileged: true
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
+
+      - name: net-forwarder-udp1
+        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.2-test
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "9987"
+        - name: REMOTE_HOST
+          value: "teamspeak.default.svc.cluster.local"
+        - name: REMOTE_PORT
+          value: "9987"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9987
+          # protocol: UDP
+          hostPort: 9987
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
+      - name: net-forwarder-udp2
+        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.2-test
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "10011"
+        - name: REMOTE_HOST
+          value: "teamspeak.default.svc.cluster.local"
+        - name: REMOTE_PORT
+          value: "10011"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 10011
+          # protocol: UDP
+          hostPort: 10011
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
+      - name: net-forwarder-udp3
+        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.2-test
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "30033"
+        - name: REMOTE_HOST
+          value: "teamspeak.default.svc.cluster.local"
+        - name: REMOTE_PORT
+          value: "30033"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 30033
+          # protocol: UDP
+          hostPort: 30033
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
+
       # - name: go-instrumentation-sidecart
-      #   image: otel/autoinstrumentation-go
+      #   image: otel/autoinstrumentation-go:v0.14.0-alpha
       #   imagePullPolicy: IfNotPresent
       #   env:
       #     - name: OTEL_GO_AUTO_TARGET_EXE
@@ -69,12 +167,17 @@ spec:
       #     - name: OTEL_EXPORTER_OTLP_ENDPOINT
       #       value: "https://otel-col.cloud.icylair.com"
       #     - name: OTEL_SERVICE_NAME
-      #       value: "network-forwarder"
-      #     # - name: OTEL_PROPAGATORS
-      #     #   value: "tracecontext,baggage"
+      #       value: "net-forwarder"
+      #     - name: OTEL_PROPAGATORS
+      #       value: "tracecontext,baggage"
+      #     - name: OTEL_GO_AUTO_SHOW_VERIFIER_LOG
+      #       value: "true"
+      #     - name: OTEL_GO_AUTO_GLOBAL
+      #       value: "true"
       #   securityContext:
       #     runAsUser: 0
       #     privileged: true
+      
       # - name: dns-ip-update
       #   # command: ["/bin/sh"]  # Override the entrypoint
       #   # args: ["-c", "sleep 9999" ] 
@@ -104,24 +207,6 @@ spec:
       #   - name: config
       #     configMap:
       #       name: teamspeak-dns-update
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   # labels:
-#   #   app: teamspeak
-#   name: teamspeak
-# spec:
-#   selector:
-#     app: teamspeak
-#   ports:
-#   - name: udp
-#     # nodePort: 30987
-#     # nodePort: 30989
-#     port: 9988
-#     protocol: UDP
-#     targetPort: 9987
-#   type: LoadBalancer
 # ---
 # apiVersion: traefik.io/v1alpha1
 # kind: IngressRouteUDP
