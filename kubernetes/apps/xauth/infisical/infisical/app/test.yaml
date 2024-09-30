@@ -31,7 +31,7 @@ spec:
         envFrom:
         - secretRef:
             name: infisical-secrets
-        image: infisical/infisical:v0.46.3-postgres
+        image: infisical/infisical:v0.86.1-postgres
         imagePullPolicy: IfNotPresent
         name: infisical-schema-migration
         resources: {}
