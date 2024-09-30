@@ -7,14 +7,14 @@ metadata:
 spec:
   sourcePVC: pv-navidrome-data
   trigger:
-    schedule: "*/31 * * * *"
+    schedule: "*/61 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-navidrome-config-data
     retain:
       hourly: 5
       daily: 4
-      weekly: 3
+      weekly: 10
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
