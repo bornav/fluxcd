@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  infisical-db-backup
+spec:
+  sourcePVC: infisical-db
+  trigger:
+    schedule: "*/13 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-infisical-db
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"

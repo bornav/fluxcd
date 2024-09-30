@@ -1,0 +1,157 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: infisical
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: infisical-standalone
+      version: v1.0.8
+      sourceRef:
+        kind: HelmRepository
+        name: infisical
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+      # nameOverride: ""
+      # fullnameOverride: ""
+      infisical:
+        enabled: true
+        name: infisical
+        autoDatabaseSchemaMigration: true
+        fullnameOverride: ""
+        podAnnotations: {}
+        deploymentAnnotations: {}
+        replicaCount: 1
+        affinity: {}
+        kubeSecretRef: "infisical-secrets"
+        service:
+          annotations: {}
+          type: ClusterIP
+        resources:
+          limits:
+            memory: 600Mi
+          requests:
+            cpu: 50m
+      ingress:
+        enabled: true
+        hostName: "infisical.icylair.com"
+        ingressClassName: traefik-external
+        nginx:
+          enabled: false
+        annotations: {}
+        tls:
+        - secretName: icylair-com-all-prod
+          hosts:
+            - infisical.icylair.com
+      postgresql:
+        enabled: true
+        name: "postgresql"
+        fullnameOverride: "postgresql"
+        auth:
+          username: infisical
+          password: $(userpassword)
+          database: infisicalDB
+          existingSecret: infisical-secrets
+          secretKeys:
+            adminPasswordKey: postgres-password
+            userPasswordKey: userpassword
+            replicationPasswordKey: replication-password
+        primary:
+          enabled: true
+          persistence:
+            existingClaim: "infisical-db"
+      redis:
+        enabled: true
+        name: "redis"
+        fullnameOverride: "redis"
+        cluster:
+          enabled: false
+        usePassword: true
+        # auth:
+        #   existingSecret: "infisical-secrets"
+        #   existingSecretPasswordKey: "redis-password"
+        architecture: standalone
+        
+# ---
+# apiVersion: helm.toolkit.fluxcd.io/v2
+# kind: HelmRelease
+# metadata:
+#   name: infisical
+# spec:
+#   interval: 15m
+#   chart:
+#     spec:
+#       chart: infisical
+#       version: v0.4.2
+#       sourceRef:
+#         kind: HelmRepository
+#         name: infisical
+#         namespace: flux-system
+#       interval: 15m
+#   install:
+#     createNamespace: true
+#     remediation:
+#       retries: 3
+#   upgrade:
+#     cleanupOnFail: true
+#     remediation:
+#       retries: 3
+#   uninstall:
+#     keepHistory: false
+#   values:
+#     mongodb:
+#       enabled: true
+#       name: "mongodb"
+#       fullnameOverride: "mongodb"
+#       nameOverride: "mongodb"
+#       podAnnotations: {}
+#       useStatefulSet: true
+#       architecture: "standalone"
+#       service:
+#         annotations: {}
+#       ## Infisical MongoDB custom authentication
+#       ##
+#       auth:
+#         enabled: true
+#         usernames:
+#           - "infisical"
+#         passwords:
+#           - "infisical"
+#         databases:
+#           - "infisical"
+#         rootUser: root
+#         rootPassword: root
+
+#         existingSecret: ""
+
+#       ## MongoDB persistence configuration
+#       ##
+#       persistence:
+#         ## @param mongodb.persistence.enabled Enable database persistence
+#         ##
+#         enabled: true
+#         ## @param mongodb.persistence.existingClaim Existing persistent volume claim name
+#         ##
+#         existingClaim: "infisical-db"
+#         ## @param mongodb.persistence.resourcePolicy Keep the persistent volume even on deletion (`keep` or `""`)
+#         # ##
+#         # resourcePolicy: "keep"
+#         # ## @param mongodb.persistence.accessModes Persistent volume access modes
+#         # ##
+#         # accessModes: ["ReadWriteOnce"]
+#         # ## @param mongodb.persistence.size Persistent storage request size
+#         # ##
+#         # size: 8Gi

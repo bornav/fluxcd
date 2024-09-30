@@ -32,3 +32,4 @@ resources:
   - ./signoz.yaml
   - ./harbor.yaml
   - ./descheduler.yaml
+  - ./infisical.yaml

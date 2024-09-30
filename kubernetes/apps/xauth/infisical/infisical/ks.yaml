@@ -1,0 +1,73 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infisical-release
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/infisical/infisical/app
+  dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
+    - name: longhorn-system-base
+    - name: volsync
+    - name: infisical-storage
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infisical-storage
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/infisical/infisical/storage
+  dependsOn:
+    - name: longhorn-system-base
+    - name: volsync
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infisical-backups
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/infisical/infisical/backups
+  dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
+    - name: longhorn-system-base
+    - name: volsync
+    - name: infisical-storage
+    - name: infisical-release
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
