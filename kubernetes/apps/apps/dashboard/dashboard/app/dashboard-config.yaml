@@ -35,6 +35,11 @@ data:
         - KeyCloak:
             icon: keycloak.png
             href: https://keycloak.cloud.icylair.com/
+        - Infisical:
+            icon: infisical.png
+            href: https://infisical.icylair.com/
+
+        
 
     - Cloud:
         - Traefik_cloud:

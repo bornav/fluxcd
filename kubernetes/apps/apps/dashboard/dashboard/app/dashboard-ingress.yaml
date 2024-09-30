@@ -60,6 +60,7 @@ metadata:
     kubernetes.io/ingress.class: traefik
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: observability-test-apikey@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:
