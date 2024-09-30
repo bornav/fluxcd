@@ -129,6 +129,26 @@ spec:
             subPath: startup.sh
           # - name: nfs-vol
           #   mountPath: /mnt
+      # - name: go-instrumentation-sidecart
+      #   image: otel/autoinstrumentation-go:v0.14.0-alpha
+      #   imagePullPolicy: IfNotPresent
+      #   env:
+      #     - name: OTEL_GO_AUTO_TARGET_EXE
+      #       value: /app/navidrome
+      #     - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      #       value: "https://otel-col.cloud.icylair.com"
+      #     - name: OTEL_SERVICE_NAME
+      #       value: "net-forwarder"
+      #     - name: OTEL_PROPAGATORS
+      #       value: "tracecontext,baggage"
+      #     - name: OTEL_GO_AUTO_SHOW_VERIFIER_LOG
+      #       value: "true"
+      #     - name: OTEL_GO_AUTO_GLOBAL
+      #       value: "true"
+      #   securityContext:
+      #     runAsUser: 0
+      #     privileged: true
+      # shareProcessNamespace: true
       volumes:
       - name: navidrome-configuration
         configMap:
