@@ -48,7 +48,6 @@ spec:
         name: Keycloak-OAuth
         allow_sign_up: true
         client_id: grafana-oauth
-        client_secret: ${client_secret}
         scopes: openid email profile offline_access roles
         email_attribute_path: email
         login_attribute_path: username
@@ -60,15 +59,15 @@ spec:
         allow_assign_grafana_admin: true
         auto_login: true
       server:
-      # The full public facing url you use in browser, used for redirects and emails
+        # The full public facing url you use in browser, used for redirects and emails
         root_url: https://grafana.cloud.icylair.com
-    envFromSecret: "grafana-oauth"
-    assertNoLeakedSecrets: false
+    envFromSecret: "grafana-oauth"  # adding oauth secret using this
+    # assertNoLeakedSecrets: false
     ingress:
       enabled: true
       className: traefik-external
-      annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+      # annotations:
+      #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
       labels:
         app: grafana
       hosts:
@@ -92,7 +91,7 @@ spec:
     #   disableWarning: false
     admin:
       ## Name of the secret. Can be templated.
-      existingSecret: "grafana-ingress-crets"
+      existingSecret: "grafana-admin-credentials"
       userKey: admin-user
       passwordKey: admin-password
     datasources:
@@ -151,17 +150,17 @@ spec:
               tracesToLogsV2:
                 customQuery: false
                 datasourceUid: loki
-          - name: OpenSearch
-            type: grafana-opensearch-datasource
-            uid: grafana-opensearch-datasource
-            access: proxy
-            url: http://localhost:9200
-            jsonData:
-              database: '[metrics-]YYYY.MM.DD'
-              interval: Daily
-              timeField: '@timestamp'
-              version: '1.0.0'
-              flavor: 'opensearch'
+          # - name: OpenSearch
+          #   type: grafana-opensearch-datasource
+          #   uid: grafana-opensearch-datasource
+          #   access: proxy
+          #   url: http://localhost:9200
+          #   jsonData:
+          #     database: '[metrics-]YYYY.MM.DD'
+          #     interval: Daily
+          #     timeField: '@timestamp'
+          #     version: '1.0.0'
+          #     flavor: 'opensearch'
         dashboardProviders:
           dashboardproviders.yaml:
             apiVersion: 1

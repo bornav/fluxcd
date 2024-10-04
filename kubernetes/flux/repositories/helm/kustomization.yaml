@@ -33,3 +33,4 @@ resources:
   - ./harbor.yaml
   - ./descheduler.yaml
   - ./infisical.yaml
+  - ./external-secrets.yaml

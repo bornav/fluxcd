@@ -38,7 +38,7 @@ spec:
     requests:
       storage: 1Gi
 status: {}
----
+# ---
 # # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
 # kind: ReplicationSource
@@ -71,6 +71,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-keycloak-data
+    # storageClassName: longhorn-storage-rwm
     storageClassName: longhorn-storage
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot

@@ -1,0 +1,28 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: infisical-secret-operator
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: secrets-operator
+      version: v0.7.2
+      sourceRef:
+        kind: HelmRepository
+        name: infisical
+        namespace: flux-system
+      interval: 15m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+      

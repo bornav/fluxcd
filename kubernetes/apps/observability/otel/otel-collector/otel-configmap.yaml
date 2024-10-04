@@ -35,11 +35,11 @@ data:
         tls:
           insecure: true
       otlp/grafana_cloud_tempo:
-        endpoint: tempo.observability.svc.cluster.local:4317
+        endpoint: grafana-tempo.observability.svc.cluster.local:4317
         tls:
           insecure: true
       otlphttp:
-        endpoint: http://loki.observability.svc.cluster.local:3100/otlp
+        endpoint: http://grafana-loki.observability.svc.cluster.local:3100/otlp
         tls:
           insecure: true
     processors:

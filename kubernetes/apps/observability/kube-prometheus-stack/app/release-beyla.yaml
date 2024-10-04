@@ -65,11 +65,11 @@ data:
     discovery:
       services:
         - k8s_namespace: matrix
-        - k8s_namespace: apps
-        - k8s_namespace: default
-        - k8s_namespace: network
-        - k8s_namespace: xauth
-        - k8s_namespace: storage
+        # - k8s_namespace: apps
+        # - k8s_namespace: default
+        # - k8s_namespace: network
+        # - k8s_namespace: xauth
+        # - k8s_namespace: storage
     trace_printer: text
     otel_traces_export:
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
