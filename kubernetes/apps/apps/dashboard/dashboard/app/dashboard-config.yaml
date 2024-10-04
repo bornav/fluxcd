@@ -11,7 +11,7 @@ data:
             #ping: http://element.matrix.svc.cluster.local
         - Matrix:
             icon: matrix.png
-            href: https://matrix.cloud.icylair.com/
+            href: https://matrix.icylair.com/
             #ping: http://matrix-synapse.matrix.svc.cluster.local
         - KuberneteDashboard:
             icon: kubernetes-dashboard.png
