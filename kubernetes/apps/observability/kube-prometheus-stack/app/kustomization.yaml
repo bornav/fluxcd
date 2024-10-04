@@ -8,7 +8,7 @@ resources:
 - release-grafana.yaml
 - release-loki.yaml
 - release-tempo.yaml
-# - release-beyla.yaml
+- release-beyla.yaml
 # - release-stack.yaml
 # - ingress.yaml
 # - basicauth-secret.yaml

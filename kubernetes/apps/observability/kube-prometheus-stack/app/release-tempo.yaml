@@ -31,8 +31,8 @@ spec:
       reportingEnabled: false
       metricsGenerator:
         # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
-        enabled: true
-        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
+        enabled: false
+        remoteWriteUrl: "http://prometheus-stack-kube-prom-prometheus.observability.svc.cluster.local:9090/api/v1/write"
     # # this is jaeger
     # # tempoQuery:
     # #   enabled: true
@@ -56,6 +56,8 @@ spec:
       #   - name: tempo-pvc
       #     mountPath: /mnt/volume
       #     existingClaim: tempo-pvc
+    service:
+      type: LoadBalancer
     # persistence:
     #   enabled: true
     #   storageClassName: longhorn-storage
@@ -73,7 +75,7 @@ spec:
 #     numberOfReplicas: '2'
 # spec:
 #   accessModes: ["ReadWriteOnce"]
-#   storageClassName: longhorn-storage
+#   storageClassName: longhorn-storage-im
 #   resources:
 #     requests:
 #       storage: 3Gi
