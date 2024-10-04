@@ -1,12 +1,15 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: observability
 resources:
 - release.yaml
 - secret.yaml
 - release-grafana.yaml
 - release-loki.yaml
 - release-tempo.yaml
+# - release-beyla.yaml
+# - release-stack.yaml
 # - ingress.yaml
 # - basicauth-secret.yaml
 # - middleware.yaml

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grafana
+  name: grafana-grafana
   namespace: observability
 spec:
   interval: 15m
@@ -56,9 +56,9 @@ spec:
         auth_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/auth
         token_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/token
         api_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/userinfo
-        role_attribute_path: contains(roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
-        # role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
-        allow_assign_grafana_admin: true # TODO this does not work
+        role_attribute_path: contains(realm_access.roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(realm_access.roles[*], 'admin') && 'Admin' || contains(realm_access.roles[*], 'editor') && 'Editor' || 'Viewer'
+        allow_assign_grafana_admin: true
+        auto_login: true
       server:
       # The full public facing url you use in browser, used for redirects and emails
         root_url: https://grafana.cloud.icylair.com
@@ -108,7 +108,7 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://prometheus-operated.observability.svc.cluster.local:9090
+            url: http://prometheus-stack-kube-prom-prometheus.observability.svc.cluster.local:9090
             jsonData:
               timeInterval: 1m
             isDefault: true
@@ -116,21 +116,21 @@ spec:
             type: loki
             uid: loki
             access: proxy
-            url: http://loki-headless.observability.svc.cluster.local:3100
+            url: http://grafana-loki.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://alertmanager-operated.observability.svc.cluster.local:9093
+            url: http://prometheus-stack-kube-prom-alertmanager.observability.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
           - name: Tempo
             type: tempo
             uid: tempo
             access: proxy
-            url: http://tempo.observability.svc.cluster.local:3100
+            url: http://grafana-tempo.observability.svc.cluster.local:3100
             jsonData:
               tracesToMetrics:
                 datasourceUid: prometheus

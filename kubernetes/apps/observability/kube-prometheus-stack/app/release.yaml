@@ -97,6 +97,8 @@ spec:
     #   enabled: false
     prometheusOperator:
       enabled: true
+      services:
+        type: "LoadBalancer"
     prometheus:
       enabled: true
       ingress:
@@ -160,9 +162,11 @@ spec:
                 target_label: __address__
                 regex: (.+)(?::\d+);(\d+)
                 replacement: $1:$2
+      service:
+        type: "LoadBalancer"
     grafana:
       enabled: false
-      forceDeployDashboards: true
+      forceDeployDashboards: false
     alertmanager:
       enabled: true
       ingress:
