@@ -65,8 +65,8 @@ data:
     discovery:
       services:
         - k8s_namespace: matrix
-        # - k8s_namespace: apps
-        # - k8s_namespace: default
+        - k8s_namespace: apps
+        - k8s_namespace: default
         # - k8s_namespace: network
         # - k8s_namespace: xauth
         # - k8s_namespace: storage
