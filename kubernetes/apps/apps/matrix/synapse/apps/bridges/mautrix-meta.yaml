@@ -50,7 +50,7 @@ spec:
             - sh
             - -c
             # - sleep 99999
-            - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
+            - cp -n -p /config/config.yaml /data/config.yaml && /docker-run.sh
           image: dock.mau.dev/mautrix/meta:v0.4.0
           resources:
             requests:
