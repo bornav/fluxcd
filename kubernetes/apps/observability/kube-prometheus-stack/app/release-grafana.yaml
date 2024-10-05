@@ -94,6 +94,9 @@ spec:
       existingSecret: "grafana-admin-credentials"
       userKey: admin-user
       passwordKey: admin-password
+    plugins:
+      - grafana-exploretraces-app
+      - grafana-lokiexplore-app
     datasources:
       datasources.yaml:
         apiVersion: 1
