@@ -95,8 +95,8 @@ spec:
       userKey: admin-user
       passwordKey: admin-password
     plugins:
-      - grafana-exploretraces-app
-      - grafana-lokiexplore-app
+      - grafana-exploretraces-app  #seems there are issues with it
+      - grafana-lokiexplore-app    #seems there are issues with it
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -135,6 +135,8 @@ spec:
             url: http://grafana-tempo.observability.svc.cluster.local:3100
             jsonData:
               tracesToMetrics:
+                spanEndTimeShift: 1h
+                spanStartTimeShift: "-1h"
                 datasourceUid: prometheus
               # search:
               #   filters:
@@ -152,7 +154,14 @@ spec:
                 enabled: true
               tracesToLogsV2:
                 customQuery: false
+                spanStartTimeShift: "-1h"
                 datasourceUid: loki
+                spanEndTimeShift: 1h
+              streamingEnabled:
+                search: true
+              traceQuery:
+                timeShiftEnabled: false
+                spanStartTimeShift: ''
           - name: jaeger
             type: jaeger
             uid: jaeger
