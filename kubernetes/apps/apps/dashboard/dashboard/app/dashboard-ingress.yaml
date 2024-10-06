@@ -25,12 +25,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: &app dashboard-homepage-cloud
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    # kubernetes.io/ingress.class: traefik
-    kubernetes.io/ingress.class: traefik
-    nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
+  # labels:
+  #   nginx.ingress.kubernetes.io/enable-opentelemetry: "true"
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:
@@ -48,36 +46,36 @@ spec:
   - hosts:
       - dashboard.cloud.icylair.com
     secretName: icylair-com-all-prod
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: &app dashboard-homepage-cloud-auth
-  labels:
-    # app.kubernetes.io/name: *app
-    # app.kubernetes.io/instance: *app
-    # kubernetes.io/ingress.class: traefik
-    kubernetes.io/ingress.class: traefik
-  annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
-    # traefik.ingress.kubernetes.io/router.middlewares: observability-test-apikey@kubernetescrd
-spec:
-  ingressClassName: traefik-external
-  rules:
-    - host: &host dashboard-auth.cloud.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: dashboard-homepage
-                port:
-                  number: 3000
-  tls:
-  - hosts:
-      - dashboard-auth.cloud.icylair.com
-    secretName: icylair-com-all-prod
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: &app dashboard-homepage-cloud-auth
+#   labels:
+#     # app.kubernetes.io/name: *app
+#     # app.kubernetes.io/instance: *app
+#     # kubernetes.io/ingress.class: traefik
+#     kubernetes.io/ingress.class: traefik
+#   annotations:
+#     traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+#     # traefik.ingress.kubernetes.io/router.middlewares: observability-test-apikey@kubernetescrd
+# spec:
+#   ingressClassName: traefik-external
+#   rules:
+#     - host: &host dashboard-auth.cloud.icylair.com
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: dashboard-homepage
+#                 port:
+#                   number: 3000
+#   tls:
+#   - hosts:
+#       - dashboard-auth.cloud.icylair.com
+#     secretName: icylair-com-all-prod
 # ---
 # apiVersion: v1
 # kind: Service

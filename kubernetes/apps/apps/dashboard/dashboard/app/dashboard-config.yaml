@@ -46,6 +46,10 @@ data:
             icon: traefik.png
             href: https://traefik.cloud.icylair.com
             #ping: http://traefik.traefik.svc.cluster.local
+        - Portainer_cloud:
+            icon: portainer.png
+            href: https://portainer.cloud.icylair.com
+            ping: http://portainer.observability.svc.cluster.local
         - Longhorn:
             icon: longhorn.png
             href: https://longhorn.cloud.icylair.com

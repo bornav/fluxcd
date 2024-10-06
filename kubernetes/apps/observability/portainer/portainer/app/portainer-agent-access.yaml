@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: &name net-forwarder-portainer
+  labels:
+    app: *name 
+spec:
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      nodeSelector:
+        node-location: local
+      shareProcessNamespace: true
+      containers:
+      - name: *name
+        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.2-test
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "19001"
+        - name: REMOTE_HOST
+          value: "portainer-agent.observability.svc.cluster.local"
+        - name: REMOTE_PORT
+          value: "9001"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 19001
+          # protocol: UDP
+          hostPort: 19001
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 1

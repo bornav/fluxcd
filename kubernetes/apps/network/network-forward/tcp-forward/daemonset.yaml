@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
+  name: &name net-forwarder
   labels:
-    app: net-forwarder
-  name: net-forwarder
+    app: *name
 spec:
   selector:
     matchLabels:
-      app: net-forwarder
+      app: *name
   template:
     metadata:
       labels:
-        app: net-forwarder
+        app: *name
     spec:
       # affinity:
       #   nodeAffinity:
@@ -199,14 +199,31 @@ spec:
       #   - mountPath: /config.json
       #     name: config
       #     subPath: config.json
+      # - name: beyla
+      #   image: grafana/beyla:latest
+      #   securityContext: # Privileges are required to install the eBPF probes
+      #     privileged: true
+      #   env:
+      #     # The internal port of the goblog application container
+      #     - name: BEYLA_OPEN_PORT
+      #       value: "8443"
+      #     - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      #       value: "http://grafana-alloy:4318"
+      #       # required if you want kubernetes metadata decoration
+      #     - name: BEYLA_KUBE_METADATA_ENABLE
+      #       value: "true"
+      #   volumeMounts:
+      #     - mountPath: /etc/beyla/config
+      #       name: beyla-config
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 1
       # volumes:
-      #   - name: config
-      #     configMap:
-      #       name: teamspeak-dns-update
+      # - name: beyla-config
+      #   configMap:
+      #     defaultMode: 420
+      #     name: beyla-config
 # ---
 # apiVersion: traefik.io/v1alpha1
 # kind: IngressRouteUDP
@@ -222,3 +239,19 @@ spec:
 #       port: 9988
 #       weight: 10
 #       # nativeLB: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beyla-config
+data:
+  beyla-config.yml: |
+    log_level: INFO
+    routes:
+      unmatched: heuristic
+    trace_printer: text
+    otel_traces_export:
+      endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
+    attributes:
+      kubernetes:
+        enable: true

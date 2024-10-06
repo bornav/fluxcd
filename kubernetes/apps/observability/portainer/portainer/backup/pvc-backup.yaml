@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  pv-portainer-data-backup
+spec:
+  sourcePVC: pv-portainer-data
+  trigger:
+    schedule: "*/61 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-portainer-config-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 10
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"

@@ -8,4 +8,6 @@ resources:
   - ./otel/ks.yaml
   - ./zipkin/ks.yaml  
   - ./kubernetes-dashboard/ks.yaml
+  - ./portainer/ks.yaml
   - namespace.yaml
+  

@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: portainer
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: portainer
+      version: v1.0.54
+      sourceRef:
+        kind: HelmRepository
+        name: portainer
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    service:
+      type: ClusterIP
+    # tls:
+    #   force: true
+    persistence:
+      enabled: true
+      existingClaim: pv-portainer-data
+    resources:
+      requests:
+        memory: '1Mi'
+        cpu: '1m'
+      limits:
+        memory: '6Gi'
+        cpu: '2500m'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-portainer-data
+  labels:
+    app: pv-portainer-data
+  annotations:
+    numberOfReplicas: '2'
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: pv-portainer-data-restore  # Name of the ReplicationDestination
+  resources:
+    requests:
+      storage: 2Gi
+status: {}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: pv-portainer-data-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-portainer-config-data
+    storageClassName: longhorn-storage
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    # destinationPVC: pv-portainer-data
+    capacity: 2Gi
