@@ -35,3 +35,4 @@ resources:
   - ./infisical.yaml
   - ./external-secrets.yaml
   - ./oauth2-proxy.yaml
+  - ./portainer.yaml
