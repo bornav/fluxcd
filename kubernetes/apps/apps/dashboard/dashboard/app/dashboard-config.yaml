@@ -29,6 +29,9 @@ data:
         - Prometheus:
             icon: prometheus.png
             href: https://prometheus.cloud.icylair.com/
+        - signoz:
+            icon: signoz.png
+            href: https://signoz.cloud.icylair.com/
         - Alertmanager:
             icon: alertmanager.png
             href: https://alertmanager.cloud.icylair.com/
@@ -38,9 +41,6 @@ data:
         - Infisical:
             icon: infisical.png
             href: https://infisical.icylair.com/
-
-        
-
     - Cloud:
         - Traefik_cloud:
             icon: traefik.png
