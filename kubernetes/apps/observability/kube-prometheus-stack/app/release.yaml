@@ -95,10 +95,10 @@ spec:
     # ## Deploy node exporter as a daemonset to all nodes
     # nodeExporter:
     #   enabled: false
-    prometheusOperator:
-      enabled: true
-      services:
-        type: "LoadBalancer"
+    # prometheusOperator:
+    #   enabled: true
+    #   services:
+    #     type: "LoadBalancer"
     prometheus:
       enabled: true
       ingress:
@@ -113,11 +113,11 @@ spec:
             hosts:
               - prometheus.cloud.icylair.com
       prometheusSpec:
-        ruleSelectorNilUsesHelmValues: true
-        serviceMonitorSelectorNilUsesHelmValues: true
-        podMonitorSelectorNilUsesHelmValues: true
-        probeSelectorNilUsesHelmValues: true
-        scrapeConfigSelectorNilUsesHelmValues: true
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
         enableAdminAPI: true
         walCompression: true
         enableFeatures:
@@ -136,37 +136,37 @@ spec:
                 requests:
                   storage: 10Gi
             selector: {}
-        additionalScrapeConfigs: |
-          - job_name: 'kubernetes-pods'
-            kubernetes_sd_configs:
-            - role: pod
-            relabel_configs:
-              - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-                action: keep
-                regex: true
-              - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-                action: replace
-                regex: ([^:]+)(?::\d+)?;(\d+)
-                replacement: ${1}:${2}
-                target_label: __address__
-          - job_name: 'kubernetes-endpoints'
-            scrape_interval: 30s
-            kubernetes_sd_configs:
-              - role: endpoints
-            relabel_configs:
-              - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-                action: keep
-                regex: true
-              - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-                action: replace
-                target_label: __address__
-                regex: (.+)(?::\d+);(\d+)
-                replacement: $1:$2
+        # additionalScrapeConfigs: | # this shit breaks the prometherus pod dynamicaly
+        #   - job_name: 'kubernetes-pods'
+        #     kubernetes_sd_configs:
+        #     - role: pod
+        #     relabel_configs:
+        #       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        #         action: keep
+        #         regex: true
+        #       - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        #         action: replace
+        #         regex: ([^:]+)(?::\d+)?;(\d+)
+        #         replacement: ${1}:${2}
+        #         target_label: __address__
+        #   - job_name: 'kubernetes-endpoints'
+        #     scrape_interval: 30s
+        #     kubernetes_sd_configs:
+        #       - role: endpoints
+        #     relabel_configs:
+        #       - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        #         action: keep
+        #         regex: true
+        #       - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        #         action: replace
+        #         target_label: __address__
+        #         regex: (.+)(?::\d+);(\d+)
+        #         replacement: $1:$2
       service:
         type: "LoadBalancer"
     grafana:
       enabled: false
-      forceDeployDashboards: false
+      forceDeployDashboards: true
     alertmanager:
       enabled: true
       ingress:

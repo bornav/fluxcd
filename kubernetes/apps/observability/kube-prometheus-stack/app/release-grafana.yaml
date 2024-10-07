@@ -110,10 +110,11 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://prometheus-stack-kube-prom-prometheus.observability.svc.cluster.local:9090
+            url: http://prometheus-operated.observability.svc.cluster.local:9090
             jsonData:
               timeInterval: 1m
             isDefault: true
+            readOnly: false
           - name: Loki
             type: loki
             uid: loki
@@ -121,13 +122,15 @@ spec:
             url: http://grafana-loki.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
+            readOnly: false
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
             access: proxy
-            url: http://prometheus-stack-kube-prom-alertmanager.observability.svc.cluster.local:9093
+            url: http://alertmanager-operated.observability.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
+            readOnly: false
           - name: Tempo
             type: tempo
             uid: tempo
@@ -158,10 +161,11 @@ spec:
                 datasourceUid: loki
                 spanEndTimeShift: 1h
               streamingEnabled:
-                search: true
+                search: false
               traceQuery:
                 timeShiftEnabled: false
                 spanStartTimeShift: ''
+            readOnly: false
           - name: jaeger
             type: jaeger
             uid: jaeger
