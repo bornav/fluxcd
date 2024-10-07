@@ -72,7 +72,7 @@ spec:
       - name: dns-ip-update
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
-        image: qmcgaw/ddns-updater:v2.8.0 # TODO test what is correct imave version
+        image: qmcgaw/ddns-updater:v2.8.1 # TODO test what is correct imave version
         env:
         - name: TIME_ZONE
           value: Europe/Vienna
