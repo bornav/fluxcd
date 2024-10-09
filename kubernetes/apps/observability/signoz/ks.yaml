@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: signoz
+  namespace: flux-system
+spec:
+  dependsOn:
+  - name: traefik-base
+  - name: longhorn-system-base
+  path: ./kubernetes/apps/observability/signoz/app
+  prune: true
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: observability

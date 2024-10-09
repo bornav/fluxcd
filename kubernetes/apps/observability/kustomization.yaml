@@ -9,5 +9,6 @@ resources:
   - ./zipkin/ks.yaml  
   - ./kubernetes-dashboard/ks.yaml
   - ./portainer/ks.yaml
+  - ./signoz/ks.yaml
   - namespace.yaml
   
