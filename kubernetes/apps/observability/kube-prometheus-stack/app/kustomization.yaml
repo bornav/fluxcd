@@ -9,7 +9,5 @@ resources:
 - release-loki.yaml
 - release-tempo.yaml
 - release-beyla.yaml
+# - release-pyroscope.yaml
 # - release-stack.yaml
-# - ingress.yaml
-# - basicauth-secret.yaml
-# - middleware.yaml
