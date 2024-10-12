@@ -37,3 +37,4 @@ resources:
   - ./oauth2-proxy.yaml
   - ./portainer.yaml
   - ./openebs.yaml
+  - ./rancher.yaml
