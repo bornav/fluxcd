@@ -20,7 +20,7 @@ spec:
         app: dashboard-homepage
     spec:
       containers:
-        - image: ghcr.io/gethomepage/homepage:v0.9.10
+        - image: ghcr.io/gethomepage/homepage:v0.9.11
           name: dashboard-homepage
           resources:
             requests:
