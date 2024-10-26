@@ -16,7 +16,7 @@ spec:
     name: pv-navidrome-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
-      storage: 2Gi
+      storage: 5Gi
 status: {}
 ---
 apiVersion: v1
@@ -76,7 +76,7 @@ spec:
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-data
-    capacity: 2Gi
+    capacity: 5Gi
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
