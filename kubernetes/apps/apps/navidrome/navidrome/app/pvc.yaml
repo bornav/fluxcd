@@ -9,7 +9,7 @@ metadata:
     numberOfReplicas: '2'
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: longhorn-storage
+  storageClassName: longhorn-storage-im
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -33,7 +33,7 @@ spec:
     # kind: ReplicationDestination
     # apiGroup: volsync.backube
     # name: pv-navidrome-music-restore  # Name of the ReplicationDestination
-  storageClassName: longhorn-storage
+  storageClassName: longhorn-storage-im
   resources:
     requests:
       storage: 14Gi
@@ -72,7 +72,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-navidrome-config-data
-    storageClassName: longhorn-storage
+    storageClassName: longhorn-storage-im
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-data
