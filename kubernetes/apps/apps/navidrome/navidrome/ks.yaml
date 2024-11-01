@@ -54,7 +54,7 @@ spec:
   dependsOn:
     - name: navidrome-app
   path: ./kubernetes/apps/apps/navidrome/navidrome/backup
-  suspend: false
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository
