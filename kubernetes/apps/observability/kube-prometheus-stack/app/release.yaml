@@ -31,42 +31,42 @@ spec:
     crds:
       enabled: true
     defaultRules:
-      create: true
+      create: true   #this creates alert manager rules
       rules:
-        alertmanager:                     false
-        etcd:                             true
-        configReloaders:                  true
-        general:                          true
-        k8sContainerCpuUsageSecondsTotal: true
-        k8sContainerMemoryCache:          true
-        k8sContainerMemoryRss:            true
-        k8sContainerMemorySwap:           true
-        k8sContainerResource:             true
-        k8sContainerMemoryWorkingSetBytes: true
-        k8sPodOwner:                      true
-        kubeApiserverAvailability:        true
-        kubeApiserverBurnrate:            true
-        kubeApiserverHistogram:           true
-        kubeApiserverSlos:                true
-        kubeControllerManager:            true
-        kubelet:                          true
-        kubeProxy:                        true
-        kubePrometheusGeneral:            true
-        kubePrometheusNodeRecording:      true
-        kubernetesApps:                   true
-        kubernetesResources:              true
-        kubernetesStorage:                true
-        kubernetesSystem:                 true
-        kubeSchedulerAlerting:             true
-        kubeSchedulerRecording:           true
-        kubeStateMetrics:                 true
-        network:                         true
-        node:                             true
-        nodeExporterAlerting:            true
-        nodeExporterRecording:             true
-        prometheus:                      true
-        prometheusOperator:               true
-        windows:                        true
+        alertmanager:                       false
+        etcd:                               true
+        configReloaders:                    true
+        general:                            true
+        k8sContainerCpuUsageSecondsTotal:   true
+        k8sContainerMemoryCache:            true
+        k8sContainerMemoryRss:              true
+        k8sContainerMemorySwap:             true
+        k8sContainerResource:               true
+        k8sContainerMemoryWorkingSetBytes:  true
+        k8sPodOwner:                        true
+        kubeApiserverAvailability:          true
+        kubeApiserverBurnrate:              true
+        kubeApiserverHistogram:             true
+        kubeApiserverSlos:                  true
+        kubeControllerManager:              true
+        kubelet:                            true
+        kubeProxy:                          true
+        kubePrometheusGeneral:              true
+        kubePrometheusNodeRecording:        true
+        kubernetesApps:                     true
+        kubernetesResources:                true
+        kubernetesStorage:                  true
+        kubernetesSystem:                   true
+        kubeSchedulerAlerting:              true
+        kubeSchedulerRecording:             true
+        kubeStateMetrics:                   true
+        network:                            true
+        node:                               true
+        nodeExporterAlerting:               true
+        nodeExporterRecording:              true
+        prometheus:                         true
+        prometheusOperator:                 true
+        windows:                            true
     ## Setting to true produces cleaner resource names, but requires a data migration because the name of the persistent volume changes. Therefore this should only be set once on initial installation.
     ##
     cleanPrometheusOperatorObjectNames: true
@@ -159,6 +159,16 @@ spec:
       forceDeployDashboards: true
     alertmanager:
       enabled: true
+      service:
+        annotations: {}
+        labels: {}
+        type: LoadBalancer
+        loadBalancerSourceRanges: # prob will brake stuff if i change lb, can be removed not necesarry 
+          - "10.49.20.0/24"
+        # ipDualStack:
+        #   enabled: false
+        #   ipFamilies: ["IPv6", "IPv4"]
+        #   ipFamilyPolicy: "PreferDualStack"
       ingress:
         enabled: true
         className: traefik-external
@@ -177,5 +187,79 @@ spec:
               accessModes: ["ReadWriteOnce"]
               resources:
                 requests:
-                  storage: 8Gi
+                  storage: 500Mi
             selector: {}
+      resources:
+        cpu: 10m
+        memory: 32Mi
+      alertmanagerSpec:
+        useExistingSecret: true
+        configSecret: alertmanager-secret
+      # config:
+      #   # enabled: true
+      #   global: {}
+      #   #   webhook_url: 'https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU'
+      #   route:
+      #     group_by: ['alertname', 'job']
+      #     group_wait: 30s
+      #     group_interval: 5m
+      #     repeat_interval: 3h
+      #     receiver: discord
+      #   receivers:
+      #   - name: discord
+      #     discord_configs:
+      #     - webhook_url: https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU
+      # # templates:
+      # #   # alertmanager.yml: |
+      # #   #   route:
+      # #   #     group_by: ['alertname', 'job']
+      # #   #     group_wait: 30s
+      # #   #     group_interval: 5m
+      # #   #     repeat_interval: 3h
+      # #   #     receiver: discord
+      # #   #   receivers:
+      # #   #   - name: discord
+      # #   #     discord_configs:
+      # #   #     - webhook_url: https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU
+
+
+
+    additionalPrometheusRulesMap:
+      demo-alerts.yml:
+        groups:
+        - name: demo-service-alerts
+          rules:
+          - alert: DemoServiceHighErrorRate
+            expr: |
+              (
+                sum without(status, instance) (
+                  rate(demo_api_request_duration_seconds_count{status=~"5..",job="demo"}[1m])
+                )
+              /
+                sum without(status, instance) (
+                  rate(demo_api_request_duration_seconds_count{job="demo"}[1m])
+                ) * 100 > 0.5
+              )
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              title: 'High 5xx rate for {{ $labels.method }} on {{ $labels.path }}'
+              description: 'The 5xx error rate for path {{$labels.path}} with method {{ $labels.method }} in {{ $labels.job }} is {{ printf "%.2f" $value }}%.'
+    # prometheus.yml:
+    #   global:
+    #     scrape_interval: 15s
+    #     evaluation_interval: 15s
+    #   rule_files:
+    #     - demo-alerts.yml
+    #   alerting:
+    #     alertmanagers:
+    #     - static_configs:
+    #       - targets: ['localhost:9093']
+    #   scrape_configs:
+    #     - job_name: 'demo'
+    #       static_configs:
+    #         - targets:
+    #           - 'demo.promlabs.com:10000'
+    #           - 'demo.promlabs.com:10001'
+    #           - 'demo.promlabs.com:10002'

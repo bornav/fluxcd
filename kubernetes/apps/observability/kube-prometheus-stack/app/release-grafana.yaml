@@ -130,7 +130,8 @@ spec:
             url: http://alertmanager-operated.observability.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
-            readOnly: false
+              handleGrafanaManagedAlerts: "true"
+            readOnly: "false"
           - name: Tempo
             type: tempo
             uid: tempo

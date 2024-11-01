@@ -1,0 +1,153 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alertmanager
+  namespace: observability
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: alertmanager
+      version: 1.13.0
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    baseURL: "https://alertmanager.cloud.icylair.com"
+    extraSecretMounts: []
+    service:
+      annotations: {}
+      labels: {}
+      type: LoadBalancer
+      loadBalancerSourceRanges: # prob will brake stuff if i change lb, can be removed not necesarry 
+        - "10.49.20.0/24"
+      # ipDualStack:
+      #   enabled: false
+      #   ipFamilies: ["IPv6", "IPv4"]
+      #   ipFamilyPolicy: "PreferDualStack"
+
+    ingress:
+      enabled: true
+      className: traefik-external
+      hosts:
+        - host: &host alertmanager.cloud.icylair.com
+          paths:
+          - path: /
+            pathType: ImplementationSpecific
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+      tls:
+        - secretName: icylair-com-all-prod
+          hosts:
+            - *host
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+    configmapReload:
+      enabled: true
+      name: configmap-reload
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+    config:
+      enabled: true
+      # global:
+      #   webhook_url: 'https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU'
+      route:
+        group_by: ['alertname', 'job']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 3h
+        receiver: discord
+      receivers:
+      - name: discord
+        discord_configs:
+        - webhook_url: <>
+    templates:
+      # alertmanager.yml: |
+      #   route:
+      #     group_by: ['alertname', 'job']
+      #     group_wait: 30s
+      #     group_interval: 5m
+      #     repeat_interval: 3h
+      #     receiver: discord
+      #   receivers:
+      #   - name: discord
+      #     discord_configs:
+      #     - webhook_url: <>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-alerts-config
+data:
+  alertmanager.yml: |
+    route:
+      group_by: ['alertname', 'job']
+
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 3h
+
+      receiver: discord
+
+    receivers:
+    - name: discord
+      discord_configs:
+      - webhook_url: <>
+  demo-alerts.yml: |
+    groups:
+    - name: demo-service-alerts
+      rules:
+      - alert: DemoServiceHighErrorRate
+        expr: |
+          (
+            sum without(status, instance) (
+              rate(demo_api_request_duration_seconds_count{status=~"5..",job="demo"}[1m])
+            )
+          /
+            sum without(status, instance) (
+              rate(demo_api_request_duration_seconds_count{job="demo"}[1m])
+            ) * 100 > 0.5
+          )
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          title: 'High 5xx rate for {{ $labels.method }} on {{ $labels.path }}'
+          description: 'The 5xx error rate for path {{$labels.path}} with method {{ $labels.method }} in {{ $labels.job }} is {{ printf "%.2f" $value }}%.'
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    rule_files:
+      - demo-alerts.yml
+
+    alerting:
+      alertmanagers:
+      - static_configs:
+        - targets: ['localhost:9093']
+
+    scrape_configs:
+      - job_name: 'demo'
+        static_configs:
+          - targets:
+            - 'demo.promlabs.com:10000'
+            - 'demo.promlabs.com:10001'
+            - 'demo.promlabs.com:10002'
