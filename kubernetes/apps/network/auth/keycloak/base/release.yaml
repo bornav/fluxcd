@@ -37,6 +37,11 @@ spec:
     proxy: edge
     global:
       storageClass: longhorn-storage
+      # # postgresql:
+      # resources:
+      #   requests:
+      #     cpu: 10m
+      #     memory: 32Mi
     auth:
       createAdminUser: true
       adminUser: bornav
@@ -58,13 +63,20 @@ spec:
       enabled: true
       auth:
         existingSecret: keycloak-auth
+      primary:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+    resourcesPreset: none
     resources:
       requests:
         cpu: 10m
         memory: 128Mi
       limits:
-        # cpu: 1500m
-        memory: 1024Mi
+        cpu: 1500m
+        memory: 2024Mi
     extraEnvVarsSecret: "telemetry"
     service:
       type: LoadBalancer
+    
