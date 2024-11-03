@@ -74,16 +74,16 @@ spec:
       #       matchLabels:
       #         app.kubernetes.io/name: nginx-external
       #         app.kubernetes.io/component: controller
-      opentelemetry:
-        enabled: true
-        image: registry.k8s.io/ingress-nginx/opentelemetry:v20230721-3e2062ee5@sha256:13bee3f5223883d3ca62fee7309ad02d22ec00ff0d7033e3e9aca7a9f60fd472
-        containerSecurityContext:
-          allowPrivilegeEscalation: false
-        resources: {}
-      resources:
-        requests:
-          cpu: 1m
-          memory: 250Mi
+      # opentelemetry:
+      #   enabled: true
+      #   image: registry.k8s.io/ingress-nginx/opentelemetry:v20230721-3e2062ee5@sha256:13bee3f5223883d3ca62fee7309ad02d22ec00ff0d7033e3e9aca7a9f60fd472
+      #   containerSecurityContext:
+      #     allowPrivilegeEscalation: false
+      #   resources: {}
+      # resources:
+      #   requests:
+      #     cpu: 1m
+      #     memory: 250Mi
     # defaultBackend:
     #   enabled:  false
   # valuesFrom:
