@@ -34,7 +34,7 @@ spec:
       create: true   #this creates alert manager rules
       rules:
         alertmanager:                       false
-        etcd:                               true
+        etcd:                               false
         configReloaders:                    true
         general:                            true
         k8sContainerCpuUsageSecondsTotal:   true
@@ -198,7 +198,7 @@ spec:
       # config:
       #   # enabled: true
       #   global: {}
-      #   #   webhook_url: 'https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU'
+      #   #   webhook_url: ''
       #   route:
       #     group_by: ['alertname', 'job']
       #     group_wait: 30s
@@ -208,7 +208,7 @@ spec:
       #   receivers:
       #   - name: discord
       #     discord_configs:
-      #     - webhook_url: https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU
+      #     - webhook_url: 
       # # templates:
       # #   # alertmanager.yml: |
       # #   #   route:
@@ -220,7 +220,7 @@ spec:
       # #   #   receivers:
       # #   #   - name: discord
       # #   #     discord_configs:
-      # #   #     - webhook_url: https://discord.com/api/webhooks/1301874282028072962/KDxk4148B55kN97CRlaVCYlBy6_yOui3BYRjrcWcff3oEc75_UYMM8sWbWEeGDXUqObU
+      # #   #     - webhook_url: 
 
 
 
