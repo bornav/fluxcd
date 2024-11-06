@@ -72,7 +72,7 @@ spec:
         - name: LISTEN_PORT
           value: "9987"
         - name: REMOTE_HOST
-          value: "teamspeak.default.svc.cluster.local"
+          value: "teamspeak.apps.svc.cluster.local"
         - name: REMOTE_PORT
           value: "9987"
         - name: DIAL_TIMEOUT
@@ -104,7 +104,7 @@ spec:
         - name: LISTEN_PORT
           value: "10011"
         - name: REMOTE_HOST
-          value: "teamspeak.default.svc.cluster.local"
+          value: "teamspeak.apps.svc.cluster.local"
         - name: REMOTE_PORT
           value: "10011"
         - name: DIAL_TIMEOUT
@@ -136,7 +136,7 @@ spec:
         - name: LISTEN_PORT
           value: "30033"
         - name: REMOTE_HOST
-          value: "teamspeak.default.svc.cluster.local"
+          value: "teamspeak.apps.svc.cluster.local"
         - name: REMOTE_PORT
           value: "30033"
         - name: DIAL_TIMEOUT
