@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: mautrix-bridge-whatsapp
   annotations:
-    dns.alpha.kubernetes.io/external: mautrix-bridge-whatsapp.matrix.svc.cluster.local
+    dns.alpha.kubernetes.io/external: mautrix-bridge-whatsapp.apps.svc.cluster.local
 spec:
   selector:
     app: mautrix-bridge-whatsapp

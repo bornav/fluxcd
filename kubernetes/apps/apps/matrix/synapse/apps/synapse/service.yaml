@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: matrix-synapse
   annotations:
-    dns.alpha.kubernetes.io/external: 'matrix-synapse.matrix.svc.cluster.local'
+    dns.alpha.kubernetes.io/external: 'matrix-synapse.apps.svc.cluster.local'
 spec:
   ports:
     - name: http
@@ -44,7 +44,7 @@ kind: Service
 metadata:
   name: matrix-synapse-federation
   annotations:
-    dns.alpha.kubernetes.io/external: 'matrix-synapse.matrix.svc.cluster.local'
+    dns.alpha.kubernetes.io/external: 'matrix-synapse.apps.svc.cluster.local'
   labels:
     app: matrix-synapse-federation
 spec:

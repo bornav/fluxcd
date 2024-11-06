@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: matrix-database-service
   annotations:
-    dns.alpha.kubernetes.io/external: matrix-database-service.matrix.svc.cluster.local
+    dns.alpha.kubernetes.io/external: matrix-database-service.apps.svc.cluster.local
 spec:
   ports:
     - name: http

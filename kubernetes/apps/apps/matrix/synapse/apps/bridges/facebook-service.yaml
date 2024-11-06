@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: mautrix-bridge-facebook
   annotations:
-    dns.alpha.kubernetes.io/external: mautrix-bridge-facebook.matrix.svc.cluster.local
+    dns.alpha.kubernetes.io/external: mautrix-bridge-facebook.apps.svc.cluster.local
 spec:
   selector:
     app: mautrix-bridge-facebook
