@@ -29,13 +29,32 @@ spec:
       repository: "otel/opentelemetry-collector-k8s"
     command:
       name: otelcol-k8s
-    mode: deployment
-    replicaCount: 2
+    mode: daemonset ## needed for logs to be on all nodes, since it is a host path mount
+    # replicaCount: 2
     configMap:
       create: false
       existingName: otelcol
     service:
+      enabled: true
       type: LoadBalancer
+    ################################# logs
+    extraVolumes:
+    - name: pod-logs
+      hostPath:
+        path: /var/log/pods
+        type: Directory
+    extraVolumeMounts:
+    - name: pod-logs
+      mountPath: /var/log/pods
+      hostPath:
+        path: /var/log/pods
+        type: Directory
+
+    tolerations: 
+      - key: node-role.kubernetes.io/control-plane
+        value: "true"
+        effect: NoSchedule
+    ################################# logs
       # loadBalancerIP: 10.2.11.233
     # # Handles basic configuration of components that
     # # also require k8s modifications to work correctly.

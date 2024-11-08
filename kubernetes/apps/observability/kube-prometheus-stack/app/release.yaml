@@ -33,8 +33,8 @@ spec:
     defaultRules:
       create: true   #this creates alert manager rules
       rules:
-        alertmanager:                       false
-        etcd:                               false
+        alertmanager:                       true
+        etcd:                               true
         configReloaders:                    true
         general:                            true
         k8sContainerCpuUsageSecondsTotal:   true
@@ -48,16 +48,16 @@ spec:
         kubeApiserverBurnrate:              true
         kubeApiserverHistogram:             true
         kubeApiserverSlos:                  true
-        kubeControllerManager:              true
+        kubeControllerManager:              false
         kubelet:                            true
-        kubeProxy:                          true
+        kubeProxy:                          false
         kubePrometheusGeneral:              true
         kubePrometheusNodeRecording:        true
         kubernetesApps:                     true
         kubernetesResources:                true
         kubernetesStorage:                  true
         kubernetesSystem:                   true
-        kubeSchedulerAlerting:              true
+        kubeSchedulerAlerting:              false
         kubeSchedulerRecording:             true
         kubeStateMetrics:                   true
         network:                            true
@@ -78,8 +78,8 @@ spec:
     #   enabled: false
     # kubelet:
     #   enabled: false
-    # kubeControllerManager:
-    #   enabled: false
+    kubeControllerManager:
+      enabled: false
     # coreDns:
     #   enabled: false
     # kubeDns:
@@ -88,8 +88,8 @@ spec:
     #   enabled: false
     # kubeScheduler:
     #   enabled: false
-    # kubeProxy:
-    #   enabled: false
+    kubeProxy:
+      enabled: false
     # kubeStateMetrics:
     #   enabled: false
     # ## Deploy node exporter as a daemonset to all nodes
@@ -136,22 +136,22 @@ spec:
                 requests:
                   storage: 10Gi
             selector: {}
-        additionalScrapeConfigs: | # this shit breaks the prometherus pod dynamicaly
-          - job_name: 'kubernetes-pods'
-            kubernetes_sd_configs:
-            - role: pod
-            relabel_configs:
-              - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-                action: keep
-                regex: true
-          - job_name: 'kubernetes-endpoints'
-            scrape_interval: 30s
-            kubernetes_sd_configs:
-              - role: endpoints
-            relabel_configs:
-              - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-                action: keep
-                regex: true
+        # additionalScrapeConfigs: | # this shit breaks the prometherus pod dynamicaly
+        #   - job_name: 'kubernetes-pods'
+        #     kubernetes_sd_configs:
+        #     - role: pod
+        #     relabel_configs:
+        #       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        #         action: keep
+        #         regex: true
+        #   - job_name: 'kubernetes-endpoints'
+        #     scrape_interval: 30s
+        #     kubernetes_sd_configs:
+        #       - role: endpoints
+        #     relabel_configs:
+        #       - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        #         action: keep
+        #         regex: true
       service:
         type: "LoadBalancer"
     grafana:

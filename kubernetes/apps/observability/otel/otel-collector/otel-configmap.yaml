@@ -7,6 +7,13 @@ metadata:
 data:
   relay: |
     receivers:
+      filelog:
+        include_file_path: true
+        include:
+          - /var/log/pods/*/*/*.log
+        operators:
+          - id: container-parser
+            type: container
       jaeger:
         protocols:
           grpc:
@@ -80,7 +87,7 @@ data:
           processors: [batch, k8sattributes]
           exporters: [debug]
         logs:
-          receivers: [otlp]
+          receivers: [otlp,filelog]
           processors: [batch, k8sattributes]
           exporters: [debug, otlphttp]
       telemetry:
