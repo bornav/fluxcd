@@ -75,6 +75,7 @@ spec:
     storageClassName: longhorn-storage-im
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
+    cleanupTempPVC: true
     # destinationPVC: pv-navidrome-data
     capacity: 5Gi
 # ---
