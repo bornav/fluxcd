@@ -38,3 +38,4 @@ resources:
   - ./portainer.yaml
   - ./openebs.yaml
   - ./rancher.yaml
+  - ./it-tools.yaml
