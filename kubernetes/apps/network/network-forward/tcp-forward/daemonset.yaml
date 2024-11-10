@@ -25,29 +25,27 @@ spec:
       #           # - instance-arm-01
       shareProcessNamespace: true
       containers:
-      - name: net-forwarder
+      - name: net-forwarder-traefik-ingress
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.2-test
+        image: bornav/tcpforwarder:v0.3
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
         - name: LISTEN_HOST
           value: "0.0.0.0"
         - name: LISTEN_PORT
-          value: "443"
+          value: "8080,8443"
         - name: REMOTE_HOST
           value: "traefik.network.svc.cluster.local"
-        - name: REMOTE_PORT
-          value: "8443"
+        # - name: REMOTE_PORT
+        #   value: "8443"
         - name: DIAL_TIMEOUT
           value: "4"
         imagePullPolicy: Always
         ports:
-        # - containerPort: 9443
-        #   protocol: UDP
-        #   hostPort: 9443
-        - containerPort: 443
-          # protocol: TCP
+        - containerPort: 8080
+          hostPort: 80
+        - containerPort: 8443
           hostPort: 443
         resources:
           limits:
@@ -60,91 +58,67 @@ spec:
           # runAsGroup: 1000
           runAsUser: 0
           privileged: true
-
-      - name: net-forwarder-udp1
+      - name: net-forwarder-nginx-ingress
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.2-test
+        image: bornav/tcpforwarder:v0.3
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
         - name: LISTEN_HOST
           value: "0.0.0.0"
         - name: LISTEN_PORT
-          value: "9987"
+          value: "8081,8444,9443,10000" # actual ports are 8080.8443,9443,10000
+        - name: REMOTE_HOST
+          value: "nginx-external-controller.network.svc.cluster.local"
+        # - name: REMOTE_PORT
+        #   value: "9987"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+          hostPort: 8080
+        - containerPort: 8444
+          hostPort: 8443
+        - containerPort: 9443
+          hostPort: 9443
+        - containerPort: 10000
+          hostPort: 10000
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
+
+      - name: net-forwarder-teamspeak
+        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
+        image: bornav/tcpforwarder:v0.3
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "9987,10011,30033"
         - name: REMOTE_HOST
           value: "teamspeak.apps.svc.cluster.local"
-        - name: REMOTE_PORT
-          value: "9987"
+        # - name: REMOTE_PORT
+        #   value: "9987"
         - name: DIAL_TIMEOUT
           value: "4"
         imagePullPolicy: Always
         ports:
         - containerPort: 9987
-          # protocol: UDP
           hostPort: 9987
-        resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        securityContext:
-          # runAsGroup: 1000
-          runAsUser: 0
-          privileged: true
-      - name: net-forwarder-udp2
-        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.2-test
-        # command: ["/bin/sh"]  # Override the entrypoint
-        # args: ["-c", "sleep 9999" ] 
-        env:
-        - name: LISTEN_HOST
-          value: "0.0.0.0"
-        - name: LISTEN_PORT
-          value: "10011"
-        - name: REMOTE_HOST
-          value: "teamspeak.apps.svc.cluster.local"
-        - name: REMOTE_PORT
-          value: "10011"
-        - name: DIAL_TIMEOUT
-          value: "4"
-        imagePullPolicy: Always
-        ports:
         - containerPort: 10011
-          # protocol: UDP
           hostPort: 10011
-        resources:
-          limits:
-            cpu: 500m
-            memory: 512Mi
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        securityContext:
-          # runAsGroup: 1000
-          runAsUser: 0
-          privileged: true
-      - name: net-forwarder-udp3
-        # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.2-test
-        # command: ["/bin/sh"]  # Override the entrypoint
-        # args: ["-c", "sleep 9999" ] 
-        env:
-        - name: LISTEN_HOST
-          value: "0.0.0.0"
-        - name: LISTEN_PORT
-          value: "30033"
-        - name: REMOTE_HOST
-          value: "teamspeak.apps.svc.cluster.local"
-        - name: REMOTE_PORT
-          value: "30033"
-        - name: DIAL_TIMEOUT
-          value: "4"
-        imagePullPolicy: Always
-        ports:
         - containerPort: 30033
-          # protocol: UDP
           hostPort: 30033
         resources:
           limits:
@@ -157,7 +131,6 @@ spec:
           # runAsGroup: 1000
           runAsUser: 0
           privileged: true
-
       # - name: go-instrumentation-sidecart
       #   image: otel/autoinstrumentation-go:v0.14.0-alpha
       #   imagePullPolicy: IfNotPresent
