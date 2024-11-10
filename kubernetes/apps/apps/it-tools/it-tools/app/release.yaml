@@ -1,0 +1,51 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: it-tools
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: it-tools
+      version: 2.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: plcnk
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      main:
+        resources: 
+          requests:
+            cpu: 10m
+            memory: 32Mi
+    ingress:
+      # -- Enable and configure ingress settings for the chart under this key.
+      # @default -- See [values.yaml](./values.yaml)
+      main:
+        enabled: true
+        className: traefik-external
+        annotations: {}
+        hosts:
+          - host: &host-main "it-tools.icylair.com"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: main
+                  port: http
+        tls:
+          - secretName: icylair-com-prod
+            hosts:
+              - *host-main

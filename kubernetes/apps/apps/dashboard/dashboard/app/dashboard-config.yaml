@@ -41,6 +41,9 @@ data:
         - Infisical:
             icon: infisical.png
             href: https://infisical.icylair.com/
+        - it-tools:
+            icon: it-tools.png
+            href: https://it-tools.icylair.com/
     - Cloud:
         - Traefik_cloud:
             icon: traefik.png
