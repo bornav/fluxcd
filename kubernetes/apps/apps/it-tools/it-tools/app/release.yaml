@@ -46,6 +46,6 @@ spec:
                   identifier: main
                   port: http
         tls:
-          - secretName: icylair-com-prod
+          - secretName: icylair-com-all-prod
             hosts:
               - *host-main
