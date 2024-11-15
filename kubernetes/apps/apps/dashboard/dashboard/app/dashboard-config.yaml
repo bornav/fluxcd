@@ -44,6 +44,9 @@ data:
         - it-tools:
             icon: it-tools.png
             href: https://it-tools.icylair.com/
+        - Excalidraw:
+            icon: excalidraw.png
+            href: https://excalidraw.icylair.com/
     - Cloud:
         - Traefik_cloud:
             icon: traefik.png

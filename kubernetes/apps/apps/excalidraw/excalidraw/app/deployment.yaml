@@ -1,0 +1,43 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name excalidraw
+  labels:
+    app: *name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        # io.kompose.network/dockerfile-default: "true"
+        app: *name
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+        - image: excalidraw/excalidraw:latest
+          name: *name
+          resources:
+            requests:
+              cpu: 1m
+              memory: 1M
+            limits:
+              cpu: 500m
+              memory: 200M
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 5
+          volumeMounts: []
+      restartPolicy: Always
+      volumes: []
+status: {}
