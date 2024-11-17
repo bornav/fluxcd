@@ -28,7 +28,6 @@ spec:
       backupTarget: "s3://kubernetes-backup-bucket@us-west-1/"
       backupTargetCredentialSecret: s3-minio-secret
       backupstorePollInterval: 15
-
       taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
     global:
       tolerations:
@@ -66,6 +65,10 @@ spec:
           operator: "Equal"
           value: "true"
           effect: NoSchedule
+      attacherReplicaCount: 2
+      provisionerReplicaCount: 2
+      resizerReplicaCount: 2
+      snapshotterReplicaCount: 2
 
       
     #   allowRecurringJobWhileVolumeDetached: false
