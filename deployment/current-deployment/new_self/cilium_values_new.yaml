@@ -17,16 +17,20 @@ kubeProxyReplacement: "true"
 bpf:
   masquerade: true
   lbExternalClusterIP: true
-# bgpControlPanel:
-bgpControlPlane:
-  enabled: true
-bgp:
-  enabled: false
-  # announce:
-  #   # -- Enable allocation and announcement of service LoadBalancer IPs
-  #   loadbalancerIP: true
-  #   # -- Enable announcement of node pod CIDR
-  #   podCIDR: true
+
+# dont thnk i need this
+# bgpControlPlane:
+#   enabled: true
+# bgp:
+#   enabled: true
+#   announce:
+#   #   # -- Enable allocation and announcement of service LoadBalancer IPs
+#     loadbalancerIP: true
+#   #   # -- Enable announcement of node pod CIDR
+#     podCIDR: true
+# # bgpControlPanel:
+
+
 
 l2announcements:
   enabled: true
@@ -52,24 +56,34 @@ hubble:
     #   enabled: true
     #   method: helm
     #   certValidityDuration: 1095
-  dashboards: #grafana dashboard:  # grafana can import dashboards based on the label and value
-    enabled: true
   # metrics:
   #   enabled:
-  #   - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+  #   - "httpV2:exemplars=true;sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_ip,source_namespace,source_workload,destination_namespace,destination_workload,destination_ip,traffic_direction"
   #   - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
-  #   - dns:query;ignoreAAAA
-  #   - drop
-  #   - tcp
-  #   - flow
-  #   - icmp
-  #   - http
+  #   - "dns:query;ignoreAAAA"
+  #   - "drop"
+  #   - "tcp"
+  #   - "flow:destinationContext=app;sourceContext=app"
+  #   - "flows-to-world"
+  #   - "icmp"
+  #   - "port-distribution"
+    
+  #   # serviceAnnotations:
+  #   #   prometheus.io/scrape: "true"
+  #   #   prometheus.io/port: "9965"
   #   enableOpenMetrics: true
-  #   # serviceMonitor:
-  #   #   enabled: true
+  #   serviceMonitor:
+  #     enabled: true
   #   dashboards:
   #     enabled: true
-  #     # namespace: monitoring
+  #     namespace: observability
+  #   # prometheus:
+  #   #   enabled: true
+  #   #   port: 9966
+  #   #   serviceMonitor:
+  #   #     # -- Enable service monitors.
+  #   #     # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
+  #   #     enabled: true
   peerService:
     clusterDomain: cluster.local
   dropEventEmitter:
@@ -94,6 +108,16 @@ loadBalancer:
   acceleration: best-effort
   # l7:
   #   backend: envoy
-
 envoy:
   enabled: false
+
+# l7Proxy: true
+
+
+# prometheus:
+#   enabled: true
+#   port: 9962
+#   serviceMonitor:
+#     # -- Enable service monitors.
+#     # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
+#     enabled: true

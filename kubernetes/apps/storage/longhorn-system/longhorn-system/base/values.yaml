@@ -1,7 +1,0 @@
-persistence:
-  defaultClass: true
-  reclaimPolicy: Delete
-  defaultClassReplicaCount: 1
-defaultSettings:
-  backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
-  backupTargetCredentialSecret: cifs-secret
