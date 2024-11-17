@@ -1,0 +1,123 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+  annotations:
+    secrets.infisical.com/auto-reload: "true"
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27.2
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+          - mountPath: /datta
+            name: nginx-test
+      volumes:
+      - name: nginx-test
+        persistentVolumeClaim:
+          claimName: nginx-test-pvc
+
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-storage-test
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: "Delete"
+volumeBindingMode: Immediate
+parameters:
+  numberOfReplicas: "1"
+  staleReplicaTimeout: "15"
+  fromBackup: ""
+  fsType: "ext4"
+  dataLocality: "best-effort"
+  nfsOptions: "vers=4.2,noresvport,softerr,timeo=600,retrans=5"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: nginx-test-pvc
+  name: nginx-test-pvc
+  annotations:
+    numberOfReplicas: '1'
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn-storage-test
+  resources:
+    requests:
+      storage: 10Mi
+status: {}
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  nginx-test-pvc-backup
+# spec:
+#   sourcePVC: nginx-test-pvc
+#   trigger:
+#     schedule: "*/5 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-nginx-test-pvc
+#     accessModes: ["ReadWriteOnce"]
+#     retain:
+#       hourly: 5
+#       daily: 4
+#       weekly: 3
+#       monthly: 2
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-storage-test
+#     unlock: "something"
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationDestination
+# metadata:
+#   name: nginx-test-pvc-restore
+# spec:
+#   trigger:
+#     manual: restore-once
+#   restic:
+#     repository: restic-nginx-test-pvc
+#     storageClassName: longhorn-storage-test
+#     accessModes: ["ReadWriteOnce"]
+#     copyMethod: Snapshot
+#     capacity: 10Mi
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#     name: restic-nginx-test-pvc
+# type: Opaque
+# stringData:
+#     RESTIC_REPOSITORY: s3:http://wireguard.network.svc.cluster.local:9010/restic-kubernetes-bucket/test-pvc
+#     RESTIC_PASSWORD: asd
+#     AWS_ACCESS_KEY_ID: asd
+#     AWS_SECRET_ACCESS_KEY: asd

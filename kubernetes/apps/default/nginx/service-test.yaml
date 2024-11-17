@@ -1,0 +1,234 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t1
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t2
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t3
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t4
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t5
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t6
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t7
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t8
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: t9
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta1
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta2
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta3
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta4
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta5
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta6
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta7
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta8
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta9
+  labels:
+    service-type: ingress
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app: whoami

@@ -7,3 +7,4 @@ resources:
   #- ingress.yaml
   - ingress2.yaml
   - service.yaml
+  - secret-test.yaml
