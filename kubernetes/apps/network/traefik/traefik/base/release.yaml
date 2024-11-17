@@ -84,7 +84,12 @@ spec:
         http3:
           enabled: true
     service:
-      single: false
+      single: true
+      spec:
+        loadBalancerIP: "10.49.21.1"
+      labels: 
+        service-type: ingress
+        
     ingressClass:
       enabled: true
       isDefaultClass: true

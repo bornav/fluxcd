@@ -6,6 +6,21 @@ spec:
   blocks:
   - start: "10.49.20.20"
     stop: "10.49.20.230"
+  serviceSelector:
+    matchExpressions:
+    - key: service-type
+      operator: NotIn
+      values:
+      - ingress
+# ---
+# apiVersion: "cilium.io/v2alpha1"
+# kind: CiliumLoadBalancerIPPool
+# metadata:
+#   name: "local-ip-pool"
+# spec:
+#   blocks:
+#   - start: "10.2.11.230"
+#     stop: "10.2.11.235"
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
@@ -15,3 +30,30 @@ metadata:
 spec:
   externalIPs: true
   loadBalancerIPs: true
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "ingress-pool"
+spec:
+  blocks:
+  - cidr: "10.49.21.0/24"
+  - cidr: "2004::0/64"
+  serviceSelector:
+    matchLabels:
+      service-type: ingress
+# ---
+# apiVersion: "cilium.io/v2alpha1"
+# kind: CiliumL2AnnouncementPolicy
+# metadata:
+#   name: policy1
+# spec:
+#   serviceSelector:
+#     matchLabels:
+#       service-type: ingress
+#   interfaces:
+#   - ^eth[0-9]+
+#   - ^ens[0-9]+
+#   - ^wg[0-9]+
+#   externalIPs: true
+#   loadBalancerIPs: true

@@ -18,19 +18,20 @@ bpf:
   masquerade: true
   lbExternalClusterIP: true
 
-# dont thnk i need this
+# # dont thnk i need this
 # bgpControlPlane:
 #   enabled: true
 # bgp:
-#   enabled: true
+#   enabled: false
 #   announce:
 #   #   # -- Enable allocation and announcement of service LoadBalancer IPs
 #     loadbalancerIP: true
 #   #   # -- Enable announcement of node pod CIDR
 #     podCIDR: true
-# # bgpControlPanel:
 
-
+# l2podAnnouncements:
+#   enabled: true
+#   interface: eth0
 
 l2announcements:
   enabled: true
