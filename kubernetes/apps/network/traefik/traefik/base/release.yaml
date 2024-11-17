@@ -62,9 +62,9 @@ spec:
         # expose:
         #   default: false
         # hostPort: 80
-        port: 8080
+        port: 8000
         # containerPort: 8080
-        exposedPort: 8080
+        # exposedPort: 8080
         redirectTo:
           port: websecure
       websecure:
@@ -81,6 +81,10 @@ spec:
         # nodePort: 42443
         tls:
           enabled: true
+        http3:
+          enabled: true
+    service:
+      single: false
     ingressClass:
       enabled: true
       isDefaultClass: true
