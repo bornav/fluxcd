@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: keycloak
-      version: 22.2.6
+      version: 24.0.0
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -32,6 +32,12 @@ spec:
   #   - name: local-path-provisioner
   #     namespace: kube-system
   values:
+    # diagnosticMode: # only for keycloak pods
+    #   enabled: false
+    #   command:
+    #     - sleep
+    #   args:
+    #     - infinity
     production: true
     replicaCount: 2
     proxy: edge
@@ -60,14 +66,29 @@ spec:
         - keycloak.cloud.icylair.com
         secretName: icylair-com-all-prod
     postgresql:
+      # diagnosticMode: # for databse
+      #   enabled: true
+      #   command:
+      #     - sleep
+      #   args:
+      #     - infinity
       enabled: true
       auth:
         existingSecret: keycloak-auth
       primary:
+        # containerSecurityContext: # for databse debug
+        #   runAsUser: 4
+        #   runAsGroup: 4
+        #   runAsNonRoot: false
         resources:
           requests:
             cpu: 10m
             memory: 32Mi
+      image:
+        registry: docker.io
+        repository: bitnami/postgresql
+        tag: 16.4.0-debian-12-r14 # do not update until finding out how pg_upgrade works
+        digest: ""
     resourcesPreset: none
     resources:
       requests:
