@@ -25,38 +25,38 @@ spec:
       #           # - instance-arm-01
       shareProcessNamespace: true
       containers:
-      # - name: net-forwarder-traefik-ingress
-      #   image: bornav/tcpforwarder:v0.3
-      #   # command: ["/bin/sh"]  # Override the entrypoint
-      #   # args: ["-c", "sleep 9999" ] 
-      #   env:
-      #   - name: LISTEN_HOST
-      #     value: "0.0.0.0"
-      #   - name: LISTEN_PORT
-      #     value: "8080,8443"
-      #   - name: REMOTE_HOST
-      #     value: "traefik.network.svc.cluster.local"
-      #   # - name: REMOTE_PORT
-      #   #   value: "8443"
-      #   - name: DIAL_TIMEOUT
-      #     value: "4"
-      #   imagePullPolicy: Always
-      #   ports:
-      #   - containerPort: 8080
-      #     hostPort: 80
-      #   - containerPort: 8443
-      #     hostPort: 443
-      #   resources:
-      #     limits:
-      #       cpu: 500m
-      #       memory: 512Mi
-      #     requests:
-      #       cpu: 1m
-      #       memory: 1Mi
-      #   securityContext:
-      #     # runAsGroup: 1000
-      #     runAsUser: 0
-      #     privileged: true
+      - name: net-forwarder-traefik-ingress
+        image: bornav/tcpforwarder:v0.3
+        # command: ["/bin/sh"]  # Override the entrypoint
+        # args: ["-c", "sleep 9999" ] 
+        env:
+        - name: LISTEN_HOST
+          value: "0.0.0.0"
+        - name: LISTEN_PORT
+          value: "8080,8443"
+        - name: REMOTE_HOST
+          value: "traefik.network.svc.cluster.local"
+        # - name: REMOTE_PORT
+        #   value: "8443"
+        - name: DIAL_TIMEOUT
+          value: "4"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          hostPort: 80
+        - containerPort: 8443
+          hostPort: 443
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          # runAsGroup: 1000
+          runAsUser: 0
+          privileged: true
       - name: net-forwarder-nginx-ingress
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
         image: bornav/tcpforwarder:v0.3

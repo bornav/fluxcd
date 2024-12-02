@@ -34,8 +34,8 @@ spec:
       - "--api.insecure=true"
     deployment:
       enabled: true
-      kind: DaemonSet
-      # kind: Deployment
+      # kind: DaemonSet
+      kind: Deployment
       replicas: 3
       terminationGracePeriodSeconds: 10
       minReadySeconds: 2
