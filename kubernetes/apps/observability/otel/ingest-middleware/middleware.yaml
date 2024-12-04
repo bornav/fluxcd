@@ -1,0 +1,42 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+    name: otel-col-bearer-token
+spec:
+    plugin:
+        traefik-api-key-auth:
+            authenticationHeader: ENC[AES256_GCM,data:UIGnsQ==,iv:2M4yregRFSzloEbValvtzjdNgJQkwcpLNmnWYFijYyQ=,tag:dn4Ot5Zc+uoqTs0FhQlXmQ==,type:bool]
+            authenticationHeaderName: ENC[AES256_GCM,data:ANWR2+SwlGXd,iv:bgOFSeSnxkGkbEpcqLTrExeQIJf3q8vY9zU+8OOHghg=,tag:ngDtoNs1Wi7wRUZUKR5jdw==,type:str]
+            bearerHeader: ENC[AES256_GCM,data:g1PySA==,iv:U+SSJauep1ex7dOE7SDwPB1eonYkCGysGzJOK/mNFyY=,tag:6R5E+odT4wVPpddDAmHO7Q==,type:bool]
+            bearerHeaderName: ENC[AES256_GCM,data:8ficHAmdB9sNSbx2aA==,iv:26H8KerHFh0fPJjopKTw+L8IC9SbYG/+bHnPog2TV4k=,tag:cwgK1ZVq1p+Yl/x8soZP7w==,type:str]
+            queryParam: ENC[AES256_GCM,data:8e7VLg==,iv:cSQrZopyp4KPJOcY29/nYWMnCirn96G3TMd8Mve50us=,tag:nFTVpRo6Rz9WMl87EZKmIg==,type:bool]
+            queryParamName: ENC[AES256_GCM,data:rjrXtDk=,iv:MPxqSIXeYkDlcP3IJaQmu97j/Y7/KoOJBHU5LOEFctI=,tag:FZzqdgzesdzlxYo7SGqeFA==,type:str]
+            pathSegment: ENC[AES256_GCM,data:n4sa7w==,iv:cu4aioOmX4iP+X8oV2zFUpCZpxpqZKFVxfEvGXbUkKY=,tag:KOZ9n2Ih1oOU2H62BZ1NJw==,type:bool]
+            permissiveMode: ENC[AES256_GCM,data:xzvKbN8=,iv:KOS0gzxMEFyMWdRyjFSmJsYFJUtQarXbf67nc5bEedA=,tag:F7PeCYe3hP4ejLLVdJa2zg==,type:bool]
+            removeHeadersOnSuccess: ENC[AES256_GCM,data:tJ2uZQ==,iv:i3FAuZSnmZ0LocsX8qPluiyCVAr3ZuHzpQ4TdUqTLJs=,tag:mZqE8JVNBrrEcmmRp+YG8w==,type:bool]
+            internalForwardHeaderName: ""
+            internalErrorRoute: ""
+            keys:
+                - ENC[AES256_GCM,data:s/2NRJOFdk01+oh3qBiCHYl9sbbcTfDV67s6VAC47xsPuDZ0nYBcr9kafFwGbk8b39mPhA==,iv:Aa3iFutRDQWmVjqwwnk1r2C5N77PPjPqbCns2h6nAfg=,tag:K9g/nFNmFOpM7wKaItqY2Q==,type:str]
+#     apiKey:
+#       secretParam: test-apikey-secret
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsdktIeXZoblBzc0NuWFJ6
+            VHJPUHFKeXdhYWZuUXdNMC9nOFFjYjF6VkdnCmFzSytVZFJ5N2J3dXFRR2VsQ2ti
+            Z2dFLzVkajEvSGdIbTROOG1JckNvMDAKLS0tIEozQ00rcEE3THJzb1V5WnR3Q3Qw
+            VE9leXYya1c2SVF2KzNYQmhHNXRFOGMKR0wnWsggbE5DqzYpJrqFXVJgMb3mZXP3
+            At0Pc95jnPWZ7TKOwYYbIO2nckyMno3R0aoKv75xFaLfkeGypTttIA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-12-04T12:40:47Z"
+    mac: ENC[AES256_GCM,data:UMFcQF4akK/CzQq1esTaABTBRQA5GYvYT0qUg2pRqzXuGPOQmAqfiAu6/pguu0wwckEEV+k/J2czfsgdYPuknhJjqFBLqu+zHmR6Xawsj3af1V8iVLUprFk9hN5UCYhyvH2hBwZ1EdwxqfA1aus7j/8udU7h8SItEfCKVfqL6rA=,iv:NTZ+BhMybWboH+n/y40CY79Ap8fKMu/rLewl63ASA/o=,tag:zZJfw+Zjb3rf1K0qZpqxoA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData|spec)$
+    version: 3.9.1
