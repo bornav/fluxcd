@@ -31,10 +31,10 @@ spec:
     crds:
       enabled: true
     defaultRules:
-      create: true   #this creates alert manager rules
+      create: false   #this creates alert manager rules
       rules:
         alertmanager:                       true
-        etcd:                               true
+        etcd:                               false
         configReloaders:                    true
         general:                            true
         k8sContainerCpuUsageSecondsTotal:   true
