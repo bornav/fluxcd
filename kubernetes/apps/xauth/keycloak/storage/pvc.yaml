@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/name: postgresql
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: longhorn-storage
+  storageClassName: longhorn-storage-im
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
