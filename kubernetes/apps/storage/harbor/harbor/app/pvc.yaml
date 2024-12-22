@@ -6,7 +6,7 @@ metadata:
   labels:
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: longhorn-storage-im
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
