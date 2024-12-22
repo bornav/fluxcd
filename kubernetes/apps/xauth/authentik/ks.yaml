@@ -6,7 +6,7 @@ metadata:
   name: authentik-base
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/network/auth/authentik/base
+  path: ./kubernetes/apps/xauth/authentik/base
   suspend: true
   prune: true
   sourceRef:
