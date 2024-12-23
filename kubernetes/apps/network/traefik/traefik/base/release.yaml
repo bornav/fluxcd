@@ -40,14 +40,9 @@ spec:
       minReadySeconds: 2
       podLabels:
         nat-policy: "enabled"
-    resources:
-      requests:
-        memory: '1Mi'
-        cpu: '1m'
-      limits:
-        memory: '6Gi'
-        cpu: '3000m'
-    # ports:
+    ports:
+      traefik:
+        port: 8001
     #   web:
     #     port: 8000
     #     redirectTo:
@@ -59,6 +54,19 @@ spec:
     #       enabled: true
     #     http3:
     #       enabled: true
+    gateway:
+      listeners:
+        web:
+          namespacePolicy: All
+        websecure:
+          port: 8443
+          hostname: "*.icylair.com"
+          protocol: HTTPS
+          namespacePolicy: All
+          certificateRefs: 
+            - kind: Secret
+              # group: ""
+              name: "icylair-com-all-prod"
     service:
       single: true
       spec:
@@ -163,11 +171,13 @@ spec:
         enabled: true
         ingressClass: *ingress-class-name 
         allowExternalNameServices: true
+      kubernetesGateway:
+        enabled: true
       kubernetesIngress:
         enabled: true
         allowExternalNameServices: true
-        publishedService:
-          enabled: false
+        # publishedService:
+        #   enabled: false
       file:
         # -- Create a file provider
         enabled: true
@@ -198,12 +208,15 @@ spec:
     # #   externalIPs: []
     logs:
       general:
-        # -- By default, the logs use a text format (common), but you can
-        # also ask for the json format in the format option
-        # format: json
-        # By default, the level is set to ERROR.
-        # -- Alternative logging levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
-        level: INFO
+        # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
+        level: DEBUG
+    resources:
+      requests:
+        memory: '1Mi'
+        cpu: '1m'
+      limits:
+        memory: '6Gi'
+        cpu: '3000m'
     tracing:
       otlp:
         enabled: true
