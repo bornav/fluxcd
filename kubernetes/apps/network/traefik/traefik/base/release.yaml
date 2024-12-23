@@ -30,7 +30,6 @@ spec:
       - '--global.checknewversion=false'
     additionalArguments:
       - '--serversTransport.insecureSkipVerify=true'
-      - '--log.level=INFO'
       - "--api.insecure=true"
     deployment:
       enabled: true
@@ -48,43 +47,18 @@ spec:
       limits:
         memory: '6Gi'
         cpu: '3000m'
-    ports:
-      # udp:
-      #   port: 9988
-      #   # exposedPort: 9987
-      #   # hostPort: 9987
-      #   protocol: "UDP"
-      # tcp:
-      #   port: 9987
-      #   # exposedPort: 9987
-      #   # hostPort: 9987
-      #   protocol: "TCP"
-      #   # expose: true
-      web:
-        # expose:
-        #   default: false
-        # hostPort: 80
-        port: 8000
-        # containerPort: 8080
-        # exposedPort: 8080
-        redirectTo:
-          port: websecure
-      websecure:
-        # expose:
-        #   default: false
-        # hostPort: 443
-        port: 8443
-        # containerPort: 8443
-        # expose: 
-          # default: true
-        # expose: true
-        exposedPort: 8443
-        # hostPort: 443
-        # nodePort: 42443
-        tls:
-          enabled: true
-        http3:
-          enabled: true
+    # ports:
+    #   web:
+    #     port: 8000
+    #     redirectTo:
+    #       port: websecure
+    #   websecure:
+    #     port: 8443
+    #     exposedPort: 8443
+    #     tls:
+    #       enabled: true
+    #     http3:
+    #       enabled: true
     service:
       single: true
       spec:
