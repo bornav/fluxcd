@@ -57,5 +57,5 @@ spec:
     copyMethod: Snapshot
     capacity: 4Gi
     enableFileDeletion: true
-    cleanupCachePVC: true
+    cleanupCachePVC: false
     cleanupTempPVC: true

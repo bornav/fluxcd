@@ -78,5 +78,5 @@ spec:
     capacity: 1Gi
     # previous: 2
     enableFileDeletion: true
-    cleanupCachePVC: true
+    cleanupCachePVC: false
     cleanupTempPVC: true

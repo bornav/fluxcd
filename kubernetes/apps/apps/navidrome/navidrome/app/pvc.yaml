@@ -79,7 +79,7 @@ spec:
     # destinationPVC: pv-navidrome-data
     capacity: 5Gi
     enableFileDeletion: true
-    cleanupCachePVC: true
+    cleanupCachePVC: false
     cleanupTempPVC: true
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json

@@ -32,7 +32,7 @@ spec:
     capacity: 3Gi
     # previous: 2
     enableFileDeletion: true
-    cleanupCachePVC: true
+    cleanupCachePVC: false
     cleanupTempPVC: true
 # ---
 # apiVersion: v1
