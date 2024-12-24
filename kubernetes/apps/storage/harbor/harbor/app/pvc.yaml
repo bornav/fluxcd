@@ -31,6 +31,9 @@ spec:
     copyMethod: Snapshot
     capacity: 3Gi
     # previous: 2
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim

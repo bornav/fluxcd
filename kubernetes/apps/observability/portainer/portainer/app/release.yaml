@@ -75,3 +75,6 @@ spec:
     copyMethod: Snapshot
     # destinationPVC: pv-portainer-data
     capacity: 2Gi
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true

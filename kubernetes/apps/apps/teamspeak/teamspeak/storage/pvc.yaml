@@ -33,3 +33,6 @@ spec:
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 1Gi
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true
