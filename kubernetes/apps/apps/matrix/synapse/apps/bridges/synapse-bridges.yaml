@@ -71,7 +71,7 @@ spec:
             - sh
             - -c
             - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && ./docker-run.sh
-          image: dock.mau.dev/mautrix/whatsapp:v0.10.9
+          image: dock.mau.dev/mautrix/whatsapp:v0.11.2
           name: mautrix-bridge-whatsapp
           resources:
             requests:
