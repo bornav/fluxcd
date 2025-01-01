@@ -59,11 +59,11 @@ spec:
     ingress:
       enabled: true
       ingressClassName: traefik-external
-      hostname: keycloak.cloud.icylair.com
+      hostname: sso.icylair.com
       extraHosts:
-        - name: keycloak.icylair.com
+        - name: keycloak.cloud.icylair.com 
           path: /
-        - name: sso.icylair.com
+        - name: keycloak.icylair.com
           path: /
       tls: true
       extraTls:
