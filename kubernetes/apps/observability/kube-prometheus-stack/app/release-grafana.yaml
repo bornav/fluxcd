@@ -52,9 +52,9 @@ spec:
         email_attribute_path: email
         login_attribute_path: username
         name_attribute_path: full_name
-        auth_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/auth
-        token_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/token
-        api_url: https://keycloak.cloud.icylair.com/realms/master/protocol/openid-connect/userinfo
+        auth_url: https://sso.icylair.com/realms/master/protocol/openid-connect/auth
+        token_url: https://sso.icylair.com/realms/master/protocol/openid-connect/token
+        api_url: https://sso.icylair.com/realms/master/protocol/openid-connect/userinfo
         role_attribute_path: contains(realm_access.roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(realm_access.roles[*], 'admin') && 'Admin' || contains(realm_access.roles[*], 'editor') && 'Editor' || 'Viewer'
         allow_assign_grafana_admin: true
         auto_login: true

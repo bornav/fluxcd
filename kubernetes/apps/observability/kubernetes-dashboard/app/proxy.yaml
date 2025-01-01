@@ -25,7 +25,7 @@ spec:
         name: kubernetes-dashboard-proxy
         args:
           - --listen=0.0.0.0:3000
-          - --discovery-url=https://keycloak.cloud.icylair.com/realms/master
+          - --discovery-url=https://sso.icylair.com/realms/master
           - --client-id=kubernetes
           - --client-secret=
           - --redirection-url=https://kubernetes-dashboard.cloud.icylair.com
