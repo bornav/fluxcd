@@ -1,12 +1,3 @@
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: longhorn-nixos-path
-  namespace: storage
-data:
-  PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin
----
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -19,7 +10,7 @@ metadata:
       Longhorn invokes executables on the host system, and needs
       to be aware of the host systems PATH. This modifies all
       deployments such that the PATH is explicitly set to support
-      NixOS based systems.
+      NixOS based systems.      
 spec:
   rules:
     - name: add-env-vars
@@ -34,12 +25,11 @@ spec:
           spec:
             initContainers:
               - (name): "*"
-                envFrom:
-                  - configMapRef:
-                      name: longhorn-nixos-path
+                env:
+                  - name: PATH
+                    value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin
             containers:
               - (name): "*"
-                envFrom:
-                  - configMapRef:
-                      name: longhorn-nixos-path
----
+                env:
+                  - name: PATH
+                    value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin

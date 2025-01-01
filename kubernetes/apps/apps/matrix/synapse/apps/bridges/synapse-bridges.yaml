@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mautrix-bridge-facebook
+  labels:
+    app: mautrix-bridge-facebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mautrix-bridge-facebook
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.network/dockerfile-default: 'true'
+        app: mautrix-bridge-facebook
+    spec:
+      initContainers:
+        - name: 'create-db-container-whatsapp'
+          image: 'postgres'
+          env:
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_NAME_WHATSAPP
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_NAME_WHATSAPP
+          envFrom: #we need them both since some are redefined
+            - secretRef:
+                name: synapse-database-secrets
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
+              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
+        - name: 'create-db-container-facebook'
+          image: 'postgres'
+          env:
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_NAME_FACEBOOK
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_NAME_FACEBOOK
+          envFrom: #we need them both since some are redefined
+            - secretRef:
+                name: synapse-database-secrets
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
+              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
+      containers:
+        - command:
+            - sh
+            - -c
+            - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && ./docker-run.sh
+          image: dock.mau.dev/mautrix/whatsapp:v0.10.9
+          name: mautrix-bridge-whatsapp
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - mountPath: /data
+              name: matrix-bridges-data
+              subPath: whatsapp
+            - mountPath: /config/config.yaml
+              name: matrix-bridge-whatsapp-config
+              subPath: config.yaml
+        - command:
+            - sh
+            - -c
+            #- sleep 8000s
+            - cp -n -p /config/config.yaml /data/config.yaml && ./docker-run.sh
+          image: dock.mau.dev/mautrix/facebook:v0.5.1
+          name: mautrix-bridge-facebook
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - mountPath: /data
+              name: matrix-bridges-data
+              subPath: facebook
+            - mountPath: /config/config.yaml
+              name: matrix-bridge-facebook-config
+              subPath: config.yaml
+      restartPolicy: Always
+      volumes:
+        - name: matrix-bridges-data
+          persistentVolumeClaim:
+            claimName: matrix-bridges-data
+        - name: matrix-bridge-facebook-config
+          configMap:
+            name: matrix-bridge-facebook-config
+        - name: matrix-bridge-whatsapp-config
+          configMap:
+            name: matrix-bridge-whatsapp-config
+status: {}

@@ -1,0 +1,37 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rancher
+spec:
+  interval: 60m
+  chart:
+    spec:
+      chart: rancher
+      version: v2.9.2
+      sourceRef:
+        kind: HelmRepository
+        name: rancher
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    bootstrapPassword: "changeme"
+    hostname: rancher.cloud.icylair.com
+    ingress:
+      enabled: true
+      extraAnnotations: {}
+      ingressClassName: "traefik-external"
+      tls:
+        # options: rancher, letsEncrypt, secret
+        source: secret
+        secretName: icylair-com-all-prod

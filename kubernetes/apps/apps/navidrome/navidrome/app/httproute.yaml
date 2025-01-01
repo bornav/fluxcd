@@ -1,0 +1,79 @@
+# ---
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: HTTPRoute
+# metadata:
+#   name: navidrome-gateway
+#   namespace: apps
+# spec:
+#   parentRefs:
+#     - name: traefik-gateway
+#       namespace: network
+#   hostnames:
+#     - navidrome-test.cloud.icylair.com
+#   rules:
+#     - matches:
+#         - path:
+#             type: PathPrefix
+#             value: /
+#       backendRefs:
+#         - name: navidrome-service
+#           namespace: apps
+#           port: 4533
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: navidrome-gateway2
+  namespace: apps
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: network
+  hostnames:
+    - aaaa.cloud.icylair.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: navidrome-service
+          namespace: apps
+          port: 4533
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: forward-auth.networking.k8s.io
+            kind: ForwardAuth
+            name: network-forward-auth
+    # - filters:
+    #     - type: ExtensionRef
+    #       extensionRef:
+    #         group: traefik.io
+    #         kind: Middleware
+    #         name: forward-auth
+    # - filters:
+    #   - type: RequestRedirect
+    #     requestRedirect:
+    #       scheme: https
+# ---
+# # Allow HTTPRoute in whoami namespace to reference Gateway and Service in network namespace
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# kind: ReferenceGrant
+# metadata:
+#   name: allow-whoami-routes
+#   namespace: apps  # ReferenceGrant must be in the namespace being referenced
+# spec:
+#   from:
+#     - group: gateway.networking.k8s.io
+#       kind: HTTPRoute
+#       namespace: apps  # Source namespace containing the HTTPRoute
+#   to:
+#     # Allow references to Gateway resources
+#     - group: gateway.networking.k8s.io
+#       kind: Gateway
+#       name: traefik-gateway  # Specific Gateway name that can be referenced
+#     # Allow references to Service resources
+#     - group: ""  # Core API group
+#       kind: Service
+#       name: navidrome-service # Specific Service name that can be referenced

@@ -1,0 +1,21 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: nat-port-forward
+spec:
+  endpointSelector:
+    matchLabels:
+      nat-policy: "enabled"
+  ingress:
+    - toPorts:
+      - ports:
+        - port: "9443"
+          protocol: TCP
+  egress:
+    - toEndpoints:
+      - matchLabels:
+          nat-policy: "destination"
+      toPorts:
+      - ports:
+        - port: "8443"
+          protocol: TCP

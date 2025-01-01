@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -25,20 +26,18 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    crds:
-      enabled: true
     csi:
-      csiAddons:
-        enabled: true # Set to true when using kubernetes-csi-addons
-      # cephFSKernelMountOptions: ms_mode=secure # Set when encryption/compression is enabled
+      provisionerReplicas: 1
+    #   cephFSKernelMountOptions: ms_mode=prefer-crc
+    #   enableLiveness: true
+      serviceMonitor:
+        enabled: true
       nfs:
         enabled: true
     monitoring:
-      enabled: false
+      enabled: true
     resources:
       requests:
-        cpu: 1m
-        memory: 128Mi
-      limits:
-        memory: 512Mi
-    # scaleDownOperator: true
+        memory: 128Mi # unchangable
+        cpu: 1m # unchangable
+      limits: {}

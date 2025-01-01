@@ -76,5 +76,5 @@ spec:
     # destinationPVC: pv-portainer-data
     capacity: 2Gi
     enableFileDeletion: true
-    cleanupCachePVC: true
+    cleanupCachePVC: false
     cleanupTempPVC: true
