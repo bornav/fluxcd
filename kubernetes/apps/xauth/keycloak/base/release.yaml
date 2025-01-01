@@ -60,10 +60,17 @@ spec:
       enabled: true
       ingressClassName: traefik-external
       hostname: keycloak.cloud.icylair.com
+      extraHosts:
+        - name: keycloak.icylair.com
+          path: /
+        - name: sso.icylair.com
+          path: /
       tls: true
       extraTls:
       - hosts:
         - keycloak.cloud.icylair.com
+        - keycloak.icylair.com
+        - sso.icylair.com
         secretName: icylair-com-all-prod
     postgresql:
       # diagnosticMode: # for databse
