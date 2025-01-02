@@ -21,7 +21,7 @@ spec:
       nodeSelector:
         kubernetes.io/arch: amd64
       containers:
-      - image: quay.io/gambol99/keycloak-proxy:v2.1.1
+      - image: quay.io/gambol99/keycloak-proxy:v2.3.0
         name: kubernetes-dashboard-proxy
         args:
           - --listen=0.0.0.0:3000
