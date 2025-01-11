@@ -20,23 +20,32 @@ spec:
       labels:
         app: matrix-synapse
     spec:
+      # shareProcessNamespace: true
       initContainers:
-        # - name: 'prepare-data'
-        #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-        #   command: ["/bin/sh"]  # Override the entrypoint
-        #   args: ["-c", "/startup.sh" ]
-        #   envFrom:
-        #   - secretRef:
-        #       name: home-local-syncthing-env
-        #   securityContext:
-        #     privileged: true
-        #   volumeMounts:
-        #     - name: matrix-synapse-data
-        #       mountPath: /data
-        #     - name: prepare-data
-        #       mountPath: /startup.sh
-        #       subPath: startup.sh
-        - name: 'create-db-container-telegram'
+        - name: 'create-db-container-whatsapp'
+          image: 'postgres'
+          env:
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_NAME_WHATSAPP
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: synapse-database-secrets
+                  key: DB_USER_NAME_WHATSAPP
+          envFrom: #we need them both since some are redefined
+            - secretRef:
+                name: synapse-database-secrets
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
+              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
+        - name: 'create-db-container-synapse'
           image: postgres
           env:
             - name: DB_HOST
@@ -141,33 +150,30 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: matrix-synapse-data
-            # - mountPath: /synapse/keys
-            #   name: matrix-synapse-keys
             - mountPath: /synapse/config
               name: matrix-synapse-config
             - mountPath: /bridges
               name: matrix-bridges
-        # - name: 'sync'
-        #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
-        #   command: ["/bin/sh"]  # Override the entrypoint
-        #   args: ["-c", "./startup.sh" ]
-        #   envFrom:
-        #   - secretRef:
-        #       name: home-local-syncthing-env
-        #   resources:
-        #     requests:
-        #       memory: '1Mi'
-        #       cpu: '1m'
-        #     limits:
-        #       memory: '6Gi'
-        #   securityContext:
-        #     privileged: true
-        #   volumeMounts:
-        #     - name: matrix-synapse-data
-        #       mountPath: /data
-        #     - name: sync-oneway
-        #       mountPath: /startup.sh
-        #       subPath: startup.sh
+        - name: mautrix-bridge-whatsapp
+          command:
+            - sh
+            - -c
+            - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && /docker-run.sh
+          image: dock.mau.dev/mautrix/whatsapp:v0.11.2
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - mountPath: /data
+              name: matrix-bridges
+              subPath: whatsapp
+            - mountPath: /config/config.yaml
+              name: matrix-bridge-whatsapp-config
+              subPath: config.yaml
       restartPolicy: Always
       securityContext:
         fsGroup: 0
@@ -197,4 +203,8 @@ spec:
           secret:
             secretName: prepare-data
             defaultMode: 0777
+        - name: matrix-bridge-whatsapp-config
+          configMap:
+            name: matrix-bridge-whatsapp-config
+status: {}
 #to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icylair.com/_matrix/client/v3/login"

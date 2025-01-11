@@ -8,3 +8,5 @@ resources:
   - service.yaml
   - ingress.yaml
   - secrets.yaml
+  - whatsapp-config.yaml
+  - whatsapp-service.yaml
