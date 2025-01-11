@@ -75,7 +75,6 @@ spec:
     storageClassName: longhorn-storage-rwm
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
-    cleanupTempPVC: true
     # destinationPVC: pv-navidrome-data
     capacity: 5Gi
     enableFileDeletion: true
