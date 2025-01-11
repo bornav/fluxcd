@@ -32,28 +32,6 @@ spec:
     requests:
       storage: 100Mi
 status: {}
-# ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name:  matrix-synapse-data-backup
-# spec:
-#   sourcePVC: matrix-synapse-data
-#   trigger:
-#     schedule: "*/13 * * * *"
-#   restic:
-#     pruneIntervalDays: 1
-#     repository: restic-matrix-synapse-data
-#     retain:
-#       hourly: 5
-#       daily: 4
-#       weekly: 3
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn-storage
-#     unlock: "something"
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
@@ -69,42 +47,6 @@ spec:
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 6Gi
-    enableFileDeletion: true
-    cleanupCachePVC: false
-    cleanupTempPVC: true
-# ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name:  matrix-bridges-data-backup
-# spec:
-#   sourcePVC: matrix-bridges-data
-#   trigger:
-#     schedule: "*/35 * * * *"
-#   restic:
-#     pruneIntervalDays: 1
-#     repository: restic-matrix-bridges-data
-#     retain:
-#       hourly: 6
-#       daily: 5
-#       weekly: 4
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn-storage-rwm
-#     unlock: "something"
-# ---
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationDestination
-# metadata:
-#   name: matrix-bridges-data-restore
-# spec:
-#   trigger:
-#     manual: restore-once
-#   restic:
-#     repository: restic-matrix-bridges-data
-#     storageClassName: longhorn-storage-rwm
-#     accessModes: ["ReadWriteMany"]
-#     copyMethod: Snapshot
-#     capacity: 100Mi
+    # enableFileDeletion: true
+    # cleanupCachePVC: false
+    # cleanupTempPVC: true
