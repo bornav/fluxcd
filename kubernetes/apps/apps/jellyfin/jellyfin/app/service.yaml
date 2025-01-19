@@ -8,5 +8,7 @@ spec:
   externalName: wireguard.network.svc.cluster.local
   ports:
     - name: http
-      targetPort: 8097
-      port: 8097
+      targetPort: 443
+      port: 443
+      # targetPort: 8097
+      # port: 8097

@@ -23,7 +23,7 @@ spec:
               service:
                 name: jellyfin-service
                 port:
-                  number: 8097
+                  number: 443
     - host: &host jelly.cloud.icylair.com
       http:
         paths:
@@ -33,7 +33,7 @@ spec:
               service:
                 name: jellyfin-service
                 port:
-                  number: 8097
+                  number: 443
   tls:
   - hosts:
       - jelly.icylair.com
@@ -64,7 +64,7 @@ spec:
               service:
                 name: jellyfin-service
                 port:
-                  number: 8097
+                  number: 443
   tls:
   - hosts:
       - jellyfin.icylair.com
