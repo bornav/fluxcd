@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: &namespace kube-system
+resources:
+  # - namespace.yaml
+  - cilium_config.yaml
+helmCharts:
+  - name: cilium
+    repo: https://helm.cilium.io/
+    releaseName: cilium
+    namespace: *namespace
+    valuesFile: cilium_values_nixos.yaml
+    version: 1.16.5
+    includeCRDs: true
