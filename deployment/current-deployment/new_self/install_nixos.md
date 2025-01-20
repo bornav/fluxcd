@@ -17,5 +17,5 @@ kubectl apply -f cilium_config.yaml
 
 
 
-## add snapshot controller task
+## add snapshot controller task  not needed for rke2 
 kubectl apply -f snapshot_controller/snapshot_controller.yaml

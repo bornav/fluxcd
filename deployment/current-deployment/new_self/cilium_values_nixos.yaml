@@ -19,6 +19,15 @@ kubeProxyReplacement: "true"
 bpf:
   masquerade: true
   lbExternalClusterIP: true
+  
+#clustermesh related
+cluster:
+  name: cluster-prod-01
+  id: 10
+clustermesh:
+  useAPIServer: true
+
+
 
 # # dont thnk i need this
 # bgpControlPlane:
