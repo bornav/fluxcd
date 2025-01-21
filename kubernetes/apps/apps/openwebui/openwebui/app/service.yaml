@@ -1,12 +1,29 @@
 ---
-apiVersion: v1
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: openwebui-service
+# spec:
+#   type: ExternalName
+#   externalName: wireguard.network.svc.cluster.local
+#   ports:
+#     - name: https
+#       targetPort: 443
+#       port: 443
+---
 kind: Service
+apiVersion: v1
 metadata:
-  name: openwebui-service
+  name: &name open-webui
+  labels:
+    service-type: ingress
+  annotations:
+    service.cilium.io/global: "true"
+    service.cilium.io/shared: "true"
 spec:
-  type: ExternalName
-  externalName: wireguard.network.svc.cluster.local
+  type: LoadBalancer
+  selector:
+    app: ai-stack
   ports:
-    - name: https
-      targetPort: 443
-      port: 443
+    - port: 8080
+      name: *name

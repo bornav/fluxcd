@@ -22,9 +22,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: openwebui-service
+                name: open-webui
                 port:
-                  number: 443
+                  number: 8080
     - host: &host openwebui.cloud.icylair.com
       http:
         paths:
@@ -32,9 +32,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: openwebui-service
+                name: open-webui
                 port:
-                  number: 443
+                  number: 8080
   tls:
   - hosts:
       - openwebui.icylair.com
