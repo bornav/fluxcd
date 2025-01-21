@@ -25,4 +25,4 @@ kubectl apply -f snapshot_controller/snapshot_controller.yaml
 
 ## or use kustomization
 
-kustomize build . --enable-helm | ka -f -
+kustomize build . --enable-helm | ka -f - ##no
