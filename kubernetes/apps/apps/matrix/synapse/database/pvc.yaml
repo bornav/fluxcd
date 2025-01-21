@@ -35,4 +35,4 @@ spec:
     capacity: 3Gi
     enableFileDeletion: true
     cleanupCachePVC: false
-    cleanupTempPVC: true
+    cleanupTempPVC: false

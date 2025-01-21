@@ -79,4 +79,4 @@ spec:
     # previous: 2
     enableFileDeletion: true
     cleanupCachePVC: false
-    cleanupTempPVC: true
+    cleanupTempPVC: false

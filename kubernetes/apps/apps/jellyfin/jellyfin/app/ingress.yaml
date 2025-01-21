@@ -21,9 +21,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: jellyfin-service
+                name: jellyfin-tcp
                 port:
-                  number: 443
+                  number: 8096
     - host: &host jelly.cloud.icylair.com
       http:
         paths:
@@ -31,9 +31,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: jellyfin-service
+                name: jellyfin-tcp
                 port:
-                  number: 443
+                  number: 8096
   tls:
   - hosts:
       - jelly.icylair.com
@@ -64,7 +64,7 @@ spec:
               service:
                 name: jellyfin-tcp
                 port:
-                  number: 443
+                  number: 8096
   tls:
   - hosts:
       - jellyfin.icylair.com

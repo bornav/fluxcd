@@ -22,12 +22,12 @@ metadata:
   annotations:
     # external-dns.alpha.kubernetes.io/hostname: jellyfin-tcp.internal
     service.cilium.io/global: "true"
-    # service.cilium.io/shared: "true"
+    service.cilium.io/shared: "true"
 spec:
   selector:
     app: jellyfin
   ports:
-  - port: 443             # < port to open on the outside on the server
+  - port: 8096             # < port to open on the outside on the server
     targetPort: 8096       # < targetport. port on the pod to passthrough
     name: http-tcp         # < reference name for the port in the deployment yaml
     protocol: TCP
