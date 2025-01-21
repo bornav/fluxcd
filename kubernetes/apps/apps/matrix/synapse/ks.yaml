@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: longhorn-system-base
+    - name: rook-ceph-cluster
     - name: volsync
   path: ./kubernetes/apps/apps/matrix/synapse/database
   prune: true

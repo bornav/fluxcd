@@ -7,7 +7,7 @@ metadata:
 spec:
   dependsOn:
   - name: traefik-base
-  - name: longhorn-system-base
+  - name: rook-ceph-cluster
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   prune: true
   suspend: true

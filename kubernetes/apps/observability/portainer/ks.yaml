@@ -10,7 +10,7 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: longhorn-system-base
+    - name: rook-ceph-cluster
     - name: harbor-backups
     - name: volsync
   prune: true
@@ -36,7 +36,7 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: longhorn-system-base
+    - name: rook-ceph-cluster
     - name: volsync
     - name: portainer-app
   prune: true
