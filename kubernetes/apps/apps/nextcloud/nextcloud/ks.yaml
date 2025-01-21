@@ -30,7 +30,7 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: rook-ceph-cluster
+    - name: longhorn-system-base
     - name: volsync
   path: ./kubernetes/apps/apps/nextcloud/nextcloud/storage
   prune: true

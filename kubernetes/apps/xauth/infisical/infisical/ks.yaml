@@ -10,7 +10,7 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: rook-ceph-cluster
+    - name: longhorn-system-base
     - name: volsync
     - name: infisical-storage
   suspend: false
@@ -38,7 +38,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/xauth/infisical/infisical/storage
   dependsOn:
-    - name: rook-ceph-cluster
+    - name: longhorn-system-base
     - name: volsync
   suspend: false
   prune: true
@@ -63,7 +63,7 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: rook-ceph-cluster
+    - name: longhorn-system-base
     - name: volsync
     - name: infisical-storage
     - name: infisical-release

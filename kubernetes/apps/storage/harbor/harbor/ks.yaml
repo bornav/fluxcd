@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/storage/harbor/harbor/app
   dependsOn:
     - name: traefik-base
-    - name: rook-ceph-cluster
+    - name: longhorn-system-base
     - name: volsync
   prune: true
   suspend: false
