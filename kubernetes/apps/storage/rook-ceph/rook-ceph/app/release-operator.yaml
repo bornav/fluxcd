@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph
-      version: v1.16.1
+      version: v1.16.2
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -29,38 +29,13 @@ spec:
     csi:
       provisionerReplicas: 1
     #   cephFSKernelMountOptions: ms_mode=prefer-crc
-      enableLiveness: true
+    #   enableLiveness: true
       serviceMonitor:
         enabled: true
       nfs:
-        enabled: false
-      csiRBDPluginVolume:
-        - name: lib-modules
-          hostPath:
-            path: /run/booted-system/kernel-modules/lib/modules/
-        - name: host-nix
-          hostPath:
-            path: /nix
-      # -- The volume mounts of the CephCSI RBD plugin DaemonSet
-      csiRBDPluginVolumeMount:
-        - name: host-nix
-          mountPath: /nix
-          readOnly: true
-      # -- The volume of the CephCSI CephFS plugin DaemonSet
-      csiCephFSPluginVolume:
-        - name: lib-modules
-          hostPath:
-            path: /run/booted-system/kernel-modules/lib/modules/
-        - name: host-nix
-          hostPath:
-            path: /nix
-      # -- The volume mounts of the CephCSI CephFS plugin DaemonSet
-      csiCephFSPluginVolumeMount:
-        - name: host-nix
-          mountPath: /nix
-          readOnly: true
+        enabled: true
     monitoring:
-      enabled: false
+      enabled: true
     resources:
       requests:
         memory: 128Mi # unchangable
