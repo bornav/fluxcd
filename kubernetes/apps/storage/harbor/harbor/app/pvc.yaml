@@ -6,7 +6,7 @@ metadata:
   labels:
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: ceph-block 
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -26,7 +26,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-harbor-data
-    storageClassName: ceph-block 
+    storageClassName: longhorn-storage
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 3Gi

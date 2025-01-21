@@ -9,7 +9,7 @@ metadata:
     numberOfReplicas: '2'
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: ceph-block
+  storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -29,7 +29,7 @@ spec:
     manual: restore-once
   restic:
     repository: restic-teamspeak
-    storageClassName: ceph-block
+    storageClassName: longhorn-storage
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 1Gi

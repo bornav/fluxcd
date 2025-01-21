@@ -18,7 +18,7 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    storageClassName: ceph-block 
+    storageClassName: longhorn-backup
     unlock: "something"
 # ---
 # # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
