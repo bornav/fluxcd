@@ -22,7 +22,7 @@ metadata:
   annotations:
     # external-dns.alpha.kubernetes.io/hostname: jellyfin-tcp.internal
     service.cilium.io/global: "true"
-    service.cilium.io/shared: "true"
+    # service.cilium.io/shared: "true"
 spec:
   selector:
     app: jellyfin
