@@ -5,6 +5,7 @@ operator:
   # replicas: 1  # Uncomment this if you only have one node
   rollOutPods: true
 # devices: "wg1" ?
+kubeConfigPath: "/etc/rancher/rke2/rke2.yaml"
 k8sServiceHost: "127.0.0.1" #### both neccesary if kubeproxy is missing
 k8sServicePort: "6443"      ####
 ipam:
