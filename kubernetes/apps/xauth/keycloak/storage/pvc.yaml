@@ -29,7 +29,7 @@ metadata:
     app.kubernetes.io/name: postgresql
 spec:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: ceph-block 
+  storageClassName: longhorn-storage-im
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -72,7 +72,7 @@ spec:
   restic:
     repository: restic-keycloak-data
     # storageClassName: longhorn-storage-rwm
-    storageClassName: ceph-block
+    storageClassName: longhorn-storage-im
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 1Gi
