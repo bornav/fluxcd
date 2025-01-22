@@ -8,7 +8,7 @@ resources:
 - release-grafana.yaml
 - release-loki.yaml
 - release-tempo.yaml
-- prometheusrule.yaml
+# - prometheusrule.yaml
 # - release-beyla.yaml
 
 # - release-alertmanager.yaml
