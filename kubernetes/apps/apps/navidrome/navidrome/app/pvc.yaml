@@ -79,7 +79,7 @@ spec:
     capacity: 5Gi
     enableFileDeletion: true
     cleanupCachePVC: false
-    cleanupTempPVC: true
+    cleanupTempPVC: false
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1
