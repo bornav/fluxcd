@@ -77,4 +77,4 @@ spec:
     capacity: 2Gi
     enableFileDeletion: true
     cleanupCachePVC: false
-    cleanupTempPVC: true
+    cleanupTempPVC: false
