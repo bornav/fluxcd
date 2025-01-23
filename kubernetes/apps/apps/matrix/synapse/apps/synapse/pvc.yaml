@@ -49,4 +49,4 @@ spec:
     capacity: 6Gi
     # enableFileDeletion: true
     # cleanupCachePVC: false
-    # cleanupTempPVC: true
+    # cleanupTempPVC: false

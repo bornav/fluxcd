@@ -58,4 +58,4 @@ spec:
     capacity: 4Gi
     enableFileDeletion: true
     cleanupCachePVC: false
-    cleanupTempPVC: true
+    cleanupTempPVC: false
