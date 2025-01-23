@@ -30,6 +30,8 @@ spec:
       backupstorePollInterval: 15
       taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
     global:
+      nodeSelector:
+        storage: "longhorn"
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: "Equal"
