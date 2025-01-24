@@ -9,8 +9,6 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-    - name: longhorn-system-base
-    - name: volsync
   path: ./kubernetes/apps/observability/kubernetes-dashboard/app
   prune: true
   suspend: true
