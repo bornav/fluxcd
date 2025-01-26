@@ -21,6 +21,7 @@ metadata:
     service-type: ingress
   annotations:
     # external-dns.alpha.kubernetes.io/hostname: jellyfin-tcp.internal
+    service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
     # service.cilium.io/shared: "true"
 spec:
