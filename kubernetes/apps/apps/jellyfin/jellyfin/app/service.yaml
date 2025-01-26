@@ -23,6 +23,7 @@ metadata:
     # external-dns.alpha.kubernetes.io/hostname: jellyfin-tcp.internal
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
     # service.cilium.io/shared: "true"
 spec:
   selector:
@@ -43,5 +44,4 @@ spec:
     targetPort: 7359
     name: discovery-udp
     protocol: UDP
-  # type: LoadBalancer
   # loadBalancerIP: None
