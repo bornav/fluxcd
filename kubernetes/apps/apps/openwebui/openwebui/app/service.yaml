@@ -18,11 +18,9 @@ metadata:
   labels:
     service-type: ingress
   annotations:
-    service.cilium.io/global: "true"
     service.cilium.io/affinity: "remote"
-    # service.cilium.io/shared: "true"
-    # io.cilium/global-service: "true"
-    # service.cilium.io/global-sync-endpoint-slices: "true"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
 spec:
   type: LoadBalancer
   selector:
