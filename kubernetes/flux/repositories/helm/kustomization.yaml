@@ -39,3 +39,4 @@ resources:
   - ./openebs.yaml
   - ./rancher.yaml
   - ./it-tools.yaml
+  - ./hashicorp.yaml
