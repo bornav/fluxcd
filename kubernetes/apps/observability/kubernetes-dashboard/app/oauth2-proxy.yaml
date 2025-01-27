@@ -51,9 +51,9 @@ kind: Ingress
 metadata:
   name: oauth2-proxy
 spec:
-  ingressClassName: nginx-external
+  ingressClassName: traefik-external
   rules:
-  - host: &host kubernetes-dashboard.local.icylair.com
+  - host: &host kubernetes-dashboard.cloud.icylair.com
     http:
       paths:
       - path: /oauth2

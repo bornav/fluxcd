@@ -11,7 +11,7 @@ spec:
     - name: traefik-addons
   path: ./kubernetes/apps/observability/kubernetes-dashboard/app
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
