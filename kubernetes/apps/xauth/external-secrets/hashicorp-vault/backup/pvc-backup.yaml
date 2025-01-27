@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  kubernetes/apps/apps/matrix/synapse/backup-data-backup
+spec:
+  sourcePVC: kubernetes/apps/apps/matrix/synapse/backup-data
+  trigger:
+    schedule: "*/13 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-kubernetes/apps/apps/matrix/synapse/backup-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name:  kubernetes/apps/apps/matrix/synapse/backup-data-backup
+spec:
+  sourcePVC: kubernetes/apps/apps/matrix/synapse/backup-data
+  trigger:
+    schedule: "*/16 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-kubernetes/apps/apps/matrix/synapse/backup-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"
