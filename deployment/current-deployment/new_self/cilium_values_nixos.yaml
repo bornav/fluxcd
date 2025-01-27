@@ -27,9 +27,9 @@ cluster:
   id: 10
 clustermesh:
   useAPIServer: true
-  apiserver:
-    service:
-      type: LoadBalancer
+  # apiserver:
+  #   service:
+  #     type: LoadBalancer # this breaks
 
 
 
