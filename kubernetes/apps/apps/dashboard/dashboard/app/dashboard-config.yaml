@@ -74,6 +74,9 @@ data:
         - Harbor:
             icon: harbor.png
             href: https://harbor.icylair.com
+        - Hashicorp-vault:
+            icon: hashicorp-vault.png
+            href: https://hashicorp-vault.icylair.com
         # - Netmaker:
         #     icon: netmaker.png
         #     href: https://dashboard.netmaker.cloud.icylair.com

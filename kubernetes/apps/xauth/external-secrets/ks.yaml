@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets-base
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/external-secrets/external-secrets/app
+  dependsOn:
+    - name: longhorn-system-base
+    - name: volsync
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets-vault
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/external-secrets/hashicorp-vault/app
+  dependsOn:
+    - name: longhorn-system-base
+    - name: volsync
+    - name: external-secrets-base
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets-vault-store
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/external-secrets/hashicorp-vault/store
+  dependsOn:
+    - name: longhorn-system-base
+    - name: volsync
+    - name: external-secrets-base
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-secrets-vault-backup
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/xauth/external-secrets/hashicorp-vault/backup
+  dependsOn:
+    - name: longhorn-system-base
+    - name: volsync
+    - name: external-secrets-base
+    - name: external-secrets-vault
+    - name: external-secrets-vault-store
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
