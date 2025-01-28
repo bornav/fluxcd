@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: matrix-synapse-data
   trigger:
-    schedule: "*/13 * * * *"
+    schedule: "*/23 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-matrix-synapse-data
@@ -29,7 +29,7 @@ metadata:
 spec:
   sourcePVC: matrix-database-data
   trigger:
-    schedule: "*/16 * * * *"
+    schedule: "*/26 * * * *"
   restic:
     pruneIntervalDays: 1
     repository: restic-matrix-database-data
