@@ -1,0 +1,104 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app harbor-remote-access
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik-external
+  rules:
+    - host: &host harbor.icylair.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /api/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /service/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /v2/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /c/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-portal
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    # - host: &host2 harbor.cloud.icylair.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: open-webui
+    #             port:
+    #               number: 8080
+  tls:
+  - hosts:
+      - *host
+      # - *host2
+    secretName: icylair-com-all-prod
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: &name harbor-core
+  labels:
+    service-type: ingress
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+spec:
+  # type: LoadBalancer
+  # selector:
+    # app: ai-stack
+  ports:
+    - name: http-web
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: &name harbor-portal
+  labels:
+    service-type: ingress
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+spec:
+  # type: LoadBalancer
+  # selector:
+    # app: ai-stack
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
