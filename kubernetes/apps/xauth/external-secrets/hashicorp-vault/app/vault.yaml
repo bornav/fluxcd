@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: vault-token
+type: Opaque
+stringData:
+    VAULT_AUTO_UNSEAL_KEY_0: ENC[AES256_GCM,data:fpmgUjF4n32+4g5VSOcKFvdPxb/f63GQk2LtUvAkE7cNhbAXvLZ4CvcLuyI=,iv:u8jOzIab+51RLhX28ZkNlNnmZsoyxXER0Mm0sFvmCzA=,tag:a9OuKj0naNZnFWZznGf79g==,type:str]
+    token: ENC[AES256_GCM,data:a8z0QITXeJATtowVwSHsTNNb3BSDM7WkSZ2UxA==,iv:6g+8cH3NQawQ4IKEOApb/7lZtCbGGlEfvkBvSujZ07Q=,tag:W++DCRZOf31zZlLfiEoNyA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4SkZiMExhbHo0Zm5tUEwx
+            NjNwWW9BaWpWaTZHVkZDeW14RitPeW1BczBBCldTNUY3QXUxUEFuUDVoSWFTRDdN
+            RWhDRkxKK204N0xkU0V6RFpTWTNqUXcKLS0tIGxWMkFWMDhpc1RYZENWRzRRQ0Rk
+            K21rUGlKVFZFSXZ6aWQ0b3hPZkNqSW8KrjTMcVfdjLtMgm0YVEo3bEMoR8vKUyYJ
+            l/8oYgZjyggjVzeWrp9AY/JWhE1g6vMjXGXDTTkoPNiRsuJ5SWpnYQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-01-30T20:40:36Z"
+    mac: ENC[AES256_GCM,data:qDiicSsAScUO0sQSFvlOEjPIdJcK98oAwGIlblvlLZBHNmKWZWxLO22TbEn11/kgYdl/JiszPOG+IK1OCHPA4KgmWWmVlTPBZqlDiK8PQX6U3V1f0sp2nn3ePjEGgF/Uy93Om4yfMQFXjAZ80PBo3rTWsZTVz1zgW98oPBOmuo8=,iv:dR7pnB1dFFeGXgjEBNX916Rusv5+QUpSZ1wqw3YqJLg=,tag:97vkyIv7WSg5LwmU8CwRLg==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.3

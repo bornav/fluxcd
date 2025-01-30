@@ -5,3 +5,4 @@ namespace: xauth
 resources:
   - release.yaml
   - secrets.yaml
+  - vault.yaml

@@ -36,17 +36,16 @@ spec:
     server:
       dataStorage:
         enabled: false
-      # extraEnvironmentVars:
-      #   VAULT_AUTO_UNSEAL_KEY_0: ${}
+      #auto unseal
       postStart:
       - /bin/sh
       - -c
       - sleep 10; vault operator unseal $VAULT_AUTO_UNSEAL_KEY_0
-
       extraSecretEnvironmentVars:
         - envName: VAULT_AUTO_UNSEAL_KEY_0
           secretName: vault-token
           secretKey: VAULT_AUTO_UNSEAL_KEY_0
+      #
       volumes:
         - name: &data-pvc vault-data
           persistentVolumeClaim:

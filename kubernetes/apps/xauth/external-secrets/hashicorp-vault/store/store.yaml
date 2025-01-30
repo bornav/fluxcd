@@ -22,31 +22,31 @@ spec:
         tokenSecretRef:
           name: "vault-token"
           key: "token"
----  # example secret
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: vault-example
-spec:
-  refreshInterval: "15s"
-  secretStoreRef:
-    name: vault-backend
-    kind: SecretStore
-  target:
-    name: example-sync
-  data:
-  - secretKey: foobar
-    remoteRef:
-      key: foo
-      property: my-value
-  # metadataPolicy to fetch all the labels in JSON format
-  - secretKey: tags
-    remoteRef:
-      metadataPolicy: Fetch
-      key: foo
-  # metadataPolicy to fetch a specific label (dev) from the source secret
-  - secretKey: developer
-    remoteRef:
-      metadataPolicy: Fetch
-      key: foo
-      property: dev
+# ---  # example secret
+# apiVersion: external-secrets.io/v1beta1
+# kind: ExternalSecret
+# metadata:
+#   name: vault-example
+# spec:
+#   refreshInterval: "15s"
+#   secretStoreRef:
+#     name: vault-backend
+#     kind: SecretStore
+#   target:
+#     name: example-sync
+#   data:
+#   - secretKey: foobar
+#     remoteRef:
+#       key: foo
+#       property: my-value
+#   # metadataPolicy to fetch all the labels in JSON format
+#   - secretKey: tags
+#     remoteRef:
+#       metadataPolicy: Fetch
+#       key: foo
+#   # metadataPolicy to fetch a specific label (dev) from the source secret
+#   - secretKey: developer
+#     remoteRef:
+#       metadataPolicy: Fetch
+#       key: foo
+#       property: dev
