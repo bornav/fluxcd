@@ -6,3 +6,4 @@ resources:
   - release.yaml
   - secrets.yaml
   - vault.yaml
+  - pushsecret.yaml
