@@ -11,7 +11,7 @@ spec:
     - name: longhorn-system-base
     - name: volsync
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -33,7 +33,7 @@ spec:
   dependsOn:
     - name: harbor
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
