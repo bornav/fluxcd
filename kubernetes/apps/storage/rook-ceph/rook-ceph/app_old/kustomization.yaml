@@ -6,5 +6,3 @@ namespace: storage
 resources:
   - ./release-operator.yaml
   - ./release-cluster.yaml
-  # - ./http-route.yaml
-  # - ./dashboard-secret.yaml

@@ -31,7 +31,7 @@ spec:
       taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
     global:
       nodeSelector:
-        storage: "longhorn"
+        storage/longhorn: "true"
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: "Equal"
