@@ -30,6 +30,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/xauth/external-secrets/hashicorp-vault/app
   dependsOn:
+    - name: traefik-base
     - name: longhorn-system-base
     - name: volsync
     - name: external-secrets-base

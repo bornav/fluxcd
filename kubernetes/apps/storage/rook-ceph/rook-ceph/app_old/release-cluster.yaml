@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.16.2
+      version: v1.16.1
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -26,25 +26,21 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    resources:
-      requests:
-        cpu: 10m
-        memory: 16Mi
     operatorNamespace: &namespace storage
     monitoring:
       enabled: false
       createPrometheusRules: false
     ingress:
       dashboard:
-        annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        # annotations:
+        #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
         ingressClassName: traefik-external
         host:
-          name: &host rook-ceph.cloud.icylair.com
+          name: rook.cloud.icylair.com
           path: /
         tls:
         - hosts:
-            - *host
+            - rook.cloud.icylair.com
           secretName: icylair-com-all-prod
     # toolbox:
     #   enabled: true
@@ -64,60 +60,6 @@ spec:
             enabled: true
       mon:
         count: 1
-
-      resources:
-        mgr:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: 2Gi
-        mon:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: 1Gi
-        osd:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: 6Gi
-        mgr-sidecar:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: 256Mi
-        prepareosd:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-        crashcollector:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: "60Mi"
-        logcollector:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: "1Gi"
-        cleanup:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: "1Gi"
-        exporter:
-          requests:
-            cpu: 5m
-            memory: 16Mi
-          limits:
-            memory: "128Mi"
       dashboard:
         enabled: true
         urlPrefix: /
@@ -133,18 +75,7 @@ spec:
     #     deviceFilter: nvme0n1
     #     config:
     #       osdsPerDevice: "1"
-    cleanupPolicy:
-      confirmation: "yes-really-destroy-data"
-    placement:
-      # all:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #         - matchExpressions:
-      #           - key: storage/ceph
-      #             operator: In
-      #             values:
-      #             - "true"
+    #   placement:
     #     mgr: &placement
     #       nodeAffinity:
     #         requiredDuringSchedulingIgnoredDuringExecution:
@@ -153,7 +84,31 @@ spec:
     #                 - key: node-role.kubernetes.io/control-plane
     #                   operator: Exists
     #     mon: *placement
-      removeOSDsIfOutAndSafeToRemove: true
+      resources:
+        mgr:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            memory: 2Gi
+        mon:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            memory: 1Gi
+        osd:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            memory: 6Gi
+        mgr-sidecar:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            memory: 256Mi
     cephBlockPools:
       - name: ceph-blockpool
         spec:
