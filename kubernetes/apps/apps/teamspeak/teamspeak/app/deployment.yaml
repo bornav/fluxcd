@@ -15,6 +15,15 @@ spec:
       labels:
         app: teamspeak
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - arm64
       containers:
       - name: teamspeak-server
         image: ertagh/teamspeak3-server:latest-box
