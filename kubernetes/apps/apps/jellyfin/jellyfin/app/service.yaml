@@ -26,8 +26,8 @@ metadata:
     traefik.ingress.kubernetes.io/service.nativelb: "true"
     # service.cilium.io/shared: "true"
 spec:
-  selector:
-    app: jellyfin
+  # selector:
+  #   app: jellyfin
   ports:
   - port: 8096             # < port to open on the outside on the server
     targetPort: 8096       # < targetport. port on the pod to passthrough

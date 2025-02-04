@@ -23,8 +23,8 @@ metadata:
     traefik.ingress.kubernetes.io/service.nativelb: "true"
 spec:
   type: LoadBalancer
-  selector:
-    app: ai-stack
+  # selector:
+  #   app: ai-stack
   ports:
     - port: 8080
       name: *name
