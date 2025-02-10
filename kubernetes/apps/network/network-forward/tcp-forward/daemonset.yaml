@@ -99,7 +99,7 @@ spec:
 
       - name: net-forwarder-teamspeak
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.3
+        image: bornav/tcpforwarder:v0.4
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
