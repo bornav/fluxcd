@@ -71,7 +71,7 @@ terraform {
   required_providers {
     google = {
       source = "hashicorp/google"
-      version = "5.14.0"
+      version = "5.45.2"
     }
     oci = {
       source = "oracle/oci"
