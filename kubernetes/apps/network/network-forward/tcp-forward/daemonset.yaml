@@ -28,7 +28,7 @@ spec:
       shareProcessNamespace: true
       containers:
       - name: net-forwarder-traefik-ingress
-        image: bornav/tcpforwarder:v0.3
+        image: bornav/tcpforwarder:v0.4
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
@@ -61,7 +61,7 @@ spec:
           privileged: true
       - name: net-forwarder-nginx-ingress
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.3
+        image: bornav/tcpforwarder:v0.4
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
@@ -135,7 +135,7 @@ spec:
       
       - name: net-forwarder-other
         # image: harbor.icylair.com/library/tcpforwarder:v0.1-test
-        image: bornav/tcpforwarder:v0.3
+        image: bornav/tcpforwarder:v0.4
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 9999" ] 
         env:
