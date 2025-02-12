@@ -3,10 +3,29 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tachi-service
+  labels:
+    service-type: ingress
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
 spec:
-  type: ExternalName
-  externalName: wireguard.network.svc.cluster.local
+  type: LoadBalancer
+  selector:
+    app: tachiyomi
   ports:
     - name: http
-      targetPort: 4568
-      port: 4568
+      targetPort: 4567
+      port: 4567
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: tachi-service
+# spec:
+#   type: ExternalName
+#   externalName: wireguard.network.svc.cluster.local
+#   ports:
+#     - name: http
+#       targetPort: 4568
+#       port: 4568

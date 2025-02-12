@@ -48,16 +48,6 @@ spec:
                 number: 80
           path: /
           pathType: Prefix
-    # - host: &host2 harbor.cloud.icylair.com
-    #   http:
-    #     paths:
-    #       - path: /
-    #         pathType: Prefix
-    #         backend:
-    #           service:
-    #             name: open-webui
-    #             port:
-    #               number: 8080
   tls:
   - hosts:
       - *host
