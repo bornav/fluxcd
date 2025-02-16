@@ -3,6 +3,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: "first-pool"
 spec:
+  allowFirstLastIPs: "No"
   blocks:
   - start: "10.49.20.20"
     stop: "10.49.20.230"
@@ -36,6 +37,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: "ingress-pool"
 spec:
+  allowFirstLastIPs: "No"
   blocks:
   - cidr: "10.49.21.0/24"
   - cidr: "2004::0/64"
