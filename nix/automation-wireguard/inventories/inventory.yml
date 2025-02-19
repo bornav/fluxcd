@@ -1,0 +1,61 @@
+all:
+  hosts:
+    oraclearm2:
+      pipelining: true
+      ansible_ssh_user: root
+      # ansible_host: "141.144.255.9"
+      ansible_host: "oraclearm2.cloud.icylair.com"
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/id_local
+      wireguard_ip: 10.99.10.11
+    oraclearm1:
+      pipelining: true
+      ansible_ssh_user: root
+      # ansible_host: "138.3.244.139"
+      ansible_host: "oraclearm1.cloud.icylair.com"
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/id_local
+      wireguard_ip: 10.99.10.12
+    contabo-01-4v-8m-800g:
+      pipelining: true
+      ansible_ssh_user: root
+      # ansible_host: "10.99.7.3"
+      ansible_host: "contabo-01-4v-8m-800g.cloud.icylair.com" 
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/id_local
+      wireguard_ip: 10.99.10.13
+    # k3s-local-02:
+    #   pipelining: true
+    #   ansible_ssh_user: root
+    #   # ansible_host: "10.99.7.3"
+    #   ansible_host: "k3s-local-02.local.icylair.com" 
+    #   ansible_ssh_port: 22
+    #   ansible_ssh_private_key_file: ~/.ssh/id_local
+    #   wireguard_ip: 10.99.10.14
+
+
+      
+    lighthouse: # lighthouse
+      pipelining: true
+      ansible_ssh_user: root
+      # ansible_host: "10.99.7.3"
+      ansible_host: "lighthouse.icylair.com" 
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/id_local
+      wireguard_ip: 10.99.10.254
+    rke2-local: # local node
+      pipelining: true
+      ansible_ssh_user: root
+      # ansible_host: "10.99.7.3"
+      ansible_host: "rke2-local-node-01.local.icylair.com"
+      ansible_ssh_port: 22
+      ansible_ssh_private_key_file: ~/.ssh/id_local
+      wireguard_ip: 10.99.10.51
+
+  vars:
+    ufw_enabled: false
+    ansible_become_method: su 
+    wireguard_mask_bits: 24
+    wireguard_port: 51872
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+

@@ -15,7 +15,7 @@ prepare_token_rke2(){
 update(){
     echo "running switch"
     for host in "${hosts[@]}"; do
-        nixos-rebuild switch --flake ~/.flake#$host --target-host $host
+        nixos-rebuild switch --flake ~/git/kubernetes/fluxcd#$host --target-host $host
         if [ $? -eq 0 ]; then
             echo "Command executed successfully."
         else
@@ -27,7 +27,7 @@ update(){
 try_update(){
     echo "running test"
     for host in "${hosts[@]}"; do
-        nixos-rebuild test --flake ~/.flake#$host --target-host $host
+        nixos-rebuild test --flake ~/git/kubernetes/fluxcd#$host --target-host $host
         if [ $? -eq 0 ]; then
             echo "Command executed successfully."
         else
@@ -39,7 +39,7 @@ try_update(){
 build(){
     echo "running builds"
     for host in "${hosts[@]}"; do
-        nixos-rebuild build --flake ~/.flake#$host --target-host $host
+        nixos-rebuild build --flake ~/git/kubernetes/fluxcd#$host --target-host $host
         if [ $? -eq 0 ]; then
             echo "Command executed successfully."
         else
