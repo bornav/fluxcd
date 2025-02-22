@@ -16,6 +16,12 @@ deployment:
 ports:
   traefik:
     port: 8001
+  ts:
+    port: 9987
+    protocol: UDP
+    # expose: true
+    # exposeInternal: true
+    # exposedPort: 9987
 #   web:
 #     port: 8000
 #     redirectTo:
@@ -81,6 +87,22 @@ extraObjects:
           - "X-Forwarded-User"
           # - "X-Auth-User"
           # - "X-Secret"
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: traefik-udp
+      labels:
+        service-type: ingress
+    spec:
+      ports:
+      - name: ts
+        port: 9987
+        protocol: UDP
+        targetPort: ts
+      selector:
+        app.kubernetes.io/instance: traefik-network
+        app.kubernetes.io/name: traefik
+      type: LoadBalancer
 #   - apiVersion: v1
 #     kind: Service
 #     metadata:
@@ -144,6 +166,7 @@ providers:
     enabled: true
     ingressClass: *ingress-class-name 
     allowExternalNameServices: true
+    allowCrossNamespace: true
   kubernetesGateway:
     enabled: true
   kubernetesIngress:
@@ -168,17 +191,6 @@ tlsStore:
   default:
     defaultCertificate:
       secretName: icylair-com-all-prod
-# service:
-# #   enabled: true
-# #   type: LoadBalancer
-# #   annotations: {}
-# #   labels: {}
-#   spec:
-#     externalTrafficPolicy: Local
-# #     # loadBalancerIP: 10.99.20.230
-# #     #loadBalancerIP: 10.0.0.72 # this should be an IP in the MetalLB range
-# #   loadBalancerSourceRanges: []
-# #   externalIPs: []
 logs:
   general:
     # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.

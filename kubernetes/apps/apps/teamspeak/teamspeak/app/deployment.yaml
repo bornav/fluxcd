@@ -47,30 +47,23 @@ spec:
         # - name: GID
         #   value: "1000"
         imagePullPolicy: IfNotPresent
-        # ports:
-        # - containerPort: 9987
-        #   protocol: UDP
-        # - containerPort: 10011
-        #   protocol: TCP
-        # - containerPort: 30033
-        #   protocol: TCP
+        ports:
+        - containerPort: 9987
+          protocol: UDP
+        - containerPort: 10011
+          protocol: TCP
+        - containerPort: 30033
+          protocol: TCP
         resources:
           limits:
-            cpu: 250m
+            cpu: 500m
             memory: 512Mi
           requests:
             cpu: 1m
             memory: 256Mi
-        # securityContext:
-        #   # runAsGroup: 1000
-        #   # runAsUser: 0
-        #   privileged: true
         volumeMounts:
         - mountPath: /teamspeak
           name: teamspeak-data
-        # - mountPath: /var/ts3server/
-        # - mountPath: /teamspeak
-        #   name: teamspeak-data2
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -91,21 +84,29 @@ spec:
     app: teamspeak
   ports:
   - name: udp
-    # nodePort: 30987
-    # nodePort: 30989
     port: 9987
     protocol: UDP
     targetPort: 9987
-  # - name: tcp1
-  #   # nodePort: 30987
-  #   # nodePort: 30989
-  #   port: 10011
-  #   protocol: TCP
-  #   targetPort: 10011
+  - name: tcp1
+    port: 10011
+    protocol: TCP
+    targetPort: 10011
   - name: tcp2
-    # nodePort: 30987
-    # nodePort: 30989
     port: 30033
     protocol: TCP
     targetPort: 30033
   type: LoadBalancer
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: teamspeak-udp
+  annotations:
+      kubernetes.io/ingress.class: "traefik-external"
+spec:
+  entryPoints:
+    - ts
+  routes:
+    - services:
+        - name: teamspeak
+          port: 9987

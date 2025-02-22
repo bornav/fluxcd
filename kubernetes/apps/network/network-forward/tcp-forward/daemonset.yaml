@@ -108,7 +108,8 @@ spec:
         - name: LISTEN_PORT
           value: "9987,10011,30033"
         - name: REMOTE_HOST
-          value: "teamspeak.apps.svc.cluster.local"
+          # value: "teamspeak.apps.svc.cluster.local"
+          value: "traefik-udp.network.svc.cluster.local"
         # - name: REMOTE_PORT
         #   value: "9987"
         - name: DIAL_TIMEOUT

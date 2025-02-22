@@ -5,6 +5,8 @@ namespace: network
 resources:
   - release.yaml
   # - service.yaml
+generatorOptions:
+  disableNameSuffixHash: true
 configMapGenerator:
   - name: traefik-helm-values
     files:

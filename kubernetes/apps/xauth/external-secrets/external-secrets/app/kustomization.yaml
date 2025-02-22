@@ -5,6 +5,8 @@ namespace: xauth
 resources:
   - release.yaml
   # - secret.yaml
+generatorOptions:
+  disableNameSuffixHash: true
 configMapGenerator:
   - name: external-secrets-helm-values
     files:
