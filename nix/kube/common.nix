@@ -72,6 +72,8 @@ in
     ser2net
     par2cmdline
     rsync
+    dnsutils
+    nettools
   ];
   system = {                                # NixOS Settings
     # autoUpgrade = {                        # Allow Auto Update (not useful in flakes)
