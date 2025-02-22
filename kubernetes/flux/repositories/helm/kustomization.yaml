@@ -40,3 +40,4 @@ resources:
   - ./rancher.yaml
   - ./it-tools.yaml
   - ./hashicorp.yaml
+  - ./stakater.yaml
