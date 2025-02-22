@@ -3,8 +3,8 @@ data:
   services.yaml: |
     - Services:
         - Traefik:
-                icon: traefik.png
-                href: https://traefik.cloud.icylair.com
+            icon: traefik.png
+            href: https://traefik.cloud.icylair.com
         - Element:
             icon: element.png
             href: https://element.cloud.icylair.com/
