@@ -107,7 +107,7 @@ in
       ln -nsf /run/current-system/sw/bin /usr/local/
   ''; # TODO look into, potentialy undeeded
 
-  systemd.watchdog.rebootTime = "3m";
+  systemd.watchdog.rebootTime = "2m";
 
   # environment.etc."rancher/rke2/config.yaml".source = pkgs.writeText "config.yaml" node_config;
   environment.etc."rancher/rke2/config.yaml".source = pkgs.writeText "config.yaml" combined_config;

@@ -30,7 +30,7 @@ let
       - rke2-canal
       - rke2-ingress-nginx
       - rke2-service-lb
-      # - rke2-metrics-server
+      - rke2-metrics-server
       # - rke2-kube-proxy
       # - rke2-coredns
       - rke2-snapshot-controller

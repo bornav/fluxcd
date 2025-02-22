@@ -34,15 +34,15 @@ in
   };
   users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGiVyNsVCk2KAGfCGosJUFig6PyCUwCaEp08p/0IDI7"];
   users.users.root.initialPassword = "nixos";
-  # users.users.${host.vars.user} = {
-  #   isNormalUser = true;
-  #   hashedPassword = "!"; # https://discourse.nixos.org/t/how-to-disable-root-user-account-in-configuration-nix/13235
-  #   # initialPassword = "nixos";
-  #   description = "${host.vars.user}";
-  #   extraGroups = [ "networkmanager" "wheel" "docker"];
-  #   # packages = with pkgs; [];
-  #   openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGiVyNsVCk2KAGfCGosJUFig6PyCUwCaEp08p/0IDI7"];
-  # };
+  users.users.${host.vars.user} = {
+    isNormalUser = true;
+    hashedPassword = "!"; # https://discourse.nixos.org/t/how-to-disable-root-user-account-in-configuration-nix/13235
+    # initialPassword = "nixos";
+    description = "${host.vars.user}";
+    extraGroups = [ "networkmanager" "wheel" "docker"];
+    # packages = with pkgs; [];
+    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGiVyNsVCk2KAGfCGosJUFig6PyCUwCaEp08p/0IDI7"];
+  };
   time.timeZone = "Europe/Vienna";
   i18n = {
     defaultLocale = "en_US.UTF-8";
