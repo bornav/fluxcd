@@ -3,15 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kubernetes-dashboard-app
+  name: reloader
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: traefik-base
-    - name: traefik-addons
-  path: ./kubernetes/apps/observability/kubernetes-dashboard/app
-  prune: true
+  path: ./kubernetes/apps/kube-system/reloader/app
   suspend: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -19,4 +16,4 @@ spec:
   interval: 15m
   retryInterval: 15m
   timeout: 5m
-  targetNamespace: observability
+  targetNamespace: kube-system

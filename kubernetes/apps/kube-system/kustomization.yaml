@@ -10,3 +10,4 @@ resources:
   # - ./linstor-scheduler/ks.yaml
   # - ./stork-scheduler/ks.yaml
   - ./descheduler/ks.yaml
+  - ./reloader/ks.yaml
