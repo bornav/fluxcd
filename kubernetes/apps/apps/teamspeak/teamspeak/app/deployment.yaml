@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: &name teamspeak
   labels:
-    app: teamspeak
-  name: teamspeak
+    app: *name
+  annotations:
+    descheduler.alpha.kubernetes.io/evict: false
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   selector:
     matchLabels:
-      app: teamspeak
+      app: *name
   template:
     metadata:
       labels:
-        app: teamspeak
+        app: *name
     spec:
       affinity:
         nodeAffinity:

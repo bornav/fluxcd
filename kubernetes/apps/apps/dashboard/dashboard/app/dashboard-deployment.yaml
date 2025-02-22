@@ -18,7 +18,6 @@ spec:
   template:
     metadata:
       labels:
-        # io.kompose.network/dockerfile-default: "true"
         app: *name
     spec:
       containers:
