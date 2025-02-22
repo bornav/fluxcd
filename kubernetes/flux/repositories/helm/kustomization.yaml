@@ -41,3 +41,4 @@ resources:
   - ./it-tools.yaml
   - ./hashicorp.yaml
   - ./stakater.yaml
+  - ./metrics-server.yaml

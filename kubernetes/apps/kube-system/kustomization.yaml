@@ -11,3 +11,4 @@ resources:
   # - ./stork-scheduler/ks.yaml
   - ./descheduler/ks.yaml
   - ./reloader/ks.yaml
+  - ./metrics-server/ks.yaml
