@@ -3,25 +3,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dashboard-homepage
+  name: &name dashboard-homepage
   labels:
-    app: dashboard-homepage
+    app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: dashboard-homepage
+      app: *name
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         # io.kompose.network/dockerfile-default: "true"
-        app: dashboard-homepage
+        app: *name
     spec:
       containers:
         - image: ghcr.io/gethomepage/homepage:v0.10.9
-          name: dashboard-homepage
+          name: *name
           resources:
             requests:
               cpu: 1m
