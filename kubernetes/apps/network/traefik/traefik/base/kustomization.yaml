@@ -5,3 +5,9 @@ namespace: network
 resources:
   - release.yaml
   # - service.yaml
+configMapGenerator:
+  - name: traefik-helm-values
+    files:
+      - values.yaml=./values.yaml
+configurations:
+  - kustomizeconfig.yaml
