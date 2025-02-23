@@ -49,7 +49,8 @@ spec:
       hostPath:
         path: /var/log/pods
         type: Directory
-
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
     tolerations: 
       - key: node-role.kubernetes.io/control-plane
         value: "true"

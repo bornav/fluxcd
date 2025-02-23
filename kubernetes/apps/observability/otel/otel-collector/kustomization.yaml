@@ -4,6 +4,15 @@ kind: Kustomization
 namespace: observability
 resources:
   - release.yaml
-  - otel-configmap.yaml
+  # - otel-configmap.yaml
   - otel-col-ingress.yaml
   - secrets.yaml
+  - rbac.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: otelcol
+    files:
+      - relay=./otel-config.yaml
+configurations:
+  - kustomizeconfig.yaml
