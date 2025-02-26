@@ -49,9 +49,9 @@ gateway:
 service:
   single: true
   spec:
-    loadBalancerIP: "10.49.21.1"
+    loadBalancerIP: "10.49.22.1"
   labels: 
-    service-type: ingress
+    service-type: ingress-static
     
 ingressClass:
   enabled: true

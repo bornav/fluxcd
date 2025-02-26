@@ -13,6 +13,7 @@ spec:
       operator: NotIn
       values:
       - ingress
+      - ingress-static
 # ---
 # apiVersion: "cilium.io/v2alpha1"
 # kind: CiliumLoadBalancerIPPool
@@ -40,10 +41,23 @@ spec:
   allowFirstLastIPs: "No"
   blocks:
   - cidr: "10.49.21.0/24"
-  - cidr: "2004::0/64"
+  - cidr: "2013::0/64"
   serviceSelector:
     matchLabels:
       service-type: ingress
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "ingress-pool-static"
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+  - cidr: "10.49.22.0/24"
+  - cidr: "2014::0/64"
+  serviceSelector:
+    matchLabels:
+      service-type: ingress-static
 # ---
 # apiVersion: "cilium.io/v2alpha1"
 # kind: CiliumL2AnnouncementPolicy
