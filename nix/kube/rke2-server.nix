@@ -1,14 +1,10 @@
-{ config, lib, system, inputs, host, node_config, vars, ... }:
+{ config, lib, system, inputs, host, node_config, vars, pkgs, ... }:
 let
   # inherit host;
-  pkgs = import inputs.nixpkgs-stable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
+  # pkgs = import inputs.nixpkgs-stable { #TODO figure out why i cant migrate this one
+  #   system = host.system;
+  #   config.allowUnfree = true;
+  # };
   tls_san = 
   ''
   tls-san:

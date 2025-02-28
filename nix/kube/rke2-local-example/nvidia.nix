@@ -1,14 +1,4 @@
-{ config, lib, host, inputs, ... }:
-let
-  pkgs = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-in
+{ config, lib, host, inputs, pkgs, pkgs-unstable, ... }:
 {
   nixpkgs.config.allowUnfree = true;
   hardware = {

@@ -1,16 +1,4 @@
-{ config, lib, inputs, vars, ... }:
-let
-  system = "aarch64-linux";
-  pkgs = import inputs.nixpkgs-stable {
-    inherit system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    inherit system;
-    config.allowUnfree = true;
-  };
-  
-in
+{ config, lib, inputs, vars, pkgs, pkgs-unstable, ... }:
 {
   imports = [
    

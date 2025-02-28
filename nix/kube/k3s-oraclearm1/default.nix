@@ -1,13 +1,5 @@
-{ config, lib, system, inputs, host, vars, ... }:
+{ config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }: # TODO remove system, only when from all modules it is removed
 let
-  pkgs = import inputs.nixpkgs-stable {
-    system = "aarch64-linux";
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = "aarch64-linux";
-    config.allowUnfree = true;
-  };
   master2 = ''
     ---
     token: xx
@@ -64,7 +56,7 @@ in
     ./disk-config.nix
     ../../failtoban.nix
     # (import ../k3s-server.nix {inherit inputs vars config lib system;node_config = master2;})
-    (import ../rke2-server.nix {inherit inputs vars config lib host system;node_config = master2_rke;})
+    (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config = master2_rke;})
     # ./k3s-server.nix
     # ./mesh.nix
     {_module.args.disks = [ "/dev/sda" ];}

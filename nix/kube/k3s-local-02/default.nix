@@ -1,13 +1,5 @@
-{ config, lib, system, inputs, host, vars, ... }: # TODO remove system, only when from all modules it is removed
+{ config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }: # TODO remove system, only when from all modules it is removed
 let
-  pkgs = import inputs.nixpkgs-stable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
   master4_rke = ''
     ---
     write-kubeconfig-mode: "0644"
@@ -31,7 +23,7 @@ in
     ./hardware-configuration.nix
     ./disk-config.nix
     # (import ../k3s-server.nix {inherit inputs vars config lib system;node_config = master3;})
-    (import ../rke2-server.nix {inherit inputs vars config lib host system ;node_config = master4_rke;})
+    (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config = master4_rke;})
     # ./k3s-server.nix
     {_module.args.disks = [ "/dev/sda" ];}
   ];

@@ -1,13 +1,5 @@
-{ config, lib, system, inputs, host, vars, ... }:
+{ config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }: # TODO remove system, only when from all modules it is removed
 let
-  pkgs = import inputs.nixpkgs-stable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
   token = ''
   this-is-temp-token
   '';
@@ -46,7 +38,7 @@ in
     ./hardware-configuration.nix
     ./disk-config.nix
     ./nvidia.nix
-    (import ../rke2-server.nix {inherit inputs vars config lib host system;node_config  = master_rke;})
+    (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config  = master_rke;})
     {_module.args.disks = [ "/dev/sda" ];}
   ];
   rke2.server = true;

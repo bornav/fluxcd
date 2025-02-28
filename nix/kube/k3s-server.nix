@@ -1,14 +1,4 @@
-{ config, lib, system, inputs, node_config, vars, ... }:
-let
-  pkgs = import inputs.nixpkgs-stable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-in
+{ config, lib, system, inputs, node_config, vars, pkgs, pkgs-unstable, ... }:
 {
   # k3s specific
   networking.useNetworkd = true;

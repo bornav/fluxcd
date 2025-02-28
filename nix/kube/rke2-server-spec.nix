@@ -1,15 +1,4 @@
-{ config, lib, system, inputs, host, node_config, vars, ... }:
-let
-  # inherit host;
-  pkgs = import inputs.nixpkgs-stable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    system = host.system;
-    config.allowUnfree = true;
-  };
-in
+{ config, lib, system, inputs, host, node_config, vars, pkgs, pkgs-unstable,  ... }:
 {
   options = {
     rke2 = {

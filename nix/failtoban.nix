@@ -1,14 +1,14 @@
-{inputs, config, system, vars, ... }:
-let
-  pkgs = import inputs.nixpkgs-unstable {
-    inherit system;
-    config.allowUnfree = true;
-  };
-  pkgs-unstable = import inputs.nixpkgs-unstable {
-    inherit system;
-    config.allowUnfree = true;
-  };
-in
+{inputs, config, system, vars, pkgs, pkgs-unstable,... }:
+# let
+#   pkgs = import inputs.nixpkgs-unstable {
+#     inherit system;
+#     config.allowUnfree = true;
+#   };
+#   pkgs-unstable = import inputs.nixpkgs-unstable {
+#     inherit system;
+#     config.allowUnfree = true;
+#   };
+# in
 {
   services.fail2ban = {
     enable = true;
