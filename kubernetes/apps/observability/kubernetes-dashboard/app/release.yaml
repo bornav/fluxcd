@@ -28,6 +28,13 @@ spec:
     protocolHttp: true
     extraArgs:
     - --enable-insecure-login
+    resources:
+      requests:
+        cpu: 10m
+        memory: 16Mi
+      limits:
+        cpu: 2
+        memory: 200Mi
 ---
 apiVersion: v1
 kind: Service
