@@ -45,6 +45,7 @@ in
     ./hardware-configuration.nix
     ./disk-config.nix
     ./nvidia.nix
+    # ./net-forward.nix
     # (import ../k3s-server.nix {inherit inputs vars config lib system;node_config = master3;})
     (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config  = master_rke;})
     # ./k3s-server.nix
@@ -74,7 +75,7 @@ in
       MaxRetentionSec=1month # How long to keep journal files
     '';
   };
-  services.rke2.package = lib.mkForce (pkgs.callPackage ../../../modules/custom_pkg/rke2_custom.nix {
+  services.rke2.package = lib.mkForce (pkgs.callPackage ../../modules/custom_pkg/rke2_custom.nix {
           rke2Version = "1.32.0+rke2r1";
           rke2Commit = "1182e7eb91b27b1686e69306eb2e227928a27a38";
           rke2TarballHash = "sha256-mmHQxiNcfgZTTdYPJPO7WTIlaCRM4CWsWwfRUcAR8ho=";
