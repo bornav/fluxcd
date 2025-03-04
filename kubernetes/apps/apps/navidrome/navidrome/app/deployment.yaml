@@ -81,6 +81,14 @@ spec:
           mountPath: /data
         - name: pv-navidrome-music
           mountPath: /music
+        - name: timezone
+          mountPath: /etc/localtime  
+          subPath: Europe/Vienna
+          readOnly: true
+          # readOnly: true
+        # - name: timezone
+        #   mountPath: /usr/share/zoneinfo
+          # readOnly: true
           # - name: 'sync-data'
           #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
           #   command: ["/bin/sh"]  # Override the entrypoint
@@ -125,6 +133,10 @@ spec:
           - name: sync-music-continuous
             mountPath: /startup.sh
             subPath: startup.sh
+          - name: timezone
+            mountPath: /etc/localtime  
+            subPath: Europe/Vienna
+            readOnly: true
           # - name: nfs-vol
           #   mountPath: /mnt
       # - name: go-instrumentation-sidecart
@@ -147,6 +159,9 @@ spec:
       #     runAsUser: 0
       #     privileged: true
       volumes:
+      - name: timezone
+        hostPath:
+          path: /etc/zoneinfo/
       - name: navidrome-configuration
         configMap:
           name: navidrome-config
