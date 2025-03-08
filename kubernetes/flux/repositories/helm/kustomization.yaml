@@ -42,3 +42,4 @@ resources:
   - ./hashicorp.yaml
   - ./stakater.yaml
   - ./metrics-server.yaml
+  - ./cloudnative-pg.yaml
