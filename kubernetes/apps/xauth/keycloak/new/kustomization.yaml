@@ -6,3 +6,4 @@ namespace: xauth
 resources:
   - secret.yaml
   - release.yaml
+  - pg-keycloak.yaml

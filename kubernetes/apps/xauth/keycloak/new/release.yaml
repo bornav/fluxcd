@@ -1,0 +1,90 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: keycloak
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: keycloak
+      version: 24.4.11
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-oci
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # extraVolumeMounts:
+    #   - name: tempdb
+    #     mountPath: /tempdb
+    # extraVolumes:
+    #   - name: tempdb
+    #     persistentVolumeClaim:
+    #       claimName: tempdb
+    # diagnosticMode: # only for keycloak pods
+    #   enabled: enable
+    #   command:
+    #     - sleep
+    #   args:
+    #     - infinity
+    production: true
+    replicaCount: 1
+    proxyHeaders: xforwarded
+    proxy: ""
+    auth:
+      adminUser: keycloak-admin # inital login admin
+      existingSecret: &secret keycloak-auth
+      passwordSecretKey: KEYCLOAK_ADMIN_PASSWORD
+    tls:
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: traefik-external
+      hostname: &origin sso.icylair.com
+      extraHosts:
+        - name: keycloak.cloud.icylair.com 
+          path: /
+        - name: keycloak.icylair.com
+          path: /
+      tls: true
+      extraTls:
+      - hosts:
+        - *origin
+        - keycloak.icylair.com
+        - keycloak.cloud.icylair.com
+        secretName: icylair-com-all-prod
+    postgresql:
+      enabled: false
+    externalDatabase:
+      existingSecret: *secret
+      existingSecretHostKey:     "host"
+      existingSecretPortKey:     "port"
+      existingSecretUserKey:     "username"
+      existingSecretDatabaseKey: "databse_name"
+      existingSecretPasswordKey: "password"
+      annotations: {}
+    resourcesPreset: none
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        cpu: 1500m
+        memory: 2024Mi
+    service:
+      type: LoadBalancer
+    

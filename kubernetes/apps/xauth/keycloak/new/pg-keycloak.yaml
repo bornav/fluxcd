@@ -1,0 +1,63 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-keycloak
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: keycloak-pg-superuser
+  storage:
+    size: &size 1.5Gi
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: *size
+      storageClassName: ceph-block
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      destinationPath: s3://postgres-backups/pg_keycloak
+      endpointURL: http://wireguard.network.svc.cluster.local:9010
+      s3Credentials:
+        accessKeyId:
+          name: minio-postgres-backup-secrets
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: minio-postgres-backup-secrets
+          key: AWS_SECRET_ACCESS_KEY
+      serverName: &currentCluster pg_keycloak
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+  externalClusters:
+    - name: &previousCluster pg_keycloak
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
+  bootstrap:
+    # initdb:
+    #   database: pg_keycloak
+    #   owner: keycloak
+    #   secret:
+    #     name: keycloak-auth
+    recovery:
+      source: *previousCluster
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pk-keycloak-backup
+spec:
+  schedule: "0 */30 * * * *"
+  backupOwnerReference: self
+  cluster:
+    name: pg-keycloak
