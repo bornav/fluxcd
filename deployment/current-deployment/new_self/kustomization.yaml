@@ -11,5 +11,5 @@ helmCharts:
     releaseName: cilium
     namespace: *namespace
     valuesFile: cilium_values_nixos.yaml
-    version: 1.17.1
+    version: 1.17.2
     includeCRDs: true
