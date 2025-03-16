@@ -84,8 +84,8 @@ metadata:
     numberOfReplicas: '3'
 spec:
   accessModes: ["ReadWriteOnce"]
-  # storageClassName: longhorn-storage
-  storageClassName: ceph-block
+  storageClassName: longhorn-storage
+  # storageClassName: ceph-block
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
@@ -105,8 +105,8 @@ spec:
     manual: restore-once
   restic:
     repository: restic-hashicorp-vault-data
-    # storageClassName: longhorn-storage
-    storageClassName: ceph-block
+    storageClassName: longhorn-storage
+    # storageClassName: ceph-block
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 4Gi

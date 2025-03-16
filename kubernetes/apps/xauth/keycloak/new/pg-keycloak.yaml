@@ -18,7 +18,8 @@ spec:
       resources:
         requests:
           storage: *size
-      storageClassName: ceph-block
+      storageClassName: longhorn-storage
+      # storageClassName: ceph-block
       volumeMode: Filesystem
   backup:
     retentionPolicy: 30d

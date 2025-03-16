@@ -50,3 +50,21 @@ spec:
 #       metadataPolicy: Fetch
 #       key: foo
 #       property: dev
+
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/clustersecretstore_v1beta1.json
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: vault-backend-cross-namespaces
+spec:
+  provider:
+    vault:
+      server: "https://hashicorp-vault.icylair.com"
+      path: "configmap"
+      auth:
+        tokenSecretRef:
+          name: "vault-token"
+          key: "token"
+          namespace: xauth

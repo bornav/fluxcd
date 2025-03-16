@@ -18,6 +18,6 @@ spec:
       monthly: 2
       yearly: 1
     copyMethod: Snapshot
-    # storageClassName: longhorn-storage
-    storageClassName: ceph-block
+    storageClassName: longhorn-storage
+    # storageClassName: ceph-block
     unlock: "something"
