@@ -1,6 +1,6 @@
 { config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }:
 {
-  # imports = (import ../../modules/virtualization);
+  imports = [./kernel-confs.nix];
   networking.hostName = host.hostName; # Define your hostname.
   networking.networkmanager.enable = true;
   networking.firewall.trustedInterfaces = [ "cilium_host" "cilium_net" "lxc+" ];
@@ -64,6 +64,9 @@
     rsync
     dnsutils
     nettools
+
+    htop
+    btop
   ];
   system = {                                # NixOS Settings
     # autoUpgrade = {                        # Allow Auto Update (not useful in flakes)

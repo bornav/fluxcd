@@ -7,7 +7,7 @@ before run wireguard mesh thingie to bridge it all together
 ## to deploy cilium
 helm --kube-context context-prod install cilium cilium/cilium --namespace=kube-system --values=cilium_values_nixos.yaml 
 ## to upgrade when changes in values file
-helm --kube-context context-produpgrade cilium cilium/cilium  --namespace=kube-system --values=cilium_values_nixos.yaml
+helm --kube-context context-prod upgrade cilium cilium/cilium  --namespace=kube-system --values=cilium_values_nixos.yaml
 
 <!-- ## to upgrade to new cilium version
 helm upgrade cilium cilium/cilium  --namespace=kube-system --version 1.15.4 --values=cilium_values.yaml -->
