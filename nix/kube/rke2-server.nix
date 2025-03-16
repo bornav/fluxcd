@@ -26,16 +26,16 @@ let
     - oracle-bv1-1.cloud.icylair.com
     - oracle-km1-1.cloud.icylair.com
     - oraclearm3.cloud.icylair.com
-    - contabo-01-4v-8m-800g.cloud.icylair.com
+    - contabo-1.cloud.icylair.com
     - k3s-local-01.local.icylair.com
     - k3s-local-01
     - k3s-local-02.local.icylair.com
     - k3s-local-02
     - oracle-bv1-1
     - oracle-km1-1
+    - contabo-1
     - k3s-oraclearm3
     - rke2-oraclearm3
-    - contabo-01-4v-8m-800g
     - rke2-local-example.local.icylair.com
     - rke2-local.local.icylair.com
     - lb.local.icylair.com

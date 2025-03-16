@@ -16,11 +16,11 @@ all:
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.12
-    contabo-01-4v-8m-800g:
+    contabo-1:
       pipelining: true
       ansible_ssh_user: root
       # ansible_host: "10.99.7.3"
-      ansible_host: "contabo-01-4v-8m-800g.cloud.icylair.com" 
+      ansible_host: "contabo-1.cloud.icylair.com" 
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.13

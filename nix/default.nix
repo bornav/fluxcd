@@ -17,12 +17,12 @@
 #   };
 # in
 { 
-  contabo-01-4v-8m-800g = inputs.nixpkgs-unstable.lib.nixosSystem {
+  contabo-1 = inputs.nixpkgs-unstable.lib.nixosSystem {
     system = "x86_64-linux";  
     specialArgs = {
       inherit vars inputs;
       host = {
-        hostName = "contabo-01-4v-8m-800g";
+        hostName = "contabo-1";
         vars = vars;
         system = "x86_64-linux"; 
       };
@@ -32,7 +32,7 @@
       system = "x86_64-linux";
     };
     modules = [
-        ./kube/contabo-01-4v-8m-800g
+        ./kube/contabo-1
         ./kube/common.nix
     ];
   };
