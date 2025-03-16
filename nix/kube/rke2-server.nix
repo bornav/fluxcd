@@ -24,7 +24,7 @@ let
     - 10.99.10.15
     - 10.99.10.51
     - oraclearm1.cloud.icylair.com
-    - oraclearm2.cloud.icylair.com
+    - oracle-km1-1.cloud.icylair.com
     - oraclearm3.cloud.icylair.com
     - contabo-01-4v-8m-800g.cloud.icylair.com
     - k3s-local-01.local.icylair.com
@@ -32,10 +32,9 @@ let
     - k3s-local-02.local.icylair.com
     - k3s-local-02
     - k3s-oraclearm1
-    - k3s-oraclearm2
+    - oracle-km1-1
     - k3s-oraclearm3
     - rke2-oraclearm1
-    - rke2-oraclearm2
     - rke2-oraclearm3
     - contabo-01-4v-8m-800g
     - rke2-local-example.local.icylair.com

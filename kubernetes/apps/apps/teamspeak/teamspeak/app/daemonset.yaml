@@ -21,7 +21,7 @@ spec:
               - key: metadata.name
                 operator: In
                 values:
-                - k3s-oraclearm2
+                - oracle-km1-1
                 # - instance-arm-01
       containers:
       - name: teamspeak-server

@@ -112,12 +112,12 @@
         ./kube/common.nix
     ];
   };
-  k3s-oraclearm2 = inputs.nixpkgs-unstable.lib.nixosSystem {
+  oracle-km1-1 = inputs.nixpkgs-unstable.lib.nixosSystem {
     system = "aarch64-linux";  
     specialArgs = {
       inherit vars inputs;
       host = {
-        hostName = "k3s-oraclearm2";
+        hostName = "oracle-km1-1";
         vars = vars;
         system = "aarch64-linux"; 
       };
@@ -127,7 +127,7 @@
       system = "aarch64-linux";  
     };
     modules = [
-        ./kube/k3s-oraclearm2
+        ./kube/oracle-km1-1
         ./kube/common.nix
     ];
   };

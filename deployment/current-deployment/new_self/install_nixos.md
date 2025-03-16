@@ -1,4 +1,4 @@
-master 1 is oraclearm2
+master 1 is oracle-km1-1
 
 master 2 is k3s-local-01
 

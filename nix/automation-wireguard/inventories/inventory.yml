@@ -1,10 +1,10 @@
 all:
   hosts:
-    oraclearm2:
+    oracle-km1-1:
       pipelining: true
       ansible_ssh_user: root
       # ansible_host: "141.144.255.9"
-      ansible_host: "oraclearm2.cloud.icylair.com"
+      ansible_host: "oracle-km1-1.cloud.icylair.com"
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.11

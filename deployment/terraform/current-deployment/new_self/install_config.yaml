@@ -1,6 +1,6 @@
 ---
 #master 1
-token: "WZpV6Gp3f4GVkzjia6Wz8XrmbHZjDR6"
+token: ""
 flannel-backend: "none"
 disable-kube-proxy: true
 disable-network-policy: true
@@ -17,11 +17,11 @@ tls-san:
   - 10.99.10.10
   - lb.cloud.icylair.com
   - oraclearm1.cloud.icylair.com
-  - oraclearm2.cloud.icylair.com
+  - oracle-km1-1.cloud.icylair.com
 node-ip: 10.99.10.12
 ---
 #master2
-token: "WZpV6Gp3f4GVkzjia6Wz8XrmbHZjDR6"
+token: ""
 flannel-backend: "none"
 disable-kube-proxy: true
 disable-network-policy: true
@@ -38,12 +38,12 @@ tls-san:
   - 10.99.10.10
   - lb.cloud.icylair.com
   - oraclearm1.cloud.icylair.com
-  - oraclearm2.cloud.icylair.com
+  - oracle-km1-1.cloud.icylair.com
 server: https://10.99.10.12:6443
 node-ip: 10.99.10.11
 ---
 #master3
-token: "WZpV6Gp3f4GVkzjia6Wz8XrmbHZjDR6"
+token: ""
 flannel-backend: "none"
 disable-kube-proxy: true
 disable-network-policy: true
@@ -60,6 +60,6 @@ tls-san:
   - 10.99.10.10
   - lb.cloud.icylair.com
   - oraclearm1.cloud.icylair.com
-  - oraclearm2.cloud.icylair.com
+  - oracle-km1-1.cloud.icylair.com
 server: https://10.99.10.12:6443
 node-ip: 10.99.10.10
