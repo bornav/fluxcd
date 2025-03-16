@@ -16,7 +16,7 @@ tls-san:
   - 10.99.10.11
   - 10.99.10.10
   - lb.cloud.icylair.com
-  - oraclearm1.cloud.icylair.com
+  - oracle-bv1-1.cloud.icylair.com
   - oracle-km1-1.cloud.icylair.com
 node-ip: 10.99.10.12
 ---
@@ -37,7 +37,7 @@ tls-san:
   - 10.99.10.11
   - 10.99.10.10
   - lb.cloud.icylair.com
-  - oraclearm1.cloud.icylair.com
+  - oracle-bv1-1.cloud.icylair.com
   - oracle-km1-1.cloud.icylair.com
 server: https://10.99.10.12:6443
 node-ip: 10.99.10.11
@@ -59,7 +59,7 @@ tls-san:
   - 10.99.10.11
   - 10.99.10.10
   - lb.cloud.icylair.com
-  - oraclearm1.cloud.icylair.com
+  - oracle-bv1-1.cloud.icylair.com
   - oracle-km1-1.cloud.icylair.com
 server: https://10.99.10.12:6443
 node-ip: 10.99.10.10
