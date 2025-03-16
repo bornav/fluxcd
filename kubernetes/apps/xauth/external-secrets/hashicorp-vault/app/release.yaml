@@ -110,7 +110,7 @@ spec:
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     capacity: 4Gi
-    enableFileDeletion: true
-    cleanupCachePVC: true
-    cleanupTempPVC: true
+    # enableFileDeletion: true
+    # cleanupCachePVC: true
+    # cleanupTempPVC: true
     
