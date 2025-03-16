@@ -25,43 +25,7 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  values:
-    csi:
-      provisionerReplicas: 1
-      cephFSKernelMountOptions: ms_mode=prefer-crc
-      enableLiveness: true
-      serviceMonitor:
-        enabled: true
-      nfs:
-        enabled: true
-      csiRBDPluginVolume:
-        - name: lib-modules
-          hostPath:
-            path: /run/booted-system/kernel-modules/lib/modules/
-        - name: host-nix
-          hostPath:
-            path: /nix
-      csiRBDPluginVolumeMount:
-        - name: host-nix
-          mountPath: /nix
-          readOnly: true
-      csiCephFSPluginVolume:
-        - name: lib-modules
-          hostPath:
-            path: /run/booted-system/kernel-modules/lib/modules/
-        - name: host-nix
-          hostPath:
-            path: /nix
-      csiCephFSPluginVolumeMount:
-        - name: host-nix
-          mountPath: /nix
-          readOnly: true
-    monitoring:
-      enabled: false
-    nodeSelector: 
-      storage/ceph: "true"
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 1m
-      limits: {}
+  valuesFrom:
+    - kind: ConfigMap
+      name: rook-ceph-values
+      valuesKey: operator.yaml
