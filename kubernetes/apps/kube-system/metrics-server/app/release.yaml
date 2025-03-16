@@ -33,5 +33,5 @@ spec:
       - --kubelet-request-timeout=2s
     metrics:
       enabled: true
-    serviceMonitor:
-      enabled: true
+    # serviceMonitor:
+    #   enabled: true
