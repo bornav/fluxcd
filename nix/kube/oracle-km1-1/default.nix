@@ -45,7 +45,7 @@ let
       # - "storage=longhorn"
       - "storage/longhorn=true"
     node-ip: 10.99.10.11
-    server: https://lb.cloud.icylair.com:9345
+    # server: https://lb.cloud.icylair.com:9345
   '';
   
 in

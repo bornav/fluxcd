@@ -40,8 +40,6 @@ let
       - "storage/longhorn=true"
       - "storage/ceph=true"
     node-ip: 10.99.10.13
-    server: https://lb.cloud.icylair.com:9345
-    # server: https://10.99.10.11:9345
   '';
     # node-taint:
     #   - "node-role.kubernetes.io/control-plane=true:NoSchedule"

@@ -41,7 +41,12 @@ let
     - lb.local.icylair.com
     - lb.cloud.icylair.com
   '';
-  combined_config = node_config + "\n" + tls_san;
+  server=# first init uncomment the ip based once, after the loadbalancer, origin one needs both commented out
+  ''
+  server: https://lb.cloud.icylair.com:9345  
+  # server: https://10.99.10.11:9345
+  '';
+  combined_config = node_config + "\n" + tls_san + "\n" + server;
 in
 {
   imports = [( import ./rke2-server-spec.nix)];
