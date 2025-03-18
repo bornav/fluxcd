@@ -10,9 +10,6 @@ spec:
     - name: http
       targetPort: 5432
       port: 5432
-  # selector:
-  #   app: matrix-database
   selector:
-    cnpg.io/cluster: pg-synapse
-    cnpg.io/instanceRole: primary
+    app: matrix-database
   type: ClusterIP
