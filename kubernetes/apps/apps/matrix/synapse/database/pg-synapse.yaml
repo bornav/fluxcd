@@ -1,0 +1,99 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-synapse
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 1
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0@sha256:be3f025d79aa1b747817f478e07e71be43236e14d00d8a9eb3914146245035ba
+  postgresql:
+    shared_preload_libraries:
+      - "vectors.so"
+  managed:
+    roles:
+      - name: synapse
+        superuser: true
+        login: true
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: synapse-pg-superuser
+  storage:
+    size: &size 5Gi
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: *size
+      storageClassName: longhorn-storage
+      # storageClassName: ceph-block
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      destinationPath: s3://postgres-backups/pg_synapse
+      endpointURL: http://wireguard.network.svc.cluster.local:9010
+      s3Credentials:
+        accessKeyId:
+          name: minio-postgres-backup-secrets
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: minio-postgres-backup-secrets
+          key: AWS_SECRET_ACCESS_KEY
+      serverName: &currentCluster pg_synapse
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+  externalClusters:
+    - name: &previousCluster pg_synapse
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
+  bootstrap:
+    recovery:
+      source: *previousCluster
+# https://github.com/camrossi/home-cluster/blob/main/apps/immich/DB_Migration.md
+# uncomment so it switches from grabbing the data from external databse and populating the data in the new local tatabase     
+  #   initdb:
+  #     database: synapse
+  #     owner: synapse
+  #     secret:
+  #       name: synapse-auth
+  #     import:
+  #       type: microservice
+  #       databases:
+  #         - synapse
+  #       source:
+  #         externalCluster: cluster-pg96
+  #     postInitSQL:
+  #       - CREATE EXTENSION IF NOT EXISTS "vectors";
+  #       - CREATE EXTENSION IF NOT EXISTS "cube" CASCADE;
+  #       - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
+  # externalClusters:
+  #   - name: cluster-pg96
+  #     connectionParameters:
+  #       # Use the correct IP or host name for the source database
+  #       host: "matrix-database-service.apps.svc.cluster.local"
+  #       user: postgres
+  #       dbname: synapse
+  #     password:
+  #       name: synapse-database-secrets
+  #       key: POSTGRES_PASSWORD
+# uncomment
+
+
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: pk-synapse-backup
+spec:
+  schedule: "0 */30 * * * *"
+  backupOwnerReference: self
+  cluster:
+    name: pg-synapse
