@@ -10,4 +10,5 @@ resources:
   # - .decrypted~secrets.yaml
   - service.yaml
   - pvc.yaml
+  - config-external-secret.yaml
   # - volsync-replication.yaml

@@ -74,8 +74,8 @@ spec:
         #   #   add:
         #   #     - NET_ADMIN
         volumeMounts:
-        - mountPath: /config/navidrome.toml
-          name: navidrome-configuration
+        - name: navidrome-configuration
+          mountPath: /config/navidrome.toml
           subPath: navidrome.toml
         - name: navidrome-data-folder
           mountPath: /data
@@ -130,7 +130,7 @@ spec:
         volumeMounts:
           - name: pv-navidrome-music
             mountPath: /music
-          - name: sync-music-continuous
+          - name: navidrome-configuration
             mountPath: /startup.sh
             subPath: startup.sh
           - name: timezone
@@ -163,8 +163,8 @@ spec:
         hostPath:
           path: /etc/zoneinfo/
       - name: navidrome-configuration
-        configMap:
-          name: navidrome-config
+        secret:
+          secretName: config-map-external-secrets-navidrome-config
           defaultMode: 0777
       - name: navidrome-data-folder
         persistentVolumeClaim:
@@ -184,10 +184,10 @@ spec:
         secret:
           secretName: sync-data
           defaultMode: 0777
-      - name: sync-music-continuous
-        secret:
-          secretName: sync-music-continuous
-          defaultMode: 0777
+      # - name: sync-music-continuous
+      #   secret:
+      #     secretName: sync-music-continuous
+      #     defaultMode: 0777
       # - name: nfs-vol
       #   nfs:
           #     server: 10.43.255.250 # IP to our NFS server
