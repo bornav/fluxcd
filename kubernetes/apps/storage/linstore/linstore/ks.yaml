@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: rook-ceph
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/storage/linstore/linstore/app
+  prune: false
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  wait: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m
+  targetNamespace: rook-ceph
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: rook-ceph-cluster
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#     - name: rook-ceph
+#   path: ./kubernetes/apps/storage/rook-ceph/rook-ceph/cluster
+#   prune: false
+#   sourceRef:
+#     kind: GitRepository
+#     name: fluxcd-kubernetes
+#     namespace: flux-system
+#   wait: false
+#   interval: 30m
+#   retryInterval: 1m
+#   timeout: 15m
+#   targetNamespace: rook-ceph
