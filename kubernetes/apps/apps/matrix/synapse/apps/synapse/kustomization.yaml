@@ -10,3 +10,12 @@ resources:
   - secrets.yaml
   - whatsapp-config.yaml
   - whatsapp-service.yaml
+  - external-secrets.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: matrix-synapse2
+    files:
+      - homeserver.yaml=./config_synapse.yaml
+configurations:
+  - kustomizeconfig.yaml

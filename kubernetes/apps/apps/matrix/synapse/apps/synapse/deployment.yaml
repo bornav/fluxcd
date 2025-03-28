@@ -189,9 +189,12 @@ spec:
         #   secret:
         #     secretName: matrix-synapse-keys
         - name: matrix-synapse-config
-          configMap:
-            name: matrix-synapse
+          secret:
+            secretName: matrix-synapse
             defaultMode: 0777
+          # configMap:
+          #   name: matrix-synapse
+          #   defaultMode: 0777
         - name: matrix-bridges
           persistentVolumeClaim:
             claimName: matrix-bridges-data
