@@ -7,7 +7,7 @@ resources:
   - service.yaml
   - ingress.yaml
   - secrets.yaml
-  - whatsapp-config.yaml
+  # - whatsapp-config.yaml
   - whatsapp-service.yaml
   - external-secrets.yaml
 generatorOptions:
@@ -16,5 +16,8 @@ configMapGenerator:
   - name: matrix-synapse2
     files:
       - homeserver.yaml=./config_synapse.yaml
+  - name: matrix-bridge-whatsapp-config2
+    files:
+      - config.yaml=./config_whatsapp.yaml
 configurations:
   - kustomizeconfig.yaml

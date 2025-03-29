@@ -173,8 +173,11 @@ spec:
             - mountPath: /data
               name: matrix-bridges
               subPath: whatsapp
-            - mountPath: /config/config.yaml
-              name: matrix-bridge-whatsapp-config
+            # - name: matrix-bridge-whatsapp-config
+            #   mountPath: /config/config.yaml
+            #   subPath: config.yaml
+            - name: matrix-bridge-whatsapp-config2
+              mountPath: /config/config.yaml
               subPath: config.yaml
       restartPolicy: Always
       securityContext:
@@ -211,5 +214,9 @@ spec:
         - name: matrix-bridge-whatsapp-config
           configMap:
             name: matrix-bridge-whatsapp-config
+        - name: matrix-bridge-whatsapp-config2
+          secret:
+            secretName: matrix-bridge-whatsapp-config2
+            defaultMode: 0777
 status: {}
 #to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icylair.com/_matrix/client/v3/login"
