@@ -12,3 +12,4 @@ resources:
   - ./descheduler/ks.yaml
   - ./reloader/ks.yaml
   - ./metrics-server/ks.yaml
+  - ./cilium/ks.yaml

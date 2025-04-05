@@ -1,0 +1,139 @@
+
+# dnsPolicy: ClusterFirst  #?
+rollOutCiliumPods: true
+operator:
+  # replicas: 1  # Uncomment this if you only have one node
+  rollOutPods: true
+# devices: "wg1" ?
+kubeConfigPath: "/etc/rancher/rke2/rke2.yaml"
+k8sServiceHost: "127.0.0.1" #### both neccesary if kubeproxy is missing
+k8sServicePort: "6443"      ####
+ipam:
+  operator:
+    clusterPoolIPv4PodCIDRList: ["10.52.0.0/16"]  # TODO used to work
+ipv4NativeRoutingCIDR: "10.52.0.0/16"
+# k8sServiceHost: "127.0.0.1"
+# k8sServicePort: "6444"
+# routingMode: "native"
+# autoDirectNodeRoutes: true
+kubeProxyReplacement: "true"
+bpf:
+  masquerade: true
+  lbExternalClusterIP: true
+  
+#clustermesh related
+cluster:
+  name: cluster-prod-01
+  id: 10
+clustermesh:
+  useAPIServer: true
+  # apiserver:
+  #   service:
+  #     type: LoadBalancer # this breaks
+
+
+
+# # dont thnk i need this
+# bgpControlPlane:
+#   enabled: true
+# bgp:
+#   enabled: false
+#   announce:
+#   #   # -- Enable allocation and announcement of service LoadBalancer IPs
+#     loadbalancerIP: true
+#   #   # -- Enable announcement of node pod CIDR
+#     podCIDR: true
+
+# l2podAnnouncements:
+#   enabled: true
+#   interface: eth0
+
+l2announcements:
+  enabled: true
+externalIPs:
+  enabled: true
+hubble:
+  enabled: &state false
+  relay:
+    enabled: *state
+    rollOutPods: true
+    replicas: 3
+    tls:
+      server:
+        enabled: false
+  ui:
+    enabled: *state
+    rollOutPods: true
+    standalone:
+      enabled: true
+  tls:
+    enabled: false
+    # auto:
+    #   enabled: true
+    #   method: helm
+    #   certValidityDuration: 1095
+  # metrics:
+  #   enabled:
+  #   - "httpV2:exemplars=true;sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_ip,source_namespace,source_workload,destination_namespace,destination_workload,destination_ip,traffic_direction"
+  #   - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+  #   - "dns:query;ignoreAAAA"
+  #   - "drop"
+  #   - "tcp"
+  #   - "flow:destinationContext=app;sourceContext=app"
+  #   - "flows-to-world"
+  #   - "icmp"
+  #   - "port-distribution"
+    
+  #   # serviceAnnotations:
+  #   #   prometheus.io/scrape: "true"
+  #   #   prometheus.io/port: "9965"
+  #   enableOpenMetrics: true
+  #   serviceMonitor:
+  #     enabled: true
+  #   dashboards:
+  #     enabled: true
+  #     namespace: observability
+  #   # prometheus:
+  #   #   enabled: true
+  #   #   port: 9966
+  #   #   serviceMonitor:
+  #   #     # -- Enable service monitors.
+  #   #     # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
+  #   #     enabled: true
+  peerService:
+    clusterDomain: cluster.local
+  dropEventEmitter:
+    enabled: true
+k8sClientRateLimit: # so we dont get rate limited
+  qps: 50
+  burst: 200
+# ingressController:
+#   enabled: false
+#   default: true
+#   loadbalancerMode: shared
+#   service:
+#     annotations:
+#       io.cilium/lb-ipam-ips: 10.49.20.55
+
+
+enableIPv4Masquerade: true
+# enableIPv4BIGTCP: true            # this breaks
+# enableMasqueradeRouteSource: true #
+
+loadBalancer:
+  acceleration: best-effort
+  # l7:
+  #   backend: envoy
+envoy:
+  enabled: false
+
+# l7Proxy: true
+
+
+# prometheus:
+#   enabled: true
+#   port: 9962
+#   serviceMonitor:
+#     # -- Enable service monitors.
+#     # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
+#     enabled: true

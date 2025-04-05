@@ -6,3 +6,4 @@ k3s-ansible
 terraform.tfstate
 terraform.tfstate.backup
 deployment/current-deployment/new_self/charts/cilium-1.16.5/cilium
+nix/result

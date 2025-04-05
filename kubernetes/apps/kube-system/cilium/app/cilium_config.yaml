@@ -1,0 +1,75 @@
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "first-pool"
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+  - start: "10.49.20.20"
+    stop: "10.49.20.230"
+  serviceSelector:
+    matchExpressions:
+    - key: service-type
+      operator: NotIn
+      values:
+      - ingress
+      - ingress-static
+# ---
+# apiVersion: "cilium.io/v2alpha1"
+# kind: CiliumLoadBalancerIPPool
+# metadata:
+#   name: "local-ip-pool"
+# spec:
+#   blocks:
+#   - start: "10.2.11.230"
+#     stop: "10.2.11.235"
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: default-l2-announcement-policy
+  namespace: kube-system
+spec:
+  externalIPs: true
+  loadBalancerIPs: true
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "ingress-pool"
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+  - cidr: "10.49.21.0/24"
+  - cidr: "2013::0/64"
+  serviceSelector:
+    matchLabels:
+      service-type: ingress
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "ingress-pool-static"
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+  - cidr: "10.49.22.0/24"
+  - cidr: "2014::0/64"
+  serviceSelector:
+    matchLabels:
+      service-type: ingress-static
+# ---
+# apiVersion: "cilium.io/v2alpha1"
+# kind: CiliumL2AnnouncementPolicy
+# metadata:
+#   name: policy1
+# spec:
+#   serviceSelector:
+#     matchLabels:
+#       service-type: ingress
+#   interfaces:
+#   - ^eth[0-9]+
+#   - ^ens[0-9]+
+#   - ^wg[0-9]+
+#   externalIPs: true
+#   loadBalancerIPs: true
