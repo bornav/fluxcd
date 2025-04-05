@@ -26,22 +26,23 @@
       };
       root = {
         name = "root";
-        size = "100G";
+        # size = "100G";
+        size = "100%";
         content = {
           type = "filesystem";
           format = "ext4";
           mountpoint = "/";
         };
       };
-      storage = {
-        name = "storage";
-        size = "100%";
-        content = {
-          type = "filesystem";
-          format = "xfs";
-          # mountpoint = "/";
-        };
-      };
+      # storage = {
+      #   name = "storage";
+      #   size = "100%";
+      #   content = {
+      #     type = "filesystem";
+      #     format = "xfs";
+      #     # mountpoint = "/";
+      #   };
+      # };
      };
     };
    };

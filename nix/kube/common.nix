@@ -94,9 +94,10 @@
     extraOptions = "experimental-features = nix-command flakes";
     settings.max-jobs = 4;
   };
-  # environment.variables = {
-  #   LD_LIBRARY_PATH=lib.mkForce "$NIX_LD_LIBRARY_PATH"; ## may break stuff
-  # };
+  environment.variables = {
+    TZ="Europe/Vienna";
+    # LD_LIBRARY_PATH=lib.mkForce "$NIX_LD_LIBRARY_PATH"; ## may break stuff
+  };
   # programs.nix-ld = {
   #   enable = true;
   #   libraries = with pkgs; [

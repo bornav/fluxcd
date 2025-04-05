@@ -53,17 +53,17 @@ l2announcements:
 externalIPs:
   enabled: true
 hubble:
-  enabled: true
-  relay: ##LOOK INTO FIXING THIS, until done no observability :( ##UPDATE2, changed nothing now works ##UPDATE3 does not work on local node
+  enabled: &state false
+  relay:
+    enabled: *state
     rollOutPods: true
-    enabled: true
     replicas: 3
     tls:
       server:
         enabled: false
   ui:
+    enabled: *state
     rollOutPods: true
-    enabled: true
     standalone:
       enabled: true
   tls:

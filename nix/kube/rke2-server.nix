@@ -40,13 +40,29 @@ let
     - rke2-local.local.icylair.com
     - lb.local.icylair.com
     - lb.cloud.icylair.com
+  kube-apiserver-extra-mount: 
+    - /etc/localtime:/etc/localtime:ro
+  kube-scheduler-extra-mount:
+    - /etc/localtime:/etc/localtime:ro
+  kube-controller-manager-extra-mount:
+    - /etc/localtime:/etc/localtime:ro
+  etcd-extra-mount:
+    - /etc/localtime:/etc/localtime:ro
+  # kube-apiserver-extra-env:
+  #   - "MY_FOO=FOO"
+  #   - "MY_BAR=BAR"
+  # kube-scheduler-extra-env:
+  #   - "TZ=Europe/Vienna"
   '';
   server=# first init uncomment the ip based once, after the loadbalancer, origin one needs both commented out
   ''
   server: https://lb.cloud.icylair.com:9345  
   # server: https://10.99.10.11:9345
   '';
-  combined_config = node_config + "\n" + tls_san + "\n" + server;
+  combined_config = if host.kube_ha then
+    node_config + "\n" + tls_san + "\n" + server
+  else
+    node_config + "\n" + tls_san;
 in
 {
   imports = [( import ./rke2-server-spec.nix)];
@@ -144,7 +160,7 @@ in
 
   services.openiscsi = {
     enable = true;
-    name = "iqn.2000-05.edu.example.iscsi:${config.networking.hostName}";
+    name = "iqn.2005-10.org.freenas.ctl:${config.networking.hostName}";
   };
   services.nfs.server.enable = true;
   # services.nfs.settings = {
@@ -236,6 +252,7 @@ in
 
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"                   # exposes binaryes
+    "L+ /sbin - - - - /run/current-system/sw/bin/"
     "L! /lib/modules - - - - /run/current-system/kernel-modules/lib/modules/"   # make current modules exposed to /lib/modules
   ];
 

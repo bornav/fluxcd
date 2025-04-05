@@ -25,6 +25,7 @@
         hostName = "contabo-1";
         vars = vars;
         system = "x86_64-linux"; 
+        kube_ha = true;
       };
       pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
       pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
@@ -100,7 +101,8 @@
       host = {
         hostName = "oracle-bv1-1";
         vars = vars;
-        system = "aarch64-linux"; 
+        system = "aarch64-linux";
+        kube_ha = true;
       };
       pkgs-stable   = import inputs.nixpkgs-stable   {system = "aarch64-linux";config.allowUnfree = true;};
       pkgs-unstable = import inputs.nixpkgs-unstable {system = "aarch64-linux";config.allowUnfree = true;};
@@ -112,6 +114,26 @@
         ./kube/common.nix
     ];
   };
+  oracle-km1-1-init = inputs.nixpkgs-unstable.lib.nixosSystem { #NOTE this one needs to follow all values from  oracle-km1-1, except setting kube_ha flag to false, and need to only be run once on startup so it generates k9s cluster
+    system = "aarch64-linux";  
+    specialArgs = {
+      inherit vars inputs;
+      host = {
+        hostName = "oracle-km1-1";
+        vars = vars;
+        system = "aarch64-linux";
+        kube_ha = false;
+      };
+      pkgs-stable   = import inputs.nixpkgs-stable   {system = "aarch64-linux";config.allowUnfree = true;};
+      pkgs-unstable = import inputs.nixpkgs-unstable {system = "aarch64-linux";config.allowUnfree = true;};
+      pkgs-master   = import inputs.nixpkgs-master   {system = "aarch64-linux";config.allowUnfree = true;};
+      system = "aarch64-linux";  
+    };
+    modules = [
+        ./kube/oracle-km1-1
+        ./kube/common.nix
+    ];
+  };
   oracle-km1-1 = inputs.nixpkgs-unstable.lib.nixosSystem {
     system = "aarch64-linux";  
     specialArgs = {
@@ -119,7 +141,8 @@
       host = {
         hostName = "oracle-km1-1";
         vars = vars;
-        system = "aarch64-linux"; 
+        system = "aarch64-linux";
+        kube_ha = true;
       };
       pkgs-stable   = import inputs.nixpkgs-stable   {system = "aarch64-linux";config.allowUnfree = true;};
       pkgs-unstable = import inputs.nixpkgs-unstable {system = "aarch64-linux";config.allowUnfree = true;};
@@ -139,6 +162,7 @@
           hostName = "rke2-local-node-01";
           vars = vars;
           system = "x86_64-linux"; 
+          kube_ha = false;
         };
         pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
         pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
