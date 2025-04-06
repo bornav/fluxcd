@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grafana-grafana
+  name: grafana
   namespace: observability
 spec:
   interval: 15m
@@ -39,7 +39,7 @@ spec:
       news:
         news_feed_enabled: false
       auth.anonymous:
-        enabled: true
+        enabled: false
       #   # org_id: 1
       #   # org_name: Main Org.
       #   # org_role: Viewer
@@ -94,9 +94,6 @@ spec:
       existingSecret: "grafana-admin-credentials"
       userKey: admin-user
       passwordKey: admin-password
-    plugins:
-      - grafana-exploretraces-app  #seems there are issues with it
-      - grafana-lokiexplore-app    #seems there are issues with it
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -236,18 +233,102 @@ spec:
           #     timeField: '@timestamp'
           #     version: '1.0.0'
           #     flavor: 'opensearch'
-        dashboardProviders:
-          dashboardproviders.yaml:
-            apiVersion: 1
-            providers:
-              - name: default
-                orgId: 1
-                folder: ""
-                type: file
-                disableDeletion: false
-                editable: true
-                options:
-                  path: /var/lib/grafana/dashboards/default
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: default
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+    dashboards:
+      default:
+        node-exporter:
+          gnetId: 1860
+          revision: 19
+        cert-manager:
+          url: https://raw.githubusercontent.com/pennlabs/infrastructure/master/grafana-dashboards/cert-manager.json
+        traefik:
+          gnetId: 17346
+          revision: 9
+          datasource: Prometheus
+        pod-dashboard:
+          url: https://raw.githubusercontent.com/pennlabs/infrastructure/master/grafana-dashboards/pod-dashboard.json
+        # ceph-cluster:
+        #   # renovate: depName="Ceph Cluster"
+        #   gnetId: 2842
+        #   revision: 18
+        #   datasource: Prometheus
+        # ceph-osd:
+        #   # renovate: depName="Ceph - OSD (Single)"
+        #   gnetId: 5336
+        #   revision: 9
+        #   datasource: Prometheus
+        # ceph-pools:
+        #   # renovate: depName="Ceph - Pools"
+        #   gnetId: 5342
+        #   revision: 9
+        #   datasource: Prometheus
+        
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+          datasource: Prometheus
+        volsync:
+          # renovate: depName="VolSync Dashboard"
+          gnetId: 21356
+          revision: 3
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+            - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
+        prometheus:
+          # renovate: depName="Prometheus"
+          gnetId: 19105
+          revision: 7
+          datasource: Prometheus
+        kubernetes-api-server:
+          # renovate: depName="Kubernetes / System / API Server"
+          gnetId: 15761
+          revision: 19
+          datasource: Prometheus
+        kubernetes-coredns:
+          # renovate: depName="Kubernetes / System / CoreDNS"
+          gnetId: 15762
+          revision: 20
+          datasource: Prometheus
+        kubernetes-global:
+          # renovate: depName="Kubernetes / Views / Global"
+          gnetId: 15757
+          revision: 43
+          datasource: Prometheus
+        kubernetes-namespaces:
+          # renovate: depName="Kubernetes / Views / Namespaces"
+          gnetId: 15758
+          revision: 42
+          datasource: Prometheus
+        kubernetes-nodes:
+          # renovate: depName="Kubernetes / Views / Nodes"
+          gnetId: 15759
+          revision: 35
+          datasource: Prometheus
+        kubernetes-pods:
+          # renovate: depName="Kubernetes / Views / Pods"
+          gnetId: 15760
+          revision: 36
+          datasource: Prometheus
+        kubernetes-volumes:
+          # renovate: depName="K8s / Storage / Volumes / Cluster"
+          gnetId: 11454
+          revision: 14
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
@@ -261,3 +342,10 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
+    
+    plugins:
+      - grafana-exploretraces-app  #seems there are issues with it
+      - grafana-lokiexplore-app    #seems there are issues with it
+      - natel-discrete-panel
+    serviceMonitor:
+      enabled: true
