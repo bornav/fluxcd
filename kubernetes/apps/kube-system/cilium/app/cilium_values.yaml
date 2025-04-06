@@ -3,6 +3,13 @@
 rollOutCiliumPods: true
 operator:
   # replicas: 1  # Uncomment this if you only have one node
+  dashboards:
+    enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  replicas: 2
   rollOutPods: true
 # devices: "wg1" ?
 kubeConfigPath: "/etc/rancher/rke2/rke2.yaml"
@@ -144,15 +151,6 @@ envoy:
 
 dashboards:
   enabled: true
-# operator:
-#   dashboards:
-#     enabled: true
-#   prometheus:
-#     enabled: true
-#     serviceMonitor:
-#       enabled: true
-#   replicas: 2
-#   rollOutPods: true
 prometheus:
   enabled: true
   serviceMonitor:
