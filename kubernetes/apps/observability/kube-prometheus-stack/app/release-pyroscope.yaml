@@ -26,6 +26,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    serviceMonitor:
+      enabled: false
     pyroscope:
       replicaCount: 1
       extraArgs:

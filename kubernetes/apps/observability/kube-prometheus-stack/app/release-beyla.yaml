@@ -68,8 +68,6 @@ data:
       unmatched: heuristic
     discovery:
       services:
-        - k8s_namespace: matrix
-        - k8s_namespace: navidrome
         - k8s_namespace: apps
         - k8s_namespace: default
         - k8s_namespace: network

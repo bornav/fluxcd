@@ -105,6 +105,7 @@ spec:
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
           - { name: Tempo, orgId: 1 }
+          - { name: pyroscope, orgId: 1 }
         datasources:
           - name: Prometheus
             type: prometheus
@@ -167,20 +168,20 @@ spec:
                 timeShiftEnabled: false
                 spanStartTimeShift: ''
             readOnly: false
-          # - name: pyroscope
-          #   type: grafana-pyroscope-datasource
-          #   uid: pyroscope
-          #   access: proxy
-          #   url: http://grafana-pyroscope.observability.svc.cluster.local:4040
-          #   # user: ''
-          #   # database: ''
-          #   # basicAuth: false
-          #   # basicAuthUser: ''
-          #   # withCredentials: false
-          #   isDefault: false
-          #   jsonData: {}
-          #   secureJsonFields: {}
-          #   readOnly: false
+          - name: pyroscope
+            type: grafana-pyroscope-datasource
+            uid: pyroscope
+            access: proxy
+            url: http://grafana-pyroscope.observability.svc.cluster.local:4040
+            # user: ''
+            # database: ''
+            # basicAuth: false
+            # basicAuthUser: ''
+            # withCredentials: false
+            isDefault: false
+            jsonData: {}
+            secureJsonFields: {}
+            readOnly: false
           - name: jaeger
             type: jaeger
             uid: jaeger
