@@ -26,3 +26,8 @@ spec:
   values:
     config:
       secret: true
+    monitoring:
+      podMonitorEnabled: true
+      grafanaDashboard:
+        create: true
+        # namespace: storage
