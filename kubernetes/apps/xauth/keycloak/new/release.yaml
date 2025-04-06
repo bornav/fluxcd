@@ -87,4 +87,9 @@ spec:
         memory: 2024Mi
     service:
       type: LoadBalancer
+    metrics:
+      serviceMonitor:
+        enabled: true
+      prometheusRule:
+        enabled: true
     

@@ -6,6 +6,9 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 1
+  monitoring:
+    enablePodMonitor: true
+
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
   superuserSecret:
