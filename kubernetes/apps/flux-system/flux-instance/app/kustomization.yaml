@@ -9,6 +9,8 @@ resources:
   # - ./httproute.yaml
   # - ./prometheusrule.yaml
   # - ./receiver.yaml
+generatorOptions:
+  disableNameSuffixHash: true
 configMapGenerator:
   - name: flux-instance-values
     files:

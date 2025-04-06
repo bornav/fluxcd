@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-
-hosts=("oracle-km1-1" "contabo-1" "oracle-bv1-1") # make sure the one with bootstrap is at the last place
+host_init=oracle-km1-1-init
+hosts=("oracle-km1-1" "contabo-1" "oracle-bv1-1")
+bootstrap(){
+    nixos-rebuild switch --flake ~/git/kubernetes/fluxcd#$host_init --target-host oracle-km1-1 # TODO make this index of hosts [0]
+}
 prepare_token_rke2(){
     # while true; do
         echo "running token"
@@ -97,6 +100,7 @@ elif [[ $1 == deploy_all ]]; then
     echo "try update step"
     try_update
     echo "atempting update step"
+    bootstrap
     update
     echo "done step"
     exit
