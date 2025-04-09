@@ -1,6 +1,9 @@
 { config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }:
 {
-  imports = [./kernel-confs.nix];
+  imports = [
+    ./kernel-confs.nix
+    ./network.nix
+  ];
   networking.hostName = host.hostName; # Define your hostname.
   networking.networkmanager.enable = true;
   networking.firewall.trustedInterfaces = [ "cilium_host" "cilium_net" "lxc+" ];

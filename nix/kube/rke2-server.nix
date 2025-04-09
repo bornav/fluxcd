@@ -1,10 +1,5 @@
 { config, lib, system, inputs, host, node_config, vars, pkgs, ... }:
 let
-  # inherit host;
-  # pkgs = import inputs.nixpkgs-stable { #TODO figure out why i cant migrate this one
-  #   system = host.system;
-  #   config.allowUnfree = true;
-  # };
   tls_san = 
   ''
   tls-san:
@@ -66,53 +61,6 @@ let
 in
 {
   imports = [( import ./rke2-server-spec.nix)];
-  # options = {
-  #   rke2 = {
-  #     server = lib.mkOption {
-  #       type = lib.types.bool;
-  #       default = false;
-  #     };
-  #     client = lib.mkOption {
-  #       type = lib.types.bool;
-  #       default = false;
-  #     };    
-  #   };
-  # };
-  # config = {
-  # k3s specific
-  networking.useNetworkd = true;
-  networking.firewall.enable = true;  ## recent change, if stuff breaks this is prob it
-  networking.firewall = {
-    allowedTCPPorts = [
-      6443 # RKE2 api server
-      9345 # RKE2 controll plane
-      2379 # k3s, etcd clients: required if using a "High Availability Embedded etcd" configuration
-      2380 # k3s, etcd peers: required if using a "High Availability Embedded etcd" configuration
-      443 8443 # https
-      80 8080 # http
-       
-      22 # ssh
-
-      9987 10011 30033 # TS3
-    ];
-    allowedTCPPortRanges = [
-    { from = 4; to = 65535; }
-    ];
-    # allowedUDPPorts = [
-    #   # 8472 # k3s, flannel: required if using multi-node for inter-node networking
-    #   443 8443 # https
-    #   80 8080 # http
-
-    #   9987 10011 30033 # TS3
-
-
-    #   51872 # wg-mesh
-
-    # ];
-    allowedUDPPortRanges = [
-    { from = 4; to = 65535; }
-    ];
-  };
   # # Given that our systems are headless, emergency mode is useless.
   # # We prefer the system to attempt to continue booting so
   # # that we can hopefully still access it remotely.
@@ -126,51 +74,12 @@ in
 
   # environment.etc."rancher/rke2/config.yaml".source = pkgs.writeText "config.yaml" node_config;
   environment.etc."rancher/rke2/config.yaml".source = pkgs.writeText "config.yaml" combined_config;
-  # services.rke2 = {
-  #   package = pkgs-unstable.rke2_latest;
-  #   # package = pkgs.rke2;
-  #   # clusterInit=true;
-  #   role=kube-role;
-  #   tokenFile ="/var/token";
-  #   enable = true;
-  #   configPath = "/etc/rancher/rke2";
-  #   # cni = "cilium";
-  #   # cni = if kube-role == "agent" then "canal" else "none"; # canal is default
-  #   extraFlags = [ # space at the start important ! :|
-  #     # " --disable rke2-kube-proxy"
-  #     " --kube-apiserver-arg default-not-ready-toleration-seconds=30"
-  #     " --kube-apiserver-arg default-unreachable-toleration-seconds=30" 
-  #     " --kube-controller-manager-arg node-monitor-period=20s"
-  #     " --kube-controller-manager-arg node-monitor-grace-period=20s" 
-  #     " --kubelet-arg node-status-update-frequency=5s"
-  #   ];
-  #   # extraFlags = toString ([
-	#   #   "--write-kubeconfig-mode \"0644\""
-	#   #   "--disable rke2-kube-proxy"
-	#   #   "--disable rke2-canal"
-	#   #   "--disable rke2-coredns"
-  #   #   "--disable rke2-ingress-nginx"
-  #   #   "--disable rke2-metrics-server"
-  #   #   "--disable rke2-service-lb"
-  #   #   "--disable rke2-traefik"
-  #   # ] ++ (if meta.hostname == "homelab-0" then [] else [
-	#   #     "--server https://homelab-0:6443"
-  #   # ]));
-  # };
 
   services.openiscsi = {
     enable = true;
     name = "iqn.2005-10.org.freenas.ctl:${config.networking.hostName}";
   };
   services.nfs.server.enable = true;
-  # services.nfs.settings = {
-  #     nfsd.udp = false;
-  #     nfsd.vers3 = false;
-  #     nfsd.vers4 = true;
-  #     nfsd."vers4.0" = true;
-  #     nfsd."vers4.1" = true;
-  #     nfsd."vers4.2" = true;
-  #   };
   
 
   environment.systemPackages = with pkgs; [
@@ -252,7 +161,8 @@ in
 
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"                   # exposes binaryes
-    "L+ /sbin - - - - /run/current-system/sw/bin/"
+    # "L+ /sbin - - - - /run/current-system/sw/bin/"
+    # "L+ /usr/sbin - - - - /run/current-system/sw/bin/"
     "L! /lib/modules - - - - /run/current-system/kernel-modules/lib/modules/"   # make current modules exposed to /lib/modules
   ];
 

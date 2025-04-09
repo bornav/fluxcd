@@ -1,28 +1,6 @@
 { config, lib, system, inputs, node_config, vars, pkgs, pkgs-unstable, ... }:
 {
   # k3s specific
-  networking.useNetworkd = true;
-  networking.firewall.enable = false;  ## this was the shit that was making it fail...
-  # networking.firewall = {
-  #   allowedTCPPorts = [
-  #     6443 # k3s: required so that pods can reach the API server (running on port 6443 by default)
-  #     2379 # k3s, etcd clients: required if using a "High Availability Embedded etcd" configuration
-  #     2380 # k3s, etcd peers: required if using a "High Availability Embedded etcd" configuration
-  #     443
-  #     80
-  #   ];
-  #   allowedTCPPortRanges = [
-  #   { from = 4; to = 65535; }
-  #   ];
-  #   allowedUDPPorts = [
-  #     8472 # k3s, flannel: required if using multi-node for inter-node networking
-  #     443
-  #     80
-  #   ];
-  #   allowedUDPPortRanges = [
-  #   { from = 4; to = 65535; }
-  #   ];
-  # };
   # environment.etc."rancher/rke2/config.yaml".source = pkgs.writeText "config.yaml" master4;
   # services.rke2 = {
   #   package = pkgs.rke2;
@@ -125,33 +103,4 @@
   #   #     # };
   #   # };
   # }; 
-
-
-
-
-
-  # TODO lookinto
-  # https://github.com/ryan4yin/nix-config/blob/36ba5a4efcc523f45f391342ef49bee07261c22d/lib/genKubeVirtHostModule.nix#L62
-  # boot.kernel.sysctl = {
-  #   # --- filesystem --- #
-  #   # increase the limits to avoid running out of inotify watches
-  #   "fs.inotify.max_user_watches" = 524288;
-  #   "fs.inotify.max_user_instances" = 1024;
-
-  #   # --- network --- #
-  #   "net.bridge.bridge-nf-call-iptables" = 1;
-  #   "net.core.somaxconn" = 32768;
-  #   "net.ipv4.ip_forward" = 1;
-  #   "net.ipv4.conf.all.forwarding" = 1;
-  #   "net.ipv4.neigh.default.gc_thresh1" = 4096;
-  #   "net.ipv4.neigh.default.gc_thresh2" = 6144;
-  #   "net.ipv4.neigh.default.gc_thresh3" = 8192;
-  #   "net.ipv4.neigh.default.gc_interval" = 60;
-  #   "net.ipv4.neigh.default.gc_stale_time" = 120;
-
-  #   "net.ipv6.conf.all.disable_ipv6" = 1; # disable ipv6
-
-  #   # --- memory --- #
-  #   "vm.swappiness" = 0; # don't swap unless absolutely necessary
-  # };
 }
