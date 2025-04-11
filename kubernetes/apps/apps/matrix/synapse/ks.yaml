@@ -8,7 +8,6 @@ metadata:
 spec:
   dependsOn:
     - name: traefik-base
-    - name: traefik-addons
     - name: longhorn-system-base
     - name: volsync
   path: ./kubernetes/apps/apps/matrix/synapse/database

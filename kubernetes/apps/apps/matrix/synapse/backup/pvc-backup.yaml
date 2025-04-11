@@ -20,25 +20,25 @@ spec:
     copyMethod: Snapshot
     storageClassName: longhorn-backup
     unlock: "something"
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name:  matrix-database-data-backup
-spec:
-  sourcePVC: matrix-database-data
-  trigger:
-    schedule: "*/26 * * * *"
-  restic:
-    pruneIntervalDays: 1
-    repository: restic-matrix-database-data
-    retain:
-      hourly: 5
-      daily: 4
-      weekly: 3
-      monthly: 2
-      yearly: 1
-    copyMethod: Snapshot
-    storageClassName: longhorn-backup
-    unlock: "something"
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  matrix-database-data-backup
+# spec:
+#   sourcePVC: matrix-database-data
+#   trigger:
+#     schedule: "*/26 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-matrix-database-data
+#     retain:
+#       hourly: 5
+#       daily: 4
+#       weekly: 3
+#       monthly: 2
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-backup
+#     unlock: "something"
