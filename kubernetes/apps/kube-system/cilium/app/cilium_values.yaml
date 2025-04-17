@@ -37,6 +37,12 @@ clustermesh:
   # apiserver:
   #   service:
   #     type: LoadBalancer # this breaks
+  config:
+    clusters:
+    - ips:
+      - 10.99.10.51
+      name: cluster-local-01
+      port: 32380
 
 
 
