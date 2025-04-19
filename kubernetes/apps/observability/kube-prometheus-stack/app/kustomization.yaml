@@ -4,13 +4,12 @@ kind: Kustomization
 namespace: observability
 resources:
 - release.yaml
-- secret.yaml
+- external-secrets.yaml
 - release-grafana.yaml
 - release-loki.yaml
 - release-tempo.yaml
 # - prometheusrule.yaml
 # - release-beyla.yaml
-
 # - release-alertmanager.yaml
 # - release-pyroscope.yaml
 # - release-stack.yaml
