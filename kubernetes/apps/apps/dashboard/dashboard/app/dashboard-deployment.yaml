@@ -29,7 +29,10 @@ spec:
               memory: 1M
             limits:
               cpu: 500m
-              memory: 200M
+              memory: 250M
+          env:
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: dashboard.icylair.com,dashboard.cloud.icylair.com
           livenessProbe:
             httpGet:
               path: /
