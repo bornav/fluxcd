@@ -57,12 +57,28 @@ spec:
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
 metadata:
-  name: vault-backend-cross-namespaces
+  name: vault-backend-cross-namespaces-configmap
 spec:
   provider:
     vault:
       server: "https://hashicorp-vault.icylair.com"
       path: "configmap"
+      auth:
+        tokenSecretRef:
+          name: "vault-token"
+          key: "token"
+          namespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/clustersecretstore_v1beta1.json
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: vault-backend-cross-namespaces-secret
+spec:
+  provider:
+    vault:
+      server: "https://hashicorp-vault.icylair.com"
+      path: "secret"
       auth:
         tokenSecretRef:
           name: "vault-token"
