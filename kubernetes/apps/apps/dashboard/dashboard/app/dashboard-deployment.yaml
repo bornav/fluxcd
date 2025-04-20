@@ -23,6 +23,10 @@ spec:
       containers:
         - image: ghcr.io/gethomepage/homepage:v1.1.1
           name: *name
+          ports:
+          - containerPort: 3000
+            name: http
+            protocol: TCP
           resources:
             requests:
               cpu: 1m

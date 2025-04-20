@@ -3,6 +3,7 @@ kind: HelmRelease
 metadata:
   name: cilium
 spec:
+  suspend: true
   interval: 45m
   chart:
     spec:
