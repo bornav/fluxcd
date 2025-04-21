@@ -8,7 +8,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/flux-system/capacitor/app
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
