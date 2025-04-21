@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: &namespace kube-system
 resources:
   - release.yaml
+  - external-secret.yaml
   - cilium_config.yaml
 generatorOptions:
   disableNameSuffixHash: true
