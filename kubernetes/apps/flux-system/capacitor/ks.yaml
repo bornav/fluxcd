@@ -13,11 +13,11 @@ spec:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-      kind: HelmRelease
-      name: weave-gitops
-      namespace: flux-system
+  # healthChecks:
+  #   - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+  #     kind: HelmRelease
+  #     name: weave-gitops
+  #     namespace: flux-system
   interval: 15m
   retryInterval: 15m
   timeout: 5m

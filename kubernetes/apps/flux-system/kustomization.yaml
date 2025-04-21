@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
 # - ./weave-gitops/ks.yaml
 - ./capacitor/ks.yaml
-- ./capacitor/example.yaml
+# - ./capacitor/example.yaml
 - ./flux-instance/ks.yaml
 - ./flux-operator/ks.yaml
