@@ -34,17 +34,22 @@ cluster:
   id: 10
 clustermesh:
   useAPIServer: true
-  # apiserver:
-  #   service:
-  #     type: LoadBalancer # this breaks
   config:
     clusters:
-    - ips:
-      - 10.99.10.51
-      name: cluster-local-01
-      port: 32380
-
-
+      - name: cluster-prod-01
+        port: 32379
+        ips:
+          - 10.99.10.13
+      - name: cluster-local-01
+        port: 32380
+        ips:
+          - 10.99.10.51
+  apiserver:
+    tls:
+      auto:
+        enabled: false
+    service:
+      nodePort: 32379 # make sure it's unique on each cluster when kube-proxy replacment is enabled
 
 # # dont thnk i need this
 bgpControlPlane:
