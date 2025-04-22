@@ -27,7 +27,7 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
-    - kind: Secret
-      name: clustermesh
-      valuesKey: clustermesh-prod
-      optional: true
+    # - kind: Secret
+    #   name: cilium-ca-cert
+    #   valuesKey: ca-secret
+    #   optional: false

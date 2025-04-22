@@ -35,6 +35,7 @@ cluster:
 clustermesh:
   useAPIServer: true
   config:
+    enabled: true
     clusters:
       - name: cluster-prod-01
         port: 32379
@@ -47,10 +48,9 @@ clustermesh:
   apiserver:
     tls:
       auto:
-        enabled: false
+        enabled: true
     service:
       nodePort: 32379 # make sure it's unique on each cluster when kube-proxy replacment is enabled
-
 # # dont thnk i need this
 bgpControlPlane:
   enabled: true
