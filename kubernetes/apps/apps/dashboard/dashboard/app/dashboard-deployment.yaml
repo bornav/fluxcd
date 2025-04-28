@@ -21,7 +21,7 @@ spec:
         app: *name
     spec:
       containers:
-        - image: ghcr.io/gethomepage/homepage:v1.1.1
+        - image: ghcr.io/gethomepage/homepage:v1.2.0
           name: *name
           ports:
           - containerPort: 3000
