@@ -20,29 +20,15 @@ metadata:
   labels:
     service-type: ingress
   annotations:
-    # external-dns.alpha.kubernetes.io/hostname: jellyfin-tcp.internal
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
     traefik.ingress.kubernetes.io/service.nativelb: "true"
-    # service.cilium.io/shared: "true"
 spec:
-  # selector:
-  #   app: jellyfin
   ports:
-  - port: 8096             # < port to open on the outside on the server
-    targetPort: 8096       # < targetport. port on the pod to passthrough
-    name: http-tcp         # < reference name for the port in the deployment yaml
+  - port: 8096
+    targetPort: 8096
+    name: jellyfin-tcp
     protocol: TCP
   - port: 8920
     targetPort: 8920
     name: https-tcp
-  - port: 1900             # < port to open on the outside on the server
-    targetPort: 1900       # < targetport. port on the pod to passthrough
-    name: dlna-udp         # < reference name for the port in the deployment yaml
-    protocol: UDP
-  - port: 7359
-    targetPort: 7359
-    name: discovery-udp
-    protocol: UDP
-  type: LoadBalancer
-  # loadBalancerIP: None
