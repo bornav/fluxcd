@@ -44,4 +44,5 @@ spec:
     targetPort: 7359
     name: discovery-udp
     protocol: UDP
+  type: LoadBalancer
   # loadBalancerIP: None
