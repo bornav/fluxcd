@@ -40,6 +40,8 @@ clustermesh:
       - name: cluster-prod-01
         port: 32379
         ips:
+          - 10.99.10.11
+          - 10.99.10.12
           - 10.99.10.13
       - name: cluster-local-01
         port: 32380
