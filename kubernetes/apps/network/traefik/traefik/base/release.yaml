@@ -8,13 +8,13 @@ spec:
   chart:
     spec:
       chart: traefik
-      version: 35.2.0 #chart version not app
+      version: 35.0.1 #chart version not app
       sourceRef:
         kind: HelmRepository
         name: traefik
         namespace: flux-system
       interval: 15m
-  maxHistory: 2
+  maxHistory: 5
   install:
     remediation:
       retries: 3
