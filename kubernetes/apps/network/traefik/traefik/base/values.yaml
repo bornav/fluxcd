@@ -194,7 +194,7 @@ tlsStore:
 logs:
   general:
     # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
-    level: DEBUG
+    level: INFO
 resources:
   requests:
     memory: '1Mi'
