@@ -62,6 +62,7 @@ in
     ./hardware-configuration.nix
     ./disk-config.nix
     ../../failtoban.nix
+    # ./nat.nix
     # (import ../k3s-server.nix {inherit inputs vars config lib system;node_config = master1;})
     (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config = master1_rke;})
     # ./k3s-server.nix

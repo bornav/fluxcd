@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ingress-forwarder
+spec:
+  selector:
+    matchLabels:
+      app: forwarder
+  template:
+    metadata:
+      labels:
+        app: forwarder
+    spec:
+      hostNetwork: true
+      containers:
+        - name: socat
+          image: alpine/socat
+          command: ["socat", "TCP4-LISTEN:1880,reuseaddr,fork", "TCP:10.49.22.2:443"]  
+          ports:
+            - containerPort: 1880
+              hostPort: 1880
+              protocol: TCP
+# socat TCP-LISTEN:1880,reuseaddr,fork TCP:10.99.10.200:80

@@ -14,6 +14,10 @@ spec:
       values:
       - ingress
       - ingress-static
+    - key: service-type/alt
+      operator: NotIn
+      values:
+      -  wireguard-static
 # ---
 # apiVersion: "cilium.io/v2alpha1"
 # kind: CiliumLoadBalancerIPPool
@@ -58,18 +62,31 @@ spec:
   serviceSelector:
     matchLabels:
       service-type: ingress-static
-# ---
-# apiVersion: "cilium.io/v2alpha1"
-# kind: CiliumL2AnnouncementPolicy
-# metadata:
-#   name: policy1
-# spec:
-#   serviceSelector:
-#     matchLabels:
-#       service-type: ingress
-#   interfaces:
-#   - ^eth[0-9]+
-#   - ^ens[0-9]+
-#   - ^wg[0-9]+
-#   externalIPs: true
-#   loadBalancerIPs: true
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "wireguard-static-ip-pool"
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+  - start: "10.99.10.200"
+    stop: "10.99.10.250"
+  serviceSelector:
+    matchLabels:
+      service-type/alt: wireguard-static
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: policy1
+spec:
+  serviceSelector:
+    matchLabels:
+      service-type/alt: wireguard-static
+  interfaces:
+  - ^eth[0-9]+
+  - ^ens[0-9]+
+  - ^wg[0-9]+
+  externalIPs: true
+  loadBalancerIPs: true
