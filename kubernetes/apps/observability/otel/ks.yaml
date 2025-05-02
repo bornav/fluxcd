@@ -23,12 +23,54 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: otel-operator
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/observability/otel/otel-operator
+  prune: true
+  suspend: false
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: observability
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: otel-operator-collector
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/observability/otel/otel-operator/collector
+  dependsOn:
+    - name: otel-operator
+  prune: true
+  suspend: false
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  wait: false # no flux ks dependents
+  interval: 30m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: observability
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: otel-collector-ingest-middleware
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/observability/otel/ingest-middleware
   prune: true
-  suspend: true
+  suspend: false
   dependsOn:
     - name: traefik-addons
   sourceRef:
