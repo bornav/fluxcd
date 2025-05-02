@@ -30,8 +30,8 @@ spec:
       replicaCount: 1
       service:
         labels:
-          service-type: ingress-static
-      loadBalancerIP: "10.49.22.11"
+          service-type: ingress
+      # loadBalancerIP: "10.49.22.11"
       #   annotations:
           # external-dns.alpha.kubernetes.io/hostname: external.cloud.icylair.com
           # io.cilium/lb-ipam-ips: 192.168.42.206
