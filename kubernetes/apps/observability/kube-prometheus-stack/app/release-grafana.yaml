@@ -92,8 +92,8 @@ spec:
     admin:
       ## Name of the secret. Can be templated.
       existingSecret: "grafana-admin-credentials"
-      userKey: admin-user
-      passwordKey: admin-password
+      userKey: admin_user
+      passwordKey: admin_password
     datasources:
       datasources.yaml:
         apiVersion: 1
