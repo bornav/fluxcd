@@ -21,7 +21,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: immich-service
+                name: immich-custom-svc
                 port:
                   number: 2283
     - host: &host immich.cloud.icylair.com
@@ -31,9 +31,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: immich-service-http
+                name: immich-custom-svc
                 port:
-                  number: 443
+                  number: 2283
   tls:
   - hosts:
       - immich.icylair.com

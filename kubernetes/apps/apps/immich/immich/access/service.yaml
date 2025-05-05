@@ -1,24 +1,42 @@
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: immich-service
+# spec:
+#   type: ExternalName
+#   externalName: wireguard.network.svc.cluster.local
+#   ports:
+#     - name: http
+#       targetPort: 2283
+#       port: 2283
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: immich-service-http
+# spec:
+#   type: ExternalName
+#   externalName: wireguard.network.svc.cluster.local
+#   ports:
+#     - name: http
+#       targetPort: 443
+#       port: 443
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: immich-service
+  name: &name immich-custom-svc
+  labels:
+    app: *name 
+    service-type: ingress
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
 spec:
-  type: ExternalName
-  externalName: wireguard.network.svc.cluster.local
   ports:
     - name: http
-      targetPort: 2283
       port: 2283
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: immich-service-http
-spec:
-  type: ExternalName
-  externalName: wireguard.network.svc.cluster.local
-  ports:
-    - name: http
-      targetPort: 443
-      port: 443
+      protocol: TCP
+      targetPort: http
