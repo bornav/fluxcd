@@ -42,7 +42,7 @@ spec:
     #   args:
     #     - infinity
     production: true
-    replicaCount: 1
+    replicaCount: 3
     proxyHeaders: xforwarded
     proxy: ""
     auth:
