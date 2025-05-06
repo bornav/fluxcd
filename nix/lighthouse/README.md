@@ -9,5 +9,5 @@ some weird fuckerry happened in the grub part of the configuration making it not
 
 
 ### rebuilds the flake with the new configuration
-`nixos-rebuild switch --flake ~/.flake#lighthouse --target-host lighthouse` #how i updated the config on the remote system
+`nixos-rebuild switch --flake ~/git/kubernetes/fluxcd#lighthouse --target-host lighthouse` #how i updated the config on the remote system
 aditional note, on update, seems local ip addres always switches

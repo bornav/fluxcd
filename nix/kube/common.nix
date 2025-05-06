@@ -3,7 +3,7 @@
   imports = [
     ./kernel-confs.nix
     ./network.nix
-    ./tailscale.nix
+    ./zerotier.nix
   ];
   programs.nh.enable = true;
   services = {

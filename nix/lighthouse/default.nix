@@ -25,11 +25,11 @@ in
     {_module.args.disks = [ "/dev/sda" ];}
 
 
-    inputs.headplane.nixosModules.headplane
-    {
-      # provides `pkgs.headplane` and `pkgs.headplane-agent`.
-      nixpkgs.overlays = [ inputs.headplane.overlays.default ];
-    }
+    # inputs.headplane.nixosModules.headplane
+    # {
+    #   # provides `pkgs.headplane` and `pkgs.headplane-agent`.
+    #   nixpkgs.overlays = [ inputs.headplane.overlays.default ];
+    # }
   ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs.linuxPackages_latest;
