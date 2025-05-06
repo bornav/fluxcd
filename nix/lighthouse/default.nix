@@ -111,9 +111,12 @@ in
         balance roundrobin
         option ssl-hello-chk
         # Define the backend servers
-        server server1 oracle-bv1-1.cloud.icylair.com:443 check
-        server server2 oracle-km1-1.cloud.icylair.com:443 check
-        server server3 contabo-1.cloud.icylair.com:443 check
+        # server server1 oracle-bv1-1.cloud.icylair.com:443 check
+        # server server2 oracle-km1-1.cloud.icylair.com:443 check
+        # server server3 contabo-1.cloud.icylair.com:443 check
+        server server1 10.99.10.11:443 check
+        server server2 10.99.10.12:443 check
+        server server3 10.99.10.13:443 check
 
     frontend 80-forward
         bind *:80
