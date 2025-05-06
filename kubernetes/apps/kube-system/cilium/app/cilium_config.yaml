@@ -70,8 +70,8 @@ metadata:
 spec:
   allowFirstLastIPs: "No"
   blocks:
-  - start: "10.99.10.200"
-    stop: "10.99.10.250"
+  - start: "10.99.10.10"
+    stop: "10.99.10.13"
   serviceSelector:
     matchLabels:
       service-type/alt: wireguard-static
