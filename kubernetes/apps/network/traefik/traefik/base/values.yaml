@@ -48,10 +48,13 @@ gateway:
           name: "icylair-com-all-prod"
 service:
   single: true
-  spec:
-    loadBalancerIP: "10.49.22.2"
+  annotations:
+    lbipam.cilium.io/ips: "10.99.10.11,10.99.10.12,10.99.10.13,10.49.22.2"
+  # spec:
+  #   loadBalancerIP: "10.49.22.2"
   labels: 
     service-type: ingress-static
+    service-type/alt: wireguard-static
     
 ingressClass:
   enabled: true
