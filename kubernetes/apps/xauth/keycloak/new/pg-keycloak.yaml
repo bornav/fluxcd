@@ -5,7 +5,7 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 3
+  instances: 1
   monitoring:
     enablePodMonitor: true
 
