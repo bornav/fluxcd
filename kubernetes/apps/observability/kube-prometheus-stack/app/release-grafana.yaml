@@ -156,9 +156,9 @@ spec:
                 enabled: true
               tracesToLogsV2:
                 customQuery: false
-                spanStartTimeShift: "-1h"
                 datasourceUid: loki
-                spanEndTimeShift: 1h
+                spanStartTimeShift: "-10m"
+                spanEndTimeShift: 3m
               streamingEnabled:
                 search: false
               traceQuery:
