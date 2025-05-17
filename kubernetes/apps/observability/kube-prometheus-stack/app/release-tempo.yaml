@@ -27,12 +27,47 @@ spec:
     keepHistory: false
   values:
     replicas: 1
+    config: | 
+      memberlist:
+        cluster_label: "{{ .Release.Name }}.{{ .Release.Namespace }}"
+      multitenancy_enabled: {{ .Values.tempo.multitenancyEnabled }}
+      usage_report:
+        reporting_enabled: {{ .Values.tempo.reportingEnabled }}
+      compactor:
+        compaction:
+          block_retention: {{ .Values.tempo.retention }}
+      distributor:
+        receivers:
+          {{- toYaml .Values.tempo.receivers | nindent 8 }}
+      ingester:
+        {{- toYaml .Values.tempo.ingester | nindent 6 }}
+      server:
+        {{- toYaml .Values.tempo.server | nindent 6 }}
+      storage:
+        {{- toYaml .Values.tempo.storage | nindent 6 }}
+      querier:
+        {{- toYaml .Values.tempo.querier | nindent 6 }}
+      query_frontend:
+        {{- toYaml .Values.tempo.queryFrontend | nindent 6 }}
+      overrides:
+        {{- toYaml .Values.tempo.overrides | nindent 6 }}
+        {{- if .Values.tempo.metricsGenerator.enabled }}
+      metrics_generator:
+            storage:
+              path: "/tmp/tempo"
+              remote_write:
+                - url: {{ .Values.tempo.metricsGenerator.remoteWriteUrl }}
+            traces_storage:
+              path: "/tmp/traces"
+        {{- end }}
+      stream_over_http_enabled: true
     tempo:
       reportingEnabled: false
+      retention: 12h
       metricsGenerator:
         # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
-        enabled: false
-        remoteWriteUrl: "http://prometheus-stack-kube-prom-prometheus.observability.svc.cluster.local:9090/api/v1/write"
+        enabled: true
+        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
     # # this is jaeger
     # # tempoQuery:
     # #   enabled: true

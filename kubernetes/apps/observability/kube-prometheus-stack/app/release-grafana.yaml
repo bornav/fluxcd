@@ -160,7 +160,8 @@ spec:
                 datasourceUid: loki
                 spanEndTimeShift: 1h
               streamingEnabled:
-                search: false
+                metrics: true
+                search: true
               traceQuery:
                 timeShiftEnabled: false
                 spanStartTimeShift: ''
@@ -349,3 +350,5 @@ spec:
       - natel-discrete-panel
     serviceMonitor:
       enabled: true
+    # service:
+    #   targetPort: 4181
