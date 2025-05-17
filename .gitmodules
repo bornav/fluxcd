@@ -1,0 +1,3 @@
+[submodule "nix/vxlan-wireguard-mesh"]
+	path = nix/vxlan-wireguard-mesh
+	url = git@github.com:bornav/vxlan-wireguard-mesh.git
