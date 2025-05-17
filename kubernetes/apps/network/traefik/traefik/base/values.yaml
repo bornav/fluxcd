@@ -49,12 +49,13 @@ gateway:
 service:
   single: true
   annotations:
-    lbipam.cilium.io/ips: "10.99.10.11,10.99.10.12,10.99.10.13,10.49.22.2"
+    lbipam.cilium.io/ips: "10.99.10.11,10.99.10.12,10.99.10.13,10.49.22.2,10.129.16.100"
   # spec:
   #   loadBalancerIP: "10.49.22.2"
   labels: 
     service-type: ingress-static
     service-type/alt: wireguard-static
+    service-type/vxlan: static
     
 ingressClass:
   enabled: true

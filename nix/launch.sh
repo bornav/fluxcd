@@ -2,6 +2,8 @@
 
 host_init=oracle-km1-1-init
 hosts=("oracle-km1-1" "contabo-1" "oracle-bv1-1")
+inventory="../inventory.yml"
+
 bootstrap(){
     nixos-rebuild switch --flake ~/git/kubernetes/fluxcd#$host_init --target-host oracle-km1-1 # TODO make this index of hosts [0]
 }
@@ -53,18 +55,18 @@ build(){
 }
 wg-mesh(){
     cd vxlan-wireguard-mesh
-	ansible-playbook wireguard.yml -i "inventory.yml"
+	ansible-playbook wireguard.yml -i $inventory
     echo "sleeping before ping"
     sleep 15
-	ansible-playbook ping.yml -i "inventory.yml"
+	ansible-playbook ping.yml -i $inventory
     cd ../
 }
 vxlan-mesh(){
     cd vxlan-wireguard-mesh
-	ansible-playbook vxlan_systemd.yml -i "inventory.yml"
+	ansible-playbook vxlan_systemd.yml -i $inventory
     echo "sleeping before ping"
     sleep 5
-	ansible-playbook ping_vxlan.yml -i "inventory.yml"
+	ansible-playbook ping_vxlan.yml -i $inventory
     cd ../
 }
 if [[ $1 == test ]]; then

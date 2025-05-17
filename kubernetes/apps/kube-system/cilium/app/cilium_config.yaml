@@ -17,7 +17,11 @@ spec:
     - key: service-type/alt
       operator: NotIn
       values:
-      -  wireguard-static
+      - wireguard-static
+    - key: service-type/vxlan
+      operator: NotIn
+      values:
+      - static
 # ---
 # apiVersion: "cilium.io/v2alpha1"
 # kind: CiliumLoadBalancerIPPool
@@ -77,16 +81,39 @@ spec:
       service-type/alt: wireguard-static
 ---
 apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "ingress-pool-static-vxlan"
+spec:
+  allowFirstLastIPs: "No"
+  blocks:
+  - cidr: "10.129.16.0/24"
+  serviceSelector:
+    matchLabels:
+      service-type/vxlan: static
+---
+apiVersion: "cilium.io/v2alpha1"
 kind: CiliumL2AnnouncementPolicy
 metadata:
-  name: policy1
+  name: wireguard-announcment
 spec:
   serviceSelector:
     matchLabels:
       service-type/alt: wireguard-static
   interfaces:
-  - ^eth[0-9]+
-  - ^ens[0-9]+
   - ^wg[0-9]+
+  externalIPs: true
+  loadBalancerIPs: true
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: vxlan-announcment
+spec:
+  serviceSelector:
+    matchLabels:
+      service-type/vxlan: static
+  interfaces:
+  - ^vx[0-9]+
   externalIPs: true
   loadBalancerIPs: true

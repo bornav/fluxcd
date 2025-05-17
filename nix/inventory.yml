@@ -47,7 +47,6 @@ all:
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.51
-      vxlan_ip: 10.129.16.4
 
     lighthouse: # lighthouse
       pipelining: true
