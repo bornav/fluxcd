@@ -26,7 +26,12 @@ ports:
 #     port: 8000
 #     redirectTo:
 #       port: websecure
-#   websecure:
+  websecure:
+    proxyProtocol:
+      trustedIPs:
+        - "10.99.10.254"
+        - "10.129.16.254"
+      insecure: false
 #     port: 8443
 #     exposedPort: 8443
 #     tls:

@@ -102,21 +102,22 @@ in
         option tcplog
         tcp-request inspect-delay 5s
         tcp-request content accept if { req_ssl_hello_type 1 }
-        # use_backend tls_backends if { req_ssl_sni -i headscale.icylair.com/admin } # seems to work
+        # use_backend 443-forward if { req_ssl_sni -i headscale.icylair.com/admin } # seems to work
         use_backend headscale_backend if { req_ssl_sni -i headscale.icylair.com }
         # Load balancing between two backend servers
-        default_backend tls_backends
-    # Backend servers (TLS termination happens here)
-    backend tls_backends
+        default_backend 443-forward
+
+    backend 443-forward
         mode tcp
         balance leastconn
-                
-        server vxlan-lb 10.129.16.100:443 check
+        option ssl-hello-chk
+
+        server vxlan-lb 10.129.16.100:443 send-proxy-v2 check
 
          # Back-up nodes - activated only if *all* non-backup servers are down
-        server server1 10.99.10.11:443 check backup
-        server server2 10.99.10.12:443 check backup
-        server server3 10.99.10.13:443 check backup
+        server oracle-km1-1 10.99.10.11:443 send-proxy-v2 check backup
+        server oracle-bv1-1 10.99.10.12:443 send-proxy-v2 check backup
+        server contabo-1 10.99.10.13:443 send-proxy-v2 check backup
 
         # Optional: once server1 recovers, instantly shift traffic back to it
         option  allbackups        # let backups share traffic only while primary is dead
