@@ -52,11 +52,19 @@ build(){
     done
 }
 wg-mesh(){
-    cd automation-wireguard
-	ansible-playbook wireguard.yml -i "inventories/inventory.yml"
+    cd vxlan-wireguard-mesh
+	ansible-playbook wireguard.yml -i "inventory.yml"
     echo "sleeping before ping"
     sleep 15
-	ansible-playbook ping.yml -i "inventories/inventory.yml"
+	ansible-playbook ping.yml -i "inventory.yml"
+    cd ../
+}
+vxlan-mesh(){
+    cd vxlan-wireguard-mesh
+	ansible-playbook vxlan_systemd.yml -i "inventory.yml"
+    echo "sleeping before ping"
+    sleep 5
+	ansible-playbook ping_vxlan.yml -i "inventory.yml"
     cd ../
 }
 if [[ $1 == test ]]; then
@@ -65,6 +73,10 @@ if [[ $1 == test ]]; then
     try_update
 elif [[ $1 == wg-mesh ]]; then
     wg-mesh
+    exit
+elif [[ $1 == mesh ]]; then
+    wg-mesh
+    vxlan-mesh
     exit
 elif [[ $1 == build ]]; then
     build
