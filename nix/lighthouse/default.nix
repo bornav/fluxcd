@@ -22,6 +22,7 @@ in
     inputs.disko.nixosModules.disko
     ./hardware-configuration.nix
     ./disk-config.nix
+    ./vxlan.nix
     {_module.args.disks = [ "/dev/sda" ];}
 
 
@@ -108,15 +109,17 @@ in
     # Backend servers (TLS termination happens here)
     backend tls_backends
         mode tcp
-        balance roundrobin
-        option ssl-hello-chk
-        # Define the backend servers
-        # server server1 oracle-bv1-1.cloud.icylair.com:443 check
-        # server server2 oracle-km1-1.cloud.icylair.com:443 check
-        # server server3 contabo-1.cloud.icylair.com:443 check
-        server server1 10.99.10.11:443 check
-        server server2 10.99.10.12:443 check
-        server server3 10.99.10.13:443 check
+        balance leastconn
+                
+        server vxlan-lb 10.129.16.100:443 check
+
+         # Back-up nodes - activated only if *all* non-backup servers are down
+        server server1 10.99.10.11:443 check backup
+        server server2 10.99.10.12:443 check backup
+        server server3 10.99.10.13:443 check backup
+
+        # Optional: once server1 recovers, instantly shift traffic back to it
+        option  allbackups        # let backups share traffic only while primary is dead
 
     frontend 80-forward
         bind *:80
@@ -125,7 +128,7 @@ in
         default_backend 80_backends
     backend 80_backends
         mode tcp
-        balance roundrobin
+        balance leastconn
         server server1 oracle-bv1-1.cloud.icylair.com:80 check
         server server2 oracle-km1-1.cloud.icylair.com:80 check
         server server3 contabo-1.cloud.icylair.com:80 check
@@ -445,4 +448,20 @@ in
       "ebe7fbd44549ab73"
     ];
   };
+
+  # systemd.services.expose-bridge-binary = {
+  #   description = "expose binary";
+  #   wantedBy = [ "multi-user.target" ];
+  #   after = [ "local-fs.target" ];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     RemainAfterExit = true;
+  #     ExecStart = "${pkgs.bash}/bin/bash -c 'ln -s  ${pkgs.iproute2}/bin/bridge /bin/bridge2'";
+  #   };
+  # };
+
+
+  # systemd.tmpfiles.rules = [
+  #   "L+ ${pkgs.iproute2}/bin - - - - /root/bin/"                   # exposes binaryes
+  # ];
 } 
