@@ -22,7 +22,7 @@ metadata:
     service.cilium.io/global: "true"
     traefik.ingress.kubernetes.io/service.nativelb: "true"
 spec:
-  type: LoadBalancer
+  # type: LoadBalancer
   # selector:
   #   app: ai-stack
   ports:
