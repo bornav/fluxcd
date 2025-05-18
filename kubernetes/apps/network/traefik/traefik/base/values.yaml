@@ -212,6 +212,8 @@ resources:
     memory: '6Gi'
     cpu: '3000m'
 tracing:
+  addInternals: true
+  serviceName: traefik-cluster-prod
   otlp:
     enabled: true
     http:
