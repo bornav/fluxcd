@@ -8,7 +8,7 @@
 #   1password-credentials.json: {{ ENV.ONEPASSWORD_CREDENTIALS }}
 #   token: {{ ENV.ONEPASSWORD_CONNECT_TOKEN }}
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: SecretStore
 metadata:
   name: vault-backend
@@ -23,7 +23,7 @@ spec:
           name: "vault-token"
           key: "token"
 # ---  # example secret
-# apiVersion: external-secrets.io/v1beta1
+# apiVersion: external-secrets.io/v1
 # kind: ExternalSecret
 # metadata:
 #   name: vault-example
@@ -54,7 +54,7 @@ spec:
 
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/clustersecretstore_v1beta1.json
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
   name: vault-backend-cross-namespaces-configmap
@@ -70,7 +70,7 @@ spec:
           namespace: xauth
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/clustersecretstore_v1beta1.json
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
   name: vault-backend-cross-namespaces-secret
