@@ -11,6 +11,7 @@ spec:
     - name: longhorn-system-base
     - name: volsync
   suspend: false
+  wait: true
   prune: true
   sourceRef:
     kind: GitRepository

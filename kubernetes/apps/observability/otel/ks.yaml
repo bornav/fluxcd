@@ -28,12 +28,13 @@ metadata:
 spec:
   path: ./kubernetes/apps/observability/otel/otel-operator
   prune: true
+  wait: true
+  # wait: false # no flux ks dependents
   suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
-  wait: false # no flux ks dependents
   interval: 30m
   retryInterval: 15m
   timeout: 5m

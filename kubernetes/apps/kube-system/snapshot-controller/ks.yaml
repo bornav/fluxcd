@@ -8,6 +8,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/kube-system/snapshot-controller/app
   prune: true
+  wait: true
   suspend: false
   sourceRef:
     kind: GitRepository

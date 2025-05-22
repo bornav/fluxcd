@@ -116,6 +116,8 @@ elif [[ $1 == deploy_all ]]; then
     echo "atempting update step"
     bootstrap
     update
+    echo "atempting vxlan meshing"
+    vxlan-mesh
     echo "done step"
     exit
 fi

@@ -8,6 +8,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/xauth/cert-manager/cert-manager/base
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -33,7 +34,7 @@ spec:
     - name: cert-manager-base
   path: ./kubernetes/apps/xauth/cert-manager/cert-manager/addons
   prune: true
-  wait: true
+  # wait: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
