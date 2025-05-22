@@ -108,5 +108,5 @@ spec:
             secretName: wireguard
             defaultMode: 0777
       # dnsPolicy: Default
-      imagePullSecrets:
-        - name: docker-registry
+      # imagePullSecrets:
+      #   - name: docker-registry
