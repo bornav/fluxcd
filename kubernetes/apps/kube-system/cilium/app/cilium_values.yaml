@@ -24,7 +24,12 @@ ipv4NativeRoutingCIDR: "10.52.0.0/16"
 # routingMode: "native"
 # autoDirectNodeRoutes: true
 kubeProxyReplacement: "true"
+nodeinit:
+  enabled: true
+# cleanBpfState: true
+# cleanState: true
 bpf:
+  datapathMode: netkit
   masquerade: true
   lbExternalClusterIP: true
   
