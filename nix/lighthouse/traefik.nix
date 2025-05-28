@@ -18,7 +18,7 @@
   log:
     level: DEBUG
   api:
-    # dashboard: true when these 2 uncommented dashboard avaiable on http://159.69.206.117:9000/dashboard/
+    # dashboard: true #when these 2 uncommented dashboard avaiable on http://159.69.206.117:9000/dashboard/
     # insecure: true
   entryPoints:
     traefik:
@@ -38,6 +38,13 @@
     file:
       filename: /etc/traefik/traefik_dynamic.yaml
       watch: true
+  tracing:
+    serviceName: traefik-lighthouse
+    otlp:
+      http:
+        tls:
+          insecureSkipVerify: true
+        endpoint: http://10.129.16.102:4318/v1/traces  
   '';
   # This one can be modified without svc restart
   environment.etc."traefik/traefik_dynamic.yaml".text = lib.mkForce  ''
