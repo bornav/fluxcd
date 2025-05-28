@@ -1,17 +1,4 @@
 { config, lib, host, inputs, pkgs, pkgs-unstable, pkgs-master, ... }:
-let
-  format = pkgs.formats.yaml {};
-
-  # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
-  settings = lib.recursiveUpdate config.services.headscale.settings {
-    # acme_email = "/dev/null";
-    tls_cert_path = "/certs/tls.crt";
-    tls_key_path = "/certs/tls.key";
-    policy.path = "/dev/null";
-    oidc.client_secret_path = "/headscale_key";
-  };
-  headscaleConfig = format.generate "headscale.yml" settings;
-in
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager {
@@ -23,6 +10,9 @@ in
     ./hardware-configuration.nix
     ./disk-config.nix
     ./vxlan.nix
+    ./traefik.nix
+    ./haproxy.nix
+    ./headscale.nix
     {_module.args.disks = [ "/dev/sda" ];}
 
 
@@ -69,159 +59,6 @@ in
   #       }
   #   }
   # '';
-
-
-  services.haproxy.enable = true;
-  services.haproxy.config = ''
-    global
-        log /dev/log    local0
-        log /dev/log    local1 notice
-        # chroot /var/lib/haproxy
-        stats socket /run/haproxy/admin.sock mode 660 level admin
-        stats timeout 30s
-        user haproxy
-        group haproxy
-        daemon
-
-        # SSL-related options to improve performance and security
-        tune.ssl.default-dh-param 2048
-
-    # Default settings
-    defaults
-        log     global
-        option  tcplog
-        option  dontlognull
-        timeout connect 5s
-        timeout client  30s
-        timeout server  30s
-    # Frontend for TLS passthrough
-
-    frontend https-in
-        bind *:443
-        mode tcp
-        option tcplog
-        tcp-request inspect-delay 5s
-        tcp-request content accept if { req_ssl_hello_type 1 }
-        # use_backend 443-forward if { req_ssl_sni -i headscale.icylair.com/admin } # seems to work
-        use_backend headscale_backend if { req_ssl_sni -i headscale.icylair.com }
-        # Load balancing between two backend servers
-        default_backend 443-forward
-
-    backend 443-forward
-        mode tcp
-        balance leastconn
-        option ssl-hello-chk
-
-        server vxlan-lb 10.129.16.100:443 send-proxy-v2 check
-
-         # Back-up nodes - activated only if *all* non-backup servers are down
-        server oracle-km1-1 10.99.10.11:443 send-proxy-v2 check backup
-        server oracle-bv1-1 10.99.10.12:443 send-proxy-v2 check backup
-        server contabo-1 10.99.10.13:443 send-proxy-v2 check backup
-
-        # Optional: once server1 recovers, instantly shift traffic back to it
-        option  allbackups        # let backups share traffic only while primary is dead
-
-    frontend 80-forward
-        bind *:80
-        mode tcp
-        option tcplog
-        default_backend 80_backends
-    backend 80_backends
-        mode tcp
-        balance leastconn
-        server server1 oracle-bv1-1.cloud.icylair.com:80 check
-        server server2 oracle-km1-1.cloud.icylair.com:80 check
-        server server3 contabo-1.cloud.icylair.com:80 check
-
-    frontend 6443-forward
-        bind *:6443
-        mode tcp
-        option tcplog
-        default_backend 6443_backends
-    backend 6443_backends
-        mode tcp
-        balance roundrobin
-        option tcp-check
-        server control-plane-1 oracle-km1-1.cloud.icylair.com:6443 check
-        server control-plane-2 oracle-bv1-1.cloud.icylair.com:6443 check
-        server control-plane-3 contabo-1.cloud.icylair.com:6443 check
-    
-    frontend control_plane
-        bind *:9345
-        mode tcp
-        option tcplog
-        default_backend control_plane_backend
-    backend control_plane_backend
-        mode tcp
-        balance roundrobin
-        option tcp-check
-
-        #     mode tcp
-        #     balance roundrobin
-        #     option httpchk
-        #     http-check connect ssl alpn h2
-        #     http-check send meth HEAD uri /cacerts  # this works but unneccesary
-
-        server control-plane-1 10.99.10.11:9345 check
-        server control-plane-2 10.99.10.12:9345 check
-        server control-plane-3 10.99.10.13:9345 check
-    
-    frontend headscale
-        bind *:8080
-        mode tcp
-        option tcplog
-        default_backend headscale_backend
-    backend headscale_backend
-        mode tcp
-        server server1 127.0.0.1:10023
-        
-    # frontend udp-9987
-    #     bind *:9987 udp
-    #     mode tcp
-    #     option tcplog
-    #     default_backend udp_9987_backend
-    # backend udp_9987_backend
-    #     mode tcp
-    #     balance roundrobin
-    #     server server1 oracle-bv1-1.cloud.icylair.com:9987 check
-    #     server server2 oracle-km1-1.cloud.icylair.com:9987 check
-
-    # frontend tcp-30033
-    #     bind *:30033
-    #     mode tcp
-    #     option tcplog
-    #     default_backend tcp_30033_backend
-    # backend tcp_30033_backend
-    #     mode tcp
-    #     balance roundrobin
-    #     server server1 oracle-bv1-1.cloud.icylair.com:30033 check
-    #     server server2 oracle-km1-1.cloud.icylair.com:30033 check
-    
-    # frontend ssh-forward
-    #     bind *:10022
-    #     mode tcp
-    #     option tcplog
-    #     default_backend ssh_forward_backend
-    # backend ssh_forward_backend
-    #     mode tcp
-    #     balance roundrobin
-    #     server server1 oracle-bv1-1.cloud.icylair.com:22 check
-    #     server server2 oracle-km1-1.cloud.icylair.com:22 check
-    #     server server3 contabo-1.cloud.icylair.com:22 check
-
-    # frontend catch_rest
-    #     # bind *:1-21
-    #     bind *:8443-65535
-    #     mode tcp
-    #     option tcplog
-    #     default_backend catch_rest
-    # backend catch_rest
-    #     mode tcp
-    #     balance roundrobin
-    #     server server1 oracle-bv1-1.cloud.icylair.com check
-    #     server server2 oracle-km1-1.cloud.icylair.com check
-    '';
   networking.hostName = host.hostName; # Define your hostname.
   programs.nh.enable = true;
   services = {
@@ -279,7 +116,6 @@ in
     par2cmdline
     rsync
     vim
-    haproxy
     nfs-utils
     wireguard-tools
     python3
@@ -385,64 +221,7 @@ in
   #     reverse_proxy * 127.0.0.1:8080
   #   '';
   # };
-  services.headscale = {
-    enable = true;
-    address = "0.0.0.0";
-    port = 10023;
-    settings = {
-      log.level = "debug";
-      server_url = "https://headscale.icylair.com:8080";
-      dns.base_domain = "icylair-local.com";
-      tls_cert_path = "/certs/tls.crt";
-      tls_key_path = "/certs/tls.key";
-      oidc = {
-        issuer = "https://sso.icylair.com/realms/master";
-        client_id = "headscale";
-        client_secret_path = "/headscale_key";
-      };
-    };
-  };
-  # networking.firewall.trustedInterfaces = [config.services.tailscale.interfaceName];
-  # services.headplane = {
-  #   enable = true;
-  #   agent = {
-  #     # As an example only.
-  #     # Headplane Agent hasn't yet been ready at the moment of writing the doc.
-  #     enable = false;
-  #     settings = {
-  #       HEADPLANE_AGENT_DEBUG = true;
-  #       HEADPLANE_AGENT_HOSTNAME = "localhost";
-  #       HEADPLANE_AGENT_TS_SERVER = "https://example.com";
-  #       HEADPLANE_AGENT_TS_AUTHKEY = "xxxxxxxxxxxxxx";
-  #       HEADPLANE_AGENT_HP_SERVER = "https://example.com/admin/dns";
-  #       HEADPLANE_AGENT_HP_AUTHKEY = "xxxxxxxxxxxxxx";
-  #     };
-  #   };
-  #   settings = {
-  #     server = {
-  #       host = "127.0.0.1";
-  #       port = 3000;
-  #       cookie_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-  #       cookie_secure = false;
-  #     };
-  #     headscale = {
-  #       url = "https://headscale.icylair.com";
-  #       config_path = "${headscaleConfig}";
-  #       config_strict = true;
-  #     };
-  #     integration.proc.enabled = true;
-  #     # oidc = {
-  #     #   issuer = "https://oidc.example.com";
-  #     #   client_id = "headplane";
-  #     #   client_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-  #     #   disable_api_key_login = true;
-  #     #   # Might needed when integrating with Authelia.
-  #     #   token_endpoint_auth_method = "client_secret_basic";
-  #     #   headscale_api_key = "xxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-  #     #   redirect_uri = "https://oidc.example.com/admin/oidc/callback";
-  #     # };
-  #   };
-  # };  
+  
   services.zerotierone = {
     enable = true;
     joinNetworks = [
@@ -464,5 +243,5 @@ in
 
   # systemd.tmpfiles.rules = [
   #   "L+ ${pkgs.iproute2}/bin - - - - /root/bin/"                   # exposes binaryes
-  # ];
+  # ];  
 } 
