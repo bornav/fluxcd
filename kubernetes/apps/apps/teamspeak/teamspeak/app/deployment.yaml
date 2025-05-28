@@ -79,6 +79,10 @@ metadata:
   # labels:
   #   app: teamspeak
   name: teamspeak
+  labels: 
+    service-type/vxlan: static
+  annotations:
+    lbipam.cilium.io/ips: "10.129.16.101"
 spec:
   selector:
     app: teamspeak
