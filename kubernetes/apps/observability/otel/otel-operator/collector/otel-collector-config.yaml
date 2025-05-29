@@ -126,6 +126,7 @@ spec:
           exporters: [debug]
         logs:
           receivers: [otlp,filelog]
+          # receivers: [otlp]
           processors: [batch, k8sattributes]
           exporters: [debug, otlphttp]
       telemetry:

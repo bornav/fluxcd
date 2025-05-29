@@ -1,0 +1,214 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana-alloy-operator
+  namespace: observability
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: alloy-operator
+      version: 0.2.9
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values: []
+---
+--- # TODO move this into seperate spep cus crd will fail cus of this
+apiVersion: collectors.grafana.com/v1alpha1
+kind: Alloy
+metadata:
+  name: alloy-logs
+spec:
+  controller:
+    type: daemonset
+    tolerations:
+      - effect: NoSchedule
+        operator: Exists
+
+  alloy:
+    mounts:
+      varlog: true
+    extraEnv:
+      - name: CLUSTER_NAME
+        value: daemonset-test-cluster
+    configMap:
+      content: |-
+        prometheus.exporter.self "default" {}
+
+        prometheus.scrape "default" {
+          targets    = prometheus.exporter.self.default.targets
+          forward_to = [prometheus.remote_write.local_prom.receiver]
+        }
+
+        prometheus.remote_write "local_prom" {
+          endpoint {
+            url = "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write" 
+
+            write_relabel_config {
+              replacement = sys.env("CLUSTER_NAME")
+              target_label = "cluster"
+            }
+          }
+        }
+        loki.relabel "journal" {
+          forward_to = []
+
+          rule {
+            source_labels = ["__journal__systemd_unit"]
+            target_label  = "unit"
+          }
+          rule {
+            source_labels = ["__journal__hostname"]
+            target_label = "systemd_hostname"
+          }
+          rule {
+            source_labels = ["__journal__transport"]
+            target_label = "systemd_transport"
+          }
+        }
+
+        loki.source.journal "host_logs" {
+          forward_to    = [loki.write.loki.receiver]
+          relabel_rules = loki.relabel.journal.rules
+          max_age       = "1h"
+          path          = "/var/log/journal"
+          labels        = {component = "host-logs.loki.source.journal"}
+        }
+
+        loki.write "loki" {
+          endpoint {
+            url = "http://grafana-loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+          }
+        }
+
+
+# ---
+# apiVersion: collectors.grafana.com/v1alpha1
+# kind: Alloy
+# metadata:
+#   name: alloy-logs
+# spec:
+#   controller:
+#     type: daemonset
+#     tolerations:
+#       - effect: NoSchedule
+#         operator: Exists
+
+#   alloy:
+#     mounts:
+#       varlog: true
+#     extraEnv:
+#       - name: CLUSTER_NAME
+#         value: daemonset-test-cluster
+#     configMap:
+#       content: |-
+#         prometheus.exporter.self "default" {}
+
+#         prometheus.scrape "default" {
+#           targets    = prometheus.exporter.self.default.targets
+#           forward_to = [prometheus.remote_write.local_prom.receiver]
+#         }
+
+#         prometheus.remote_write "local_prom" {
+#           endpoint {
+#             url = "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write" 
+
+#             write_relabel_config {
+#               replacement = sys.env("CLUSTER_NAME")
+#               target_label = "cluster"
+#             }
+#           }
+#         }
+
+#         discovery.kubernetes "pod" {
+#           role = "pod"
+#         }
+
+#         discovery.relabel "pod_logs" {
+#           targets = discovery.kubernetes.pod.targets
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_namespace"]
+#             target_label = "namespace"
+#           }
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_pod_name"]
+#             target_label = "pod"
+#           }
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_pod_container_name"]
+#             target_label = "container"
+#           }
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+#             target_label = "app"
+#           }
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_container_name"]
+#             separator = "/"
+#             replacement = "$1"
+#             target_label = "job"
+#           }
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+#             separator = "/"
+#             replacement = "/var/log/pods/*$1/*.log"
+#             target_label = "__path__"
+#           }
+
+#           rule {
+#             source_labels = ["__meta_kubernetes_pod_container_id"]
+#             target_label = "container_runtime"
+#             regex = "^(\\S+):\\/\\/.+$"
+#             replacement = "$1"
+#           }
+#         }
+
+#         loki.source.kubernetes "pod_logs" {
+#           targets    = discovery.relabel.pod_logs.output
+#           forward_to = [loki.process.pod_logs.receiver]
+#         }
+
+#         loki.process "pod_logs" {
+#           stage.static_labels {
+#             values = {
+#               cluster = sys.env("CLUSTER_NAME"),
+#             }
+#           }
+
+#           forward_to = [loki.write.loki.receiver]
+#         }
+
+
+#         loki.source.journal "host_logs" {
+#           forward_to    = [loki.write.loki.receiver]
+#           max_age       = "12h"
+#           path          = "/var/log/journal"
+#           labels        = {component = "loki.source.journal"}
+#         }
+
+#         loki.write "loki" {
+#           endpoint {
+#             url = "http://grafana-loki.observability.svc.cluster.local:3100/loki/api/v1/push"
+#           }
+#         }
+
