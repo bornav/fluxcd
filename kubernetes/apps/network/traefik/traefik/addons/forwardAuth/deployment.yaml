@@ -7,7 +7,7 @@ metadata:
   labels:
     app: *name
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: *name
@@ -19,6 +19,16 @@ spec:
         app: *name
     spec:
       shareProcessNamespace: true
+      initContainers:
+        - name: wait-for-endpoint
+          image: alpine/curl:8.14.1
+          command: ['sh', '-c',
+            'until curl -s -o /dev/null -w "%{http_code}" $ENDPOINT | grep $HTTP_CODE; do sleep 1; done']
+          env:
+            - name: ENDPOINT
+              value: keycloak.xauth.svc.cluster.local/admin/master/console/
+            - name: HTTP_CODE
+              value: "200"
       containers:
         - name: *name
           # command:
@@ -43,7 +53,7 @@ spec:
             - name: OTEL_GO_AUTO_TARGET_EXE
               value: /usr/bin/traefik-forward-auth
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "https://otel-col.cloud.icylair.com"
+              value: "http://opentelemetry-collector.observability.svc.cluster.local:4318"
             - name: OTEL_SERVICE_NAME
               value: "traefik-forward-auth"
             # - name: OTEL_PROPAGATORS
