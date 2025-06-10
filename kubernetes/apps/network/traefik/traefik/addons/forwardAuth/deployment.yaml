@@ -47,7 +47,7 @@ spec:
               memory: '500Mi'
               cpu: '800m'
         - name: go-instrumentation-sidecart
-          image: otel/autoinstrumentation-go:v0.21.0
+          image: otel/autoinstrumentation-go:v0.22.0
           imagePullPolicy: IfNotPresent
           env:
             - name: OTEL_GO_AUTO_TARGET_EXE
