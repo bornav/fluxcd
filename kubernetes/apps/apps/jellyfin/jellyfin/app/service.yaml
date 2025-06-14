@@ -29,6 +29,3 @@ spec:
     targetPort: 8096
     name: jellyfin-tcp
     protocol: TCP
-  - port: 8920
-    targetPort: 8920
-    name: https-tcp
