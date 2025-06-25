@@ -130,5 +130,5 @@ spec:
           processors: [batch, k8sattributes]
           exporters: [debug, otlphttp]
       telemetry:
-        metrics:
-          address: ${env:MY_POD_IP}:8888
+        metrics: []
+          # address: ${env:MY_POD_IP}:8888
