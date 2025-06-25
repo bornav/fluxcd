@@ -26,6 +26,7 @@ in
       log.level = "debug";
       server_url = "https://headscale.icylair.com:8080";
       dns.base_domain = "icylair-local.com";
+      dns.nameserver.global = "icylair-local.com";
       tls_cert_path = "/certs/tls.crt";
       tls_key_path = "/certs/tls.key";
       oidc = {

@@ -16,8 +16,8 @@
   config = lib.mkMerge [
     (lib.mkIf (config.rke2.server) {
       services.rke2 = {
-        # package = pkgs.rke2;
-        package = pkgs-unstable.rke2;
+        package = pkgs.rke2_1_32;
+        # package = pkgs-unstable.rke2;
         # package = (pkgs.callPackage ../../modules/custom_pkg/rke2_custom.nix {
         #   rke2Version = "1.32.0+rke2r1";
         #   rke2Commit = "1182e7eb91b27b1686e69306eb2e227928a27a38";
