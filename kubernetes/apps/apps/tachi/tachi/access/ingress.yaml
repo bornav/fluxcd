@@ -8,7 +8,7 @@ metadata:
     # app.kubernetes.io/instance: *app
     kubernetes.io/ingress.class: traefik
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
