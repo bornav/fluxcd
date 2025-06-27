@@ -15,6 +15,16 @@ metadata:
 spec:
   ingressClassName: traefik-external
   rules:
+    - host: &host tachi.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tachi-service
+                port:
+                  number: 4567
     - host: &host tachi.cloud.icylair.com
       http:
         paths:
@@ -28,4 +38,5 @@ spec:
   tls:
   - hosts:
       - tachi.icylair.com
+      - tachi.cloud.icylair.com
     secretName: icylair-com-all-prod
