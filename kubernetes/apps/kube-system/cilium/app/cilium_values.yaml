@@ -140,7 +140,6 @@ k8sClientRateLimit: # so we dont get rate limited
 #     annotations:
 #       io.cilium/lb-ipam-ips: 10.49.20.55
 
-
 enableIPv4Masquerade: true
 # enableIPv4BIGTCP: true            # this breaks
 # enableMasqueradeRouteSource: true #
@@ -154,7 +153,6 @@ envoy:
 
 # l7Proxy: true
 
-
 # prometheus:
 #   enabled: true
 #   port: 9962
@@ -163,10 +161,7 @@ envoy:
 #     # This requires the prometheus CRDs to be available (see https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml)
 #     enabled: true
 
-
-
 ###testing
-
 dashboards:
   enabled: true
 prometheus:
