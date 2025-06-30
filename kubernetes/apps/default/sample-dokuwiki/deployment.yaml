@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: dokuwiki
-        image: docker.io/bitnami/dokuwiki:20240206.1.0-debian-12-r21
+        image: docker.io/bitnami/dokuwiki
         env:
         - name: DOKUWIKI_USERNAME
           value: user
