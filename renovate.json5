@@ -4,6 +4,7 @@
     "config:recommended",
     "github>bornav/fluxcd//.renovate/ignorePaths.json5",
     "github>bornav/fluxcd//.renovate/rest.json5",
+    "github>bornav/fluxcd//.renovate/groups.json5",
   ],
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
