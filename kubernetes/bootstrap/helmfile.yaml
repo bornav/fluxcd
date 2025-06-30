@@ -7,6 +7,10 @@ helmDefaults:
   waitForJobs: true
   # waitRetries: 3 # Not supported by Helm yet
 
+repositories:
+ - name: cilium
+   url: https://helm.cilium.io/
+
 releases:
   - name: cilium
     namespace: kube-system
