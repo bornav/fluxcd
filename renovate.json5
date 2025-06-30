@@ -1,26 +1,26 @@
 {
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    'config:recommended',
-    'github>bornav/fluxcd//.renovate/ignorePaths.json5',
-    'github>bornav/fluxcd//.renovate/rest.json5',
+    "config:recommended",
+    "github>bornav/fluxcd//.renovate/ignorePaths.json5",
+    "github>bornav/fluxcd//.renovate/rest.json5",
   ],
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
   minimumReleaseAge: null,
   flux: {
     managerFilePatterns: [
-      '/kubernetes/.+\\.ya?ml$/',
+      "/kubernetes/.+\\.ya?ml$/",
     ],
   },
   'helm-values': {
     managerFilePatterns: [
-      '/kubernetes/.+\\.ya?ml$/',
+      "/kubernetes/.+\\.ya?ml$/",
     ],
   },
   kubernetes: {
     managerFilePatterns: [
-      '/kubernetes/.+\\.ya?ml$/',
+      "/kubernetes/.+\\.ya?ml$/",
     ],
   },
 }
