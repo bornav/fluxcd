@@ -48,10 +48,48 @@ spec:
                 number: 80
           path: /
           pathType: Prefix
+    - host: &host2 harbor.cloud.icylair.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /api/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /service/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /v2/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-core
+              port:
+                number: 80
+          path: /c/
+          pathType: Prefix
+        - backend:
+            service:
+              name: harbor-portal
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
   tls:
   - hosts:
       - *host
-      # - *host2
+      - *host2
     secretName: icylair-com-all-prod
 ---
 kind: Service

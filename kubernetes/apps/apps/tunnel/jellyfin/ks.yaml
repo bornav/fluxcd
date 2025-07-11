@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: openwebui-access
+  name: jellyfin-access
   namespace: flux-system
 spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-  path: ./kubernetes/apps/apps/tunnel/openwebui/openwebui/app
+  path: ./kubernetes/apps/apps/tunnel/jellyfin/access
   suspend: false
   prune: true
   sourceRef:

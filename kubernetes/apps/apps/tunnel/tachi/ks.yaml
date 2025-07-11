@@ -1,16 +1,15 @@
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: immich-access
+  name: tachi-access
   namespace: flux-system
 spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-  path: ./kubernetes/apps/apps/tunnel/immich/immich/access
-  suspend: false
+  path: ./kubernetes/apps/apps/tunnel/tachi/access
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository

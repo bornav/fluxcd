@@ -5,7 +5,7 @@ metadata:
   name: harbor-remote-access
   namespace: flux-system
 spec:
-  path: ./kubernetes/apps/storage/harbor/remote-access/ingress
+  path: ./kubernetes/apps/apps/tunnel/harbor/access
   dependsOn:
     - name: traefik-base
   prune: true
