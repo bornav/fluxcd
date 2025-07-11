@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: openwebui-access
+  name: immich-access
   namespace: flux-system
 spec:
   dependsOn:
     - name: traefik-base
     - name: traefik-addons
-  path: ./kubernetes/apps/apps/openwebui/openwebui/app
+  path: ./kubernetes/apps/apps/tunnel/immich/immich/access
   suspend: false
   prune: true
   sourceRef:
