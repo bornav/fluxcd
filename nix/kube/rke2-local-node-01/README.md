@@ -11,4 +11,5 @@ some weird fuckerry happened in the grub part of the configuration making it not
 
 ### rebuilds the flake with the new configuration
 `nixos-rebuild switch --flake ~/git/kubernetes/fluxcd#rke2-local-node-01 --use-substitutes --target-host rke2-local-node-01` #how i updated the config on the remote system
+`nh os switch ~/git/kubernetes/fluxcd -H rke2-local-node-01 --ask --target-host rke2-local-node-01`
 aditional note, on update, seems local ip addres always switches

@@ -116,6 +116,15 @@ in
   #   };
   #   wantedBy = [ "multi-user.target" ];
   # }; 
-
+  # networking = {
+  #   vlans = {
+  #     vlan12 = { id=12; interface="ens19"; };
+  #   };
+  #   interfaces.vlan12.useDHCP = true;
+  #   # interfaces.vlan12.ipv4.addresses = [{
+  #   #   address = "10.2.12.42";
+  #   #   prefixLength = 24;
+  #   # }];
+  # };
 
 }
