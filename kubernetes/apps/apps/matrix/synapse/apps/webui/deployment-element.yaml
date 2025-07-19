@@ -17,7 +17,7 @@ spec:
         app: *name
     spec:
       containers:
-        - image: vectorim/element-web:v1.11.40
+        - image: vectorim/element-web:v1.11.106
           imagePullPolicy: IfNotPresent
           name: *name
           readinessProbe:
