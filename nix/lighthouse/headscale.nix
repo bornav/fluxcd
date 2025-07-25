@@ -5,8 +5,8 @@ let
   # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
   settings = lib.recursiveUpdate config.services.headscale.settings {
     # acme_email = "/dev/null";
-    tls_cert_path = "/certs/tls.crt";
-    tls_key_path = "/certs/tls.key";
+    tls_cert_path = "/cert/tls.crt";
+    tls_key_path = "/cert/tls.key";
     policy.path = "/dev/null";
     oidc.client_secret_path = "/headscale_key";
   };
@@ -20,15 +20,18 @@ in
 
   services.headscale = {
     enable = true;
+    configPath = "/config.yaml";
     address = "0.0.0.0";
     port = 10023;
+    # user = "nix";
+    # group = "users";
     settings = {
       log.level = "debug";
       server_url = "https://headscale.icylair.com:8080";
       dns.base_domain = "icylair-local.com";
       dns.nameserver.global = "icylair-local.com";
-      tls_cert_path = "/certs/tls.crt";
-      tls_key_path = "/certs/tls.key";
+      tls_cert_path = "/cert/tls.crt";
+      tls_key_path = "/cert/tls.key";
       oidc = {
         issuer = "https://sso.icylair.com/realms/master";
         client_id = "headscale";
@@ -77,4 +80,14 @@ in
   #     # };
   #   };
   # };  
+
+
+  home-manager = {
+    backupFileExtension = "backup";
+    extraSpecialArgs = {inherit inputs;};
+    users.${host.vars.user} =  lib.mkMerge [
+      (import ./headscale_config.nix)
+      (import ../modules/home-manager/mutability.nix)
+    ];
+  };
 }
