@@ -5,7 +5,7 @@ to bootstrap run:
 ```sh
 kubectl apply --context context-prod --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/experimental-install.yaml
 kubectl apply --context context-prod --server-side -f https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.81.0/stripped-down-crds.yaml
-kubectl apply --context context-prod --server-side -f https://raw.githubusercontent.com/external-secrets/external-secrets/refs/heads/main/deploy/crds/bundle.yaml
+# kubectl apply --context context-prod --server-side -f https://raw.githubusercontent.com/external-secrets/external-secrets/refs/heads/main/deploy/crds/bundle.yaml
 ```
 
 
