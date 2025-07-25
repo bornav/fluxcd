@@ -11,6 +11,7 @@ spec:
     - name: cloudnative-pg
   path: ./kubernetes/apps/xauth/keycloak/new
   suspend: false
+  wait: true
   prune: true
   sourceRef:
     kind: GitRepository
