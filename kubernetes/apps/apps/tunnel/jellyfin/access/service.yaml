@@ -18,7 +18,7 @@ apiVersion: v1
 metadata:
   name: jellyfin-tcp
   labels:
-    service-type: ingress
+    service-type: ingress #TODO is this neccesary?
   annotations:
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
