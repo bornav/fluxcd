@@ -1,3 +1,4 @@
 ---
 serviceMonitor:
   create: true
+installCRDs: true # default
