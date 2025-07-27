@@ -12,7 +12,7 @@ spec:
     - name: volsync
   path: ./kubernetes/apps/apps/matrix/synapse/database
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -39,7 +39,7 @@ spec:
     - name: synapse-databases
   # targetNamespace: matrix-dev
   path: ./kubernetes/apps/apps/matrix/synapse/apps
-  suspend: false
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository
@@ -60,7 +60,7 @@ spec:
   dependsOn:
     - name: synapse-apps
   path: ./kubernetes/apps/apps/matrix/synapse/backup
-  suspend: false
+  suspend: true
   prune: true
   sourceRef:
     kind: GitRepository
