@@ -21,7 +21,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: renovate
-              image: 'renovate/renovate:41.42.2'
+              image: 'renovate/renovate:41.43.5'
               imagePullPolicy: IfNotPresent
               resources:
                 requests:
