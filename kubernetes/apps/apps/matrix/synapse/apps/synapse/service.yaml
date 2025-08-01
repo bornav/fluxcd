@@ -57,3 +57,24 @@ spec:
   selector:
     app: matrix-synapse
   type: LoadBalancer
+---
+apiVersion: v1 #unused but for future purpuse
+kind: Service
+metadata:
+  name: &name matrix-synapse-bridges
+  # annotations:
+  #   dns.alpha.kubernetes.io/external: 'matrix-synapse-bridges.apps.svc.cluster.local'
+  labels:
+    app: *name
+spec:
+  # loadBalancerIP: 10.0.0.239
+  ports:
+    - name: whatsapp
+      port: 29318
+      targetPort: 29318
+    - name: meta
+      port: 29319
+      targetPort: 29319
+  selector:
+    mautrix-bridge: "true"
+  type: ClusterIP

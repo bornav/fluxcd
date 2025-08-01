@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-database-service
+  annotations:
+    dns.alpha.kubernetes.io/external: matrix-database-service.apps.svc.cluster.local
+spec:
+  ports:
+    - name: http
+      targetPort: 5432
+      port: 5432
+  selector:
+    cnpg.io/cluster: pg-synapse
+    cnpg.io/instanceRole: primary
+    # app: matrix-database
+  type: ClusterIP

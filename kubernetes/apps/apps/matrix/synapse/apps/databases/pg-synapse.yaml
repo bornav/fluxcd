@@ -1,0 +1,86 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: matrix-pg-synapse
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 1
+  managed:
+    services:
+      disabledDefaultServices: ["ro", "r"] # removes 2 services
+      # additional: to create your own
+      # - selectorType: rw
+      #   serviceTemplate:
+      #     metadata:
+      #       name: "mydb-lb"
+      #       labels:
+      #         test-label: "true"
+      #       annotations:
+      #         test-annotation: "true"
+      #     spec:
+      #       type: LoadBalancer
+    roles:
+      - name: synapse
+        superuser: true
+        login: true
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: '150'
+  superuserSecret:
+    name: synapse-pg-superuser
+  storage:
+    size: &size 8Gi
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: *size
+      storageClassName: longhorn-storage
+      volumeMode: Filesystem
+  backup:
+    retentionPolicy: 7d
+    barmanObjectStore: &barmanObjectStore
+      destinationPath: s3://postgres-backups/pg_matrix/synapse
+      endpointURL: http://wireguard.network.svc.cluster.local:9010
+      s3Credentials:
+        accessKeyId:
+          name: minio-synapse-pg-backup-secrets
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: minio-synapse-pg-backup-secrets
+          key: AWS_SECRET_ACCESS_KEY
+      serverName: &currentCluster matrix-pg-synapse
+      # data:
+      #   compression: bzip2
+      # wal:
+      #   compression: bzip2
+      #   maxParallel: 8
+  externalClusters:
+    - name: &previousCluster matrix-pg-synapse
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
+  bootstrap:
+    initdb:
+      database: synapse
+      owner: synapse # make sure same as "username" in secret down
+      secret:
+        name: synapse-ext-new
+      encoding: UTF8
+      locale: C
+    # recovery:
+    #   source: *previousCluster
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: matrix-pg-synapse-backup
+spec:
+  schedule: "0 */130 * * * *"
+  backupOwnerReference: self
+  cluster:
+    name: matrix-pg-synapse

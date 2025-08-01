@@ -34,27 +34,27 @@ spec:
                 name: element-web
                 port:
                   number: 80
-    - host: cinny.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: cinny-web
-                port:
-                  number: 80
-    - host: cinny.cloud.icylair.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: cinny-web
-                port:
-                  number: 80
-    # - host: element2.cloud.icylair.com
+    # - host: cinny.icylair.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: cinny-web
+    #             port:
+    #               number: 80
+    # - host: cinny.cloud.icylair.com
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: cinny-web
+    #             port:
+    #               number: 80
+    # - host: element.cloud.icylair.com
     #   http:
     #     paths:
     #       - path: /
@@ -68,8 +68,7 @@ spec:
   - hosts:
       - element.icylair.com
       - element.cloud.icylair.com
-      - element2.cloud.icylair.com
-      - cinny.icylair.com
-      - cinny.cloud.icylair.com
+      # - cinny.icylair.com
+      # - cinny.cloud.icylair.com
     secretName: icylair-com-all-prod
   

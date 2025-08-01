@@ -9,10 +9,11 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: longhorn-system-base
-    - name: volsync
-  path: ./kubernetes/apps/apps/matrix/synapse/database
+    - name: external-secrets-vault-store
+  path: ./kubernetes/apps/apps/matrix/synapse/apps/databases
   prune: true
-  suspend: true
+  wait: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -36,10 +37,12 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
+    - name: traefik-base
     - name: synapse-databases
-  # targetNamespace: matrix-dev
-  path: ./kubernetes/apps/apps/matrix/synapse/apps
-  suspend: true
+    - name: longhorn-system-base
+  path: ./kubernetes/apps/apps/matrix/synapse/apps/synapse
+  suspend: false
+  wait: false
   prune: true
   sourceRef:
     kind: GitRepository
@@ -49,24 +52,24 @@ spec:
   retryInterval: 15m
   timeout: 10m
   targetNamespace: apps
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: synapse-backups
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: synapse-apps
-  path: ./kubernetes/apps/apps/matrix/synapse/backup
-  suspend: true
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: fluxcd-kubernetes
-    namespace: flux-system
-  interval: 15m
-  retryInterval: 15m
-  timeout: 10m
-  targetNamespace: apps
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: synapse-backups
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#     - name: synapse-apps
+#   path: ./kubernetes/apps/apps/matrix/synapse/backup
+#   suspend: true
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: fluxcd-kubernetes
+#     namespace: flux-system
+#   interval: 15m
+#   retryInterval: 15m
+#   timeout: 10m
+#   targetNamespace: apps

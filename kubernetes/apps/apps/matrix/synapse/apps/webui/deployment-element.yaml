@@ -6,6 +6,8 @@ metadata:
   name: &name element-web
   labels:
     app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 2
   selector:
@@ -17,12 +19,27 @@ spec:
         app: *name
     spec:
       containers:
-        - image: vectorim/element-web:v1.11.40
+        - name: *name
+          # image: vectorim/element-web:latest
+          image: vectorim/element-web:v1.11.89
+        # image: vectorim/element-web:v1.11.40
           imagePullPolicy: IfNotPresent
-          name: *name
+          ports:
+          - containerPort: 80
+            name: element
+            protocol: TCP
           readinessProbe:
-            tcpSocket:
-              port: 80
+              httpGet:
+                  path: /
+                  port: element
+              initialDelaySeconds: 2
+              periodSeconds: 3
+          livenessProbe:
+              httpGet:
+                  path: /
+                  port: element
+              initialDelaySeconds: 10
+              periodSeconds: 10
           resources:
             requests:
               memory: '1Mi'
@@ -33,49 +50,10 @@ spec:
           volumeMounts:
             - mountPath: /app/config.json
               name: element-config
-              subPath: config.json
+              subPath: config
       restartPolicy: Always
       volumes:
         - name: element-config
           configMap:
             name: element-config
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: element-default
-#   labels:
-#     app: element-default
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: element-default
-#   template:
-#     metadata:
-#       labels:
-#         app: element-default
-#     spec:
-#       containers:
-#         - image: vectorim/element-web:v1.11.40
-#           imagePullPolicy: IfNotPresent
-#           name: element-web-default
-#           readinessProbe:
-#             tcpSocket:
-#               port: 80
-#           resources:
-#             requests:
-#               memory: '1Mi'
-#               cpu: '1m'
-#             limits:
-#               memory: '3000Mi'
-#               cpu: '2500m'
-#           volumeMounts:
-#             - mountPath: /app/config.json
-#               name: element-config-bare
-#               subPath: config.json
-#       restartPolicy: Always
-#       volumes:
-#         - name: element-config-bare
-#           configMap:
-#             name: element-config-bare
+            defaultMode: 0777

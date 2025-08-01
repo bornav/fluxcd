@@ -10,43 +10,7 @@ metadata:
 spec:
   accessModes: ["ReadWriteOnce"]
   storageClassName: longhorn-storage
-  dataSourceRef:
-    kind: ReplicationDestination
-    apiGroup: volsync.backube
-    name: matrix-synapse-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
       storage: 6Gi
 status: {}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: matrix-bridges-data
-  name: matrix-bridges-data
-spec:
-  accessModes: ["ReadWriteOnce"]
-  storageClassName: longhorn-storage
-  resources:
-    requests:
-      storage: 100Mi
-status: {}
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationDestination
-metadata:
-  name: matrix-synapse-data-restore
-spec:
-  trigger:
-    manual: restore-once
-  restic:
-    repository: restic-matrix-synapse-data
-    storageClassName: longhorn-storage
-    accessModes: ["ReadWriteOnce"]
-    copyMethod: Snapshot
-    capacity: 6Gi
-    # enableFileDeletion: true
-    # cleanupCachePVC: false
-    # cleanupTempPVC: false

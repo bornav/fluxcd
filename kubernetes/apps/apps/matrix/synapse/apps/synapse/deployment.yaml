@@ -3,9 +3,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: matrix-synapse
   labels:
     app: matrix-synapse
-  name: matrix-synapse
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   strategy:
@@ -22,127 +24,73 @@ spec:
       labels:
         app: matrix-synapse
     spec:
+      nodeSelector:
+        node-arch: arm64
       # shareProcessNamespace: true
       initContainers:
-        - name: 'create-db-container-whatsapp'
-          image: 'postgres'
-          env:
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_NAME_WHATSAPP
-            - name: DB_USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_USER_NAME_WHATSAPP
-          envFrom: #we need them both since some are redefined
-            - secretRef:
-                name: synapse-database-secrets
+        - name: grab-scripts
+          image: mrnonz/alpine-git-curl:alpine3.16
+          imagePullPolicy: IfNotPresent
           command:
-            - /bin/bash
-            - -c
-          args:
-            - |
-              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
-              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
-        - name: 'create-db-container-synapse'
-          image: postgres
-          env:
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_HOST
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_USER
-            - name: DB_ENCODING
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_ENCODING
-            - name: DB_LOCALE
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_LOCALE
-            - name: DB_TEMPLATE
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_TEMPLATE
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_NAME_SYNAPSE
-            - name: DB_USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_USER_NAME_SYNAPSE
-            - name: DB_USER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: DB_USER_PASSWORD
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: synapse-database-secrets
-                  key: POSTGRES_PASSWORD
-          command:
-            - /bin/bash
-            - -c
-          args:
-            - |
-              while ! pg_isready -h $DB_HOST -U $DB_USER > /dev/null 2>&1; do sleep 1; done;
-              if ! PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -c 'select 1' > /dev/null 2>&1; then PGPASSWORD=$POSTGRES_PASSWORD createdb -h $DB_HOST --username=$DB_USER --encoding=$DB_ENCODING --locale=$DB_LOCALE --template=$DB_TEMPLATE $DB_NAME && PGPASSWORD=$POSTGRES_PASSWORD psql -h $DB_HOST -U $DB_USER -c "CREATE USER $DB_USER_NAME WITH PASSWORD '$DB_USER_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER_NAME;"; fi
-      containers:
-        - command:
             - sh
             - -c
-            #- cp /synapse/config/homeserver.yaml /data/homeserver.yaml && sleep 8400000s 
-            - curl https://raw.githubusercontent.com/devture/matrix-synapse-shared-secret-auth/master/shared_secret_authenticator.py -o /usr/local/lib/python3.11/site-packages/shared_secret_authenticator.py && cp /synapse/config/homeserver.yaml /data/homeserver.yaml && ./start.py generate && chmod +r -R /bridges &&./start.py
-            #- /start.py
-          # - command:
-          #     - sh
-          #     - -c
-          #     - sleep 84000s
-          # - command: # As an example of how to add rest_auth to the container without requiring a separate image
-          #     - sh
-          #     - -c
-          #     - |
-          #       curl https://raw.githubusercontent.com/kamax-matrix/matrix-synapse-rest-password-provider/master/rest_auth_provider.py -o /usr/local/lib/python2.7/site-packages/rest_auth_provider.py
-          #       /matrix-synapse
+            - |
+              cd scripts
+              git clone --branch v1.5.0 https://github.com/matrix-org/synapse-s3-storage-provider.git
+          volumeMounts:
+            - mountPath: /scripts
+              name: scripts
+      containers:
+        # cd /scripts/synapse-s3-storage-provider/scripts
+        # pip install humanize tqdm
+        # python s3_media_upload upload /data/media_store/local_store matrix --storage-class STANDARD
+        - image: matrixdotorg/synapse:v1.134.0
+          name: matrix-synapse
+          command:
+            - sh
+            - -c
+            # - sleep infinity
+            - | 
+              ./start.py generate
+              curl https://raw.githubusercontent.com/devture/matrix-synapse-shared-secret-auth/master/shared_secret_authenticator.py -o  /usr/local/lib/python$(python --version|cut -d' ' -f2- | cut -d'.' -f1-2)/shared_secret_authenticator.py
+              pip install boto3
+              export PYTHONPATH=$PYTHONPATH:/scripts/synapse-s3-storage-provider/
+              ./start.py
+          ports:
+          - name: http
+            protocol: TCP
+            containerPort: 8008
+          - name: https
+            protocol: TCP
+            containerPort: 8448
+          - name: replication
+            protocol: TCP
+            containerPort: 9092
+          - name: httpreplication
+            protocol: TCP
+            containerPort: 9093
           env:
-            - name: SYNAPSE_CACHE_FACTOR
+            - name: SYNAPSE_CACHE_FACTOR # overwrites config file
               value: '5.00'
             - name: SYNAPSE_CONFIG_PATH
-              value: '/data/homeserver.yaml'
+              value: '/synapse/homeserver.yaml'
             - name: SYNAPSE_SERVER_NAME
               value: 'matrix.icylair.com'
             - name: SYNAPSE_REPORT_STATS
               value: 'no'
-          image: matrixdotorg/synapse:v1.118.0
           imagePullPolicy: IfNotPresent
-          livenessProbe:
-            httpGet:
-              path: /_matrix/client/versions
-              port: 8008
-              scheme: HTTP
-            initialDelaySeconds: 120
-          name: matrix-synapse
-          readinessProbe:
-            httpGet:
-              path: /_matrix/client/versions
-              port: 8008
-              scheme: HTTP
-            initialDelaySeconds: 10
+          # livenessProbe:
+          #   httpGet:
+          #     path: /_matrix/client/versions
+          #     port: 8008
+          #     scheme: HTTP
+          #   initialDelaySeconds: 120
+          # readinessProbe:
+          #   httpGet:
+          #     path: /_matrix/client/versions
+          #     port: 8008
+          #     scheme: HTTP
+          #   initialDelaySeconds: 10
           resources:
             requests:
               memory: '1Mi'
@@ -150,18 +98,137 @@ spec:
             limits:
               memory: '6Gi'
           volumeMounts:
+            - mountPath: /scripts
+              name: scripts
             - mountPath: /data
               name: matrix-synapse-data
-            - mountPath: /synapse/config
+            - mountPath: /synapse/homeserver.yaml
               name: matrix-synapse-config
-            - mountPath: /bridges
-              name: matrix-bridges
-        - name: mautrix-bridge-whatsapp
+              subPath: homeserver
+            - mountPath: /synapse/bridge_whatsapp.yaml
+              name: matrix-synapse-config
+              subPath: bridge_whatsapp
+            - mountPath: /synapse/bridge_meta.yaml
+              name: matrix-synapse-config
+              subPath: bridge_meta
+            - mountPath: /synapse/doublepuppet.yaml
+              name: matrix-synapse-config
+              subPath: doublepuppet
+        # - name: mautrix-bridge-whatsapp
+        #   command:
+        #     - sh
+        #     - -c
+        #     # - sleep infinity
+        #     - /usr/bin/mautrix-whatsapp --no-update
+        #     # - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && /docker-run.sh
+        #   image: dock.mau.dev/mautrix/whatsapp:v0.12.3
+        #   imagePullPolicy: IfNotPresent
+        #   resources:
+        #     requests:
+        #       memory: '1Mi'
+        #       cpu: '1m'
+        #     limits:
+        #       memory: '6Gi'
+        #       cpu: '2500m'
+        #   volumeMounts:
+        #   #   - mountPath: /data
+        #   #     name: matrix-bridges
+        #   #     subPath: whatsapp
+        #   #   # - name: matrix-bridge-whatsapp-config
+        #   #   #   mountPath: /config/config.yaml
+        #   #   #   subPath: config.yaml
+        #     - name: matrix-synapse-bridges
+        #       mountPath: /data/config.yaml
+        #       subPath: config.yaml
+        #     - name: matrix-synapse-config
+        #       mountPath: /data/registration.yaml
+        #       subPath: bridge_whatsapp.yaml
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsUser: 0
+      volumes:
+        # - name: matrix-synapse-data
+        #   persistentVolumeClaim:
+        #     claimName: matrix-synapse-data
+        - name: scripts
+          emptyDir: {}
+        - name: matrix-synapse-data
+          emptyDir: {}
+      #   # - name: matrix-synapse-keys
+      #   #   secret:
+      #   #     secretName: matrix-synapse-keys
+        - name: matrix-synapse-config
+          configMap:
+            name: matrix-synapse
+            defaultMode: 0777
+        - name: matrix-synapse-bridges
+          configMap:
+            name: matrix-synapse-bridges
+            defaultMode: 0777
+      #     # configMap:
+      #     #   name: matrix-synapse
+      #     #   defaultMode: 0777
+      #   - name: matrix-bridges
+      #     persistentVolumeClaim:
+      #       claimName: matrix-bridges-data
+      #   - name: sync-oneway
+      #     secret:
+      #       secretName: sync-oneway
+      #       defaultMode: 0777
+      #   - name: prepare-data
+      #     secret:
+      #       secretName: prepare-data
+      #       defaultMode: 0777
+      #   - name: matrix-bridge-whatsapp-config
+      #     configMap:
+      #       name: matrix-bridge-whatsapp-config
+      #   - name: matrix-bridge-whatsapp-config2
+      #     secret:
+      #       secretName: matrix-bridge-whatsapp-config2
+      #       defaultMode: 0777
+status: {}
+---
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name mautrix-bridge-whatsapp
+  labels:
+    app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+        mautrix-bridge: "true"
+    spec:
+      nodeSelector:
+        node-arch: arm64
+      # shareProcessNamespace: true
+      containers:
+        - name: *name
           command:
             - sh
             - -c
-            - cp -n -p /config/config.yaml /data/config.yaml && if [ -d /data/registration.yaml ] ; then chmod 0700 /data/registration.yaml ; fi && /docker-run.sh
-          image: dock.mau.dev/mautrix/whatsapp:v0.11.2
+            # - sleep infinity
+            - /usr/bin/mautrix-whatsapp --no-update
+          image: dock.mau.dev/mautrix/whatsapp:v0.12.3
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: whatsapp
+            protocol: TCP
+            containerPort: 29318
           resources:
             requests:
               memory: '1Mi'
@@ -170,53 +237,87 @@ spec:
               memory: '6Gi'
               cpu: '2500m'
           volumeMounts:
-            - mountPath: /data
-              name: matrix-bridges
+            - name: matrix-synapse-bridges
+              mountPath: /data/config.yaml
               subPath: whatsapp
-            # - name: matrix-bridge-whatsapp-config
-            #   mountPath: /config/config.yaml
-            #   subPath: config.yaml
-            - name: matrix-bridge-whatsapp-config2
-              mountPath: /config/config.yaml
-              subPath: config.yaml
       restartPolicy: Always
       securityContext:
         fsGroup: 0
         runAsGroup: 0
         runAsUser: 0
       volumes:
-        - name: matrix-synapse-data
-          persistentVolumeClaim:
-            claimName: matrix-synapse-data
-        # - name: matrix-synapse-data
-        #   emptyDir: {}
-        # - name: matrix-synapse-keys
-        #   secret:
-        #     secretName: matrix-synapse-keys
-        - name: matrix-synapse-config
-          secret:
-            secretName: matrix-synapse
-            defaultMode: 0777
-          # configMap:
-          #   name: matrix-synapse
-          #   defaultMode: 0777
-        - name: matrix-bridges
-          persistentVolumeClaim:
-            claimName: matrix-bridges-data
-        - name: sync-oneway
-          secret:
-            secretName: sync-oneway
-            defaultMode: 0777
-        - name: prepare-data
-          secret:
-            secretName: prepare-data
-            defaultMode: 0777
-        - name: matrix-bridge-whatsapp-config
+        - name: matrix-synapse-bridges
           configMap:
-            name: matrix-bridge-whatsapp-config
-        - name: matrix-bridge-whatsapp-config2
-          secret:
-            secretName: matrix-bridge-whatsapp-config2
+            name: matrix-synapse-bridges
+            defaultMode: 0777
+        - name: matrix-synapse
+          configMap:
+            name: matrix-synapse
+            defaultMode: 0777
+status: {}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name mautrix-bridge-meta
+  labels:
+    app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+        mautrix-bridge: "true"
+    spec:
+      nodeSelector:
+        node-arch: arm64
+      # shareProcessNamespace: true
+      containers:
+        - name: *name
+          command:
+            - sh
+            - -c
+            # - sleep infinity
+            - /usr/bin/mautrix-meta --no-update
+          image: dock.mau.dev/mautrix/meta:v0.5.2
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: meta
+            protocol: TCP
+            containerPort: 29319
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - name: matrix-synapse-bridges
+              mountPath: /data/config.yaml
+              subPath: meta
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsUser: 0
+      volumes:
+        - name: matrix-synapse-bridges
+          configMap:
+            name: matrix-synapse-bridges
+            defaultMode: 0777
+        - name: matrix-synapse
+          configMap:
+            name: matrix-synapse
             defaultMode: 0777
 status: {}
 #to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icylair.com/_matrix/client/v3/login"

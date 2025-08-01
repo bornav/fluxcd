@@ -6,18 +6,20 @@ resources:
   - pvc.yaml
   - service.yaml
   - ingress.yaml
-  - secrets.yaml
+  - config_synapse.yaml
+  - bridge_config.yaml
+  # - secrets.yaml
   # - whatsapp-config.yaml
-  - whatsapp-service.yaml
-  - external-secrets.yaml
-generatorOptions:
-  disableNameSuffixHash: true
-configMapGenerator:
-  - name: matrix-synapse2
-    files:
-      - homeserver.yaml=./config_synapse.yaml
-  - name: matrix-bridge-whatsapp-config2
-    files:
-      - config.yaml=./config_whatsapp.yaml
-configurations:
-  - kustomizeconfig.yaml
+  # - whatsapp-service.yaml
+  # - external-secrets.yaml
+# generatorOptions:
+#   disableNameSuffixHash: true
+# configMapGenerator:
+#   - name: matrix-synapse2
+#     files:
+#       - homeserver.yaml=./config_synapse.yaml
+#   - name: matrix-bridge-whatsapp-config2
+#     files:
+#       - config.yaml=./config_whatsapp.yaml
+# configurations:
+#   - kustomizeconfig.yaml

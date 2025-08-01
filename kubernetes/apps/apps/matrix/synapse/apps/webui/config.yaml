@@ -1,7 +1,7 @@
 ---
 apiVersion: v1
 data:
-  config.json: |
+  config: |
     {
       "default_server_config": {
         "m.homeserver": {
@@ -14,7 +14,8 @@ data:
       "default_theme": "dark",
       "UIFeature": {
         "feedback": "false",
-        "registration": "false"
+        "registration": "false",
+        "advancedSettings": true
       },
       "showLabsSettings": true,
       "features": {
@@ -28,6 +29,9 @@ data:
         "feature_jump_to_date": true,
         "feature_bridge_state": true,
         "alwaysShowTimestamps": true,
+        "feature_video_rooms": true,
+        "feature_element_call_video_rooms": true,
+        "feature_group_calls": true,
         "autoplayGifs": true,
         "enableSyntaxHighlightLanguageDetection": true,
         "scrollToBottomOnMessageSent": false,
@@ -35,88 +39,54 @@ data:
         "developerMode": false
       }
     }
-kind: ConfigMap
-metadata:
-  labels:
-    app: element-config
-  name: element-config
-  namespace: matrix
----
-apiVersion: v1
-data:
-  config.json: |
-    {
-      "default_server_config": {
-        "m.homeserver": {
-          "base_url": "https://matrix.icylair.com"
-        },
-        "m.identity_server": {
-          "base_url": "https://vector.im"
-        }
-      }
-    }
-kind: ConfigMap
-metadata:
-  name: element-config-bare
-  labels:
-    app: element-config-bare
-  namespace: matrix
----
-apiVersion: v1
-data:
-  config.json: |
+  config_default: |
     {
         "default_server_config": {
             "m.homeserver": {
-                "base_url": "https://matrix.icylair.com",
-                "server_name": "matrix.icylair.com"
+                "base_url": "https://matrix-client.matrix.org",
+                "server_name": "matrix.org"
             },
             "m.identity_server": {
                 "base_url": "https://vector.im"
             }
         },
-        "disable_identity_server": false,
         "disable_custom_urls": false,
-        "disable_guests": true,
+        "disable_guests": false,
         "disable_login_language_selector": false,
         "disable_3pid_login": false,
-        "brand": "Riot",
+        "brand": "Element",
         "integrations_ui_url": "https://scalar.vector.im/",
         "integrations_rest_url": "https://scalar.vector.im/api",
-        "integrations_jitsi_widget_url": "https://scalar.vector.im/api/widgets/jitsi.html",
-        "bug_report_endpoint_url": "https://riot.im/bugreports/submit",
+        "integrations_widgets_urls": [
+                "https://scalar.vector.im/_matrix/integrations/v1",
+                "https://scalar.vector.im/api",
+                "https://scalar-staging.vector.im/_matrix/integrations/v1",
+                "https://scalar-staging.vector.im/api"
+        ],
+        "bug_report_endpoint_url": "https://element.io/bugreports/submit",
         "defaultCountryCode": "GB",
-        "showLabsSettings": true,
-        "features": {
-            "feature_pinning": "labs",
-            "feature_custom_status": "labs",
-            "feature_custom_tags": "labs",
-            "feature_state_counters": "labs",
-            "feature_many_integration_managers": "labs",
-            "feature_mjolnir": "labs",
-            "feature_dm_verification": "labs",
-            "feature_cross_signing": "labs"
-        },
+        "show_labs_settings": false,
+        "features": { },
         "default_federate": true,
-        "welcomePageUrl": "home.html",
         "default_theme": "light",
-        "roomDirectory": {
+        "room_directory": {
             "servers": [
-                "example.com",
-                "matrix.org"
+                    "matrix.org"
             ]
         },
-        "piwik": {
-            "url": "https://piwik.riot.im/",
-            "whitelistedHSUrls": ["https://matrix.org"],
-            "whitelistedISUrls": ["https://vector.im", "https://matrix.org"],
-            "siteId": 1
-        },
         "enable_presence_by_hs_url": {
-            "https://matrix.org": false
+            "https://matrix.org": false,
+            "https://matrix-client.matrix.org": false
+        },
+        "setting_defaults": {
+            "breadcrumbs": true
+        },
+        "jitsi": {
+            "preferred_domain": "meet.element.io"
         }
     }
 kind: ConfigMap
 metadata:
-  name: element-config-sample-default
-  namespace: matrix
+  labels:
+    app: element-config
+  name: element-config
