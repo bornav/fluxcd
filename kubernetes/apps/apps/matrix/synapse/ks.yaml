@@ -40,7 +40,7 @@ spec:
     - name: traefik-base
     - name: synapse-databases
     - name: longhorn-system-base
-  path: ./kubernetes/apps/apps/matrix/synapse/apps/synapse
+  path: ./kubernetes/apps/apps/matrix/synapse/apps/  # gets the kustomisation so it can reach 2 files
   suspend: false
   wait: false
   prune: true
