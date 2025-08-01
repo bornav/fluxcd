@@ -44,7 +44,7 @@ spec:
         # cd /scripts/synapse-s3-storage-provider/scripts
         # pip install humanize tqdm
         # python s3_media_upload upload /data/media_store/local_store matrix --storage-class STANDARD
-        - image: matrixdotorg/synapse:v1.134.0
+        - image: matrixdotorg/synapse:v1.135.0
           name: matrix-synapse
           command:
             - sh
