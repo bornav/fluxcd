@@ -3,15 +3,15 @@ kind: Kustomization
 namespace: apps
 resources:
   - deployment.yaml
-  - pvc.yaml
   - service.yaml
   - ingress.yaml
   - config_synapse.yaml
+  - bridges.yaml
   - bridge_config.yaml
+  - external-secrets.yaml
   # - secrets.yaml
   # - whatsapp-config.yaml
   # - whatsapp-service.yaml
-  # - external-secrets.yaml
 # generatorOptions:
 #   disableNameSuffixHash: true
 # configMapGenerator:

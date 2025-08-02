@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name mautrix-bridge-whatsapp
+  labels:
+    app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+        mautrix-bridge: "true"
+    spec:
+      nodeSelector:
+        node-arch: arm64
+      # shareProcessNamespace: true
+      containers:
+        - name: *name
+          command:
+            - sh
+            - -c
+            # - sleep infinity
+            - /usr/bin/mautrix-whatsapp --no-update
+          image: dock.mau.dev/mautrix/whatsapp:v0.12.3
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: whatsapp
+            protocol: TCP
+            containerPort: 29318
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - name: matrix-synapse-bridges
+              mountPath: /data/config.yaml
+              subPath: whatsapp
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsUser: 0
+      volumes:
+        - name: matrix-synapse-bridges
+          configMap:
+            name: matrix-synapse-bridges
+            defaultMode: 0777
+        - name: matrix-synapse
+          configMap:
+            name: matrix-synapse
+            defaultMode: 0777
+status: {}
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name mautrix-bridge-meta
+  labels:
+    app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+        mautrix-bridge: "true"
+    spec:
+      nodeSelector:
+        node-arch: arm64
+      # shareProcessNamespace: true
+      containers:
+        - name: *name
+          command:
+            - sh
+            - -c
+            # - sleep infinity
+            - /usr/bin/mautrix-meta --no-update
+          image: dock.mau.dev/mautrix/meta:v0.5.2
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: meta
+            protocol: TCP
+            containerPort: 29319
+          resources:
+            requests:
+              memory: '1Mi'
+              cpu: '1m'
+            limits:
+              memory: '6Gi'
+              cpu: '2500m'
+          volumeMounts:
+            - name: matrix-synapse-bridges
+              mountPath: /data/config.yaml
+              subPath: meta
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsUser: 0
+      volumes:
+        - name: matrix-synapse-bridges
+          configMap:
+            name: matrix-synapse-bridges
+            defaultMode: 0777
+        - name: matrix-synapse
+          configMap:
+            name: matrix-synapse
+            defaultMode: 0777
+status: {}
