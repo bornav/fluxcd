@@ -115,15 +115,15 @@ spec:
         image: 'instrumentisto/rsync-ssh:alpine3.18.3'
         command: ["/bin/sh"]  # Override the entrypoint
         args: ["-c", "/startup.sh" ]
-        envFrom:
-        - secretRef:
-            name: home-local-syncthing-env
+        # envFrom:
+        # - secretRef:
+        #     name: home-local-syncthing-env
         securityContext:
           privileged: true
         resources:
           limits:
             # cpu: 1G
-            memory: 100M
+            memory: 200M
           requests:
             cpu: 1m
             memory: 1M
