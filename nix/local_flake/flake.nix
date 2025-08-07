@@ -32,7 +32,7 @@
     inherit (self) outputs;
 	in {
 		nixosConfigurations = (
-			import ../nix {
+			import ../../nix {
 			inherit inputs outputs self vars;   # Inherit inputs
 			}
 		);
