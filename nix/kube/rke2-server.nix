@@ -5,6 +5,7 @@ let
   tls-san:
     - 10.0.0.71
     - 10.0.0.100
+    - 10.2.11.19
     - 10.2.11.24
     - 10.2.11.25
     - 10.2.11.36
@@ -33,6 +34,8 @@ let
     - rke2-oraclearm3
     - rke2-local-example.local.icylair.com
     - rke2-local.local.icylair.com
+    - rke2-local-node-01.local.icylair.com
+    - rke2-local-cp-01.local.icylair.com
     - lb.local.icylair.com
     - lb.cloud.icylair.com
   kube-apiserver-extra-mount: 

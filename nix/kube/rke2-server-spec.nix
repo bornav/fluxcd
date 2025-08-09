@@ -2,19 +2,21 @@
 {
   options = {
     rke2 = {
-      server = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
+      type = lib.mkOption {
+        type = lib.types.enum [ "server" "agent" ];
+        default = "server";
+        description = "RKE2 node type - either server or agent";
       };
-      agent = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
+      server_lb_address = lib.mkOption {
+        type = lib.types.str;
+        default = "https://127.0.0.1:9345";
+        description = "Load balancer address for RKE2 agents to connect to";
       };
     };
   };
   # {inherit inputs vars config lib host system;node_config = master1_rke;})
   config = lib.mkMerge [
-    (lib.mkIf (config.rke2.server) {
+    (lib.mkIf (config.rke2.type == "server") {
       services.rke2 = {
         package = pkgs.rke2_1_32;
         # package = pkgs-unstable.rke2;
@@ -72,21 +74,21 @@
       #   };
       # };
     })
-    (lib.mkIf (config.rke2.agent) {
+    (lib.mkIf (config.rke2.type == "agent") {
       services.rke2 = {
-        package = pkgs-unstable.rke2;
+        package = pkgs.rke2;
         role="agent";
         tokenFile ="/var/token";
         enable = true;
-        serverAddr = https://10.99.10.11:9345;
+        serverAddr = config.rke2.server_lb_address;
         # configPath = "/etc/rancher/rke2/config.yaml";
         extraFlags = [ # space at the start important ! :|
           # " --disable rke2-kube-proxy"
-          " --kube-apiserver-arg default-not-ready-toleration-seconds=30"
-          " --kube-apiserver-arg default-unreachable-toleration-seconds=30" 
-          " --kube-controller-manager-arg node-monitor-period=20s"
-          " --kube-controller-manager-arg node-monitor-grace-period=20s" 
-          " --kubelet-arg node-status-update-frequency=5s"
+          # " --kube-apiserver-arg default-not-ready-toleration-seconds=30"
+          # " --kube-apiserver-arg default-unreachable-toleration-seconds=30" 
+          # " --kube-controller-manager-arg node-monitor-period=20s"
+          # " --kube-controller-manager-arg node-monitor-grace-period=20s" 
+          # " --kubelet-arg node-status-update-frequency=5s"
         ];
       };
     })

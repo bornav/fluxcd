@@ -80,9 +80,9 @@
     # };
     stateVersion = "${host.vars.stateVersion}";
   };
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=20s
-  ''; # sets the systemd stopjob timeout to somethng else than 90 seconds
+  # systemd.extraConfig = '' # TODO find replacment, and make sure you test it for both user level and root level services
+  #   DefaultTimeoutStopSec=5s
+  # ''; # sets the systemd stopjob timeout to somethng else than 90 seconds
   nix = {
     settings.auto-optimise-store = true;
     gc = {                                  # Garbage Collection

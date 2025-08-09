@@ -61,8 +61,8 @@ in
     # ./k3s-server.nix
     {_module.args.disks = [ "/dev/sda" ];}
   ];
-  rke2.server = true;
-  # rke2.agent = true;
+  # "server" or "agent"
+  rke2.type = "server";
 
   # fileSystems."/storage" =
   #   { device = "/dev/disk/by-uuid/1acc761a-b0c1-4a54-91ff-d932faad51eb";

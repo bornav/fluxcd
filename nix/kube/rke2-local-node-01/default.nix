@@ -29,7 +29,7 @@ let
       - oidc-issuer-url=https://sso.icylair.com/realms/master
       - oidc-client-id=kubernetes
       - oidc-groups-claim=groups
-    node-ip: 10.99.10.51
+    node-ip: 10.99.10.52
     # node-ip: 10.2.11.42
   '';
     # runtime-image: "index.docker.io/rancher/rke2-runtime:v1.30.1-rke2r1"
@@ -52,9 +52,9 @@ in
     # ./k3s-server.nix
     {_module.args.disks = [ "/dev/sda" ];}
   ];
-  rke2.server = true;
-  # rke2.agent = true;
-
+  # "server" or "agent"
+  rke2.type = "server";
+  # rke2.server_lb_address= "https://rke2-local-cp-01.local.icylair.com:9345";
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs-unstable.linuxKernel.packages.linux_6_8;
   boot.loader = {
@@ -97,25 +97,6 @@ in
         options = [ "soft" "timeo=50" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s"];
       };
 
-
-  # services.openiscsi = {
-  #   enable = true;
-  #   discoverPortal = [ "10.2.11.200:3260" ];
-  #   name = lib.mkForce "iqn.2005-10.org.freenas.ctl:iscsi-worker-local-02";
-  # };
-  # systemd.services.iscsi-login-lingames = {
-  #   description = "Login to iSCSI target iqn.2005-10.org.freenas.ctl:iscsi-worker-local-02";
-  #   after = [ "network.target" "iscsid.service" ];
-  #   wants = [ "iscsid.service" ];
-  #   serviceConfig = {
-  #     ExecStartPre = "${pkgs.openiscsi}/bin/iscsiadm -m discovery -t sendtargets -p 10.2.11.200";
-  #     ExecStart = "${pkgs.openiscsi}/bin/iscsiadm -m node -T iqn.2005-10.org.freenas.ctl:iscsi-worker-local-02 -p 10.2.11.200 --login";
-  #     ExecStop = "${pkgs.openiscsi}/bin/iscsiadm -m node -T iqn.2005-10.org.freenas.ctl:iscsi-worker-local-02 -p 10.2.11.200 --logout";
-  #     Restart = "on-failure";
-  #     RemainAfterExit = true;
-  #   };
-  #   wantedBy = [ "multi-user.target" ];
-  # }; 
   # networking = {
   #   vlans = {
   #     vlan12 = { id=12; interface="ens19"; };

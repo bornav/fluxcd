@@ -6,6 +6,7 @@
       modesetting.enable = true;
       open = false;
       nvidiaSettings = true;
+      # nvidia-persistenced = true;
       package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.latest;
       # package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.legacy_390;
       powerManagement.enable = false;
@@ -103,6 +104,7 @@
   #       EOF
   #     '';
   #   };
+    # this creates /var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl file with contents in the << EOF >, which during runtime rke2 reads, and populates condif.toml file in the same dir(puts at the bottom)
     systemd.services.k3s-containerd-setup = {
       # `virtualisation.containerd.settings` has no effect on k3s' bundled containerd.
       serviceConfig.Type = "oneshot";

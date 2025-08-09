@@ -16,7 +16,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: jellyfin-tcp
+  name: jelly-service
   labels:
     service-type: ingress #TODO is this neccesary?
   annotations:

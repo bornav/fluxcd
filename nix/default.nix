@@ -37,44 +37,6 @@
         ./kube/common.nix
     ];
   };
-  k3s-local-01 = inputs.nixpkgs-unstable.lib.nixosSystem {
-    system = "x86_64-linux";  
-    specialArgs = {
-      inherit vars inputs;
-      host = {
-        hostName = "k3s-local-01";
-        vars = vars;
-        system = "x86_64-linux"; 
-      };
-      pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
-      pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
-      pkgs-master   = import inputs.nixpkgs-master   {system = "x86_64-linux";config.allowUnfree = true;};
-      system = "x86_64-linux";
-    };
-    modules = [
-        ./kube/k3s-local-01
-        ./kube/common.nix
-    ];
-  };
-  k3s-local-02 = inputs.nixpkgs-unstable.lib.nixosSystem {
-    system = "x86_64-linux";  
-    specialArgs = {
-      inherit vars inputs;
-      host = {
-        hostName = "k3s-local-02";
-        vars = vars;
-        system = "x86_64-linux"; 
-      };
-      pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
-      pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
-      pkgs-master   = import inputs.nixpkgs-master   {system = "x86_64-linux";config.allowUnfree = true;};
-      system = "x86_64-linux"; 
-    };
-    modules = [
-        ./kube/k3s-local-02
-        ./kube/common.nix
-    ];
-  };
   oracle-x86-03 = inputs.nixpkgs-unstable.lib.nixosSystem {
     system = "x86_64-linux";  
     specialArgs = {
@@ -151,6 +113,26 @@
     };
     modules = [
         ./kube/oracle-km1-1
+        ./kube/common.nix
+    ];
+  };
+  rke2-local-cp-01 = inputs.nixpkgs-unstable.lib.nixosSystem {
+    system = "x86_64-linux";  
+    specialArgs = {
+        inherit vars inputs;
+        host = {
+          hostName = "rke2-local-cp-01";
+          vars = vars;
+          system = "x86_64-linux"; 
+          kube_ha = false; # TODO CHANGE
+        };
+        pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
+        pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
+        pkgs-master   = import inputs.nixpkgs-master   {system = "x86_64-linux";config.allowUnfree = true;};
+        system = "x86_64-linux"; 
+    };
+    modules = [
+        ./kube/rke2-local-cp-01
         ./kube/common.nix
     ];
   };

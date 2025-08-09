@@ -41,7 +41,10 @@ in
     (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config  = master_rke;})
     {_module.args.disks = [ "/dev/sda" ];}
   ];
-  rke2.server = true;
+
+  # "server" or "agent"
+  rke2.type = "server";
+  
   boot.loader = {
     timeout = 1;
     grub.enable = true;

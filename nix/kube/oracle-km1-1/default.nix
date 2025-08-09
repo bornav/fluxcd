@@ -69,8 +69,8 @@ in
     # ./mesh.nix
     {_module.args.disks = [ "/dev/sda" ];}
   ];
-  rke2.server = true;
-  # rke2.agent = true;
+  # "server" or "agent"
+  rke2.type = "server";
 
   fileSystems."/storage" =
     { device = "/dev/disk/by-uuid/a640f0aa-5604-4bf7-8b8f-265c233d9813"; 
