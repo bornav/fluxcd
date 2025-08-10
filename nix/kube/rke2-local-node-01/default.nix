@@ -26,9 +26,10 @@ let
     # node-taint:
     #   - "node-role.kubernetes.io/control-plane=true:NoSchedule"
     kube-apiserver-arg:
-      - oidc-issuer-url=https://sso.icylair.com/realms/master
-      - oidc-client-id=kubernetes
-      - oidc-groups-claim=groups
+      - "oidc-issuer-url=https://sso.icylair.com/realms/master"
+      - "oidc-client-id=kubernetes"
+      - "oidc-username-claim=email"
+      - "oidc-groups-claim=groups"
     node-ip: 10.99.10.52
     # node-ip: 10.2.11.42
   '';

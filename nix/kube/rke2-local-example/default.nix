@@ -21,9 +21,9 @@ let
       - "node-arch=amd64"
       - "nixos-nvidia-cdi=enabled"
       - "nvidia.com/gpu.present=true"
-      - "storage=ceph"
-      - "storage/ceph=true"
-    node-ip: 10.2.11.41
+      # - "storage=ceph"
+      # - "storage/ceph=true"
+    node-ip: 10.2.11.19
   '';
     # runtime-image: "index.docker.io/rancher/rke2-runtime:v1.30.1-rke2r1"
 in

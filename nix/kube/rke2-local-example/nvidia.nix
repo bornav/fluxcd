@@ -4,11 +4,12 @@
   hardware = {
     nvidia = {
       modesetting.enable = true;
-      open = false;
+      open = true;
       nvidiaSettings = true;
+      nvidiaPersistenced = true;
       package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.latest;
       # package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.legacy_390;
-      powerManagement.enable = false;
+      powerManagement.enable = true;
       powerManagement.finegrained = false;
     };
     graphics.enable32Bit = true;
@@ -33,7 +34,7 @@
       runc
       # nvidia-container-toolkit
   ];
-  programs.appimage.binfmt = true;
+  # programs.appimage.binfmt = true;
 
   # hardware.nvidia.datacenter.enable = true;
 
@@ -67,25 +68,25 @@
   #           runtime_type = "io.containerd.runc.v2";
   #           privileged_without_host_devices = false;
   #           options = {
-  #             BinaryName = "/usr/bin/nvidia-container-runtime";
+  #             BinaryName = "${lib.getOutput "tools" config.hardware.nvidia-container-toolkit.package}/bin/nvidia-container-runtime";
   #           };
   #         };
   #       };
   #     };
   #   };
   # };
-  virtualisation.containerd = {
-    enable = true;
-    settings = {
-        plugins."io.containerd.grpc.v1.cri" = {
-          enable_cdi = true;
-          cdi_spec_dirs = [ "/var/run/cdi" ];
-        };
-      };
-  };
-  systemd.services.nvidia-container-toolkit-cdi-generator = {
-      environment.LD_LIBRARY_PATH = "${config.hardware.nvidia.package}/lib";
-    };
+  # virtualisation.containerd = {
+  #   enable = true;
+  #   settings = {
+  #       plugins."io.containerd.grpc.v1.cri" = {
+  #         enable_cdi = true;
+  #         cdi_spec_dirs = [ "/var/run/cdi" ];
+  #       };
+  #     };
+  # };
+  # systemd.services.nvidia-container-toolkit-cdi-generator = {
+  #     environment.LD_LIBRARY_PATH = "${config.hardware.nvidia.package}/lib";
+  #   };
 
   # systemd.services.k3s-containerd-setup = {
   #     # `virtualisation.containerd.settings` has no effect on k3s' bundled containerd.
@@ -103,6 +104,7 @@
   #       EOF
   #     '';
   #   };
+    # this creates /var/lib/rancher/rke2/agent/etc/containerd/config.toml.tmpl file with contents in the << EOF >, which during runtime rke2 reads, and populates condif.toml file in the same dir(puts at the bottom)
     systemd.services.k3s-containerd-setup = {
       # `virtualisation.containerd.settings` has no effect on k3s' bundled containerd.
       serviceConfig.Type = "oneshot";
@@ -122,8 +124,9 @@
           runtime_type = "io.containerd.runc.v2"
 
         [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
-          BinaryName = "/run/current-system/sw/bin/nvidia-container-runtime"
+          BinaryName = "${lib.getOutput "tools" config.hardware.nvidia-container-toolkit.package}/bin/nvidia-container-runtime"
         EOF
       '';
     };
+    # BinaryName = "${lib.getOutput "tools" config.hardware.nvidia-container-toolkit.package}/bin/nvidia-container-runtime"
 }

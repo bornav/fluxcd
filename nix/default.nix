@@ -164,6 +164,7 @@
           hostName = "rke2-local-example";
           vars = vars;
           system = "x86_64-linux"; 
+          kube_ha = false;
         };
         pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
         pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
