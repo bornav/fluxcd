@@ -1,0 +1,245 @@
+image: 
+  repository: datamate/seafile-professional
+
+timezone: Europe/Vienna
+
+seafileConfig:
+
+  # initial admin user 
+  initialAdminUser: admin@seafile.com
+  initialAdminPass: topsecret
+
+  # Name of existing secret that contains your license
+  licenseSecret: seafile-license
+
+  replicaCountFrontend: 2
+  replicaCountBackend: 1 # currently only 1 backend server is supported.
+
+  hostname: localhost
+
+  ingress:
+    annotations:
+      # Name of existing issuer resource
+      cert-manager.io/issuer: letsencrypt-prod
+      # Increase max body size
+      nginx.ingress.kubernetes.io/proxy-body-size: 100m
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    className: nginx
+    enableTls: true
+
+  # Whether to send logs to stdout (false => creates log files)
+  logStdout: true
+  # Log level (Seahub only at the moment)
+  logLevel: WARNING
+
+  seafile:
+    notification:
+      jwtPrivateKey: topsecret
+
+  seahub:
+    secretKey: topsecret
+    # Name of existing config map that includes custom logo/favicon/login background image
+    # Set to "" to use the default default images
+    customizationConfigmap: ""
+
+  # Extra environment variables
+  extraEnv:
+    # ... for all frontend nodes
+    frontend: []
+      # Example:
+      #- name: SEAHUB__USER_PASSWORD_MIN_LENGTH
+      #  value: 12
+    # ... for the backend node
+    backend: []
+      # Example:
+      #- name: SEAFEVENTS__INDEX0x20FILES__interval
+      #  value: 5m
+
+  # CONNECTIONS between containers...
+  # hier die verbindungskonfiguration für die einzelnen dienste. Wenn diese extern sind, dann einfach 
+  # bei den subcharts auf enable: false setzen.
+
+  # if you want to use external services like (external database, external s3 storage, external elasticsearch you have to do two things:)
+  # add to your my-values.yaml
+  # mariadb.enabled: false
+  # minio.enabled: false
+  # ...
+
+  # Then customize these settings according to your needs
+  
+  mariadb:
+    host: seafile-mariadb-galera
+    port: 3306
+    user: root
+    pass: topsecret
+
+  useS3Storage: true ## TODO: will ich das wirklich so nennen?
+  s3:
+    host: http://wireguard.network.svc.cluster.local:9010
+    port: 9000
+    use_https: false
+    path_style_request: true
+    apiKey: asd # key_id
+    apiKeyPass: asd # key
+    bucketNameBlocks: seafile-blocks
+    bucketNameCommits: seafile-commits
+    bucketNameFs: seafile-fs
+
+  # by default memcached is used in favor of redis
+  redis:
+    host: redis
+
+  # Needs to be configured in case the included subchart is disabled
+  memcached:
+    host: seafile-memcached
+    port: 11211
+
+  # Needs to be configured in case the included subchart is disabled
+  elasticsearch:
+    host: seafile-elasticsearch
+    port: 9200
+
+  tmpDirVolume:
+    emptyDir:
+      sizeLimit: 100Mi
+  # enable "medium: Memory" to Work around problems with world writable tmp dir permissions if volumePermissions.enabled is set to false
+  # see: https://github.com/kubernetes/kubernetes/issues/76158 & https://github.com/kubernetes/kubernetes/issues/110835
+  # medium: Memory
+
+#################
+# dependency charts config
+#################
+
+# Settings for the elasticsearch subchart
+
+elasticsearch:
+  enabled: true
+  clusterName: seafile-elasticsearch
+  master:
+    heapSize: 512m
+    masterOnly: false
+    replicaCount: 1 # deploys a single node elasticsearch
+  coordinating:
+    replicaCount: 0
+  data:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
+  # To use an existing Kubernetes secret containing the credentials,
+  # remove the comments on the lines below and adjust them accordingly
+  #
+  # security:
+  #   existingSecret: elastic-credentials
+
+memcached:
+  enabled: true
+  replicaCount: 1
+  resources: {}
+    # requests:
+    #   cpu: 50m
+    #   memory: 64Mi
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+# settings for the minio subchart
+minio:
+  # set to `false` if you want to use an external S3 storage
+  enabled: true
+
+  # Standalone setup (only for testing purpose, because pvc are deleted after uninstall) 
+  mode: standalone
+
+  # Distributed setup (pvc are not deleted after uninstall)
+  #mode: distributed
+  #statefulset.replicaCount: 4
+
+  provisioning:
+    # Enable provisioning job
+    enabled: true
+    # Create default buckets for Seafile
+    buckets:
+      - name: seafile-blocks
+      - name: seafile-commits
+      - name: seafile-fs
+
+  persistence:
+    enabled: true
+    size: 22Gi
+    accessModes: ["ReadWriteOnce"]
+    mountPath: /bitnami/minio/data
+    
+    # To use an existing storageClass or existing pvc, add this here.
+    #storageClass: 
+    #existingClaim:  #(only in standalone mode)
+
+    annotations:
+      # Keep PVC (is normally deleted when using standalone mode)
+      helm.sh/resource-policy: keep
+    
+  auth:
+    rootUser: minioadmin
+    rootPassword: topsecret
+    # Use existing secret for credentials details (auth.rootUser and
+    # auth.rootPassword will be ignored and picked up from this secret).
+    # The secret has to contain the keys root-user and root-password)
+    # existingSecret: minio-credentials
+
+  # You can use this to enable the web UI for debugging.
+  # use `kubectl port-forward svc/xxx-minio 9001:9001` for access locally. 
+  disableWebUI: true
+
+mariadb-galera:
+  # if set to `false`, no mariadb pod will be started. 
+  # You have to use an external sql database and configure it with .Values.seafileConfig.mariadb.
+  enabled: true
+
+  replicaCount: 3
+
+  rootUser:
+    user: root
+    password: topsecret
+    # Force users to specify a password
+    forcePassword: true
+
+  galera:
+    mariabackup:
+      user: mariabackup
+      password: topsecret
+      # Force users to specify a password
+      forcePassword: true
+
+  persistence:
+    enabled: true
+    size: 8Gi
+    accessModes: ["ReadWriteOnce"]
+
+    # To use an existing storageClass or existing pvc, add this here.
+    #storageClass:
+    #existingClaim:
+
+# settings for the redis subchart
+redis:
+  # by default memcached is used in favor of redis. There `false` by default.
+  # if set to `false`, no redis pod will be started. 
+  # If you want to use redis (instead of memcached) you have to enable it and configure it with .Values.seafileConfig.redis.
+  enabled: false
+  
+  # default architecture is `standalone` because redis is no critical infrastructure for a seafile cluster
+  architecture: standalone
+  auth:
+    password: topsecret
+    # To avoid passwords in your values.yaml, you can comment out the line above
+    # and use an existing Kubernetes secret. Remove the comments on the lines below
+    # and adjust them accordingly
+    #
+    # existingSecret: redis-pass
+    # existingSecretPasswordKey: redis-password
+  master:
+    resources: {}
+    # limits:
+    #   cpu: 250m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 250m
+    #   memory: 256Mi

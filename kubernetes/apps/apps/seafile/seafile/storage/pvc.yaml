@@ -1,0 +1,96 @@
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: seafile-data
+#   labels:
+#     app: seafile-data
+#   annotations:
+#     numberOfReplicas: '2'
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   storageClassName: longhorn-storage
+#   # dataSourceRef:
+#   #   kind: ReplicationDestination
+#   #   apiGroup: volsync.backube
+#   #   name: seafile-data-restore  # Name of the ReplicationDestination
+#   resources:
+#     requests:
+#       storage: 10Gi
+# status: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: seafile-data
+  name: seafile-data
+  annotations:
+    numberOfReplicas: '2'
+spec:
+  dataSourceRef:
+    kind: ReplicationDestination
+    apiGroup: volsync.backube
+    name: seafile-data-restore  # Name of the ReplicationDestination
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: longhorn-storage
+  resources:
+    requests:
+      storage: 1Gi
+status: {}
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name:  seafile-data-backup
+# spec:
+#   sourcePVC: seafile-data
+#   trigger:
+#     schedule: "*/14 * * * *"
+#   restic:
+#     pruneIntervalDays: 1
+#     repository: restic-seafile-data
+#     retain:
+#       hourly: 5
+#       daily: 4
+#       weekly: 3
+#       monthly: 2
+#       yearly: 1
+#     copyMethod: Snapshot
+#     storageClassName: longhorn-storage-rwm
+#     unlock: "something"
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationDestination
+# metadata:
+#   name: seafile-data-restore
+# spec:
+#   trigger:
+#     manual: restore-once
+#   restic:
+#     repository: restic-seafile-data
+#     storageClassName: longhorn-storage-rwm
+#     accessModes: ["ReadWriteMany"]
+#     copyMethod: Snapshot
+#     capacity: 10Gi
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: seafile-data-restore
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: restic-seafile-data
+    storageClassName: longhorn-storage
+    accessModes: ["ReadWriteOnce"]
+    copyMethod: Snapshot
+    capacity: 1Gi
+    enableFileDeletion: true
+    cleanupCachePVC: false
+    cleanupTempPVC: false

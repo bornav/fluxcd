@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: seafile-app
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/apps/seafile/seafile/app
+  prune: true
+  suspend: true
+  dependsOn:
+    - name: seafile-storage
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: apps
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: seafile-storage
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
+    - name: rook-ceph-cluster
+    - name: volsync
+  path: ./kubernetes/apps/apps/seafile/seafile/storage
+  prune: true
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: apps
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: seafile-storage
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: seafile-app
+  path: ./kubernetes/apps/apps/seafile/seafile/backups
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 10m
+  targetNamespace: apps
+

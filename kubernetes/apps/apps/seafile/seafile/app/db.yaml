@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    
+    spec:
+      # nodeSelector:
+      #   kubernetes.io/arch: amd64
+      containers:
+        - name: mariadb
+          image: mariadb:10.11
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: DB_HOST
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: MARIADB_ROOT_PASSWORD
+            - name: MARIADB_AUTO_UPGRADE
+              value: "true"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+              subPath: database
+      volumes:
+        - name: mariadb-data
+          # emptyDir: {}
+          persistentVolumeClaim:
+            claimName: seafile-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306

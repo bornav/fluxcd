@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: seafile-data-backup
+spec:
+  sourcePVC: seafile-data
+  trigger:
+    schedule: "*/63 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-seafile-data
+    retain:
+      hourly: 5
+      daily: 4
+      weekly: 3
+      monthly: 2
+      yearly: 1
+    copyMethod: Snapshot
+    storageClassName: longhorn-backup
+    unlock: "something"
