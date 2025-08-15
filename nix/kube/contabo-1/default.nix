@@ -36,7 +36,6 @@ let
       - "node-location=cloud"
       - "node-arch=amd64"
       - "nat-policy=enabled"
-      # - "storage=longhorn"
       - "storage/longhorn=true"
       - "storage/ceph=true"
     node-ip: 10.99.10.13

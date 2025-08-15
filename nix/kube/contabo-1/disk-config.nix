@@ -35,17 +35,18 @@
       };
       storage = {
         name = "storage";
-        size = "400G";
+        size = "100%";
+        # size = "400G";
         content = {
           type = "filesystem";
           format = "ext4";
           mountpoint = "/storage";
         };  
       };
-      storage_ceph = {
-        name = "storagecep"; # dont put ceph into neme
-        size = "100%";
-      };
+      # storage_ceph = {
+      #   name = "storagecep"; # dont put ceph into neme
+      #   size = "100%";
+      # };
      };
     };
    };

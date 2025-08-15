@@ -23,7 +23,7 @@
     };
   };
   users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGiVyNsVCk2KAGfCGosJUFig6PyCUwCaEp08p/0IDI7"];
-  users.users.root.initialPassword = "nixos";
+  # users.users.root.initialPassword = "nixos";
   users.users.${host.vars.user} = {
     isNormalUser = true;
     hashedPassword = "!"; # https://discourse.nixos.org/t/how-to-disable-root-user-account-in-configuration-nix/13235
