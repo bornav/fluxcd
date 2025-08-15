@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+ name: my-scheduler
+ namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: my-scheduler
+rules:
+- apiGroups:
+  - ""
+  resources:
+    - pods
+    - pods/status
+    - pods/binding
+  verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiGroups:
+  - ""
+  resources:
+    - nodes
+  verbs:
+    - get
+    - list
+    - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+    - storageclasses
+    - csinodes
+    - csidrivers
+    - csistoragecapacities
+  verbs:
+    - watch
+    - list
+    - get
+- apiGroups:
+  - apps
+  resources:
+    - replicasets
+    - statefulsets
+  verbs:
+    - watch
+    - list
+    - get
+- apiGroups:
+  - ""
+  resources:
+    - persistentvolumeclaims
+    - services
+    - namespaces
+    - configmaps
+    - replicationcontrollers
+    - persistentvolumes
+    - poddisruptionbudgets
+    - replicasets
+    - statefulsets
+  verbs:
+    - watch
+    - list
+    - get
+- apiGroups:
+  - policy
+  resources:
+    - poddisruptionbudgets
+  verbs:
+    - watch
+    - list
+    - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+ name: my-scheduler
+roleRef:
+ apiGroup: rbac.authorization.k8s.io
+ kind: ClusterRole
+ name: my-scheduler
+subjects:
+  - kind: ServiceAccount
+    name: my-scheduler
+    namespace: kube-system
