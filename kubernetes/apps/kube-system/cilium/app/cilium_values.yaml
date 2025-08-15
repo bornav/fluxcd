@@ -54,6 +54,7 @@ clustermesh:
           - 10.99.10.51
           - 10.99.10.52
   apiserver:
+    replicas: 2
     tls:
       auto:
         enabled: true
