@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: seafile
-          image: seafileltd/seafile-mc:10.0-latest
+          image: seafileltd/seafile-mc:13.0-latest
           env:
             - name: DB_HOST
               value: "mariadb"
