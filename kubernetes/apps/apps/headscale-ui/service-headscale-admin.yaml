@@ -1,0 +1,45 @@
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: headscale-admin
+# spec:
+#   selector:
+#     app: headscale-admin
+#   ports:
+#     - name: http
+#       targetPort: 80
+#       port: 80
+#   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: headscale
+  annotations:
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+spec:
+  # type: ExternalName
+  # externalName: 159.69.206.117
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: headscale
+  labels:
+    # You should set the "kubernetes.io/service-name" label.
+    # Set its value to match the name of the Service
+    kubernetes.io/service-name: headscale
+addressType: IPv4
+ports:
+  - name: http # should match with the name of the service port defined above
+    # appProtocol: http
+    # protocol: TCP
+    port: 8080
+endpoints:
+  - addresses:
+      - "159.69.206.117"

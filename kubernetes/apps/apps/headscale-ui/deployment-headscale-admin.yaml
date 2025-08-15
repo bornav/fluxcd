@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.14.0/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name headscale-admin
+  labels:
+    app: *name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: *name
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - image: goodieshq/headscale-admin:0.25.6
+          name: *name
+          ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 1m
+              memory: 1M
+            limits:
+              cpu: 500m
+              memory: 250M
+          env: []
+          volumeMounts: []
+      restartPolicy: Always
+      volumes: []
+status: {}
