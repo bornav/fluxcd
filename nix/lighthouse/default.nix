@@ -188,7 +188,10 @@
     enable = true;
     allowedTCPPorts = [ 22 80 443 3000 6443 8080 9345 10022];
     allowedUDPPortRanges = [
-      { from = 1000; to = 6550; }
+      { from = 1000; 
+        # to = 6550;
+        to = 51900;
+         }
     ];
   };
 

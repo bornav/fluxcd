@@ -54,8 +54,9 @@ in
     {_module.args.disks = [ "/dev/sda" ];}
   ];
   # "server" or "agent"
-  rke2.type = "server";
-  # rke2.server_lb_address= "https://rke2-local-cp-01.local.icylair.com:9345";
+  rke2.type = "agent";
+  rke2.server_lb_address= "https://rke2-local-cp-01.local.icylair.com:9345";
+  
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs-unstable.linuxKernel.packages.linux_6_8;
   boot.loader = {
