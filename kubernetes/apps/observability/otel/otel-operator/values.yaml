@@ -1,7 +1,7 @@
 manager:
   collectorImage:
     repository: otel/opentelemetry-collector-k8s
-    tag: 0.132.2
+    tag: 0.132.4
 admissionWebhooks:
   certManager:
     enabled: true
