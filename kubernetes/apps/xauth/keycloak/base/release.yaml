@@ -100,7 +100,7 @@ spec:
       image:
         registry: docker.io
         repository: bitnami/postgresql
-        tag: 16.4.0-debian-12-r14 # do not update until finding out how pg_upgrade works
+        tag: 17.6.0-debian-12-r4 # do not update until finding out how pg_upgrade works
         digest: ""
     resourcesPreset: none
     resources:
