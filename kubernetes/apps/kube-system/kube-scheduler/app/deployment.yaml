@@ -25,7 +25,7 @@ spec:
             - --config=/etc/kubernetes/scheduler-config.yaml
             - -v=5
           env: []
-          image: registry.k8s.io/kube-scheduler:v1.25.12
+          image: registry.k8s.io/kube-scheduler:v1.34.0
           imagePullPolicy: IfNotPresent
           resources:
             requests:
