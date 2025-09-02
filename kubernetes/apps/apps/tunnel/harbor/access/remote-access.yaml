@@ -15,37 +15,37 @@ spec:
         paths:
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /api/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /service/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /v2/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /c/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-portal
+              name: harbor-portal-custom
               port:
-                number: 80
+                name: http-web
           path: /
           pathType: Prefix
     - host: &host2 harbor.cloud.icylair.com
@@ -53,37 +53,37 @@ spec:
         paths:
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /api/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /service/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /v2/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-core
+              name: harbor-core-custom
               port:
-                number: 80
+                name: http-web
           path: /c/
           pathType: Prefix
         - backend:
             service:
-              name: harbor-portal
+              name: harbor-portal-custom
               port:
-                number: 80
+                name: http-web
           path: /
           pathType: Prefix
   tls:
@@ -95,7 +95,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: &name harbor-core
+  name: &name harbor-core-custom
   labels:
     service-type: ingress
   annotations:
@@ -115,7 +115,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: &name harbor-portal
+  name: &name harbor-portal-custom
   labels:
     service-type: ingress
   annotations:
@@ -127,6 +127,7 @@ spec:
   # selector:
     # app: ai-stack
   ports:
-    - port: 80
+    - name: http-web
+      port: 80
       protocol: TCP
       targetPort: 8080

@@ -10,4 +10,5 @@ some weird fuckerry happened in the grub part of the configuration making it not
 
 ### rebuilds the flake with the new configuration
 `nixos-rebuild switch --flake ~/git/kubernetes/fluxcd#oracle-bv1-1 --use-substitutes --target-host oracle-bv1-1` #how i updated the config on the remote system
+`nh os switch ~/git/kubernetes/fluxcd -H oracle-bv1-1 --ask --target-host oracle-bv1-1`
 aditional note, on update, seems local ip addres always switches

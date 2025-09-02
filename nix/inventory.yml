@@ -18,11 +18,20 @@ all:
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.12
       vxlan_ip: 10.129.16.2
-    contabo-1:
+    # contabo-1:
+    #   pipelining: true
+    #   ansible_ssh_user: root
+    #   # ansible_host: "10.99.7.3"
+    #   ansible_host: "contabo-1.cloud.icylair.com" 
+    #   ansible_ssh_port: 22
+    #   ansible_ssh_private_key_file: ~/.ssh/id_local
+    #   wireguard_ip: 10.99.10.13
+    #   vxlan_ip: 10.129.16.3
+    hetzner-1:
       pipelining: true
       ansible_ssh_user: root
       # ansible_host: "10.99.7.3"
-      ansible_host: "contabo-1.cloud.icylair.com" 
+      ansible_host: "hetzner-4gb-nbg1-6-01.cloud.icylair.com"  
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.13
