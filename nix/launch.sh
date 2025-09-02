@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 host_init=oracle-km1-1-init
-hosts=("oracle-km1-1" "contabo-1" "oracle-bv1-1")
+hosts=("oracle-km1-1" "hetzner-01" "oracle-bv1-1")
 inventory="../inventory.yml"
 
 bootstrap(){

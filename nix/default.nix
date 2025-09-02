@@ -37,6 +37,26 @@
         ./kube/common.nix
     ];
   };
+  hetzner-01 = inputs.nixpkgs-unstable.lib.nixosSystem {
+    system = "aarch64-linux";  
+    specialArgs = {
+      inherit vars inputs;
+      host = {
+        hostName = "hetzner-01";
+        vars = vars;
+        system = "aarch64-linux";
+        kube_ha = true;
+      };
+      pkgs-stable   = import inputs.nixpkgs-stable   {system = "aarch64-linux";config.allowUnfree = true;};
+      pkgs-unstable = import inputs.nixpkgs-unstable {system = "aarch64-linux";config.allowUnfree = true;};
+      pkgs-master   = import inputs.nixpkgs-master   {system = "aarch64-linux";config.allowUnfree = true;};
+      system = "aarch64-linux";  
+    };
+    modules = [
+        ./kube/hetzner-01
+        ./kube/common.nix
+    ];
+  };
   oracle-x86-03 = inputs.nixpkgs-unstable.lib.nixosSystem {
     system = "x86_64-linux";  
     specialArgs = {

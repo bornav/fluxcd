@@ -20,27 +20,12 @@
   services.xserver.enable = false; 
   services.xserver.videoDrivers = ["nvidia"]; # this is important
 
-  ## in virtualization, find out how to import at the top
-  # users.users.${host.vars.user}.extraGroups = [ "libvirtd" ];
-  virtualisation.libvirtd.enable = true;
-  programs.dconf.enable = true; # virt-manager requires dconf to remember settings
-  environment.systemPackages = with pkgs; [ 
-      virt-manager
-      virt-viewer
-      qemu
-      spice
-      libgcc
-      docker
-      runc
-  ];
-
   # hardware.nvidia.datacenter.enable = true;
 
   boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
   hardware.nvidia-container-toolkit.enable = true;
 
   virtualisation.docker = {
-    enable = true;
     enableNvidia = true; # still needed as of 10.08.2025
   };
 

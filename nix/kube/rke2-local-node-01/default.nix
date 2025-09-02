@@ -47,6 +47,7 @@ in
     ./disk-config.nix
     ./nvidia.nix
     ./iscsi-drive.nix
+    ./virt.nix
     # ./net-forward.nix
     # (import ../k3s-server.nix {inherit inputs vars config lib system;node_config = master3;})
     (import ../rke2-server.nix {inherit inputs vars config lib host system pkgs;node_config  = master_rke;})
@@ -98,7 +99,24 @@ in
         fsType = "nfs";
         options = [ "soft" "timeo=50" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s"];
       };
+  
+  fileSystems."/storage" =
+    { device = "/dev/disk/by-uuid/ae405381-7675-405c-8441-d4dcfa7c0d0a"; 
+      fsType = "ext4";
+      options = [
+        "noatime"
+      ];
+    };
 
+  environment.systemPackages = with pkgs; [
+    zfs
+
+    nfs-utils
+    openiscsi
+    lsscsi
+    sg3_utils
+    multipath-tools
+  ];
   # networking = {
   #   vlans = {
   #     vlan12 = { id=12; interface="ens19"; };

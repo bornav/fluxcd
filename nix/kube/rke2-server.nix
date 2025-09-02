@@ -165,9 +165,9 @@ in
   systemd.tmpfiles.rules = [
     "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"                   # exposes binaryes
     # "L+ /sbin - - - - /run/current-system/sw/bin/"
-    # "L+ /usr/sbin - - - - /run/current-system/sw/bin/"
+    "L+ /usr/sbin - - - - /run/current-system/sw/bin/"
+    "L+ /usr/local/sbin - - - - /run/current-system/sw/bin/"
     "L! /lib/modules - - - - /run/current-system/kernel-modules/lib/modules/"   # make current modules exposed to /lib/modules
   ];
-
 
 }
