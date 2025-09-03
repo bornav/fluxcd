@@ -41,12 +41,14 @@ ports:
 gateway:
   listeners:
     web:
-      namespacePolicy: All
+      namespacePolicy:
+        from: All
     websecure:
       port: 8443
       hostname: "*.icylair.com"
       protocol: HTTPS
-      namespacePolicy: All
+      namespacePolicy:
+        from: All
       certificateRefs: 
         - kind: Secret
           # group: ""
