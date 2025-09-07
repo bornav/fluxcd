@@ -21,7 +21,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: element-web
+                name: service-element
                 port:
                   number: 80
     - host: element.cloud.icylair.com
@@ -31,7 +31,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: element-web
+                name: service-element
                 port:
                   number: 80
     # - host: cinny.icylair.com
