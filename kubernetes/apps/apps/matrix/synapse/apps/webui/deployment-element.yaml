@@ -21,7 +21,7 @@ spec:
       containers:
         - name: *name
           # image: vectorim/element-web:latest
-          image: vectorim/element-web:v1.11.110
+          image: vectorim/element-web:v1.11.111
         # image: vectorim/element-web:v1.11.40
           imagePullPolicy: IfNotPresent
           ports:
