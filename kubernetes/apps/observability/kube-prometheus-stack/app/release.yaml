@@ -125,8 +125,8 @@ spec:
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
           - exemplar-storage
-        retention: 14d
-        retentionSize: 8GB
+        retention: 3d
+        retentionSize: 4GB
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -136,6 +136,11 @@ spec:
                 requests:
                   storage: 10Gi
             selector: {}
+        thanos:
+          objectStorageConfig:
+            existingSecret:
+              name: thanos-objstore-config  #secret that we will create further
+              key: thanos.yaml
         # additionalScrapeConfigs: | # this shit breaks the prometherus pod dynamicaly
         #   - job_name: 'kubernetes-pods'
         #     kubernetes_sd_configs:
@@ -152,6 +157,15 @@ spec:
         #       - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
         #         action: keep
         #         regex: true
+      thanosService:
+        enabled: true
+        annotations:
+          service.cilium.io/global: "true"
+          service.cilium.io/shared: "true"
+      thanosServiceMonitor:
+        enabled: true
+      thanosServiceExternal:
+        enabled: false
       service:
         type: "LoadBalancer"
     grafana:
