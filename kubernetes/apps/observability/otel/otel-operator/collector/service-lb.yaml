@@ -6,6 +6,8 @@ metadata:
   labels: 
     service-type/vxlan: static
   annotations:
+    service.cilium.io/global: "true"
+    service.cilium.io/shared: "true"
     lbipam.cilium.io/ips: "10.129.16.102"
 spec:
   selector:
