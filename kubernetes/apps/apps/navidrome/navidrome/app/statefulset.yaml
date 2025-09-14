@@ -55,7 +55,7 @@ spec:
       #       mountPath: /mnt
       containers:
       - name: navidrome
-        image: bornav/navidrome-bornav-test-cloud-sync:0.55.0
+        image: bornav/navidrome-bornav-test-cloud-sync:0.58.0
         # command: ["/bin/sh"]  # Override the entrypoint
         # args: ["-c", "sleep 8400" ]
         env:
