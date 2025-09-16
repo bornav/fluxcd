@@ -114,7 +114,9 @@ spec:
       - name: 'sync-music'
         image: 'instrumentisto/rsync-ssh:alpine3.18.3'
         command: ["/bin/sh"]  # Override the entrypoint
-        args: ["-c", "/startup.sh" ]
+        args:
+          - "-c"
+          - "/startup.sh"
         # envFrom:
         # - secretRef:
         #     name: home-local-syncthing-env
@@ -139,6 +141,27 @@ spec:
             readOnly: true
           # - name: nfs-vol
           #   mountPath: /mnt
+      - name: 'check-music-integrity'
+        image: 'linuxserver/ffmpeg:version-8.0-cli'  # TODO left is to add a entrypoint, output the failed files to something and delete them
+        command: ["/bin/sh"]  # Override the entrypoint
+        args: 
+          - "-c"
+          - "sleep infinity"
+        # envFrom:
+        # - secretRef:
+        #     name: home-local-syncthing-env
+        securityContext:
+          privileged: true
+        resources:
+          limits:
+            # cpu: 1G
+            memory: 200M
+          requests:
+            cpu: 1m
+            memory: 1M
+        volumeMounts:
+          - name: pv-navidrome-music
+            mountPath: /music
       # - name: go-instrumentation-sidecart
       #   image: otel/autoinstrumentation-go:v0.14.0-alpha
       #   imagePullPolicy: IfNotPresent
