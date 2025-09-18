@@ -315,7 +315,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: memcached
-          image: docker.io/bitnami/memcached:1.6.29-debian-12-r4
+          image: docker.io/bitnami/memcached:1.6.39-debian-12-r1
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
