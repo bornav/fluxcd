@@ -430,7 +430,7 @@ spec:
         sysctls: []
       containers:
         - name: minio
-          image: docker.io/bitnami/minio:2024.8.3-debian-12-r1
+          image: docker.io/bitnami/minio:2024.12.18-debian-12-r1
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -1176,7 +1176,7 @@ spec:
       serviceAccountName: seafile-minio
       initContainers:
         - name: wait-for-available-minio
-          image: docker.io/bitnami/minio:2024.8.3-debian-12-r1
+          image: docker.io/bitnami/minio:2024.12.18-debian-12-r1
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -1214,7 +1214,7 @@ spec:
               memory: 128Mi
       containers:
         - name: minio
-          image: docker.io/bitnami/minio:2024.8.3-debian-12-r1
+          image: docker.io/bitnami/minio:2024.12.18-debian-12-r1
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
