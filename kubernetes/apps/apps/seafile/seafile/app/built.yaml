@@ -803,7 +803,7 @@ spec:
             requests: {}
       containers:
         - name: elasticsearch
-          image: docker.io/bitnami/elasticsearch:8.12.1-debian-11-r2
+          image: docker.io/bitnami/elasticsearch:8.18.0-debian-12-r2
           imagePullPolicy: "IfNotPresent"
           securityContext:
             runAsNonRoot: true
