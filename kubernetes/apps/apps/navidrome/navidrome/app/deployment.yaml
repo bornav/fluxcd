@@ -36,7 +36,7 @@ spec:
       # - name: 'prepare-music'
       #   image: 'instrumentisto/rsync-ssh:alpine3.18.3'
       #   command: ["/bin/sh"]  # Override the entrypoint
-      #   args: ["-c", "sleep 9999" ] 
+      #   args: ["-c", "sleep 9999" ]
       #   # args: ["-c", "/startup.sh" ]
       #   envFrom:
       #   - secretRef:
@@ -82,7 +82,7 @@ spec:
         - name: pv-navidrome-music
           mountPath: /music
         - name: timezone
-          mountPath: /etc/localtime  
+          mountPath: /etc/localtime
           subPath: Europe/Vienna
           readOnly: true
           # readOnly: true
@@ -136,15 +136,15 @@ spec:
             mountPath: /startup.sh
             subPath: startup.sh
           - name: timezone
-            mountPath: /etc/localtime  
+            mountPath: /etc/localtime
             subPath: Europe/Vienna
             readOnly: true
           # - name: nfs-vol
           #   mountPath: /mnt
       - name: 'check-music-integrity'
-        image: 'linuxserver/ffmpeg:version-8.0-cli'  # TODO left is to add a entrypoint, output the failed files to something and delete them
+        image: 'linuxserver/ffmpeg:version-8.0-cli'  # TODO left is to add a entrypoint, output the failed files to something and delete them, also find out why ffmpeg randomoly tessl some are corrupted when they are not
         command: ["/bin/sh"]  # Override the entrypoint
-        args: 
+        args:
           - "-c"
           - "sleep infinity"
         # envFrom:
