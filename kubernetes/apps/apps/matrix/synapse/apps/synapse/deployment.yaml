@@ -35,8 +35,15 @@ spec:
             - sh
             - -c
             - |
+              #!/bin/sh
+              set -e
               cd scripts
-              git clone --branch v1.5.0 https://github.com/matrix-org/synapse-s3-storage-provider.git
+              FOLDER=synapse-s3-storage-provider
+              if [ ! -d "$FOLDER" ] ; then
+                  git clone --branch v1.5.0 https://github.com/matrix-org/synapse-s3-storage-provider.git $FOLDER
+              else
+                  git pull $URL
+              fi
           volumeMounts:
             - mountPath: /scripts
               name: scripts
@@ -47,7 +54,7 @@ spec:
             - sh
             - -c
             # - sleep infinity
-            - | 
+            - |
               ./start.py generate
               curl https://raw.githubusercontent.com/devture/matrix-synapse-shared-secret-auth/master/shared_secret_authenticator.py -o  /usr/local/lib/python$(python --version|cut -d' ' -f2- | cut -d'.' -f1-2)/shared_secret_authenticator.py
               pip install boto3
@@ -116,7 +123,7 @@ spec:
           command:
             - sh
             - -c
-            - | 
+            - |
               pip install boto3 humanize tqdm
               cd /scripts/synapse-s3-storage-provider/scripts
               while true; do sleep 10m; echo "checking if local files are missing on s3"; ./s3_media_upload update-db --homeserver-config-path /synapse/homeserver.yaml 0d && ./s3_media_upload check-deleted /data/media_store/ && ./s3_media_upload upload /data/media_store/ matrix --endpoint-url http://wireguard.network.svc.cluster.local:9010 --prefix synapse/; done
