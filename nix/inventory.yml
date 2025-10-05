@@ -8,6 +8,7 @@ all:
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.11
+      wireguard_port: 51871
       vxlan_ip: 10.129.16.1
     oracle-bv1-1:
       pipelining: true
@@ -17,12 +18,13 @@ all:
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.12
+      wireguard_port: 51872
       vxlan_ip: 10.129.16.2
     # contabo-1:
     #   pipelining: true
     #   ansible_ssh_user: root
     #   # ansible_host: "10.99.7.3"
-    #   ansible_host: "contabo-1.cloud.icylair.com" 
+    #   ansible_host: "contabo-1.cloud.icylair.com"
     #   ansible_ssh_port: 22
     #   ansible_ssh_private_key_file: ~/.ssh/id_local
     #   wireguard_ip: 10.99.10.13
@@ -31,23 +33,22 @@ all:
       pipelining: true
       ansible_ssh_user: root
       # ansible_host: "10.99.7.3"
-      ansible_host: "hetzner-4gb-nbg1-6-01.cloud.icylair.com"  
+      ansible_host: "hetzner-4gb-nbg1-6-01.cloud.icylair.com"
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.13
+      wireguard_port: 51873
       vxlan_ip: 10.129.16.3
     # k3s-local-02:
     #   pipelining: true
     #   ansible_ssh_user: root
     #   # ansible_host: "10.99.7.3"
-    #   ansible_host: "k3s-local-02.local.icylair.com" 
+    #   ansible_host: "k3s-local-02.local.icylair.com"
     #   ansible_ssh_port: 22
     #   ansible_ssh_private_key_file: ~/.ssh/id_local
     #   wireguard_ip: 10.99.10.14
     # vxlan_ip: 10.129.16.1
 
-
-      
     rke2-local-cp: # local node
       pipelining: true
       ansible_ssh_user: root
@@ -56,6 +57,8 @@ all:
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.51
+      wireguard_port: 51874
+      vxlan_ip: 10.129.16.4
     rke2-local-node: # local node
       pipelining: true
       ansible_ssh_user: root
@@ -64,26 +67,28 @@ all:
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.52
+      wireguard_port: 51875
+      vxlan_ip: 10.129.16.5
 
     lighthouse: # lighthouse
       pipelining: true
       ansible_ssh_user: root
       # ansible_host: "10.99.7.3"
-      ansible_host: "lighthouse.icylair.com" 
+      ansible_host: "lighthouse.icylair.com"
       ansible_ssh_port: 22
       ansible_ssh_private_key_file: ~/.ssh/id_local
       wireguard_ip: 10.99.10.254
+      wireguard_port: 51876
       vxlan_ip: 10.129.16.254
-    
-  vars:
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-    ufw_enabled: false
-    ansible_become_method: su 
 
-    wireguard_interface: wg0
+  vars:
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+    ufw_enabled: false
+    ansible_become_method: su
+
+    wireguard_interface: wg-mesh0
     wireguard_mask_bits: 24
     wireguard_port: 51872
 
-    vxlan_interface: vx0
+    vxlan_interface: vx-mesh0
     vxlan_mask_bits: 24
-
