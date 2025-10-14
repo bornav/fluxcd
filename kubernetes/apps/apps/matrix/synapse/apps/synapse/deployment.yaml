@@ -48,7 +48,7 @@ spec:
             - mountPath: /scripts
               name: scripts
       containers:
-        - image: matrixdotorg/synapse:v1.139.2
+        - image: matrixdotorg/synapse:v1.140.0
           name: matrix-synapse
           command:
             - sh
@@ -118,7 +118,7 @@ spec:
             - mountPath: /synapse/doublepuppet.yaml
               name: matrix-synapse-config
               subPath: doublepuppet
-        - image: matrixdotorg/synapse:v1.139.2
+        - image: matrixdotorg/synapse:v1.140.0
           name: s3-upload-missing
           command:
             - sh
