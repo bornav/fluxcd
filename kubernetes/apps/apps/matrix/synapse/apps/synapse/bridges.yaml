@@ -31,7 +31,7 @@ spec:
             - -c
             # - sleep infinity
             - /usr/bin/mautrix-whatsapp --no-update
-          image: dock.mau.dev/mautrix/whatsapp:v0.12.3
+          image: dock.mau.dev/mautrix/whatsapp:v0.2510.0
           imagePullPolicy: IfNotPresent
           ports:
           - name: whatsapp
