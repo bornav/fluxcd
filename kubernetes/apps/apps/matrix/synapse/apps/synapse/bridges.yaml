@@ -31,19 +31,19 @@ spec:
             - -c
             # - sleep infinity
             - /usr/bin/mautrix-whatsapp --no-update
-          image: dock.mau.dev/mautrix/whatsapp:v0.12.3
+          image: dock.mau.dev/mautrix/whatsapp:v25.10
           imagePullPolicy: IfNotPresent
           ports:
-          - name: whatsapp
-            protocol: TCP
-            containerPort: 29318
+            - name: whatsapp
+              protocol: TCP
+              containerPort: 29318
           resources:
             requests:
-              memory: '1Mi'
-              cpu: '1m'
+              memory: "1Mi"
+              cpu: "1m"
             limits:
-              memory: '6Gi'
-              cpu: '2500m'
+              memory: "6Gi"
+              cpu: "2500m"
           volumeMounts:
             - name: matrix-synapse-bridges
               mountPath: /data/config.yaml
@@ -96,19 +96,19 @@ spec:
             - -c
             # - sleep infinity
             - /usr/bin/mautrix-meta --no-update
-          image: dock.mau.dev/mautrix/meta:v0.5.3
+          image: dock.mau.dev/mautrix/meta:v25.10
           imagePullPolicy: IfNotPresent
           ports:
-          - name: meta
-            protocol: TCP
-            containerPort: 29319
+            - name: meta
+              protocol: TCP
+              containerPort: 29319
           resources:
             requests:
-              memory: '1Mi'
-              cpu: '1m'
+              memory: "1Mi"
+              cpu: "1m"
             limits:
-              memory: '6Gi'
-              cpu: '2500m'
+              memory: "6Gi"
+              cpu: "2500m"
           volumeMounts:
             - name: matrix-synapse-bridges
               mountPath: /data/config.yaml

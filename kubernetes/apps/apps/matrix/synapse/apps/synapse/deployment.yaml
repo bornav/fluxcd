@@ -19,8 +19,8 @@ spec:
     metadata:
       annotations:
         prometheus.io/path: /_synapse/metrics
-        prometheus.io/port: '9090'
-        prometheus.io/scrape: 'true'
+        prometheus.io/port: "9090"
+        prometheus.io/scrape: "true"
       labels:
         app: matrix-synapse
     spec:
@@ -40,7 +40,7 @@ spec:
               cd scripts
               FOLDER=synapse-s3-storage-provider
               if [ ! -d "$FOLDER" ] ; then
-                  git clone --branch v1.5.0 https://github.com/matrix-org/synapse-s3-storage-provider.git $FOLDER
+                  git clone --branch v1.6.0 https://github.com/matrix-org/synapse-s3-storage-provider.git $FOLDER
               else
                   git pull $URL
               fi
@@ -48,7 +48,7 @@ spec:
             - mountPath: /scripts
               name: scripts
       containers:
-        - image: matrixdotorg/synapse:v1.139.2
+        - image: &synapse_image matrixdotorg/synapse:v1.140.0
           name: matrix-synapse
           command:
             - sh
@@ -61,27 +61,27 @@ spec:
               export PYTHONPATH=$PYTHONPATH:/scripts/synapse-s3-storage-provider/
               ./start.py
           ports:
-          - name: http
-            protocol: TCP
-            containerPort: 8008
-          - name: https
-            protocol: TCP
-            containerPort: 8448
-          - name: replication
-            protocol: TCP
-            containerPort: 9092
-          - name: httpreplication
-            protocol: TCP
-            containerPort: 9093
+            - name: http
+              protocol: TCP
+              containerPort: 8008
+            - name: https
+              protocol: TCP
+              containerPort: 8448
+            - name: replication
+              protocol: TCP
+              containerPort: 9092
+            - name: httpreplication
+              protocol: TCP
+              containerPort: 9093
           env:
             - name: SYNAPSE_CACHE_FACTOR # overwrites config file
-              value: '5.00'
+              value: "5.00"
             - name: SYNAPSE_CONFIG_PATH
-              value: '/synapse/homeserver.yaml'
+              value: "/synapse/homeserver.yaml"
             - name: SYNAPSE_SERVER_NAME
-              value: 'matrix.icylair.com'
+              value: "matrix.icylair.com"
             - name: SYNAPSE_REPORT_STATS
-              value: 'no'
+              value: "no"
           imagePullPolicy: IfNotPresent
           # livenessProbe:
           #   httpGet:
@@ -97,10 +97,10 @@ spec:
           #   initialDelaySeconds: 10
           resources:
             requests:
-              memory: '1Mi'
-              cpu: '1m'
+              memory: "1Mi"
+              cpu: "1m"
             limits:
-              memory: '6Gi'
+              memory: "6Gi"
           volumeMounts:
             - mountPath: /scripts
               name: scripts
@@ -118,7 +118,7 @@ spec:
             - mountPath: /synapse/doublepuppet.yaml
               name: matrix-synapse-config
               subPath: doublepuppet
-        - image: matrixdotorg/synapse:v1.139.2
+        - image: *synapse_image
           name: s3-upload-missing
           command:
             - sh
@@ -133,10 +133,10 @@ spec:
                 name: aws-credentials
           resources:
             requests:
-              memory: '1Mi'
-              cpu: '1m'
+              memory: "1Mi"
+              cpu: "1m"
             limits:
-              memory: '1Gi'
+              memory: "1Gi"
           volumeMounts:
             - mountPath: /scripts
               name: scripts
