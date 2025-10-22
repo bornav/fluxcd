@@ -1,0 +1,19 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-stack-kube-prom-thanos-discovery
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+spec:
+  ports:
+  - name: grpc
+    port: 10901
+    protocol: TCP
+    targetPort: grpc
+  - name: http
+    port: 10902
+    protocol: TCP
+    targetPort: http

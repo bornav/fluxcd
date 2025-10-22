@@ -13,12 +13,14 @@
       9345 # RKE2 controll plane
       2379 # k3s, etcd clients: required if using a "High Availability Embedded etcd" configuration
       2380 # k3s, etcd peers: required if using a "High Availability Embedded etcd" configuration
-      443 8443 # https
+      443 8443 9443 # https
       80 8080 # http
-       
+
       22 # ssh
 
       9987 10011 30033 # TS3
+
+      4789 # vxvlan
     ];
     allowedTCPPortRanges = [
     { from = 4; to = 65535; }
@@ -36,6 +38,7 @@
     # ];
     allowedUDPPortRanges = [
     { from = 4; to = 65535; }
+    { from = 51800; to = 51900; } # wireguard ports
     ];
   };
 }

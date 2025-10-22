@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name element-web-new
+  labels:
+    app: *name
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: *name
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - name: *name
+          # image: vectorim/element-web:latest
+          image: vectorim/element-web:v1.11.110
+        # image: vectorim/element-web:v1.11.40
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - sleep infinity
+            - |
+              cat /app/config.json | gzip > /app/config.json.gz && \
+              exec nginx -g "daemon off;"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NGINX_HOST
+              value: "0.0.0.0"
+            - name: NGINX_PORT
+              value: "80"
+          # ports:
+          # - containerPort: 80
+          #   name: element
+          #   protocol: TCP
+          # readinessProbe:
+          #     httpGet:
+          #         path: /
+          #         port: element
+          #     initialDelaySeconds: 2
+          #     periodSeconds: 3
+          # livenessProbe:
+          #     httpGet:
+          #         path: /
+          #         port: element
+          #     initialDelaySeconds: 10
+          #     periodSeconds: 10
+          # resources:
+          #   requests:
+          #     memory: '1Mi'
+          #     cpu: '1m'
+          #   limits:
+          #     memory: '3000Mi'
+          #     cpu: '2500m'
+          # securityContext:
+          #   runAsGroup: 0
+          #   runAsUser: 0
+          # volumeMounts:
+          #   - mountPath: /app/config.json
+          #     name: element-config
+          #     subPath: config
+      restartPolicy: Always
+      volumes:
+        - name: element-config
+          configMap:
+            name: element-config
+            defaultMode: 0777
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &name element-web-new
+  labels:
+    app: *name
+spec:
+  ports:
+    - port: 80
+      # protocol: TCP
+      # targetPort: 80
+  selector:
+    app: element-web-new
+  type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app matrix-ingress-new
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: traefik-external
+  rules:
+    - host: element-new.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: element-web-new
+                port:
+                  number: 80
+  tls:
+  - hosts:
+      - element-new.cloud.icylair.com
+    secretName: icylair-com-all-prod

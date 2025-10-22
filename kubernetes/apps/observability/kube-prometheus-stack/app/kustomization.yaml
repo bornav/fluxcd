@@ -9,6 +9,7 @@ resources:
 - release-loki.yaml
 - release-tempo.yaml
 - release-alloy-operator.yaml
+- external-thanos-service.yaml
 # - prometheusrule.yaml
 # - release-beyla.yaml
 # - release-alertmanager.yaml

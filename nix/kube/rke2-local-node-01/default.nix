@@ -21,8 +21,8 @@ let
       - "node-arch=amd64"
       - "nixos-nvidia-cdi=enabled"
       - "nvidia.com/gpu.present=true"
-      - "storage=ceph"
-      - "storage/ceph=true"
+      - "storage/ceph=false"
+      - "storage/longhorn=true"
     # node-taint:
     #   - "node-role.kubernetes.io/control-plane=true:NoSchedule"
     kube-apiserver-arg:
@@ -105,6 +105,7 @@ in
       fsType = "ext4";
       options = [
         "noatime"
+        "nofail"
       ];
     };
 
