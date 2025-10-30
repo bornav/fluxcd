@@ -113,6 +113,7 @@ spec:
             hosts:
               - prometheus.cloud.icylair.com
       prometheusSpec:
+        enableRemoteWriteReceiver: true
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
