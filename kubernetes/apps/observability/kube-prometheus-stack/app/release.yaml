@@ -126,7 +126,7 @@ spec:
           - new-service-discovery-manager
           - exemplar-storage
         retention: 3d
-        retentionSize: 4GB
+        retentionSize: 1GB
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -134,7 +134,7 @@ spec:
               accessModes: ["ReadWriteOnce"]
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 4Gi
             selector: {}
         thanos:
           objectStorageConfig:
@@ -177,7 +177,7 @@ spec:
         annotations: {}
         labels: {}
         type: LoadBalancer
-        loadBalancerSourceRanges: # prob will brake stuff if i change lb, can be removed not necesarry 
+        loadBalancerSourceRanges: # prob will brake stuff if i change lb, can be removed not necesarry
           - "10.49.20.0/24"
         # ipDualStack:
         #   enabled: false
@@ -222,7 +222,7 @@ spec:
       #   receivers:
       #   - name: discord
       #     discord_configs:
-      #     - webhook_url: 
+      #     - webhook_url:
       # # templates:
       # #   # alertmanager.yml: |
       # #   #   route:
@@ -234,7 +234,7 @@ spec:
       # #   #   receivers:
       # #   #   - name: discord
       # #   #     discord_configs:
-      # #   #     - webhook_url: 
+      # #   #     - webhook_url:
 
 
 
