@@ -30,7 +30,7 @@ spec:
   superuserSecret:
     name: synapse-pg-superuser
   storage:
-    size: &size 4Gi
+    size: &size 12Gi
     pvcTemplate:
       accessModes:
         - ReadWriteOnce
