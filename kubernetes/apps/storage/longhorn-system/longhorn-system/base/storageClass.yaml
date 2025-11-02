@@ -1,3 +1,4 @@
+# TODO populate dataengine on all other storageclasses
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -10,6 +11,7 @@ allowVolumeExpansion: true
 reclaimPolicy: "Delete"
 volumeBindingMode: WaitForFirstConsumer
 parameters:
+  dataEngine: "v1"
   numberOfReplicas: "1"
   staleReplicaTimeout: "15"
   fromBackup: ""
