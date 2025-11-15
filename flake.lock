@@ -127,11 +127,11 @@
         "rev": "4c70dfefafa8a4cfecf6bd75038a81d432610e47",
         "revCount": 826940,
         "type": "git",
-        "url": "file:///home/bocmo/git/nixpkgs"
+        "url": "file:///home/user/git/nixpkgs"
       },
       "original": {
         "type": "git",
-        "url": "file:///home/bocmo/git/nixpkgs"
+        "url": "file:///home/user/git/nixpkgs"
       }
     },
     "nixpkgs-master": {

@@ -6,9 +6,9 @@
       # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
       nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
       nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";         # Unstable Nix Packages
-      nixpkgs-master.url = "github:nixos/nixpkgs/master"; 
-      # nixpkgs-bornav.url = "github:bornav/nixpkgs/feat/headscale-allow-external-config"; 
-      nixpkgs-bornav.url = "git+file:///home/bocmo/git/nixpkgs"; 
+      nixpkgs-master.url = "github:nixos/nixpkgs/master";
+      # nixpkgs-bornav.url = "github:bornav/nixpkgs/feat/headscale-allow-external-config";
+      nixpkgs-bornav.url = "git+file:///home/user/git/nixpkgs";
       nixos-hardware.url = "github:NixOS/nixos-hardware/master"; #https://github.com/NixOS/nixos-hardware/tree/master
       home-manager = {url = "github:nix-community/home-manager";
                       # inputs.nixpkgs.follows = "nixpkgs-unstable";
