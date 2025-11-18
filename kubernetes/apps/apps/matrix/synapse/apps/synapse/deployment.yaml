@@ -48,7 +48,7 @@ spec:
             - mountPath: /scripts
               name: scripts
       containers:
-        - image: &synapse_image matrixdotorg/synapse:v1.142.0
+        - image: &synapse_image matrixdotorg/synapse:v1.142.1
           name: matrix-synapse
           command:
             - sh
