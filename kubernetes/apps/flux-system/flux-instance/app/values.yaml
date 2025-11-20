@@ -1,7 +1,7 @@
 ---
 instance:
-  distribution:
-    version: 2.5.1
+  # distribution:
+  #   version: 2.5.1
   cluster:
     networkPolicy: false
   components:
@@ -9,6 +9,9 @@ instance:
     - kustomize-controller
     - helm-controller
     - notification-controller
+    - image-reflector-controller
+    - image-automation-controller
+    - source-watcher
   sync:
     kind: GitRepository
     url: https://github.com/bornav/fluxcd
