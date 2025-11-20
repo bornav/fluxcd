@@ -14,7 +14,7 @@ spec:
   superuserSecret:
     name: keycloak-pg-superuser
   storage:
-    size: &size 1.5Gi
+    size: &size 3.0Gi
     pvcTemplate:
       accessModes:
         - ReadWriteOnce
