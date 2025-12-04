@@ -49,7 +49,7 @@ gateway:
       protocol: HTTPS
       namespacePolicy:
         from: All
-      certificateRefs: 
+      certificateRefs:
         - kind: Secret
           # group: ""
           name: "icylair-com-all-prod"
@@ -59,11 +59,11 @@ service:
     lbipam.cilium.io/ips: "10.99.10.11,10.99.10.12,10.99.10.13,10.49.22.2,10.129.16.100"
   # spec:
   #   loadBalancerIP: "10.49.22.2"
-  labels: 
+  labels:
     service-type: ingress-static
     service-type/alt: wireguard-static
     service-type/vxlan: static
-    
+
 ingressClass:
   enabled: true
   isDefaultClass: true
@@ -78,7 +78,7 @@ ingressRoute:
     # matchRule: PathPrefix(`/`)
     matchRule: Host(`traefik.cloud.icylair.com`)
     entryPoints: ["websecure"]
-    middlewares: 
+    middlewares:
       - name: "forward-auth"
     # tls:
     #   - hosts:
@@ -175,7 +175,7 @@ extraObjects:
 providers:
   kubernetesCRD:
     enabled: true
-    ingressClass: *ingress-class-name 
+    ingressClass: *ingress-class-name
     allowExternalNameServices: true
     allowCrossNamespace: true
   kubernetesGateway:
@@ -204,6 +204,7 @@ tlsStore:
       secretName: icylair-com-all-prod
 logs:
   general:
+    format: json # # @schema enum:["common", "json", null]; type:[string, null]; default: "common"
     # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
     level: INFO
 resources:
@@ -230,7 +231,7 @@ experimental:
       version: "v0.3.0"
 metrics:
   prometheus:
-    serviceMonitor: 
+    serviceMonitor:
       enabled: true
     # prometheusRule:  # TODO this breaks it
     #   enabled: true
