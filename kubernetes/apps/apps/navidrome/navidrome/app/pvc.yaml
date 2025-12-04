@@ -16,7 +16,7 @@ spec:
     name: pv-navidrome-data-restore  # Name of the ReplicationDestination
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
 status: {}
 ---
 apiVersion: v1
@@ -36,7 +36,7 @@ spec:
   storageClassName: longhorn-storage-im
   resources:
     requests:
-      storage: 14Gi
+      storage: 20Gi
 status: {}
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
@@ -76,33 +76,10 @@ spec:
     accessModes: ["ReadWriteOnce"]
     copyMethod: Snapshot
     # destinationPVC: pv-navidrome-data
-    capacity: 5Gi
+    capacity: 10Gi
     enableFileDeletion: true
     cleanupCachePVC: false
     cleanupTempPVC: false
-# ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
-# apiVersion: volsync.backube/v1alpha1
-# kind: ReplicationSource
-# metadata:
-#   name: pv-navidrome-music-backup
-#   namespace: navidrome
-# spec:
-#   sourcePVC: pv-navidrome-music
-#   trigger:
-#     schedule: "*/600 * * * *"
-#   restic:
-#     pruneIntervalDays: 1
-#     repository: restic-navidrome-config-music
-#     retain:
-#       hourly: 5
-#       daily: 4
-#       weekly: 3
-#       monthly: 2
-#       yearly: 1
-#     copyMethod: Snapshot
-#     storageClassName: longhorn-storage
-#     unlock: "something"
 # ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationdestination_v1alpha1.json
 # apiVersion: volsync.backube/v1alpha1

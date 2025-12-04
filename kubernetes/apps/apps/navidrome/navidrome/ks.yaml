@@ -43,24 +43,24 @@ spec:
   retryInterval: 35m
   timeout: 30m
   targetNamespace: apps
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: navidrome-backups
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: navidrome-app
-#   path: ./kubernetes/apps/apps/navidrome/navidrome/backup
-#   suspend: true
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: fluxcd-kubernetes
-#     namespace: flux-system
-#   interval: 15m
-#   retryInterval: 35m
-#   timeout: 30m
-#   targetNamespace: appse
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: navidrome-backups
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: navidrome-app
+  path: ./kubernetes/apps/apps/navidrome/navidrome/backup
+  suspend: false
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 35m
+  timeout: 30m
+  targetNamespace: apps

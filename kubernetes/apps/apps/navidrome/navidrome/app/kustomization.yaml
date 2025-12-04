@@ -4,11 +4,12 @@ kind: Kustomization
 namespace: apps
 resources:
   - deployment.yaml
-  # - statefulset.yaml
   - ingress.yaml
-  # - secrets.yaml
-  # - .decrypted~secrets.yaml
   - service.yaml
   - pvc.yaml
   - config-external-secret.yaml
+
+  # - statefulset.yaml
+  # - secrets.yaml
+  # - .decrypted~secrets.yaml
   # - volsync-replication.yaml
