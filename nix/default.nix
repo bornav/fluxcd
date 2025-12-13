@@ -152,7 +152,9 @@
         system = "x86_64-linux";
     };
     modules = [
-        ./kube/rke2-local-cp-01
+        ./kube/rke2-local-cluster
+        ./kube/rke2-local-cluster/nodes/cp-01.nix
+        # ./kube/rke2-local-cp-01
         ./kube/common.nix
     ];
   };
