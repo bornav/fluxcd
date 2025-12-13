@@ -1,5 +1,5 @@
 { config, lib, system, inputs, host, node_config, vars, pkgs, ... }:
-{ 
+{
   boot.kernelModules = [ "rbd" "br_netfilter" "ceph"];
   # TODO lookinto
   # https://github.com/ryan4yin/nix-config/blob/36ba5a4efcc523f45f391342ef49bee07261c22d/lib/genKubeVirtHostModule.nix#L62
@@ -42,10 +42,10 @@
     # net.ipv6.conf.default.accept_redirects=0
     "kernel.keys.root_maxbytes"=25000000;
     "kernel.keys.root_maxkeys"=1000000;
-    "kernel.panic"=10;
-    "kernel.panic_on_oops"=1;
-    "vm.overcommit_memory"=1;
-    "vm.panic_on_oom"=0;
+    # "kernel.panic"=10;
+    # "kernel.panic_on_oops"=1;
+    # "vm.overcommit_memory"=1;
+    # "vm.panic_on_oom"=0;
     "vm.swappiness" = 0; # don't swap unless absolutely necessary
   };
 }

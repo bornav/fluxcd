@@ -1,4 +1,4 @@
-{ config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }: # TODO remove system, only when from all modules it is removed
+{ lib, pkgs, ... }:
 {
   services.openiscsi = {
     enable = true;
@@ -17,7 +17,14 @@
       RemainAfterExit = true;
     };
     wantedBy = [ "multi-user.target" ];
-  }; 
+  };
 
-
+  fileSystems."/storage" = {
+    device = "/dev/disk/by-uuid/adcff358-f5ab-409e-b406-380bb44c9dae";
+        fsType = "ext4";
+        options = [
+          "noatime"
+          "nofail"
+        ];
+  };
 }

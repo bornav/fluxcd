@@ -11,14 +11,14 @@
 
   boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "virtio_pci" "virtio_scsi" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "nvme-tcp" ];
   boot.extraModulePackages = [ ];
 
   # swapDevices = [ {
   #   device = "/var/lib/swapfile";
   #   size = 16*1024;
   # } ];
-  
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction

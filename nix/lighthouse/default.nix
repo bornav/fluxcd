@@ -13,6 +13,7 @@
     ./traefik.nix
     ./haproxy.nix
     ./headscale.nix
+    # ./netbird.nix
     {_module.args.disks = [ "/dev/sda" ];}
 
 
@@ -170,7 +171,7 @@
   #   aclConfig = import ./mesh.nix;
   # };
 
-  # networking.nat.forwardPorts = 
+  # networking.nat.forwardPorts =
   # [
   #   {
   #     destination = "oracle-km1-1.cloud.icylair.com:80";
@@ -183,12 +184,12 @@
   #     sourcePort = 443;
   #   }
   # ];
-  
+
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 22 80 443 3000 6443 8080 9345 10022];
     allowedUDPPortRanges = [
-      { from = 1000; 
+      { from = 1000;
         # to = 6550;
         to = 51900;
          }
@@ -224,7 +225,7 @@
   #     reverse_proxy * 127.0.0.1:8080
   #   '';
   # };
-  
+
   services.zerotierone = {
     enable = true;
     joinNetworks = [
@@ -246,5 +247,5 @@
 
   # systemd.tmpfiles.rules = [
   #   "L+ ${pkgs.iproute2}/bin - - - - /root/bin/"                   # exposes binaryes
-  # ];  
-} 
+  # ];
+}

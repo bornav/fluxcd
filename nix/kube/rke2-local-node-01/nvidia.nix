@@ -17,7 +17,7 @@
   };
 
   nixpkgs.config.nvidia.acceptLicense = true;
-  services.xserver.enable = false; 
+  services.xserver.enable = false;
   services.xserver.videoDrivers = ["nvidia"]; # this is important
 
   # hardware.nvidia.datacenter.enable = true;
@@ -52,5 +52,24 @@
         BinaryName = "${lib.getOutput "tools" config.hardware.nvidia-container-toolkit.package}/bin/nvidia-container-runtime"
       EOF
     '';
+  };
+
+
+
+  systemd.services.nvidia-gpu-powerlimit = {
+    description = "Set NVIDIA GPU power limit";
+    wantedBy = [ "multi-user.target" ];
+    after = [
+      "nvidia-persistenced.service"
+      "systemd-udev-settle.service"
+    ];
+    requires = [ "nvidia-persistenced.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = [
+        "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -pl 125"
+      ];
+    };
   };
 }

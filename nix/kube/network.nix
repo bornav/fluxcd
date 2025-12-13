@@ -1,8 +1,8 @@
-{ config, lib, system, inputs, host, vars, pkgs, pkgs-unstable, ... }:
+{ host, ... }:
 {
   networking.hostName = host.hostName; # Define your hostname.
   networking.networkmanager.enable = true;
-  networking.firewall.trustedInterfaces = [ "cilium_host" "cilium_net" "lxc+"];
+  networking.firewall.trustedInterfaces = [ "cilium_host" "cilium_net" "lxc+" "wg-mesh0" "vx-mesh0"];
   networking.firewall.checkReversePath = false;
 
   networking.useNetworkd = true;

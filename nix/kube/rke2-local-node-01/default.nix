@@ -46,7 +46,9 @@ in
     ./hardware-configuration.nix
     ./disk-config.nix
     ./nvidia.nix
-    ./iscsi-drive.nix
+    # ./nvidia_new.nix
+    # ./nvidia_new2.nix
+    # ./iscsi-drive.nix
     ./virt.nix
     # ./net-forward.nix
     # (import ../k3s-server.nix {inherit inputs vars config lib system;node_config = master3;})
@@ -57,7 +59,7 @@ in
   # "server" or "agent"
   rke2.type = "agent";
   rke2.server_lb_address= "https://rke2-local-cp-01.local.icylair.com:9345";
-  
+
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs-unstable.linuxKernel.packages.linux_6_8;
   boot.loader = {
@@ -79,39 +81,30 @@ in
       MaxRetentionSec=1month # How long to keep journal files
     '';
   };
-  services.rke2.package = lib.mkForce (pkgs.callPackage ../../modules/custom_pkg/rke2_custom.nix {
-          rke2Version = "1.32.0+rke2r1";
-          rke2Commit = "1182e7eb91b27b1686e69306eb2e227928a27a38";
-          rke2TarballHash = "sha256-mmHQxiNcfgZTTdYPJPO7WTIlaCRM4CWsWwfRUcAR8ho=";
-          rke2VendorHash = "sha256-6Y3paEQJ8yHzONqalzoe15TjWhF3zGsM92LS1AcJ2GM=";
-          # k8sVersion = "v1.32.0";
-          k8sImageTag = "v1.32.0-rke2r1-build20241212";
-          etcdVersion = "v3.5.16-k3s1-build20241106";
-          pauseVersion = "3.6";
-          ccmVersion = "v1.32.0-rc3.0.20241220224140-68fbd1a6b543-build20250101";
-          dockerizedVersion = "v1.32.0-rke2r1";
-          # golangVersion = "go1.23.3";
-          # eol = "2026-02-28";
-          });
+  services.rke2.package = lib.mkForce (
+    pkgs.callPackage ../../modules/custom_pkg/rke2_custom.nix {
+      rke2Version = "1.34.1+rke2r1";
+      rke2Commit = "98b87c78e2c5a09fd8ff07bcaf4f102db1894a93";
+      rke2TarballHash = "sha256-dRmIDXeZabWxknqPod0RLZfT3I20llXELJhuQgDQHIc=";
+      rke2VendorHash = "sha256-i8VS4NviyVxjTJpsO/sL9grYyUzy72Ql6m3qHbtnLnw=";
+      k8sImageTag = "v1.34.1-rke2r1-build20250910";
+      etcdVersion = "v3.6.4-k3s3-build20250908";
+      pauseVersion = "3.6";
+      ccmVersion = "v1.33.0-rc1.0.20250905195603-857412ae5891-build20250908";
+      dockerizedVersion = "v1.34.1-rke2r1";
+    }
+  );
 
-  fileSystems."/kubernetes" = {#truenas nfs storage
+  fileSystems."/kubernetes" = {
+        #truenas nfs storage
         device = "10.2.11.200:/mnt/vega/vega/kubernetes";
         fsType = "nfs";
         options = [ "soft" "timeo=50" "x-systemd.automount" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s"];
       };
-  
-  fileSystems."/storage" =
-    { device = "/dev/disk/by-uuid/ae405381-7675-405c-8441-d4dcfa7c0d0a"; 
-      fsType = "ext4";
-      options = [
-        "noatime"
-        "nofail"
-      ];
-    };
 
   environment.systemPackages = with pkgs; [
     zfs
-
+    nvme-cli
     nfs-utils
     openiscsi
     lsscsi

@@ -12,7 +12,7 @@ prepare_token_rke2(){
         echo "running token"
         for host in "${hosts[@]}"; do
             # ssh $host "mkdir -p /etc/rancher/rke2/"
-            scp /home/bocmo/.ssh/token $host:/var/token
+            scp /home/user/.ssh/token $host:/var/token
         done
         # sleep 2
     # done
@@ -121,6 +121,3 @@ elif [[ $1 == deploy_all ]]; then
     echo "done step"
     exit
 fi
-
-
-

@@ -1,6 +1,6 @@
 { config, lib, system, inputs, host, node_config, vars, pkgs, ... }:
 let
-  tls_san = 
+  tls_san =
   ''
   tls-san:
     - 10.0.0.71
@@ -12,6 +12,7 @@ let
     - 10.2.11.38
     - 10.2.11.41
     - 10.2.11.42
+    - 10.2.11.43
     - 10.99.10.10
     - 10.99.10.11
     - 10.99.10.12
@@ -19,6 +20,8 @@ let
     - 10.99.10.14
     - 10.99.10.15
     - 10.99.10.51
+    - 10.99.10.52
+    - 10.99.10.53
     - oracle-bv1-1.cloud.icylair.com
     - oracle-km1-1.cloud.icylair.com
     - oraclearm3.cloud.icylair.com
@@ -35,10 +38,11 @@ let
     - rke2-local-example.local.icylair.com
     - rke2-local.local.icylair.com
     - rke2-local-node-01.local.icylair.com
+    - rke2-local-node-02.local.icylair.com
     - rke2-local-cp-01.local.icylair.com
     - lb.local.icylair.com
     - lb.cloud.icylair.com
-  kube-apiserver-extra-mount: 
+  kube-apiserver-extra-mount:
     - /etc/localtime:/etc/localtime:ro
   kube-scheduler-extra-mount:
     - /etc/localtime:/etc/localtime:ro
@@ -54,7 +58,7 @@ let
   '';
   server=# first init uncomment the ip based once, after the loadbalancer, origin one needs both commented out
   ''
-  server: https://lb.cloud.icylair.com:9345  
+  server: https://lb.cloud.icylair.com:9345
   # server: https://10.99.10.11:9345
   '';
   combined_config = if host.kube_ha then
@@ -68,7 +72,7 @@ in
   # # We prefer the system to attempt to continue booting so
   # # that we can hopefully still access it remotely.
   # systemd.enableEmergencyMode = false;
-  system.activationScripts.usrlocalbin = ''  
+  system.activationScripts.usrlocalbin = ''
       mkdir -m 0755 -p /usr/local
       ln -nsf /run/current-system/sw/bin /usr/local/
   ''; # TODO look into, potentialy undeeded
@@ -83,7 +87,7 @@ in
     name = "iqn.2005-10.org.freenas.ctl:${config.networking.hostName}";
   };
   services.nfs.server.enable = true;
-  
+
 
   environment.systemPackages = with pkgs; [
     nfs-utils
@@ -103,8 +107,12 @@ in
     tcpdump
     conntrack-tools
 
-    
+
     util-linux ## longhorn nsenter, seems nsenter is available without this
+
+
+    nvmet-cli
+    nvmetcfg
 
   ];
   boot.supportedFilesystems = [
@@ -125,8 +133,7 @@ in
     kernelModules = [ "nfs" ];
     availableKernelModules = [ "dm_crypt" ];
   };
-  
-  virtualisation.docker.logDriver = "json-file";
+
   # virtualisation.containerd = {
   #   enable = true;
   #   # settings =
@@ -145,10 +152,10 @@ in
   #   #     };
   #   #     # Optionally set private registry credentials here instead of using /etc/rancher/k3s/registries.yaml
   #   #     # plugins."io.containerd.grpc.v1.cri".registry.configs."registry.example.com".auth = {
-  #   #     #  username = ""; 
+  #   #     #  username = "";
   #   #     # };
   #   # };
-  # }; 
+  # };
 
   # longhorn specific so it has /boot/config kernel modules file to read
   systemd.services.save-kernel-config = {
