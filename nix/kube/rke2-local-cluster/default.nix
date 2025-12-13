@@ -20,7 +20,7 @@
     ./hardware-configuration.nix
     ./disk-config.nix
     # ./iscsi-drive.nix
-    ./virt.nix
+    # ./virt.nix
     # ./net-forward.nix
     {_module.args.disks = ["/dev/sda"];}
   ];
@@ -35,6 +35,7 @@
   };
   boot.initrd.systemd.network.wait-online.enable = false;
 
+  services.qemuGuest.enable = true;
   systemd.network.wait-online.enable = false;
   services.journald = {
     extraConfig = ''

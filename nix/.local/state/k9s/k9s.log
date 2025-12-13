@@ -1,0 +1,24 @@
+[2m2025-11-06T11:21:59+01:00[0m [92mINF[0m 🐶 K9s starting up...
+[2m2025-11-06T11:21:59+01:00[0m [93mWRN[0m Fail to locate metrics-server [2merror=[0m"Get \"http://localhost:8080/api\": dial tcp [::1]:8080: connect: connection refused"
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Fail to refine k9s config [2merror=[0m"unable to activate context \"\": getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to fetch server version [2merror=[0m"Get \"http://localhost:8080/version?timeout=2m0s\": dial tcp [::1]:8080: connect: connection refused"
+[2m2025-11-06T11:21:59+01:00[0m [93mWRN[0m 💣 Kubernetes connectivity toast!
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m K9s config save failed [2merror=[0m"unable to locate associated cluster for context \"\": getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [93mWRN[0m Fail to load global/context configuration [2merror=[0m"Get \"http://localhost:8080/api\": dial tcp [::1]:8080: connect: connection refused\nunable to locate associated cluster for context \"\": getcontext - invalid context specified: \"\"\nunable to activate context \"\": getcontext - invalid context specified: \"\"\ncannot connect to context: \nk8s connection failed for context: \nunable to locate associated cluster for context \"\": getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to assert active namespace. Using default [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Load cluster resources - No API server connection
+[2m2025-11-06T11:21:59+01:00[0m [93mWRN[0m Unable to dial API client for metrics [2merror=[0m"no connection to dial"
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to assert active namespace. Using default [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to assert active namespace. Using default [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to assert active namespace. Using default [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to assert active namespace. Using default [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Unable to fetch server version [2merror=[0m"Get \"http://localhost:8080/version?timeout=2m0s\": dial tcp [::1]:8080: connect: connection refused"
+[2m2025-11-06T11:21:59+01:00[0m [91mERR[0m Load cluster resources - No API server connection
+[2m2025-11-06T11:21:59+01:00[0m [93mWRN[0m Unable to dial API client for metrics [2merror=[0m"no connection to dial"
+[2m2025-11-06T11:22:01+01:00[0m [93mWRN[0m No resources found for contexts in "-" namespace
+[2m2025-11-06T11:22:01+01:00[0m [93mWRN[0m Plugins load failed [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:22:03+01:00[0m [93mWRN[0m Plugins load failed [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:22:05+01:00[0m [93mWRN[0m Plugins load failed [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:22:07+01:00[0m [93mWRN[0m Plugins load failed [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:22:08+01:00[0m [91mERR[0m Unable to nuke k9s shell pod [2merror=[0m"getcontext - invalid context specified: \"\""
+[2m2025-11-06T11:22:08+01:00[0m [91mERR[0m Config save failed! [2merror=[0m"unable to locate associated cluster for context \"\": getcontext - invalid context specified: \"\""

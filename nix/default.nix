@@ -152,10 +152,9 @@
         system = "x86_64-linux";
     };
     modules = [
-        ./kube/rke2-local-cluster
-        ./kube/rke2-local-cluster/nodes/cp-01.nix
-        # ./kube/rke2-local-cp-01
-        ./kube/common.nix
+      ./kube/rke2-local-cluster
+      ./kube/rke2-local-cluster/nodes/cp-01.nix
+      ./kube/common.nix
     ];
   };
   rke2-local-node-01 = inputs.nixpkgs-unstable.lib.nixosSystem {
@@ -174,8 +173,9 @@
         system = "x86_64-linux";
     };
     modules = [
-        ./kube/rke2-local-node-01
-        ./kube/common.nix
+      ./kube/rke2-local-cluster
+      ./kube/rke2-local-cluster/nodes/node-01.nix
+      ./kube/common.nix
     ];
   };
   rke2-local-node-02 = inputs.nixpkgs-unstable.lib.nixosSystem {
@@ -194,8 +194,9 @@
         system = "x86_64-linux";
     };
     modules = [
-        ./kube/rke2-local-node-02
-        ./kube/common.nix
+      ./kube/rke2-local-cluster
+      ./kube/rke2-local-cluster/nodes/node-02.nix
+      ./kube/common.nix
     ];
   };
   rke2-local-example = inputs.nixpkgs-unstable.lib.nixosSystem {
