@@ -36,6 +36,7 @@
 			inherit inputs outputs self vars;   # Inherit inputs
 			}
 		);
+		hydraJobs = import ./hydra.nix {inherit inputs outputs;};
 		# homeConfigurations = (
 		# 	import ./nix {
 		# 	inherit (nixpkgs) lib;
