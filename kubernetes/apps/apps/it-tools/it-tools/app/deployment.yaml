@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment.json
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: &name it-tools
+  labels:
+    app: *name
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: *name
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: *name
+    spec:
+      containers:
+        - name: *name
+          image: "harbor.icylair.com/docker.io/sharevb/it-tools:2025.12.7"
+          # command: ["/bin/sh"] # Override the entrypoint
+          # args:
+          #   - "-c"
+          #   - "sleep infinity"
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          securityContext:
+            privileged: false
+          resources:
+            limits:
+              # cpu: 1G
+              memory: 200M
+            requests:
+              cpu: 50m
+              memory: 50M
+          volumeMounts: []
+      volumes: []
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: it-tools-service
+spec:
+  selector:
+    app: it-tools
+  ports:
+    - name: http
+      targetPort: 8080
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app it-tools
+  labels:
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations: {}
+spec:
+  ingressClassName: traefik-external
+  rules:
+    - host: &host1 it-tools.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: it-tools-service
+                port:
+                  name: http
+    - host: &host2 it-tools.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: it-tools-service
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - *host1
+        - *host2
+      secretName: icylair-com-all-prod

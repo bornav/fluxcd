@@ -33,11 +33,11 @@ spec:
         enabled: true
         # # tls certificate is configured in the ingress controller, choose this option
         certSource: secret
-        secret: 
+        secret:
           secretName: "icylair-com-all-prod"
       ingress:
         ingressClassName: traefik-external
-        hosts: 
+        hosts:
           core: harbor.icylair.com
         # annotations:
         #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
@@ -84,9 +84,9 @@ spec:
           #multipartcopychunksize: "33554432"
           #multipartcopymaxconcurrency: 100
           #multipartcopythresholdsize: "33554432"
-            
+
     tolerations-and-nodelectors: &tolerations-and-nodelectors
-      # tolerations: 
+      # tolerations:
       #   - key: node-role.kubernetes.io/master
       #     value: "true"
       #     effect: NoSchedule
@@ -123,9 +123,9 @@ spec:
       type: internal
       internal:
         <<: *tolerations-and-nodelectors
-        extrInitContainers: 
+        extrInitContainers:
           - name: init-chmod-data
-            image: docker.io/bitnami/os-shell:12-debian-12-r26
+            image: docker.io/bitnami/os-shell:latest # TODO CHANGE ME
             imagePullPolicy: "IfNotPresent"
             resources:
               limits:
