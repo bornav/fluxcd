@@ -1,3 +1,6 @@
 [submodule "nix/vxlan-wireguard-mesh"]
 	path = nix/vxlan-wireguard-mesh
 	url = git@github.com:bornav/vxlan-wireguard-mesh.git
+[submodule "local-cluster"]
+	path = local-cluster
+	url = gitea@git.icylair.com:bornav/local-cluster.git
