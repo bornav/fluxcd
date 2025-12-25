@@ -1,0 +1,42 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: &app minio-s3-access
+  labels:
+    # app.kubernetes.io/name: *app
+    # app.kubernetes.io/instance: *app
+    kubernetes.io/ingress.class: traefik
+  annotations:
+    # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
+    nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+spec:
+  ingressClassName: traefik-external
+  rules:
+    - host: &host minio.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio-s3-service
+                port:
+                  name: https
+    - host: &host minio.cloud.icylair.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio-s3-service
+                port:
+                  name: https
+  tls:
+  - hosts:
+      - minio.icylair.com
+      - minio.cloud.icylair.com
+    secretName: icylair-com-all-prod

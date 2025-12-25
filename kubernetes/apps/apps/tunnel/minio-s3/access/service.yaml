@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-s3-service
+  labels:
+    service-type/vxlan: static
+    # service-type: ingress-static
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+    lbipam.cilium.io/ips: "10.129.16.200"
+spec:
+  type: LoadBalancer
+  selector:
+    app: minio-s3-service
+  ports:
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+    - name: s3
+      protocol: TCP
+      port: 9010
+      targetPort: 9010
