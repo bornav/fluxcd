@@ -219,7 +219,7 @@
         ./kube/common.nix
     ];
   };
-  lighthouse = inputs.nixpkgs-bornav.lib.nixosSystem {
+  lighthouse = inputs.nixpkgs-unstable.lib.nixosSystem {
     # system = "x86_64-linux";
     specialArgs = {
       inherit vars inputs;

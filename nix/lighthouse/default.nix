@@ -1,9 +1,17 @@
-{ config, lib, host, inputs, pkgs, pkgs-unstable, pkgs-master, ... }:
 {
+  config,
+  lib,
+  host,
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
-    inputs.home-manager.nixosModules.home-manager {
+    inputs.home-manager.nixosModules.home-manager
+    {
       home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;}
+      home-manager.useUserPackages = true;
+    }
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     inputs.nix-flatpak.nixosModules.nix-flatpak
     inputs.disko.nixosModules.disko
@@ -13,9 +21,12 @@
     ./traefik.nix
     ./haproxy.nix
     ./headscale.nix
-    # ./netbird.nix
-    {_module.args.disks = [ "/dev/sda" ];}
-
+    ./netbird.nix
+    {_module.args.disks = ["/dev/sda"];}
+    {
+      disabledModules = ["services/networking/headscale.nix"];
+      imports = ["${inputs.nixpkgs-bornav}/nixos/modules/services/networking/headscale.nix"];
+    }
 
     # inputs.headplane.nixosModules.headplane
     # {
@@ -27,7 +38,7 @@
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs-unstable.linuxKernel.packages.linux_6_8;
   # boot.kernelPackages = pkgs-master.linuxPackages_testing;
-  boot.kernelModules = [ "rbd" "br_netfilter" ];
+  boot.kernelModules = ["rbd" "br_netfilter"];
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   boot.loader = {
     timeout = 1;
@@ -63,9 +74,10 @@
   networking.hostName = host.hostName; # Define your hostname.
   programs.nh.enable = true;
   services = {
-    openssh = {                             # SSH
+    openssh = {
+      # SSH
       enable = true;
-      allowSFTP = true;                     # SFTP
+      allowSFTP = true; # SFTP
       extraConfig = ''
         HostKeyAlgorithms +ssh-rsa
       '';
@@ -84,7 +96,7 @@
     isNormalUser = true;
     initialPassword = "nixos";
     description = "${host.vars.user}";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = ["networkmanager" "wheel" "docker"];
     # packages = with pkgs; [];
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGiVyNsVCk2KAGfCGosJUFig6PyCUwCaEp08p/0IDI7"];
   };
@@ -130,6 +142,7 @@
     inetutils
     nettools
     util-linux
+    restic
   ];
   system.stateVersion = "${host.vars.stateVersion}";
   # systemd.extraConfig = '' # TODO find replacment, and make sure you test it for both user level and root level services
@@ -137,7 +150,8 @@
   # ''; # sets the systemd stopjob timeout to somethng else than 90 seconds
   nix = {
     settings.auto-optimise-store = true;
-    gc = {                                  # Garbage Collection
+    gc = {
+      # Garbage Collection
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 14d";
@@ -187,12 +201,13 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 80 443 3000 6443 8080 9345 10022];
+    allowedTCPPorts = [22 80 443 3000 6443 8080 9345 10022];
     allowedUDPPortRanges = [
-      { from = 1000;
+      {
+        from = 1000;
         # to = 6550;
         to = 51900;
-         }
+      }
     ];
   };
 
@@ -227,7 +242,7 @@
   # };
 
   services.zerotierone = {
-    enable = true;
+    enable = false;
     joinNetworks = [
       "ebe7fbd44549ab73"
     ];
@@ -243,7 +258,6 @@
   #     ExecStart = "${pkgs.bash}/bin/bash -c 'ln -s  ${pkgs.iproute2}/bin/bridge /bin/bridge2'";
   #   };
   # };
-
 
   # systemd.tmpfiles.rules = [
   #   "L+ ${pkgs.iproute2}/bin - - - - /root/bin/"                   # exposes binaryes

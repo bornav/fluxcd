@@ -7,22 +7,25 @@
     keycloakURL = "https://sso.icylair.com";
     keycloak_openid_url = "https://sso.icylair.com/realms/master/.well-known/openid-configuration";
     keycloakRealmName = "master";
-    coturnPasswordPath = "/coturnpass.key";
-    clientSecretPath = "/netbird-oidc-secret.key";
-    coturnSalt = "/netbird-oidc-secret.key";
-    dataStoreEncryptionKeyPath = "/netbird-oidc-secret.key";
+    coturnPasswordPath = "/var/lib/netbird-mgmt/coturnpass.key";
+    clientSecretPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
+    coturnSalt = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
+    dataStoreEncryptionKeyPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
+  };
+  ingress = {
+    https = 8443;
   };
 in {
   services.nginx.virtualHosts."netbird.icylair.com" = lib.mkMerge [
     {
       forceSSL = true;
-      sslCertificate = "/var/certs/tls.cert";
-      sslCertificateKey = "/var/certs/tls.key";
+      sslCertificate = "/cert/tls.crt";
+      sslCertificateKey = "/cert/tls.key";
       listen = [
         {
-          addr = "0.0.0.0";
+          addr = "127.0.0.202";
           ssl = true;
-          port = 443;
+          port = ingress.https;
         }
       ];
       # locations."/" = lib.mkForce {
@@ -143,14 +146,14 @@ in {
   #       };
   #   };
   # };
-  # networking.firewall = {
-  #   enable = true;
-  #   allowedTCPPorts = [8011 8012 8013 8014 9091];
-  #   allowedUDPPorts = [8011 8012 8013 8014 9091];
-  #   # allowedUDPPortRanges = [
-  #   #   { from = 1000; to = 6550; }
-  #   # ];
-  # };
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ ingress.https 8011 8012 8013 8014 9091 9092 9093];
+    allowedUDPPorts = [ ingress.https 8011 8012 8013 8014 9091 9092 9093];
+    # allowedUDPPortRanges = [
+    #   { from = 1000; to = 6550; }
+    # ];
+  };
 
   # environment.etc."traefik/traefik.yaml".text = lib.mkForce ''
   # log:

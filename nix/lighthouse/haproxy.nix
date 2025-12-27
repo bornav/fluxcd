@@ -44,8 +44,15 @@
           tcp-request inspect-delay 5s
           tcp-request content accept if { req_ssl_hello_type 1 }
           # use_backend 443-forward if { req_ssl_sni -i headscale.icylair.com/admin } # seems to work
+          ${lib.optionalString config.services.headscale.enable
+        ''
           use_backend headscale_backend if { req_ssl_sni -i headscale.icylair.com }
-          # use_backend netbird_backend if { req_ssl_sni -i netbird.icylair.com }
+        ''}
+          ${lib.optionalString config.services.netbird.server.enable
+        ''
+          use_backend netbird_backend if { req_ssl_sni -i netbird.icylair.com }
+        ''}
+
           # Load balancing between two backend servers
           default_backend 443-forward
 
@@ -117,25 +124,34 @@
     ''
     # headscale 8080
     ''
-      frontend headscale
-          bind *:8080
-          mode tcp
-          option tcplog
-          default_backend headscale_backend
-      backend headscale_backend
-          mode tcp
-          server server1 127.0.0.1:10023
-    ''
+      ${lib.optionalString config.services.headscale.enable ''
+        frontend headscale
+            bind *:8080
+            mode tcp
+            option tcplog
+            default_backend headscale_backend
+        backend headscale_backend
+            mode tcp
+            server server1 127.0.0.1:10023
+      ''}
+      ${
+        lib.optionalString config.services.netbird.server.enable ''
+          # frontend netbird
+          #     bind *:8014
+          #     mode tcp
+          #     option tcplog
+          #     default_backend netbird_backend
+          # backend netbird_backend
+          #     mode tcp
+          #     # server server1 127.0.0.1:6060
+          #     server server1 127.0.0.1:8011
+          backend netbird_backend
+              mode tcp
+              # balance roundrobin
+              server netbird_server 127.0.0.202:8443 check
 
-    ''
-      # frontend netbird
-      #     bind *:8014
-      #     mode tcp
-      #     option tcplog
-      #     default_backend netbird_backend
-      # backend netbird_backend
-      #     mode tcp
-      #     server server1 127.0.0.1:6060
+        ''
+      }
 
       # frontend udp-9987
       #     bind *:9987 udp

@@ -1,5 +1,11 @@
-{ config, inputs, system, host, vars, lib, pkgs, ... }:
-let
+{
+  config,
+  inputs,
+  host,
+  lib,
+  pkgs,
+  ...
+}: let
   format = pkgs.formats.yaml {};
 
   # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
@@ -11,11 +17,10 @@ let
     oidc.client_secret_path = "/headscale_key";
   };
   headscaleConfig = format.generate "headscale.yml" settings;
-in
-{
+in {
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 8080 10023];
+    allowedTCPPorts = [8080 10023];
   };
 
   services.headscale = {
@@ -79,13 +84,12 @@ in
   #     #   redirect_uri = "https://oidc.example.com/admin/oidc/callback";
   #     # };
   #   };
-  # };  
-
+  # };
 
   home-manager = {
     backupFileExtension = "backup";
     extraSpecialArgs = {inherit inputs;};
-    users.${host.vars.user} =  lib.mkMerge [
+    users.${host.vars.user} = lib.mkMerge [
       (import ./headscale_config.nix)
       (import ../modules/home-manager/mutability.nix)
     ];
