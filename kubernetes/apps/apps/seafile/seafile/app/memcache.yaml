@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: memcached
-          image: memcached:1.6.18
+          image: memcached:1.6.40
           args: ["-m", "256"]
           ports:
             - containerPort: 11211
