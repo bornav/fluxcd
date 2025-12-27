@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: opentelemetry-collector-loadbalancer
-  labels: 
+  name: opentelemetry-collector-loadbalancer-cloud
+  labels:
     service-type/vxlan: static
   annotations:
     service.cilium.io/global: "true"
@@ -16,8 +16,22 @@ spec:
     app.kubernetes.io/managed-by: opentelemetry-operator
     app.kubernetes.io/part-of: opentelemetry
   ports:
-  - appProtocol: http
-    name: otlp-http
+  - name: otlp-http
     port: 4318
     protocol: TCP
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opentelemetry-collector-loadbalancer-local # TODO check why it's not connected
+  labels: {}
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+spec:
+  ports:
+  - name: otlp-http
+    port: 4318
+    protocol: TCP

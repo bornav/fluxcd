@@ -5,3 +5,4 @@ namespace: observability
 resources:
   - otel-collector-config.yaml
   - service-lb.yaml # having to do this shit since they dont support adding just annotation && labels to the service unless you overwrite the entire service file for some fucking reason, : docs: https://github.com/open-telemetry/opentelemetry-operator/blob/main/docs/api/opentelemetrycollectors.md#opentelemetrycollectorspec
+  - rbac.yaml

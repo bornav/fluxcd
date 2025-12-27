@@ -7,7 +7,7 @@ metadata:
 spec:
   # service:
   #   loadBalanceIp: "10.10.10.10" # TODO find out how this is done, since as usual otel docs are shit
-  tolerations: 
+  tolerations:
     - key: node-role.kubernetes.io/control-plane
       value: "true"
       effect: NoSchedule
@@ -87,6 +87,10 @@ spec:
         endpoint: http://grafana-loki.observability.svc.cluster.local:3100/otlp
         tls:
           insecure: true
+      otlphttp/local-collector:
+        endpoint: http://opentelemetry-collector-loadbalancer-local.observability.svc.cluster.local:4318
+        tls:
+          insecure: false
     processors:
       batch: {}
       k8sattributes:
@@ -119,16 +123,19 @@ spec:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp, debug, spanmetrics,otlp/grafana_cloud_tempo]
+          exporters: [otlp, spanmetrics,otlp/grafana_cloud_tempo, otlphttp/local-collector]
+          # exporters: [otlp, debug, spanmetrics,otlp/grafana_cloud_tempo, otlphttp/local-collector] # for cli loging
         metrics:
           receivers: [otlp, spanmetrics]
           processors: [batch, k8sattributes]
-          exporters: [debug]
+          exporters: [otlphttp/local-collector]
+          # exporters: [debug, otlphttp/local-collector] # for cli loging
         logs:
           receivers: [otlp,filelog]
           # receivers: [otlp]
           processors: [batch, k8sattributes]
-          exporters: [debug, otlphttp]
+          exporters: [otlphttp] # for cli loging
+          # exporters: [debug, otlphttp] # for cli loging
       telemetry:
         metrics: []
           # address: ${env:MY_POD_IP}:8888
