@@ -27,7 +27,20 @@ spec:
     keepHistory: false
   values:
     replicas: 1
-    config: | 
+    tempo:
+      reportingEnabled: false
+      retention: 12h
+      metricsGenerator:
+        # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
+        enabled: true
+        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
+      overrides:
+        defaults:
+            metrics_generator:
+              processors:
+                - service-graphs
+                - span-metrics
+    config: |
       memberlist:
         cluster_label: "{{ .Release.Name }}.{{ .Release.Namespace }}"
       multitenancy_enabled: {{ .Values.tempo.multitenancyEnabled }}
@@ -61,13 +74,6 @@ spec:
               path: "/tmp/traces"
         {{- end }}
       stream_over_http_enabled: true
-    tempo:
-      reportingEnabled: false
-      retention: 12h
-      metricsGenerator:
-        # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
-        enabled: true
-        remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
     # # this is jaeger
     # # tempoQuery:
     # #   enabled: true
