@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = {
     domain = "netbird.icylair.com";
     clientID = "netbird";
@@ -7,7 +11,7 @@
     keycloakURL = "https://sso.icylair.com";
     keycloak_openid_url = "https://sso.icylair.com/realms/master/.well-known/openid-configuration";
     keycloakRealmName = "master";
-    coturnPasswordPath = "/var/lib/netbird-mgmt/coturnpass.key";
+    coturnPasswordPath = "/var/lib/coturnpass.key";
     clientSecretPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
     coturnSalt = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
     dataStoreEncryptionKeyPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
@@ -15,7 +19,50 @@
   ingress = {
     https = 8443;
   };
+  # source_path file content example
+  # export AWS_ACCESS_KEY_ID=<token_id>
+  # export AWS_SECRET_ACCESS_KEY=<token>
+  # export RESTIC_PASSWORD=<restic_pass>
+  # export RESTIC_REPOSITORY=s3:http://<s3_endpoint>/restic-host-bucket/cloud/netbird
+  # # restic backup /var/lib/netbird-mgmt
+  source_path = "/var/lib/.restic_netbird";
+  cert_path = "/cert";
 in {
+  systemd.services.netbird-restore-data = {
+    serviceConfig.Type = "oneshot";
+    requiredBy = [
+      "netbird-management.service"
+      "netbird-signal.service"
+      "coturn.service"
+      "nginx.service"
+    ];
+    before = [
+      "netbird-management.service"
+      "netbird-signal.service"
+      "coturn.service"
+      "nginx.service"
+    ];
+    preStart = ''
+      until [ -f ${source_path} ]; do sleep 1; done
+    '';
+    script = ''
+      source ${source_path}
+      ${pkgs.restic}/bin/restic restore latest --target /  # the / as during backup it creates a full path to the folder
+      cp /var/lib/netbird-mgmt/coturnpass.key /var/lib/coturnpass.key
+    '';
+  };
+  systemd.services.nginx-wait-for-cert = {
+    serviceConfig.Type = "oneshot";
+    requiredBy = [
+      "nginx.service"
+    ];
+    before = [
+      "nginx.service"
+    ];
+    script = ''
+      until [ -f ${cert_path}/tls.crt ] && [ -f ${cert_path}/tls.key ]; do sleep 1; done
+    '';
+  };
   services.nginx.virtualHosts."netbird.icylair.com" = lib.mkMerge [
     {
       forceSSL = true;
@@ -125,93 +172,12 @@ in {
     };
   };
 
-  # services.netbird.server = {
-  #   enable = true;
-  #   domain = rootDomain;
-  #   # staticConfigFile = "/etc/traefik/traefik.yaml";
-  #   management = {
-  #     enable = false;
-  #     oidcConfigEndpoint = "https://sso.icylair.com/realms/master/.well-known/openid-configuration";
-  #     turnDomain = rootDomain;
-  #   };
-  #   dashboard = {
-  #     enable = true;
-  #     settings = {
-  #         AUTH_AUDIENCE = "netbird";
-  #         AUTH_CLIENT_ID = "netbird";
-  #         AUTH_SUPPORTED_SCOPES = "openid profile email";
-  #         NETBIRD_TOKEN_SOURCE = "";
-  #         USE_AUTH0 = false;
-  #         AUTH_AUTHORITY = "https://sso.icylair.com/realms/master/.well-known/openid-configuration";
-  #       };
-  #   };
-  # };
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ ingress.https 8011 8012 8013 8014 9091 9092 9093];
-    allowedUDPPorts = [ ingress.https 8011 8012 8013 8014 9091 9092 9093];
+    allowedTCPPorts = [ingress.https 8011 8012 8013 8014 9091 9092 9093];
+    allowedUDPPorts = [ingress.https 8011 8012 8013 8014 9091 9092 9093];
     # allowedUDPPortRanges = [
     #   { from = 1000; to = 6550; }
     # ];
   };
-
-  # environment.etc."traefik/traefik.yaml".text = lib.mkForce ''
-  # log:
-  #   level: DEBUG
-  # api:
-  #   # dashboard: true #when these 2 uncommented dashboard avaiable on http://159.69.206.117:9000/dashboard/
-  #   # insecure: true
-  # entryPoints:
-  #   traefik:
-  #     address: ":9000"
-  #   web:
-  #     address: ':8088' # http
-  #     # http:
-  #     #   redirections:
-  #     #     entryPoint:
-  #     #       to: web-secure
-  #     #       scheme: https
-  #   web-secure:
-  #     address: ':9443' # https
-  #   udp9987:
-  #     address: ':9987/udp'
-  # providers:
-  #   file:
-  #     filename: /etc/traefik/traefik_dynamic.yaml
-  #     watch: true
-  # tracing:
-  #   serviceName: traefik-lighthouse
-  #   otlp:
-  #     http:
-  #       tls:
-  #         insecureSkipVerify: true
-  #       endpoint: http://10.129.16.102:4318/v1/traces
-  # '';
-  # # This one can be modified without svc restart
-  # environment.etc."traefik/traefik_dynamic.yaml".text = lib.mkForce  ''
-  # http:
-  #   routers:
-  #     api:
-  #       rule: "Host(`lb.cloud.icylair.com`)"
-  #       entrypoints:
-  #         - "web-secure"
-  #       service: "api@internal"
-  # udp:
-  #   routers:
-  #     ts:
-  #       entryPoints:
-  #         - "udp9987"
-  #       service: "ts"
-  #   services:
-  #     ts:
-  #       loadBalancer:
-  #         servers:
-  #           - address: "10.129.16.101:9987"
-  # tls:
-  #   stores:
-  #     default:
-  #       defaultCertificate:
-  #         certFile: /certs/tls.crt
-  #         keyFile: /certs/tls.key
-  # '';
 }

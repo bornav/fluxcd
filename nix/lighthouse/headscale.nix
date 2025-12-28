@@ -1,7 +1,5 @@
 {
   config,
-  inputs,
-  host,
   lib,
   pkgs,
   ...
@@ -17,7 +15,38 @@
     oidc.client_secret_path = "/headscale_key";
   };
   headscaleConfig = format.generate "headscale.yml" settings;
+
+  # source_path file content example
+  # export AWS_ACCESS_KEY_ID=<token_id>
+  # export AWS_SECRET_ACCESS_KEY=<token>
+  # export RESTIC_PASSWORD=<restic_pass>
+  # export RESTIC_REPOSITORY=s3:http://<s3_endpoint>/restic-host-bucket/cloud/headscale
+  # # restic backup /var/lib/headscale
+  source_path = "/var/lib/.restic_headscale";
+  cert_path = "/cert";
 in {
+  environment.etc."headscale_config.yaml" = {
+    text = builtins.readFile ./headscale_config.yaml;
+    mode = "0644";
+  };
+  systemd.services.headscale-restore-data = {
+    serviceConfig.Type = "oneshot";
+    requiredBy = [
+      "headscale.service"
+    ];
+    before = [
+      "headscale.service"
+    ];
+    preStart = ''
+      until [ -f ${source_path} ]; do sleep 1; done
+      until [ -f ${cert_path}/tls.crt ] && [ -f ${cert_path}/tls.key ]; do sleep 1; done
+    '';
+    script = ''
+      source ${source_path}
+      ${pkgs.restic}/bin/restic restore latest --target /  # the / as during backup it creates a full path to the folder
+    '';
+  };
+
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [8080 10023];
@@ -25,7 +54,7 @@ in {
 
   services.headscale = {
     enable = true;
-    configPath = "/config.yaml";
+    configPath = "/etc/headscale_config.yaml";
     address = "0.0.0.0";
     port = 10023;
     # user = "nix";
@@ -35,8 +64,8 @@ in {
       server_url = "https://headscale.icylair.com:8080";
       dns.base_domain = "icylair-local.com";
       dns.nameserver.global = "icylair-local.com";
-      tls_cert_path = "/cert/tls.crt";
-      tls_key_path = "/cert/tls.key";
+      tls_cert_path = "${cert_path}/tls.crt";
+      tls_key_path = "${cert_path}/tls.key";
       oidc = {
         issuer = "https://sso.icylair.com/realms/master";
         client_id = "headscale";
@@ -85,13 +114,4 @@ in {
   #     # };
   #   };
   # };
-
-  home-manager = {
-    backupFileExtension = "backup";
-    extraSpecialArgs = {inherit inputs;};
-    users.${host.vars.user} = lib.mkMerge [
-      (import ./headscale_config.nix)
-      (import ../modules/home-manager/mutability.nix)
-    ];
-  };
 }

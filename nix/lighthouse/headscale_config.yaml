@@ -329,7 +329,7 @@ oidc:
   issuer: "https://sso.icylair.com/realms/master"
   client_id: headscale
 #   client_secret: "your-oidc-client-secret"
-  client_secret_path: /headscale_key
+  client_secret_path: /var/lib/headscale/headscale_oidc_key
   expiry: 180d
 #   use_expiry_from_token: false
 

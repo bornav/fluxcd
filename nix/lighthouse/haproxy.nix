@@ -8,6 +8,18 @@
   pkgs,
   ...
 }: {
+  # systemd.services.haproxy-wait-for-cert = { # not terminating tls so no point in doing this
+  #   serviceConfig.Type = "oneshot";
+  #   requiredBy = [
+  #     "haproxy.service"
+  #   ];
+  #   before = [
+  #     "haproxy.service"
+  #   ];
+  #   script = ''
+  #       until [ -f ${cert_path} ]; do sleep 1; done
+  #   '';
+  # };
   services.haproxy.enable = true;
   services.haproxy.config = lib.mkMerge [
     # global
@@ -43,7 +55,6 @@
           option tcplog
           tcp-request inspect-delay 5s
           tcp-request content accept if { req_ssl_hello_type 1 }
-          # use_backend 443-forward if { req_ssl_sni -i headscale.icylair.com/admin } # seems to work
           ${lib.optionalString config.services.headscale.enable
         ''
           use_backend headscale_backend if { req_ssl_sni -i headscale.icylair.com }
