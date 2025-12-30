@@ -47,7 +47,7 @@ spec:
               memory: '500Mi'
               cpu: '800m'
         - name: go-instrumentation-sidecart
-          image: ghcr.io/open-telemetry/opentelemetry-go-instrumentation/autoinstrumentation-go:v0.22.1
+          image: ghcr.io/open-telemetry/opentelemetry-go-instrumentation/autoinstrumentation-go:v0.23.0
           imagePullPolicy: IfNotPresent
           env:
             - name: OTEL_GO_AUTO_TARGET_EXE
