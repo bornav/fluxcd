@@ -53,7 +53,7 @@ spec:
             - name: OTEL_GO_AUTO_TARGET_EXE
               value: /usr/bin/traefik-forward-auth
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://opentelemetry-collector.observability.svc.cluster.local:4318"
+              value: "http://opentelemetry-collector-loadbalancer-cloud.observability.svc.cluster.local:4318"
             - name: OTEL_SERVICE_NAME
               value: "traefik-forward-auth"
             # - name: OTEL_PROPAGATORS
