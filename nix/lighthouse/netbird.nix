@@ -1,6 +1,6 @@
 {
   lib,
-  pkgs,
+  pkgs, config,
   ...
 }: let
   cfg = {
@@ -46,6 +46,10 @@ in {
       until [ -f ${source_path} ]; do sleep 1; done
     '';
     script = ''
+      if [ -d "/var/lib/netbird-mgmt" ]; then
+          echo "restore exists, exiting..."
+          exit 0
+      fi
       source ${source_path}
       ${pkgs.restic}/bin/restic restore latest --target /  # the / as during backup it creates a full path to the folder
       cp /var/lib/netbird-mgmt/coturnpass.key /var/lib/coturnpass.key
@@ -55,33 +59,33 @@ in {
     serviceConfig.Type = "oneshot";
     requiredBy = [
       "nginx.service"
+      "netbird-management.service"
+      "netbird-signal.service"
     ];
     before = [
       "nginx.service"
+      "netbird-management.service"
+      "netbird-signal.service"
     ];
     script = ''
       until [ -f ${cert_path}/tls.crt ] && [ -f ${cert_path}/tls.key ]; do sleep 1; done
     '';
   };
-  services.nginx.virtualHosts."netbird.icylair.com" = lib.mkMerge [
-    {
-      forceSSL = true;
+  services.nginx.virtualHosts.${cfg.domain} ={
+      # forceSSL = true;
+      onlySSL = true;
       sslCertificate = "/cert/tls.crt";
       sslCertificateKey = "/cert/tls.key";
       listen = [
         {
           addr = "127.0.0.202";
+          # addr = "0.0.0.0";
           ssl = true;
           port = ingress.https;
         }
       ];
-      # locations."/" = lib.mkForce {
-      #   root = config.services.netbird.server.dashboard.finalDrv;
-      #   tryFiles = "$uri $uri.html $uri/ =404";
-      # };
-      # forceSSL = false;
-    }
-  ];
+    };
+  # ];
 
   services.netbird.server = {
     domain = cfg.domain;

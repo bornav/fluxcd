@@ -81,7 +81,7 @@
       extraConfig = ''
         HostKeyAlgorithms +ssh-rsa
       '';
-      settings.PasswordAuthentication = true;
+      # settings.PasswordAuthentication = true;
       settings.KbdInteractiveAuthentication = true;
       settings.PermitRootLogin = "yes";
     };
@@ -91,10 +91,10 @@
     };
   };
   users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEGiVyNsVCk2KAGfCGosJUFig6PyCUwCaEp08p/0IDI7"];
-  users.users.root.initialPassword = "nixos";
+  # users.users.root.initialPassword = "nixos";
   users.users.${host.vars.user} = {
     isNormalUser = true;
-    initialPassword = "nixos";
+    # initialPassword = "nixos";
     description = "${host.vars.user}";
     extraGroups = ["networkmanager" "wheel" "docker"];
     # packages = with pkgs; [];
@@ -210,56 +210,4 @@
       }
     ];
   };
-
-  # #ipv6
-  # # networking.interfaces.eth0.name = "eth0";
-  # networking = {
-  #   interfaces.eth0 = {
-  #     name = "eth0";
-  #     useDHCP = true;
-  #     ipv6 = {
-  #       addresses = [ "2001:db8:0:3df1::1/64" ];
-  #       routes = [
-  #         {
-  #           to = "default";
-  #           via = "fe80::1";
-  #         }
-  #       ];
-  #     };
-  #   };
-  # };
-  # networking.nameservers = {
-  #   ipv6 = {
-  #     addresses = [ "2a01:4ff:ff00::add:2" "2a01:4ff:ff00::add:1" ];
-  #   };
-  # };
-  # ####
-  # services.caddy = {
-  #   enable = true;
-  #   virtualHosts."lb.cloud.icylair.com".extraConfig = ''
-  #     reverse_proxy * 127.0.0.1:8080
-  #   '';
-  # };
-
-  services.zerotierone = {
-    enable = false;
-    joinNetworks = [
-      "ebe7fbd44549ab73"
-    ];
-  };
-
-  # systemd.services.expose-bridge-binary = {
-  #   description = "expose binary";
-  #   wantedBy = [ "multi-user.target" ];
-  #   after = [ "local-fs.target" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     RemainAfterExit = true;
-  #     ExecStart = "${pkgs.bash}/bin/bash -c 'ln -s  ${pkgs.iproute2}/bin/bridge /bin/bridge2'";
-  #   };
-  # };
-
-  # systemd.tmpfiles.rules = [
-  #   "L+ ${pkgs.iproute2}/bin - - - - /root/bin/"                   # exposes binaryes
-  # ];
 }

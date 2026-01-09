@@ -145,24 +145,22 @@
             mode tcp
             server server1 127.0.0.1:10023
       ''}
-      ${
-        lib.optionalString config.services.netbird.server.enable ''
-          # frontend netbird
-          #     bind *:8014
-          #     mode tcp
-          #     option tcplog
-          #     default_backend netbird_backend
-          # backend netbird_backend
-          #     mode tcp
-          #     # server server1 127.0.0.1:6060
-          #     server server1 127.0.0.1:8011
-          backend netbird_backend
-              mode tcp
-              # balance roundrobin
-              server netbird_server 127.0.0.202:8443 check
+      ${lib.optionalString config.services.netbird.server.enable ''
+        # frontend netbird
+        #     bind *:8014
+        #     mode tcp
+        #     option tcplog
+        #     default_backend netbird_backend
+        # backend netbird_backend
+        #     mode tcp
+        #     # server server1 127.0.0.1:6060
+        #     server server1 127.0.0.1:8011
+        backend netbird_backend
+            mode tcp
+            # balance roundrobin
+            server netbird_server 127.0.0.202:8443 check
 
-        ''
-      }
+      ''}
 
       # frontend udp-9987
       #     bind *:9987 udp
