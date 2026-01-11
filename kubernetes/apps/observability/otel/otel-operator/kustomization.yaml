@@ -4,11 +4,11 @@ kind: Kustomization
 namespace: observability
 resources:
   - release.yaml
-generatorOptions:
-  disableNameSuffixHash: true
-configMapGenerator:
-  - name: otel-operator-helm-values
-    files:
-      - values.yaml=./values.yaml
-configurations:
-  - kustomizeconfig.yaml
+# generatorOptions:
+#   disableNameSuffixHash: true
+# configMapGenerator:
+#   - name: otel-operator-helm-values
+#     files:
+#       - values.yaml=./values.yaml
+# configurations:
+#   - kustomizeconfig.yaml

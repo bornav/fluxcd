@@ -24,6 +24,13 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
-  valuesFrom:
-    - kind: ConfigMap
-      name: otel-operator-helm-values
+  values:
+    manager:
+      collectorImage:
+        repository: otel/opentelemetry-collector-k8s
+        tag: 0.142.0
+    admissionWebhooks:
+      certManager:
+        enabled: true
+      autoGenerateCert:
+        enabled: false
