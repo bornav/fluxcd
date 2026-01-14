@@ -28,12 +28,16 @@
       imports = ["${inputs.nixpkgs-bornav}/nixos/modules/services/networking/headscale.nix"];
     }
 
-    # inputs.headplane.nixosModules.headplane
-    # {
-    #   # provides `pkgs.headplane` and `pkgs.headplane-agent`.
-    #   nixpkgs.overlays = [ inputs.headplane.overlays.default ];
-    # }
+    inputs.sops-nix.nixosModules.sops
   ];
+
+  # #sops
+  # sops.age.keyFile = "/home/user/.sops/nix-key.txt";
+  # sops.secrets."home-assistant-secrets.yaml" = {
+  #   owner = "hass";
+  #   path = "/var/lib/.restic_netbird";
+  # };
+  # #
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs-unstable.linuxKernel.packages.linux_6_8;

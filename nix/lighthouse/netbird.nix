@@ -1,6 +1,8 @@
 {
   lib,
-  pkgs, config,
+  pkgs,
+  config,
+  pkgs-master,
   ...
 }: let
   cfg = {
@@ -8,13 +10,11 @@
     clientID = "netbird";
     backendID = "netbird-backend";
     keycloakDomain = "sso.icylair.com";
-    keycloakURL = "https://sso.icylair.com";
-    keycloak_openid_url = "https://sso.icylair.com/realms/master/.well-known/openid-configuration";
     keycloakRealmName = "master";
     coturnPasswordPath = "/var/lib/coturnpass.key";
-    clientSecretPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
     coturnSalt = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
-    dataStoreEncryptionKeyPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
+    clientSecretPath = "/var/lib/netbird-mgmt/netbird-oidc-secret.key";
+    dataStoreEncryptionKeyPath = "/var/lib/netbird-mgmt/storekey.key"; #openssl rand -base64 32
   };
   ingress = {
     https = 8443;
@@ -71,35 +71,38 @@ in {
       until [ -f ${cert_path}/tls.crt ] && [ -f ${cert_path}/tls.key ]; do sleep 1; done
     '';
   };
-  services.nginx.virtualHosts.${cfg.domain} ={
-      # forceSSL = true;
-      onlySSL = true;
-      sslCertificate = "/cert/tls.crt";
-      sslCertificateKey = "/cert/tls.key";
-      listen = [
-        {
-          addr = "127.0.0.202";
-          # addr = "0.0.0.0";
-          ssl = true;
-          port = ingress.https;
-        }
-      ];
-    };
+  services.nginx.virtualHosts.${cfg.domain} = {
+    # forceSSL = true;
+    onlySSL = true;
+    sslCertificate = "/cert/tls.crt";
+    sslCertificateKey = "/cert/tls.key";
+    listen = [
+      {
+        addr = "127.0.0.202";
+        # addr = "0.0.0.0";
+        ssl = true;
+        port = ingress.https;
+      }
+    ];
+  };
   # ];
 
   services.netbird.server = {
     domain = cfg.domain;
     enable = true;
     enableNginx = true;
-    signal.metricsPort = 9092;
+    signal = {
+      package = pkgs-master.netbird-signal;
+      metricsPort = 9092;
+    };
     coturn = {
       enable = true;
       passwordFile = cfg.coturnPasswordPath;
     };
-
     dashboard = {
+      package = pkgs-master.netbird-dashboard;
       settings = {
-        AUTH_AUTHORITY = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}";
+        AUTH_AUTHORITY = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}";
         AUTH_AUDIENCE = cfg.clientID;
         AUTH_CLIENT_ID = cfg.clientID;
         AUTH_SUPPORTED_SCOPES = "openid profile email offline_access netbird-api";
@@ -108,7 +111,8 @@ in {
     };
 
     management = {
-      oidcConfigEndpoint = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/.well-known/openid-configuration";
+      package = pkgs-master.netbird-management;
+      oidcConfigEndpoint = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/.well-known/openid-configuration";
       metricsPort = 9093;
       # port = 9093;
       settings = {
@@ -129,8 +133,8 @@ in {
 
         HttpConfig = {
           AuthAudience = cfg.clientID;
-          AuthIssuer = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}";
-          AuthKeysLocation = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/openid-connect/certs";
+          AuthIssuer = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}";
+          AuthKeysLocation = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/openid-connect/certs";
           IdpSignKeyRefreshEnabled = false;
         };
 
@@ -138,14 +142,14 @@ in {
           ManagerType = "keycloak";
 
           ClientConfig = {
-            Issuer = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}";
-            TokenEndpoint = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/token";
+            Issuer = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}";
+            TokenEndpoint = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/token";
             ClientID = cfg.backendID;
             ClientSecret._secret = cfg.clientSecretPath;
           };
 
           ExtraConfig = {
-            AdminEndpoint = "${cfg.keycloakURL}/admin/realms/${cfg.keycloakRealmName}";
+            AdminEndpoint = "https://${cfg.keycloakDomain}/admin/realms/${cfg.keycloakRealmName}";
           };
         };
 
@@ -157,8 +161,8 @@ in {
             ClientID = cfg.clientID;
             Audience = cfg.clientID;
             Domain = cfg.keycloakDomain;
-            TokenEndpoint = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/token";
-            DeviceAuthEndpoint = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/auth/device";
+            TokenEndpoint = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/token";
+            DeviceAuthEndpoint = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/auth/device";
             Scope = "openid";
             UseIDToken = false;
           };
@@ -168,8 +172,8 @@ in {
           ProviderConfig = {
             ClientID = cfg.clientID;
             Audience = cfg.clientID;
-            TokenEndpoint = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/token";
-            AuthorizationEndpoint = "${cfg.keycloakURL}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/auth";
+            TokenEndpoint = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/token";
+            AuthorizationEndpoint = "https://${cfg.keycloakDomain}/realms/${cfg.keycloakRealmName}/protocol/openid-connect/auth";
           };
         };
       };
