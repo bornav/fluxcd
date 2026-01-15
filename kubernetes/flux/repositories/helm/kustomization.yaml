@@ -45,3 +45,4 @@ resources:
   - ./metrics-server.yaml
   - ./cloudnative-pg.yaml
   - ./cilium.yaml
+  - ./democratic-csi.yaml
