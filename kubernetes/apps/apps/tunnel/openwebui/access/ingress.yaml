@@ -24,7 +24,7 @@ spec:
               service:
                 name: open-webui
                 port:
-                  number: 8080
+                  name: open-webui
     - host: &host openwebui.cloud.icylair.com
       http:
         paths:
@@ -34,7 +34,7 @@ spec:
               service:
                 name: open-webui
                 port:
-                  number: 8080
+                  name: open-webui
   tls:
   - hosts:
       - openwebui.icylair.com
