@@ -36,19 +36,22 @@
 
           # SSL-related options to improve performance and security
           tune.ssl.default-dh-param 2048
+          ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384
+          ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
 
       # Default settings
       defaults
           log     global
           option  tcplog
           option  dontlognull
-          timeout connect 5s
-          timeout client  30s
-          timeout server  30s
-      # Frontend for TLS passthrough
+          timeout connect 5000
+          timeout client  86400000  # 1 day for long-running connections
+          timeout server  86400000  # 1 day for long-running connections
+          timeout tunnel  86400000  # 1 day for WebSocket/long-polling
     ''
     # https 443
     ''
+      # Frontend for TLS passthrough
       frontend https-in
           bind *:443
           mode tcp
@@ -59,9 +62,12 @@
         ''
           use_backend headscale_backend if { req_ssl_sni -i headscale.icylair.com }
         ''}
-          ${lib.optionalString config.services.netbird.server.enable
+          ${lib.optionalString (config.systemd.services ? podman-netbird-dashboard.enable) # defined in netbird.nix file | ${lib.optionalString config.services.netbird.server.enable
         ''
-          use_backend netbird_backend if { req_ssl_sni -i netbird.icylair.com }
+          # acl is_http_domain req_ssl_sni -i netbird.icylair.com www.netbird.icylair.com
+          # use_backend https_frontend_backend if is_http_domain
+
+          # use_backend https_frontend_backend if { req_ssl_sni -i netbird.icylair.com }
         ''}
 
           # Load balancing between two backend servers
@@ -145,68 +151,6 @@
             mode tcp
             server server1 127.0.0.1:10023
       ''}
-      ${lib.optionalString config.services.netbird.server.enable ''
-        # frontend netbird
-        #     bind *:8014
-        #     mode tcp
-        #     option tcplog
-        #     default_backend netbird_backend
-        # backend netbird_backend
-        #     mode tcp
-        #     # server server1 127.0.0.1:6060
-        #     server server1 127.0.0.1:8011
-        backend netbird_backend
-            mode tcp
-            # balance roundrobin
-            server netbird_server 127.0.0.202:8443 check
-
-      ''}
-
-      # frontend udp-9987
-      #     bind *:9987 udp
-      #     mode tcp
-      #     option tcplog
-      #     default_backend udp_9987_backend
-      # backend udp_9987_backend
-      #     mode tcp
-      #     balance roundrobin
-      #     server server1 oracle-bv1-1.cloud.icylair.com:9987 check
-      #     server server2 oracle-km1-1.cloud.icylair.com:9987 check
-
-      # frontend tcp-30033
-      #     bind *:30033
-      #     mode tcp
-      #     option tcplog
-      #     default_backend tcp_30033_backend
-      # backend tcp_30033_backend
-      #     mode tcp
-      #     balance roundrobin
-      #     server server1 oracle-bv1-1.cloud.icylair.com:30033 check
-      #     server server2 oracle-km1-1.cloud.icylair.com:30033 check
-
-      # frontend ssh-forward
-      #     bind *:10022
-      #     mode tcp
-      #     option tcplog
-      #     default_backend ssh_forward_backend
-      # backend ssh_forward_backend
-      #     mode tcp
-      #     balance roundrobin
-      #     server server1 oracle-bv1-1.cloud.icylair.com:22 check
-      #     server server2 oracle-km1-1.cloud.icylair.com:22 check
-      #     server server3 contabo-1.cloud.icylair.com:22 check
-
-      # frontend catch_rest
-      #     # bind *:1-21
-      #     bind *:8443-65535
-      #     mode tcp
-      #     option tcplog
-      #     default_backend catch_rest
-      # backend catch_rest
-      #     mode tcp
-      #     balance roundrobin
-      #     server server1 oracle-bv1-1.cloud.icylair.com check
-      #     server server2 oracle-km1-1.cloud.icylair.com check
     ''
   ];
   environment.systemPackages = with pkgs; [

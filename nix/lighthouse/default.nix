@@ -22,6 +22,8 @@
     ./haproxy.nix
     ./headscale.nix
     ./netbird.nix
+    # ./netbird_dashboard_pod.nix
+    # ./nginx_custom.nix
     {_module.args.disks = ["/dev/sda"];}
     {
       disabledModules = ["services/networking/headscale.nix"];
@@ -50,31 +52,7 @@
     grub.efiSupport = true;
     grub.efiInstallAsRemovable = true;
   };
-  # services.nginx.enable = true;
-  # services.nginx.config = ''
-  #   events {
-  #       worker_connections 1024;  # You can adjust this based on your expected traffic
-  #   }
 
-  #   stream {
-  #       # Define the upstream (backend) servers
-  #       upstream backend_servers {
-  #           # The two HTTPS servers (port 443)
-  #           server 138.3.244.139:443;
-  #           server 141.144.255.9:443;
-  #       }
-
-  #       # Define the proxy server
-  #       server {
-  #           # The port on which NGINX will listen for HTTPS connections
-  #           listen 443;
-  #           proxy_pass backend_servers;
-
-  #           # Enable proxying the SSL/TLS traffic without terminating it (TLS passthrough)
-  #           proxy_protocol off;  # Disables Proxy Protocol if enabled by upstream
-  #       }
-  #   }
-  # '';
   networking.hostName = host.hostName; # Define your hostname.
   programs.nh.enable = true;
   services = {
