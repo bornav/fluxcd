@@ -543,7 +543,7 @@ spec:
     spec:
       containers:
         - name: seafile-backend
-          image: datamate/seafile-professional:11.0.18
+          image: datamate/seafile-professional:11.0.20
           imagePullPolicy: Always
           env:
             - name: DB_HOST
@@ -637,7 +637,7 @@ spec:
     spec:
       containers:
         - name: seafile
-          image: datamate/seafile-professional:11.0.18
+          image: datamate/seafile-professional:11.0.20
           imagePullPolicy: Always
           env:
             - name: DB_HOST
