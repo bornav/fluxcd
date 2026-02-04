@@ -28,6 +28,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/keycloak
+      tag: 26.3.3-debian-12-r0
     # extraVolumeMounts:
     #   - name: tempdb
     #     mountPath: /tempdb
@@ -56,7 +60,7 @@ spec:
       ingressClassName: traefik-external
       hostname: &origin sso.icylair.com
       extraHosts:
-        - name: keycloak.cloud.icylair.com 
+        - name: keycloak.cloud.icylair.com
           path: /
         - name: keycloak.icylair.com
           path: /
@@ -69,14 +73,26 @@ spec:
         secretName: icylair-com-all-prod
     postgresql:
       enabled: false
+    # externalDatabase:
+    #   existingSecret: *secret
+    #   existingSecretHostKey:     "host"
+    #   existingSecretPortKey:     "port"
+    #   existingSecretUserKey:     "username"
+    #   existingSecretDatabaseKey: "databse_name"
+    #   existingSecretPasswordKey: "password"
+    #   annotations: {}
     externalDatabase:
-      existingSecret: *secret
-      existingSecretHostKey:     "host"
-      existingSecretPortKey:     "port"
-      existingSecretUserKey:     "username"
-      existingSecretDatabaseKey: "databse_name"
+      host: "pg-keycloak-rw"
+      port: 5432
+      user: bn_keycloak
+      database: pg_keycloak
+      schema: public
+      # password: ""
+      existingSecret: "keycloak-auth"
+      existingSecretUserKey: username
       existingSecretPasswordKey: "password"
       annotations: {}
+      # extraParams: ""
     resourcesPreset: none
     resources:
       requests:
@@ -92,4 +108,3 @@ spec:
         enabled: true
       prometheusRule:
         enabled: true
-    
