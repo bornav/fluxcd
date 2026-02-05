@@ -6,6 +6,7 @@ resources:
   - release.yaml
   - external-secret.yaml
   - cilium_config.yaml
+  - service-api.yaml
 generatorOptions:
   disableNameSuffixHash: true
 configMapGenerator:
