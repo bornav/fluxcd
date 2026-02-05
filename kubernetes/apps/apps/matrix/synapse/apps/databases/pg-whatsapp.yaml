@@ -63,18 +63,17 @@ spec:
         <<: *barmanObjectStore
         serverName: *previousCluster
   bootstrap:
-    initdb:
-      database: whatsapp
-      owner: synapse # make sure same as "username" in secret down
-      secret:
-        name: synapse-ext-new
-      encoding: UTF8
-      locale: C
-    # recovery:
-    #   source: *previousCluster
-
-
-
+    # initdb:
+    #   database: whatsapp
+    #   owner: synapse # make sure same as "username" in secret down
+    #   secret:
+    #     name: synapse-ext-new
+    #   encoding: UTF8
+    #   locale: C
+    recovery:
+      source: *previousCluster
+      recoveryTarget:
+        backupID: "20260204T150003"
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup

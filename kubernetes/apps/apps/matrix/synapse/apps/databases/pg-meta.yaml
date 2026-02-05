@@ -72,9 +72,8 @@ spec:
       locale: C
     # recovery:
     #   source: *previousCluster
-
-
-
+    #   recoveryTarget:
+    #     backupID: "20260204T150001"
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
