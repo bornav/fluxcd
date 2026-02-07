@@ -9,6 +9,30 @@ spec:
   dependsOn:
     - name: traefik-base
     - name: cloudnative-pg
+    - name: keycloak-database-operator
+  path: ./kubernetes/apps/xauth/keycloak/new/app
+  suspend: false
+  wait: true
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+  targetNamespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: keycloak-database-operator
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cloudnative-pg
+    # - name: longhorn storage?
   path: ./kubernetes/apps/xauth/keycloak/new
   suspend: false
   wait: true

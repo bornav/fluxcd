@@ -1,0 +1,58 @@
+#https://www.keycloak.org/operator/installation
+
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: keycloak
+spec:
+  instances: 3
+  db:
+    database: pg_keycloak
+    vendor: postgres
+    host: pg-keycloak-rw
+    usernameSecret:
+      name: keycloak-auth
+      key: username
+    passwordSecret:
+      name: keycloak-auth
+      key: password
+  http:
+    tlsSecret: icylair-com-all-prod
+  hostname:
+    hostname: sso.icylair.com
+  ingress:
+    enabled: false
+  proxy:
+    headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  labels:
+    app: keycloak
+    app.kubernetes.io/instance: keycloak
+  # annotations:
+    # nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  ingressClassName: traefik-external
+  # defaultBackend:
+  #   service:
+  #     name: keycloak-service
+  #     port:
+  #       name: https
+  rules:
+    - host: sso.icylair.com
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            backend:
+              service:
+                name: keycloak-service
+                port:
+                  name: https
+  tls:
+    - hosts:
+        - sso.icylair.com
+      secretName: icylair-com-all-prod
