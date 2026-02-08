@@ -6,7 +6,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 1
-  # imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.5-v0.3.0@sha256:be3f025d79aa1b747817f478e07e71be43236e14d00d8a9eb3914146245035ba
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1-system-trixie
   managed:
     services:
       disabledDefaultServices: ["ro", "r"] # removes 2 services
@@ -30,38 +30,27 @@ spec:
   superuserSecret:
     name: synapse-pg-superuser
   storage:
-    size: &size 12Gi
     pvcTemplate:
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: *size
+          storage: 12Gi
       storageClassName: longhorn-storage
       volumeMode: Filesystem
-  backup:
-    retentionPolicy: 7d
-    barmanObjectStore: &barmanObjectStore
-      destinationPath: s3://postgres-backups/pg_matrix/meta
-      endpointURL: http://wireguard.network.svc.cluster.local:9010
-      s3Credentials:
-        accessKeyId:
-          name: minio-synapse-pg-backup-secrets
-          key: AWS_ACCESS_KEY_ID
-        secretAccessKey:
-          name: minio-synapse-pg-backup-secrets
-          key: AWS_SECRET_ACCESS_KEY
-      serverName: &currentCluster matrix-pg-meta
-      # data:
-      #   compression: bzip2
-      # wal:
-      #   compression: bzip2
-      #   maxParallel: 8
   externalClusters:
-    - name: &previousCluster matrix-pg-meta
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+    - name: &name matrix-pg-meta
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: *name
+          serverName: *name
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: *name
+      serverName: *name
   bootstrap:
     initdb:
       database: meta
@@ -71,16 +60,41 @@ spec:
       encoding: UTF8
       locale: C
     # recovery:
-    #   source: *previousCluster
+    #   source: *name
     #   recoveryTarget:
     #     backupID: "20260204T150001"
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: matrix-pg-meta
+spec:
+  retentionPolicy: 7d
+  configuration:
+    destinationPath: s3://postgres-backups/cluster-cloud/matrix/
+    endpointURL: http://wireguard.network.svc.cluster.local:9010
+    s3Credentials:
+      accessKeyId:
+        name: minio-synapse-pg-backup-secrets
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: minio-synapse-pg-backup-secrets
+        key: AWS_SECRET_ACCESS_KEY
+    data:
+      compression: bzip2
+    wal:
+      compression: bzip2
+      maxParallel: 8
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: matrix-pg-meta-backup
 spec:
-  schedule: "0 */130 * * * *"
+  schedule: "0 */6 * * *" # every 6 hours
   backupOwnerReference: self
   cluster:
-    name: matrix-pg-whatsapp
+    name: matrix-pg-meta
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io

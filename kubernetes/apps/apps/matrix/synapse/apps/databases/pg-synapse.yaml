@@ -6,6 +6,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.6-system-trixie
   managed:
     services:
       disabledDefaultServices: ["ro", "r"] # removes 2 services
@@ -42,7 +43,7 @@ spec:
       storageClassName: longhorn-storage
       volumeMode: Filesystem
   backup:
-    retentionPolicy: 7d
+    retentionPolicy: 20d
     barmanObjectStore: &barmanObjectStore
       destinationPath: s3://postgres-backups/pg_matrix/synapse
       endpointURL: http://wireguard.network.svc.cluster.local:9010
@@ -82,7 +83,7 @@ kind: ScheduledBackup
 metadata:
   name: matrix-pg-synapse-backup
 spec:
-  schedule: "0 */130 * * * *"
+  schedule: "0 */6 * * *" # every 6 hours
   backupOwnerReference: self
   cluster:
     name: matrix-pg-synapse

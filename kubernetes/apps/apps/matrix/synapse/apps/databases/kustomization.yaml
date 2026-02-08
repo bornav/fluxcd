@@ -6,5 +6,5 @@ resources:
   - pg-whatsapp.yaml
   - pg-meta.yaml
   # - secrets.yaml
-  - service.yaml
-  - external-secrets.yaml
+  # - service.yaml
+  # - external-secrets.yaml
