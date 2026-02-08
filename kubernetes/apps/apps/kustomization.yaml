@@ -9,7 +9,7 @@ resources:
   - namespace.yaml
   - dashboard
   - teamspeak
-  - matrix
+  - matrix-synapse/ks.yaml
   # - tachi
   # - openwebui
   - it-tools

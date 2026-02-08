@@ -3,59 +3,47 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: immich-app
-  namespace: flux-system
-spec:
-  path: ./kubernetes/apps/apps/immich/immich/app
-  prune: true
-  suspend: true
-  dependsOn:
-    - name: immich-storage
-  sourceRef:
-    kind: GitRepository
-    name: fluxcd-kubernetes
-    namespace: flux-system
-  interval: 15m
-  retryInterval: 15m
-  timeout: 5m
-  targetNamespace: apps
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: immich-storage
+  name: synapse-databases
   namespace: flux-system
 spec:
   dependsOn:
-    - name: traefik-base
-    - name: traefik-addons
     - name: longhorn-system-base
-    - name: volsync
-  path: ./kubernetes/apps/apps/immich/immich/storage
+    - name: external-secrets-vault-store
+    - name: cloudnative-pg
+  path: ./kubernetes/apps/apps/matrix-synapse/databases
   prune: true
-  suspend: true
+  wait: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
     namespace: flux-system
+  # healthChecks:
+  #   - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+  #     kind: HelmRelease
+  #     name: cert-manager
+  #     namespace: cert-manager
   interval: 15m
   retryInterval: 15m
-  timeout: 5m
+  timeout: 10m
   targetNamespace: apps
+
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: immich-access
+  name: synapse-apps
   namespace: flux-system
 spec:
   dependsOn:
     - name: traefik-base
-    - name: traefik-addons
-  path: ./kubernetes/apps/apps/immich/immich/access
+    - name: synapse-databases
+    - name: longhorn-system-base
+    - name: synapse-databases
+  path: ./kubernetes/apps/apps/matrix-synapse/  # gets the kustomisation so it can reach 2 files
   suspend: false
+  wait: false
   prune: true
   sourceRef:
     kind: GitRepository
@@ -63,5 +51,5 @@ spec:
     namespace: flux-system
   interval: 15m
   retryInterval: 15m
-  timeout: 5m
+  timeout: 10m
   targetNamespace: apps
