@@ -8,9 +8,8 @@ metadata:
 spec:
   dependsOn:
     - name: traefik-base
-    - name: cloudnative-pg
     - name: keycloak-database-operator
-  path: ./kubernetes/apps/xauth/keycloak/new/app
+  path: ./kubernetes/apps/xauth/keycloak/app
   suspend: false
   wait: true
   prune: true
@@ -32,8 +31,8 @@ metadata:
 spec:
   dependsOn:
     - name: cloudnative-pg
-    # - name: longhorn storage?
-  path: ./kubernetes/apps/xauth/keycloak/new
+    - name: longhorn-system-base
+  path: ./kubernetes/apps/xauth/keycloak/
   suspend: false
   wait: true
   prune: true
