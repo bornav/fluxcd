@@ -91,7 +91,7 @@ kind: ScheduledBackup
 metadata:
   name: matrix-pg-whatsapp-backup
 spec:
-  schedule: "0 */6 * * *" # every 6 hours
+  schedule: "0 0 */6 * * *" # every 6 hours
   backupOwnerReference: self
   cluster:
     name: matrix-pg-whatsapp

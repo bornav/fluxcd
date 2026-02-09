@@ -69,7 +69,7 @@ kind: ScheduledBackup
 metadata:
   name: pg-keycloak-backup
 spec:
-  schedule: "0 */6 * * *" # every 6 hours
+  schedule: "0 0 */6 * * *" # every 6 hours
   backupOwnerReference: self
   cluster:
     name: pg-keycloak
