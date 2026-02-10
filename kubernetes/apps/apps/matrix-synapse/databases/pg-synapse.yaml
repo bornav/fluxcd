@@ -33,38 +33,27 @@ spec:
   superuserSecret:
     name: synapse-pg-superuser
   storage:
-    size: &size 14Gi
     pvcTemplate:
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: *size
+          storage: 14Gi
       storageClassName: longhorn-storage
       volumeMode: Filesystem
-  backup:
-    retentionPolicy: 20d
-    barmanObjectStore: &barmanObjectStore
-      destinationPath: s3://postgres-backups/pg_matrix/synapse
-      endpointURL: http://wireguard.network.svc.cluster.local:9010
-      s3Credentials:
-        accessKeyId:
-          name: minio-synapse-pg-backup-secrets
-          key: AWS_ACCESS_KEY_ID
-        secretAccessKey:
-          name: minio-synapse-pg-backup-secrets
-          key: AWS_SECRET_ACCESS_KEY
-      serverName: &currentCluster matrix-pg-synapse
-      # data:
-      #   compression: bzip2
-      # wal:
-      #   compression: bzip2
-      #   maxParallel: 8
   externalClusters:
-    - name: &previousCluster matrix-pg-synapse
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+    - name: &name matrix-pg-synapse
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: *name
+          serverName: *name
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: *name
+      serverName: *name
   bootstrap:
     # initdb:
     #   database: synapse
@@ -74,16 +63,42 @@ spec:
     #   encoding: UTF8
     #   locale: C
     recovery:
-      source: *previousCluster
-      recoveryTarget:
-        backupID: "20260204T150001"
+      source: *name
+      # recoveryTarget:
+        # backupID: "20260204T150001"
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: matrix-pg-synapse
+spec:
+  retentionPolicy: 7d
+  configuration:
+    destinationPath: s3://postgres-backups/cluster-cloud/matrix/
+    endpointURL: http://wireguard.network.svc.cluster.local:9010
+    s3Credentials:
+      accessKeyId:
+        name: minio-synapse-pg-backup-secrets
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: minio-synapse-pg-backup-secrets
+        key: AWS_SECRET_ACCESS_KEY
+    data:
+      compression: bzip2
+    wal:
+      compression: bzip2
+      maxParallel: 8
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
   name: matrix-pg-synapse-backup
 spec:
+  # immediate: true #To trigger a backup immediately
   schedule: "0 0 */6 * * *" # every 6 hours
   backupOwnerReference: self
   cluster:
     name: matrix-pg-synapse
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
