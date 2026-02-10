@@ -71,7 +71,7 @@ metadata:
 spec:
   retentionPolicy: 7d
   configuration:
-    destinationPath: s3://postgres-backups/cluster-cloud/matrix/
+    destinationPath: s3://postgres-backups/cluster-cloud/matrix
     endpointURL: http://wireguard.network.svc.cluster.local:9010
     s3Credentials:
       accessKeyId:
