@@ -21,7 +21,7 @@ spec:
       shareProcessNamespace: true
       initContainers:
         - name: wait-for-endpoint
-          image: alpine/curl:8.14.1
+          image: alpine/curl:8.17.0
           command: ['sh', '-c',
             'until curl -s -o /dev/null -w "%{http_code}" $ENDPOINT | grep $HTTP_CODE; do sleep 1; done']
           env:
