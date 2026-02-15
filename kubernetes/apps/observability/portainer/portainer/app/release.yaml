@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -34,11 +35,11 @@ spec:
       existingClaim: pv-portainer-data
     resources:
       requests:
-        memory: '1Mi'
-        cpu: '1m'
+        memory: "1Mi"
+        cpu: "1m"
       limits:
-        memory: '6Gi'
-        cpu: '2500m'
+        memory: "6Gi"
+        cpu: "2500m"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -47,14 +48,14 @@ metadata:
   labels:
     app: pv-portainer-data
   annotations:
-    numberOfReplicas: '2'
+    numberOfReplicas: "2"
 spec:
   accessModes: ["ReadWriteOnce"]
   storageClassName: longhorn-storage
   dataSourceRef:
     kind: ReplicationDestination
     apiGroup: volsync.backube
-    name: pv-portainer-data-restore  # Name of the ReplicationDestination
+    name: pv-portainer-data-restore # Name of the ReplicationDestination
   resources:
     requests:
       storage: 2Gi

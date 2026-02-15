@@ -40,6 +40,9 @@ let
       - "oidc-groups-claim=groups"
     node-ip: 10.99.10.53
     # node-ip: 10.2.11.43
+    cni: none
+    egress-selector-mode: disabled
+    # advertise-address: x.x.x.x
   '';
   # runtime-image: "index.docker.io/rancher/rke2-runtime:v1.30.1-rke2r1"
 in {

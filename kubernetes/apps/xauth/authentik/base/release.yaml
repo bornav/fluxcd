@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -30,24 +31,24 @@ spec:
       # This sends anonymous usage-data, stack traces on errors and
       # performance data to sentry.io, and is fully opt-in
       error_reporting:
-          enabled: false
+        enabled: false
       postgresql:
-          password: "ThisIsNotASecurePassword"
+        password: "ThisIsNotASecurePassword"
     ingress:
-        # Specify kubernetes ingress controller class name
-        ingressClassName: traefik-external
-        enabled: true
-        hosts:
-            # Specify external host name
-            - host: authentik.cloud.icylair.com
-              paths:
-                  - path: "/"
-                    pathType: Prefix
-        tls:
-          - hosts: ["authentik.cloud.icylair.com"]
-            secretName: cloud-icylair-com-prod
+      # Specify kubernetes ingress controller class name
+      ingressClassName: traefik-external
+      enabled: true
+      hosts:
+        # Specify external host name
+        - host: authentik.cloud.icylair.com
+          paths:
+            - path: "/"
+              pathType: Prefix
+      tls:
+        - hosts: ["authentik.cloud.icylair.com"]
+          secretName: cloud-icylair-com-prod
     postgresql:
-        enabled: true
-        postgresqlPassword: "ThisIsNotASecurePassword"
+      enabled: true
+      postgresqlPassword: "ThisIsNotASecurePassword"
     redis:
-        enabled: true
+      enabled: true

@@ -90,6 +90,16 @@ all:
       wireguard_ip: 10.99.10.254
       wireguard_port: 51876
       vxlan_ip: 10.129.16.254
+    # lighthouse2: # lighthouse
+    #   pipelining: true
+    #   ansible_ssh_user: root
+    #   # ansible_host: "10.99.7.3"
+    #   ansible_host: "46.224.122.252"
+    #   ansible_ssh_port: 22
+    #   ansible_ssh_private_key_file: ~/.ssh/id_local
+    #   wireguard_ip: 10.99.10.253
+    #   wireguard_port: 51877
+    #   vxlan_ip: 10.129.16.253
 
   vars:
     ansible_ssh_common_args: "-o StrictHostKeyChecking=no"

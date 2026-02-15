@@ -44,10 +44,10 @@ let
       - "nat-policy=enabled"
       # - "storage=longhorn"
       - "storage/longhorn=true"
+    embedded-registry: true
     node-ip: 10.99.10.11
-    # server: https://lb.cloud.icylair.com:9345
   '';
-  
+
 in
 {
   imports = [
@@ -73,7 +73,7 @@ in
   rke2.type = "server";
 
   fileSystems."/storage" =
-    { device = "/dev/disk/by-uuid/a640f0aa-5604-4bf7-8b8f-265c233d9813"; 
+    { device = "/dev/disk/by-uuid/a640f0aa-5604-4bf7-8b8f-265c233d9813";
       fsType = "ext4";
       options = [
         "noatime"

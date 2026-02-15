@@ -67,4 +67,3 @@ spec:
   timeout: 5m
   # targetNamespace: default
   targetNamespace: apps
-

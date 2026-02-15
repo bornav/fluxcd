@@ -54,7 +54,7 @@
       # Frontend for TLS passthrough
       frontend https-in
           bind *:443
-          mode tcp
+          # mode tcp
           option tcplog
           tcp-request inspect-delay 5s
           tcp-request content accept if { req_ssl_hello_type 1 }
@@ -78,15 +78,13 @@
           balance leastconn
           option ssl-hello-chk
 
-          server vxlan-lb 10.129.16.100:443 send-proxy-v2 check
-
-            # Back-up nodes - activated only if *all* non-backup servers are down
+          server vxlan-lb-vip 10.129.16.100:443 send-proxy-v2 check
+          # Back-up nodes - activated only if *all* non-backup servers are down
           server oracle-km1-1 10.99.10.11:443 send-proxy-v2 check backup
           server oracle-bv1-1 10.99.10.12:443 send-proxy-v2 check backup
-          server contabo-1 10.99.10.13:443 send-proxy-v2 check backup
-
+          server hetzner-01   10.99.10.13:443 send-proxy-v2 check backup
           # Optional: once server1 recovers, instantly shift traffic back to it
-          option  allbackups        # let backups share traffic only while primary is dead
+          option allbackups # let backups share traffic only while primary is dead
     ''
     # http 80
     ''
@@ -98,35 +96,45 @@
       backend 80_backends
           mode tcp
           balance leastconn
-          server server1 oracle-bv1-1.cloud.icylair.com:80 check
-          server server2 oracle-km1-1.cloud.icylair.com:80 check
-          server server3 contabo-1.cloud.icylair.com:80 check
+
+          server vxlan-lb-vip 10.129.16.100:80 check
+          # Back-up nodes - activated only if *all* non-backup servers are down
+          server oracle-km1-1 10.99.10.11:80 check backup
+          server oracle-bv1-1 10.99.10.12:80 check backup
+          server hetzner-01   10.99.10.13:80 check backup
+          # Optional: once server1 recovers, instantly shift traffic back to it
+          option allbackups # let backups share traffic only while primary is dead
     ''
-    # api plane 6443
+    # control plane 6443
     ''
-      frontend 6443-forward
+      frontend 6443_control_plane
           bind *:6443
           mode tcp
           option tcplog
-          default_backend 6443_backends
-      backend 6443_backends
+          default_backend 6443_backend
+      backend 6443_backend
           mode tcp
-          balance roundrobin
+          balance leastconn
           option tcp-check
-          server control-plane-1 oracle-km1-1.cloud.icylair.com:6443 check
-          server control-plane-2 oracle-bv1-1.cloud.icylair.com:6443 check
-          server control-plane-3 contabo-1.cloud.icylair.com:6443 check
+
+          server vxlan-lb-vip 10.129.16.2:6443 check
+          # Back-up nodes - activated only if *all* non-backup servers are down
+          server oracle-km1-1 10.99.10.11:6443 check backup
+          server oracle-bv1-1 10.99.10.12:6443 check backup
+          server hetzner-01   10.99.10.13:6443 check backup
+          # Optional: once server1 recovers, instantly shift traffic back to it
+          option allbackups # let backups share traffic only while primary is dead
     ''
-    # control plane 9345
+    # api plane 9345
     ''
-      frontend control_plane
+      frontend 9345_api_plane
           bind *:9345
           mode tcp
           option tcplog
-          default_backend control_plane_backend
-      backend control_plane_backend
+          default_backend 9345_backend
+      backend 9345_backend
           mode tcp
-          balance roundrobin
+          balance leastconn
           option tcp-check
 
           #     mode tcp
@@ -135,9 +143,9 @@
           #     http-check connect ssl alpn h2
           #     http-check send meth HEAD uri /cacerts  # this works but unneccesary
 
-          server control-plane-1 10.99.10.11:9345 check
-          server control-plane-2 10.99.10.12:9345 check
-          server control-plane-3 10.99.10.13:9345 check
+          server oracle-km1-1 10.99.10.11:9345 check
+          server oracle-bv1-1 10.99.10.12:9345 check
+          server hetzner-01   10.99.10.13:9345 check
     ''
     # headscale 8080
     ''
@@ -151,6 +159,16 @@
             mode tcp
             server server1 127.0.0.1:10023
       ''}
+    ''
+    ''
+      frontend stats
+        mode http
+        bind 127.0.0.1:8404
+        stats enable
+        stats refresh 10s
+        stats uri /stats
+        stats show-modules
+        stats admin if TRUE
     ''
   ];
   environment.systemPackages = with pkgs; [

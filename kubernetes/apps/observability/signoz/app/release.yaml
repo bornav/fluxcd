@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,7 +10,7 @@ spec:
   chart:
     spec:
       chart: signoz
-      version: 0.104.1 
+      version: 0.104.1
       sourceRef:
         kind: HelmRepository
         name: signoz
@@ -33,9 +34,9 @@ spec:
         hosts:
           - host: signoz.cloud.icylair.com
             paths:
-            - path: /
-              pathType: ImplementationSpecific
-              port: 3301
+              - path: /
+                pathType: ImplementationSpecific
+                port: 3301
         annotations:
           traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
         #   kubernetes.io/ingress.class: nginx

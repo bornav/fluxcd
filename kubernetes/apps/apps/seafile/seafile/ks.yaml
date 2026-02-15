@@ -64,4 +64,3 @@ spec:
   retryInterval: 15m
   timeout: 10m
   targetNamespace: apps
-

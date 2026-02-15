@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/open-telemetry/opentelemetry-configuration/refs/heads/main/schema/common.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/open-telemetry/opentelemetry-configuration/refs/heads/main/schema/common.yaml
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
@@ -12,36 +12,36 @@ spec:
       value: "true"
       effect: NoSchedule
   volumes:
-  # - name: pod-logs
-  #   hostPath:
-  #     path: /var/log/pods
-  - name: varlog
-    hostPath:
-      path: /var/log
-  - name: rke2agent
-    hostPath:
-      path: /var/lib/rancher/rke2/agent/logs/
+    # - name: pod-logs
+    #   hostPath:
+    #     path: /var/log/pods
+    - name: varlog
+      hostPath:
+        path: /var/log
+    - name: rke2agent
+      hostPath:
+        path: /var/lib/rancher/rke2/agent/logs/
   # - name: journal
   #   hostPath:
   #     path: /var/log/journal
   volumeMounts:
-  # - name: pod-logs
-  #   mountPath: /var/log/pods
-  #   readOnly: true
-  - name: varlog
-    mountPath: /var/log
-    readOnly: true
-  - name: rke2agent
-    mountPath: /var/lib/rancher/rke2/agent/logs/
-    readOnly: true
+    # - name: pod-logs
+    #   mountPath: /var/log/pods
+    #   readOnly: true
+    - name: varlog
+      mountPath: /var/log
+      readOnly: true
+    - name: rke2agent
+      mountPath: /var/lib/rancher/rke2/agent/logs/
+      readOnly: true
   # - name: journal
   #   mountPath: /var/log/journal
   #   readOnly: true
   env:
-  - name: K8S_NODE_NAME
-    valueFrom:
-      fieldRef:
-        fieldPath: spec.nodeName
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
   mode: daemonset
   config:
     receivers:
@@ -113,35 +113,52 @@ spec:
             - service.name
             - service.version
             - service.instance.id
+          labels:
+            # This label extraction rule takes the value 'app.kubernetes.io/component' label and maps it to the 'app.label.component' attribute which will be added to the associated resources
+            - tag_name: opentelemetry.io/enabled
+              key: opentelemetry.io/enabled
+              from: pod
+            - tag_name: opentelemetry.io/enabled
+              key: opentelemetry.io/enabled
+              from: namespace
+            - tag_name: opentelemetry.io/enabled
+              key: opentelemetry.io/enabled
+              from: node
         passthrough: false
         pod_association:
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.ip
-        - sources:
-          - from: resource_attribute
-            name: k8s.pod.uid
-        - sources:
-          - from: connection
+          - sources:
+              - from: resource_attribute
+                name: k8s.pod.ip
+          - sources:
+              - from: resource_attribute
+                name: k8s.pod.uid
+          - sources:
+              - from: connection
       memory_limiter:
         check_interval: 5s
         limit_percentage: 80
         spike_limit_percentage: 25
       resource:
         attributes:
-        - action: insert
-          from_attribute: k8s.pod.uid
-          key: service.instance.id
+          - action: insert
+            from_attribute: k8s.pod.uid
+            key: service.instance.id
     connectors:
-      spanmetrics: {}
+      spanmetrics: {} # TODO check if the same as metrics association from tempo
     service:
       extensions:
-      - health_check
+        - health_check
       pipelines:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp, spanmetrics,otlp/grafana_cloud_tempo, otlphttp/local-collector]
+          exporters:
+            [
+              otlp,
+              spanmetrics,
+              otlp/grafana_cloud_tempo,
+              otlphttp/local-collector,
+            ]
           # exporters: [otlp, debug, spanmetrics,otlp/grafana_cloud_tempo, otlphttp/local-collector] # for cli loging
         metrics:
           receivers: [otlp, spanmetrics]
@@ -149,7 +166,7 @@ spec:
           exporters: [otlphttp/local-collector]
           # exporters: [debug, otlphttp/local-collector] # for cli loging
         logs:
-          receivers: [otlp,filelog]
+          receivers: [otlp, filelog]
           # receivers: [otlp]
           processors: [batch, k8sattributes]
           exporters: [otlphttp] # for cli loging

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -61,7 +62,7 @@ spec:
       server:
         # The full public facing url you use in browser, used for redirects and emails
         root_url: https://grafana.cloud.icylair.com
-    envFromSecret: "grafana-oauth"  # adding oauth secret using this
+    envFromSecret: "grafana-oauth" # adding oauth secret using this
     # assertNoLeakedSecrets: false
     ingress:
       enabled: true
@@ -164,7 +165,7 @@ spec:
                 search: true
               traceQuery:
                 timeShiftEnabled: false
-                spanStartTimeShift: ''
+                spanStartTimeShift: ""
             readOnly: false
           - name: pyroscope
             type: grafana-pyroscope-datasource
@@ -186,10 +187,10 @@ spec:
             access: proxy
             url: http://jaegertracing-query.observability.svc.cluster.local:16686/
             # typeLogoUrl: public/app/plugins/datasource/jaeger/img/jaeger_logo.svg
-            user: ''
-            database: ''
+            user: ""
+            database: ""
             basicAuth: false
-            basicAuthUser: ''
+            basicAuthUser: ""
             withCredentials: false
             isDefault: false
             jsonData:
@@ -203,24 +204,25 @@ spec:
               tracesToLogsV2:
                 customQuery: false
                 datasourceUid: loki
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
-                tags: ['job', 'instance', 'pod', 'namespace']
+                spanStartTimeShift: "1h"
+                spanEndTimeShift: "-1h"
+                tags: ["job", "instance", "pod", "namespace"]
                 filterByTraceID: false
                 filterBySpanID: false
                 query: 'method="$${__span.tags.method}"'
               tracesToMetrics:
                 datasourceUid: prometheus
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
-                tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+                spanStartTimeShift: "1h"
+                spanEndTimeShift: "-1h"
+                tags:
+                  [{ key: "service.name", value: "service" }, { key: "job" }]
                 queries:
-                  - name: 'Sample query'
-                    query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+                  - name: "Sample query"
+                    query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
               traceQuery:
                 timeShiftEnabled: true
-                spanStartTimeShift: '1h'
-                spanEndTimeShift: '-1h'
+                spanStartTimeShift: "1h"
+                spanEndTimeShift: "-1h"
             readOnly: false
 
           # - name: OpenSearch
@@ -345,8 +347,8 @@ spec:
         labelValue: ""
 
     plugins:
-      - grafana-exploretraces-app  #seems there are issues with it
-      - grafana-lokiexplore-app    #seems there are issues with it
+      - grafana-exploretraces-app #seems there are issues with it
+      - grafana-lokiexplore-app #seems there are issues with it
       - natel-discrete-panel
     serviceMonitor:
       enabled: true

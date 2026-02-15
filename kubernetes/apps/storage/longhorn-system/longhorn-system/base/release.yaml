@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -42,7 +43,7 @@ spec:
       ingressClassName: traefik-external
       host: longhorn.cloud.icylair.com
       tls: true
-      tlsSecret: icylair-com-all-prod 
+      tlsSecret: icylair-com-all-prod
       path: /
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
@@ -75,7 +76,6 @@ spec:
       serviceMonitor:
         enabled: true
 
-      
     #   allowRecurringJobWhileVolumeDetached: false
     #   createDefaultDiskLabeledNodes: false
     #   defaultDataPath: /var/lib/longhorn/

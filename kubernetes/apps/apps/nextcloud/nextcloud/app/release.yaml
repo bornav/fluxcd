@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -28,11 +30,11 @@ spec:
       enabled: true
       className: "traefik"
       tls:
-        - hosts: 
-          - nc.cloud.icylair.com
+        - hosts:
+            - nc.cloud.icylair.com
           secretName: cloud-icylair-com-prod
       annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: 'nextcloud-nextcloud-redirectregex@kubernetescrd,nextcloud-your-middleware1@kubernetescrd,nextcloud-your-middleware2@kubernetescrd'
+        traefik.ingress.kubernetes.io/router.middlewares: "nextcloud-nextcloud-redirectregex@kubernetescrd,nextcloud-your-middleware1@kubernetescrd,nextcloud-your-middleware2@kubernetescrd"
         traefik.ingress.kubernetes.io/enable-cors: "true"
         traefik.ingress.kubernetes.io/cors-headers: "X-Forwarded-For"
     nextcloud:
@@ -68,7 +70,7 @@ spec:
       type: "postgresql"
       database: "nextcloud"
       username: "nextcloud"
-      existingSecret: 
+      existingSecret:
         enabled: true
         secretName: postgres-secret
         # usernameKey: db-username
@@ -118,8 +120,8 @@ metadata:
   name: nextcloud-redirectregex
 spec:
   redirectRegex:
-    regex: 'https://(.*)/.well-known/(?:card|cal)dav'
-    replacement: 'https://$${1}/remote.php/dav'
+    regex: "https://(.*)/.well-known/(?:card|cal)dav"
+    replacement: "https://$${1}/remote.php/dav"
     permanent: true
 ---
 apiVersion: traefik.io/v1alpha1
@@ -129,7 +131,7 @@ metadata:
 spec:
   redirectRegex:
     regex: '^/\.well-known/(carddav|caldav)/?$'
-    replacement: '/remote.php/dav'
+    replacement: "/remote.php/dav"
     permanent: true
 ---
 apiVersion: traefik.io/v1alpha1
@@ -139,5 +141,5 @@ metadata:
 spec:
   redirectRegex:
     regex: '^/\.well-known/(webfinger|nodeinfo)/?$'
-    replacement: '/index.php/.well-known/$1'
+    replacement: "/index.php/.well-known/$1"
     permanent: true

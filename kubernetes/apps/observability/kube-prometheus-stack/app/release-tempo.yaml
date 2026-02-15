@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -36,10 +37,10 @@ spec:
         remoteWriteUrl: "http://prometheus-operated.observability.svc.cluster.local:9090/api/v1/write"
       overrides:
         defaults:
-            metrics_generator:
-              processors:
-                - service-graphs
-                - span-metrics
+          metrics_generator:
+            processors:
+              - service-graphs
+              - span-metrics
     config: |
       memberlist:
         cluster_label: "{{ .Release.Name }}.{{ .Release.Namespace }}"
@@ -93,10 +94,10 @@ spec:
     # #       - secretName: icylair-com-all-prod
     # #         hosts:
     # #           - tempo-query.cloud.icylair.com
-      # extraVolumeMounts:
-      #   - name: tempo-pvc
-      #     mountPath: /mnt/volume
-      #     existingClaim: tempo-pvc
+    # extraVolumeMounts:
+    #   - name: tempo-pvc
+    #     mountPath: /mnt/volume
+    #     existingClaim: tempo-pvc
     service:
       type: LoadBalancer
     # persistence:

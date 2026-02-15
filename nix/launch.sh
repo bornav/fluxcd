@@ -111,8 +111,6 @@ elif [[ $1 == deploy_all ]]; then
     build
     echo "token step"
     prepare_token_rke2
-    echo "try update step"
-    try_update
     echo "atempting update step"
     bootstrap
     update

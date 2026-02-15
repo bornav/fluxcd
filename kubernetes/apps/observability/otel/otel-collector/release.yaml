@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -39,24 +40,24 @@ spec:
       type: LoadBalancer
     ################################# logs
     extraVolumes:
-    - name: pod-logs
-      hostPath:
-        path: /var/log/pods
-        type: Directory
+      - name: pod-logs
+        hostPath:
+          path: /var/log/pods
+          type: Directory
     extraVolumeMounts:
-    - name: pod-logs
-      mountPath: /var/log/pods
-      hostPath:
-        path: /var/log/pods
-        type: Directory
+      - name: pod-logs
+        mountPath: /var/log/pods
+        hostPath:
+          path: /var/log/pods
+          type: Directory
     podAnnotations:
       reloader.stakater.com/auto: "true"
-    tolerations: 
+    tolerations:
       - key: node-role.kubernetes.io/control-plane
         value: "true"
         effect: NoSchedule
     ################################# logs
-      # loadBalancerIP: 10.2.11.233
+    # loadBalancerIP: 10.2.11.233
     # # Handles basic configuration of components that
     # # also require k8s modifications to work correctly.
     # # .Values.config can be used to modify/add to a preset

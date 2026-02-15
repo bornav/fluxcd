@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -27,7 +28,7 @@ spec:
     keepHistory: false
   values:
     # preset: network
-    tolerations: 
+    tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: "Exists"
         effect: "NoSchedule"
@@ -77,9 +78,9 @@ data:
           namespace: kube-system
         # - k8s_namespace: storage
         # - exe_path: (worker)|(backend)|(frontend) # any service exec that has name worker,backent...
-        #   namespace: MyApplication 
+        #   namespace: MyApplication
         #   name: "TestLoadGenerator" # overwrites the built in name with this
-        # - exe_path: tcpforwarder 
+        # - exe_path: tcpforwarder
         #   namespace: network
     trace_printer: text
     otel_traces_export:

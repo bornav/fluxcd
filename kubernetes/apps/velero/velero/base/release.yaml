@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -22,4 +23,4 @@ spec:
   #     defaultClassReplicaCount: 1
   #   defaultSettings:
   #     backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
-  #     backupTargetCredentialSecret: cifs-secret  
+  #     backupTargetCredentialSecret: cifs-secret

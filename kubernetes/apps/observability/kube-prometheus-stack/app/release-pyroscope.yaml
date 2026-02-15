@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -33,7 +34,7 @@ spec:
       extraArgs:
         log.level: debug
     # # preset: network
-    # tolerations: 
+    # tolerations:
     #   - key: node-role.kubernetes.io/control-plane
     #     operator: "Exists"
     #     effect: "NoSchedule"

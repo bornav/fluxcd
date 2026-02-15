@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -33,9 +33,9 @@ spec:
           service-type: ingress
       # loadBalancerIP: "10.49.22.11"
       #   annotations:
-          # external-dns.alpha.kubernetes.io/hostname: external.cloud.icylair.com
-          # io.cilium/lb-ipam-ips: 192.168.42.206
-        # externalTrafficPolicy: Cluster
+      # external-dns.alpha.kubernetes.io/hostname: external.cloud.icylair.com
+      # io.cilium/lb-ipam-ips: 192.168.42.206
+      # externalTrafficPolicy: Cluster
       ingressClassResource:
         name: nginx-external
         default: false

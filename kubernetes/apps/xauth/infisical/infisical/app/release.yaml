@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -25,67 +26,67 @@ spec:
   uninstall:
     keepHistory: false
   values:
-      # nameOverride: ""
-      # fullnameOverride: ""
-      infisical:
-        enabled: true
-        name: infisical
-        autoDatabaseSchemaMigration: true
-        fullnameOverride: ""
-        podAnnotations: {}
-        deploymentAnnotations: {}
-        replicaCount: 1
-        affinity: {}
-        kubeSecretRef: "infisical-secrets"
-        service:
-          annotations: {}
-          type: ClusterIP
-        resources:
-          limits:
-            memory: 600Mi
-          requests:
-            cpu: 50m
-      ingress:
-        enabled: true
-        hostName: "infisical.icylair.com"
-        ingressClassName: traefik-external
-        nginx:
-          enabled: false
+    # nameOverride: ""
+    # fullnameOverride: ""
+    infisical:
+      enabled: true
+      name: infisical
+      autoDatabaseSchemaMigration: true
+      fullnameOverride: ""
+      podAnnotations: {}
+      deploymentAnnotations: {}
+      replicaCount: 1
+      affinity: {}
+      kubeSecretRef: "infisical-secrets"
+      service:
         annotations: {}
-        tls:
+        type: ClusterIP
+      resources:
+        limits:
+          memory: 600Mi
+        requests:
+          cpu: 50m
+    ingress:
+      enabled: true
+      hostName: "infisical.icylair.com"
+      ingressClassName: traefik-external
+      nginx:
+        enabled: false
+      annotations: {}
+      tls:
         - secretName: icylair-com-all-prod
           hosts:
             - infisical.icylair.com
-      postgresql:
+    postgresql:
+      enabled: true
+      name: "postgresql"
+      fullnameOverride: "postgresql"
+      auth:
+        username: infisical
+        password: $(userpassword)
+        database: infisicalDB
+        existingSecret: infisical-secrets
+        secretKeys:
+          adminPasswordKey: postgres-password
+          userPasswordKey: userpassword
+          replicationPasswordKey: replication-password
+      primary:
         enabled: true
-        name: "postgresql"
-        fullnameOverride: "postgresql"
-        auth:
-          username: infisical
-          password: $(userpassword)
-          database: infisicalDB
-          existingSecret: infisical-secrets
-          secretKeys:
-            adminPasswordKey: postgres-password
-            userPasswordKey: userpassword
-            replicationPasswordKey: replication-password
-        primary:
-          enabled: true
-          persistence:
-            existingClaim: "infisical-db"
-      redis:
-        enabled: true
-        name: "redis"
-        fullnameOverride: "redis"
-        cluster:
-          enabled: false
-        usePassword: true
-        # auth:
-        #   existingSecret: "infisical-secrets"
-        #   existingSecretPasswordKey: "redis-password"
-        architecture: standalone
-        
+        persistence:
+          existingClaim: "infisical-db"
+    redis:
+      enabled: true
+      name: "redis"
+      fullnameOverride: "redis"
+      cluster:
+        enabled: false
+      usePassword: true
+      # auth:
+      #   existingSecret: "infisical-secrets"
+      #   existingSecretPasswordKey: "redis-password"
+      architecture: standalone
 # ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 # apiVersion: helm.toolkit.fluxcd.io/v2
 # kind: HelmRelease
 # metadata:

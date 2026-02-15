@@ -76,4 +76,3 @@ spec:
   retryInterval: 15m
   timeout: 5m
   targetNamespace: devops-tools
-

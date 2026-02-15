@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -46,7 +47,7 @@ spec:
       configMap:
         create: false
         # -- Name of existing ConfigMap to use. Used when create is false.
-        name: alloy-config   
+        name: alloy-config
         # -- Key in ConfigMap to get config from.
         key: config
 ---
@@ -54,7 +55,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: alloy-config    
+  name: alloy-config
 data:
   config: |
     tracing {
@@ -71,4 +72,3 @@ data:
         }
       }
     }
-    

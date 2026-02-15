@@ -58,8 +58,8 @@ let
   '';
   server=# first init uncomment the ip based once, after the loadbalancer, origin one needs both commented out
   ''
-  server: https://lb.cloud.icylair.com:9345
-  # server: https://10.99.10.11:9345
+  # server: https://lb.cloud.icylair.com:9345
+  server: https://10.99.10.11:9345
   '';
   combined_config = if host.kube_ha then
     node_config + "\n" + tls_san + "\n" + server

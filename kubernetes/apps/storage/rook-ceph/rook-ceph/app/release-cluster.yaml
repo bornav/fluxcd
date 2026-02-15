@@ -49,4 +49,3 @@ parameters:
 provisioner: storage.cephfs.csi.ceph.com
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-

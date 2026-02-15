@@ -41,7 +41,7 @@ spec:
     - name: synapse-databases
     - name: longhorn-system-base
     - name: synapse-databases
-  path: ./kubernetes/apps/apps/matrix-synapse/  # gets the kustomisation so it can reach 2 files
+  path: ./kubernetes/apps/apps/matrix-synapse/ # gets the kustomisation so it can reach 2 files
   suspend: false
   wait: false
   prune: true

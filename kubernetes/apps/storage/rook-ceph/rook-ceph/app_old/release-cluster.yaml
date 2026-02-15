@@ -39,9 +39,9 @@ spec:
           name: rook.cloud.icylair.com
           path: /
         tls:
-        - hosts:
-            - rook.cloud.icylair.com
-          secretName: icylair-com-all-prod
+          - hosts:
+              - rook.cloud.icylair.com
+            secretName: icylair-com-all-prod
     # toolbox:
     #   enabled: true
     configOverride: |
@@ -49,7 +49,7 @@ spec:
       bdev_enable_discard = true
       bdev_async_discard = true
       osd_class_update_on_start = false
-    
+
     cephClusterSpec:
       logCollector:
         enabled: false
@@ -65,25 +65,25 @@ spec:
         urlPrefix: /
         ssl: false
         # prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
-    #   network:
-    #     provider: host
-    #     connections:
-    #       requireMsgr2: true
-    #   storage:
-    #     useAllNodes: true
-    #     useAllDevices: true
-    #     deviceFilter: nvme0n1
-    #     config:
-    #       osdsPerDevice: "1"
-    #   placement:
-    #     mgr: &placement
-    #       nodeAffinity:
-    #         requiredDuringSchedulingIgnoredDuringExecution:
-    #           nodeSelectorTerms:
-    #             - matchExpressions:
-    #                 - key: node-role.kubernetes.io/control-plane
-    #                   operator: Exists
-    #     mon: *placement
+      #   network:
+      #     provider: host
+      #     connections:
+      #       requireMsgr2: true
+      #   storage:
+      #     useAllNodes: true
+      #     useAllDevices: true
+      #     deviceFilter: nvme0n1
+      #     config:
+      #       osdsPerDevice: "1"
+      #   placement:
+      #     mgr: &placement
+      #       nodeAffinity:
+      #         requiredDuringSchedulingIgnoredDuringExecution:
+      #           nodeSelectorTerms:
+      #             - matchExpressions:
+      #                 - key: node-role.kubernetes.io/control-plane
+      #                   operator: Exists
+      #     mon: *placement
       resources:
         mgr:
           requests:
@@ -253,4 +253,3 @@ parameters:
 provisioner: storage.cephfs.csi.ceph.com
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-
