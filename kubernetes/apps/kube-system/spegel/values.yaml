@@ -1,0 +1,16 @@
+---
+grafanaDashboard:
+  enabled: true
+  mode: Sidecar
+  # grafanaOperator:
+  #   matchLabels:
+  #     grafana.internal/instance: grafana
+service:
+  registry:
+    hostPort: 29999
+serviceMonitor:
+  enabled: true
+spegel:
+  containerdSock: "/run/k3s/containerd/containerd.sock"
+  containerdContentPath: "/var/lib/rancher/rke2/agent/containerd/io.containerd.content.v1.content"
+  containerdRegistryConfigPath: "/var/lib/rancher/rke2/agent/etc/containerd/certs.d"
