@@ -40,7 +40,6 @@ let
     # cni: none
     egress-selector-mode: disabled
     # advertise-address: x.x.x.x
-    embedded-registry: true
     supervisor-metrics: true
   '';
   # runtime-image: "index.docker.io/rancher/rke2-runtime:v1.30.1-rke2r1"

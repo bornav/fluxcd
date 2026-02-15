@@ -137,15 +137,13 @@
           balance leastconn
           option tcp-check
 
-          #     mode tcp
-          #     balance roundrobin
-          #     option httpchk
-          #     http-check connect ssl alpn h2
-          #     http-check send meth HEAD uri /cacerts  # this works but unneccesary
-
-          server oracle-km1-1 10.99.10.11:9345 check
-          server oracle-bv1-1 10.99.10.12:9345 check
-          server hetzner-01   10.99.10.13:9345 check
+          # https://10.129.16.2:9345/v1-rke2/readyz good endpoint, but figure out how to have the token before this is usable as health endpoint is forbiden without token
+          server vxlan-lb-vip 10.129.16.2:9345 check
+          # Back-up nodes - activated only if *all* non-backup servers are down
+          server oracle-km1-1 10.99.10.11:9345 check backup
+          server oracle-bv1-1 10.99.10.12:9345 check backup
+          server hetzner-01   10.99.10.13:9345 check backup
+          option allbackups # let backups share traffic only while primary is dead
     ''
     # headscale 8080
     ''

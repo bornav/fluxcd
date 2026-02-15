@@ -4,7 +4,7 @@
   inputs = {                                                              # References Used by Flake
       # nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";                     # Stable Nix Packages (Default)
       # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-      nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+      nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
       nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";         # Unstable Nix Packages
       nixpkgs-master.url = "github:nixos/nixpkgs/master";
       # nixpkgs-bornav.url = "github:bornav/nixpkgs/feat/headscale-allow-external-config";
@@ -20,7 +20,7 @@
                };
       nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
     };
-  outputs = { self, nur, nixpkgs-unstable, nixpkgs-stable, nixpkgs-master, home-manager, nixos-hardware, nix-flatpak, disko, ... } @ inputs:   # Function telling flake which inputs to use
+  outputs = { self, ... } @ inputs:   # Function telling flake which inputs to use
 	let
 		vars = {                                                              # Variables Used In Flake
 			user = "nix";
