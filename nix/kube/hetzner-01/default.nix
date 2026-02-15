@@ -26,7 +26,6 @@ let
       - "storage/ceph=false"
     node-taint:
       - "node-role.kubernetes.io/control-plane=true:NoSchedule"
-    embedded-registry: true
     node-ip: 10.99.10.13
   '';
 in

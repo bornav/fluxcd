@@ -38,7 +38,6 @@ let
       - "nat-policy=enabled"
       # - "storage=longhorn"
       - "storage/longhorn=true"
-    embedded-registry: true
     node-ip: 10.99.10.12
   '';
 in
