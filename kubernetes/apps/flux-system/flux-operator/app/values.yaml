@@ -1,4 +1,6 @@
 ---
 serviceMonitor:
   create: true
-installCRDs: true # default
+web:
+  networkPolicy:
+    create: false
