@@ -2,7 +2,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+nameSuffix: ""
+namespace: network
 resources:
   - deployment.yaml
   - secret.yaml
   - service.yaml
+  - service_vxlan.yaml

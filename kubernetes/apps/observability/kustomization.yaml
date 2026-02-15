@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -6,9 +7,8 @@ resources:
   - ./jaeger/ks.yaml
   # - ./istio/ks.yaml
   - ./otel/ks.yaml
-  - ./zipkin/ks.yaml  
+  - ./zipkin/ks.yaml
   - ./kubernetes-dashboard/ks.yaml
   - ./portainer/ks.yaml
   - ./signoz/ks.yaml
   - namespace.yaml
-  

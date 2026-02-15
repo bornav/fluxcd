@@ -1,9 +1,10 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kube-system
 resources:
-# - config.yaml
-# - deployment.yaml
-# - cluster-perm.yaml
-- all-in-one.yaml
+  # - config.yaml
+  # - deployment.yaml
+  # - cluster-perm.yaml
+  - all-in-one.yaml
