@@ -237,7 +237,7 @@
     };
     modules = [
         # nur.nixosModules.nur
-        ./home-manager.nix
+        # ./home-manager.nix
         ./lighthouse
     ];
   };
