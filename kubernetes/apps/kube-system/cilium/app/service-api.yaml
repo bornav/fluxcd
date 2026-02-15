@@ -14,4 +14,7 @@ spec:
     component: kube-apiserver
     tier: control-plane
   ports:
-    - port: 6443
+    - name: api-plane
+      port: 6443
+    - name: control-plane
+      port: 9345
