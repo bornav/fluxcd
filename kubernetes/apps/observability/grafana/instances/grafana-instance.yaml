@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafana_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    grafana.internal/instance: grafana
+spec:
+  config:
+    analytics:
+      check_for_updates: "false"
+      check_for_plugin_updates: "false"
+      feedback_links_enabled: "false"
+      reporting_enabled: "false"
+    auth:
+      disable_login_form: "false"
+    auth.anonymous:
+      enabled: "false"
+    auth.generic_oauth:
+      enabled: "true"
+      name: Keycloak-OAuth
+      allow_sign_up: "true"
+      client_id: ${AUTH_CLIENT_ID}
+      client_secret: ${AUTH_CLIENT_SECRET}
+      scopes: openid email profile offline_access roles
+      email_attribute_path: email
+      login_attribute_path: username
+      name_attribute_path: full_name
+      auth_url: https://sso.icylair.com/realms/master/protocol/openid-connect/auth
+      token_url: https://sso.icylair.com/realms/master/protocol/openid-connect/token
+      api_url: https://sso.icylair.com/realms/master/protocol/openid-connect/userinfo
+      role_attribute_path: contains(realm_access.roles[*], 'grafanaadmin') && 'GrafanaAdmin' || contains(realm_access.roles[*], 'admin') && 'Admin' || contains(realm_access.roles[*], 'editor') && 'Editor' || 'Viewer'
+      allow_assign_grafana_admin: "true"
+      auto_login: "true"
+    # log:
+    #   mode: console
+    # metrics:
+    #   enabled: "true"
+    news:
+      news_feed_enabled: "false"
+    plugins:
+      plugin_admin_enabled: "true"
+    security:
+      angular_support_enabled: "true"
+      admin_user: root
+      admin_password: secret
+    server:
+      enable_gzip: "true"
+      root_url: https://grafana.cloud.icylair.com
+  deployment:
+    spec:
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: grafana
+              env:
+                - name: GF_SECURITY_ADMIN_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin-credentials2
+                      key: admin_user
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin-credentials2
+                      key: admin_password
+                - name: AUTH_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-oauth
+                      key: client_id
+                - name: AUTH_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-oauth
+                      key: client_secret
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+  httpRoute:
+    spec:
+      hostnames:
+        - grafana.cloud.icylair.com
+      parentRefs:
+        - name: traefik-gateway
+          namespace: network
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
+  # persistentVolumeClaim:
+  #   spec:
+  #     accessModes:
+  #       - ReadWriteOnce
+  #     resources:
+  #       requests:
+  #         storage: 10Gi
+  #     storageClassName: ceph-block
+  # disableDefaultSecurityContext: All
