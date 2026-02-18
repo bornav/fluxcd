@@ -1,0 +1,157 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-prometheus
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: prometheus
+  datasource:
+    name: Prometheus
+    type: prometheus
+    access: proxy
+    basicAuth: false
+    url: http://prometheus-operated.observability.svc.cluster.local:9090
+    isDefault: true
+    jsonData:
+      # "tlsSkipVerify": true
+      timeInterval: "60s"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-loki
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: loki
+  datasource:
+    name: Loki
+    type: loki
+    access: proxy
+    url: http://grafana-loki.observability.svc.cluster.local:3100
+    jsonData:
+      maxLines: 1000
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-alertmanager
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: alertmanager
+  datasource:
+    name: Alertmanager
+    type: alertmanager
+    access: proxy
+    url: http://alertmanager-operated.observability.svc.cluster.local:9093
+    jsonData:
+      implementation: prometheus
+      handleGrafanaManagedAlerts: "true"
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-tempo
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: tempo
+  datasource:
+    name: Tempo
+    type: tempo
+    access: proxy
+    url: http://grafana-tempo.observability.svc.cluster.local:3200
+    jsonData:
+      tracesToMetrics:
+        spanEndTimeShift: 1h
+        spanStartTimeShift: "-1h"
+        datasourceUid: prometheus
+      serviceMap:
+        datasourceUid: prometheus
+      nodeGraph:
+        enabled: true
+      tracesToLogsV2:
+        customQuery: false
+        spanStartTimeShift: "-1h"
+        datasourceUid: loki
+        spanEndTimeShift: 1h
+      streamingEnabled:
+        search: true
+        metrics: true
+      traceQuery:
+        timeShiftEnabled: false
+        spanStartTimeShift: ""
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-pyroscope
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: pyroscope
+  datasource:
+    name: Pyroscope
+    type: grafana-pyroscope-datasource
+    access: proxy
+    url: http://grafana-pyroscope.observability.svc.cluster.local:4040
+    jsonData: {}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-jaeger
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: jaeger
+  datasource:
+    name: Jaeger
+    type: jaeger
+    access: proxy
+    url: http://jaegertracing-query.observability.svc.cluster.local:16686
+    jsonData:
+      nodeGraph:
+        enabled: true
+      spanBar:
+        type: None
+      timeout: 15
+      traceIdTimeParams:
+        enabled: true
+      tracesToLogsV2:
+        customQuery: false
+        datasourceUid: loki
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"
+        tags: ["job", "instance", "pod", "namespace"]
+        filterByTraceID: false
+        filterBySpanID: false
+        query: 'method="$${__span.tags.method}"'
+      tracesToMetrics:
+        datasourceUid: prometheus
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"
+        tags:
+          [{ key: "service.name", value: "service" }, { key: "job" }]
+        queries:
+          - name: "Sample query"
+            query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
+      traceQuery:
+        timeShiftEnabled: true
+        spanStartTimeShift: "1h"
+        spanEndTimeShift: "-1h"

@@ -8,3 +8,5 @@ resources:
   - grafana-instance.yaml
   - external-secrets.yaml
   - servicemonitor.yaml
+  - datasource-prometheus.yaml
+  - dashboard-prometheus.yaml
