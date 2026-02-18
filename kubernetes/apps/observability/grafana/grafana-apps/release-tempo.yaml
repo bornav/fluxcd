@@ -41,6 +41,7 @@ spec:
             processors:
               - service-graphs
               - span-metrics
+              - local-blocks
     config: |
       memberlist:
         cluster_label: "{{ .Release.Name }}.{{ .Release.Namespace }}"
