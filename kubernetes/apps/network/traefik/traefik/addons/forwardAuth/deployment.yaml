@@ -23,12 +23,12 @@ spec:
         - name: wait-for-endpoint
           image: alpine/curl:8.14.1
           command: ['sh', '-c',
-            'until curl -s -o /dev/null -w "%{http_code}" $ENDPOINT | grep $HTTP_CODE; do sleep 1; done']
+            'until curl -k -sf $ENDPOINT; do sleep 1; done']
           env:
             - name: ENDPOINT
-              value: keycloak.xauth.svc.cluster.local/admin/master/console/
-            - name: HTTP_CODE
-              value: "200"
+              value: https://keycloak-service.xauth.svc.cluster.local:9000/health/ready 
+            # - name: HTTP_CODE
+            #   value: "200"
       containers:
         - name: *name
           # command:
