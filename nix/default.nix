@@ -224,7 +224,7 @@
     specialArgs = {
       inherit vars inputs;
       host = {
-          hostName = "lighthouse-ubuntu-4gb-nbg1-2";
+          hostName = "lighthouse-4gb-nbg1-2";
           vars = vars;
           system = "x86_64-linux";
           gpu = "none";
@@ -239,6 +239,28 @@
         # nur.nixosModules.nur
         # ./home-manager.nix
         ./lighthouse
+    ];
+  };
+  gatekeeper = inputs.nixpkgs-unstable.lib.nixosSystem {
+    # system = "x86_64-linux";
+    specialArgs = {
+      inherit vars inputs;
+      host = {
+          hostName = "gatekeeper-4gb-nbg1-2";
+          vars = vars;
+          system = "x86_64-linux";
+          gpu = "none";
+      };
+      pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
+      pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
+      pkgs-master   = import inputs.nixpkgs-master   {system = "x86_64-linux";config.allowUnfree = true;};
+      pkgs-bornav   = import inputs.nixpkgs-bornav   {system = "x86_64-linux";config.allowUnfree = true;};
+      system = "x86_64-linux";
+    };
+    modules = [
+        # nur.nixosModules.nur
+        # ./home-manager.nix
+        ./gatekeeper
     ];
   };
 }

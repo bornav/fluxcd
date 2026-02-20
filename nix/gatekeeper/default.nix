@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   host,
   inputs,
@@ -13,18 +12,11 @@
       home-manager.useUserPackages = true;
     }
     inputs.nixos-hardware.nixosModules.common-pc-ssd
-    inputs.nix-flatpak.nixosModules.nix-flatpak
     inputs.disko.nixosModules.disko
     ./hardware-configuration.nix
     ./disk-config.nix
-    ./vxlan.nix
     ./traefik.nix
-    ./haproxy.nix
-    ./headscale.nix
-    # ./netbird.nix
-
-    # ./netbird_dashboard_pod.nix
-    # ./nginx_custom.nix
+    ./netbird.nix
     {_module.args.disks = ["/dev/sda"];}
     {
       disabledModules = ["services/networking/headscale.nix"];
@@ -156,41 +148,8 @@
     # make routing on this interface a dependency for network-online.target
     linkConfig.RequiredForOnline = "routable";
   };
-  # systemd.network.wait-online.enable = false;
-  # boot.initrd.systemd.network.wait-online.enable = false;
-
-  # wirenix = {
-  #   enable = true;
-  #   peerName = "node1"; # defaults to hostname otherwise
-  #   configurer = "static"; # defaults to "static", could also be "networkd"
-  #   keyProviders = ["acl"]; # could also be ["agenix-rekey"] or ["acl" "agenix-rekey"]
-  #   # secretsDir = ./secrets; # only if you're using agenix-rekey
-  #   aclConfig = import ./mesh.nix;
-  # };
-
-  # networking.nat.forwardPorts =
-  # [
-  #   {
-  #     destination = "oracle-km1-1.cloud.icylair.com:80";
-  #     proto = "tcp";
-  #     sourcePort = 80;
-  #   }
-  #   {
-  #     destination = "oracle-km1-1.cloud.icylair.com:443";
-  #     proto = "tcp";
-  #     sourcePort = 443;
-  #   }
-  # ];
-
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [22 80 443 3000 6443 8080 9345 10022];
-    allowedUDPPortRanges = [
-      {
-        from = 1000;
-        # to = 6550;
-        to = 51900;
-      }
-    ];
+    allowedTCPPorts = [22];
   };
 }
