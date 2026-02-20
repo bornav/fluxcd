@@ -11,7 +11,7 @@ spec:
     matchLabels:
       grafana.internal/instance: grafana
   datasources:
-    - datasourceName: PrometheusThanos
+    - datasourceName: Prometheus
       inputName: DS_PROMETHEUS
   grafanaCom:
     id: 1860
