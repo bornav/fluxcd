@@ -44,7 +44,7 @@ releases:
     namespace: xauth
     atomic: true
     chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.18.2
+    version: 2.0.1
     values:
       - '{{ requiredEnv "ROOT_DIR" }}/kubernetes/apps/xauth/external-secrets/external-secrets/app/values.yaml'
     hooks:
