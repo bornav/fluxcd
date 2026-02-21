@@ -96,7 +96,7 @@ spec:
             - -c
             # - sleep infinity
             - /usr/bin/mautrix-meta --no-update
-          image: dock.mau.dev/mautrix/meta:v25.11
+          image: dock.mau.dev/mautrix/meta:v26.02
           imagePullPolicy: IfNotPresent
           ports:
             - name: meta
