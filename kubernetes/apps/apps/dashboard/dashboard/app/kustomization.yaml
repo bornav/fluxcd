@@ -10,3 +10,4 @@ resources:
   - dashboard-middleware.yaml
   - dashboard-secret.yaml
   - dashboard-service.yaml
+  - poddistributionbudget.yaml
