@@ -32,7 +32,7 @@ in {
       entryPoints = {
         traefik.address = ":9000";
         web.address = ":8088"; # http
-        "web-secure".address = ":9443"; # https
+        web-secure.address = ":9443"; # https
         udp9987.address = ":9987/udp";
       };
       providers = {
@@ -58,12 +58,32 @@ in {
 
     };
     dynamicConfigOptions = {
-      http.routers.api.rule = "Host(`lb.cloud.icylair.com`)";
-      http.routers.api.entrypoints = ["web-secure"];
-      http.routers.api.service = "api@internal"; # Traefik's built-in API service
-      udp.routers.ts.entryPoints = ["udp9987"];
-      udp.routers.ts.service = "ts";
-      udp.services.ts.loadBalancer.servers.address = "10.129.16.101:9987"; # Replace with your actual server address and port
+      http = {
+        routers = {
+          api = {
+            rule = "Host(`lb.cloud.icylair.com`)";
+            entrypoints = [ "web-secure" ];
+            service = "api@internal";
+          };
+        };
+      };
+      udp = {
+        routers = {
+          ts = {
+            entryPoints = [ "udp9987" ];
+            service = "ts";
+          };
+        };
+        services = {
+          ts = {
+            loadBalancer = {
+              servers = [
+                { address = "10.129.16.101:9987"; }
+              ];
+            };
+          };
+        };
+      };
 
       tls.stores.default.defaultCertificate = {
         certFile = "/cert/tls.crt";

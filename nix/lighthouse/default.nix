@@ -20,7 +20,7 @@
     ./vxlan.nix
     ./traefik.nix
     ./haproxy.nix
-    ./headscale.nix
+    # ./headscale.nix
     # ./netbird.nix
 
     # ./netbird_dashboard_pod.nix
