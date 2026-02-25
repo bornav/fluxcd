@@ -27,8 +27,7 @@
         prometheus.remote_write.local.receiver,
       ]
     }
-    prometheus.exporter.unix "node" {
-    }
+    prometheus.exporter.unix "node" {}
     loki.relabel "journal" {
       forward_to = []
       rule {

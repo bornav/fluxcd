@@ -30,7 +30,7 @@ in {
       until [ -f ${source_path} ]; do sleep 1; done
     '';
     script = ''
-      if [ -d "/var/lib/netbird-mgmt" ]; then
+      if [ -d "/var/lib/netbird" ]; then
           echo "restore exists, exiting..."
           exit 0
       fi
@@ -56,7 +56,7 @@ in {
     backend = "podman";
     containers = {
       netbird-dashboard = {
-        image = "docker.io/netbirdio/dashboard:v2.32.4";
+        image = "docker.io/netbirdio/dashboard:v2.33.0";
         autoStart = true;
         # ports = [
         #   "127.0.0.1:18080:80"
@@ -77,7 +77,7 @@ in {
         ];
       };
       netbird-server = {
-        image = "docker.io/netbirdio/netbird-server:0.65.3";
+        image = "docker.io/netbirdio/netbird-server:0.66.0";
         autoStart = true;
         # ports = [
         #   "127.0.0.1:8081:80"
