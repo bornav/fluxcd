@@ -171,6 +171,10 @@ spec:
         enabled: false
       service:
         type: "LoadBalancer"
+        labels:
+          service-type/vxlan: static
+        annotations:
+          lbipam.cilium.io/ips: "10.129.16.104"
     grafana:
       enabled: false
       forceDeployDashboards: true

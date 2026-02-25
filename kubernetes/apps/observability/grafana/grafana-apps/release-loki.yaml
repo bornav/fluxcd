@@ -73,6 +73,12 @@ spec:
         enabled: true
         storageClass: longhorn-storage
         size: 15Gi
+      service:
+        labels:
+          service-type/vxlan: static
+        annotations:
+          lbipam.cilium.io/ips: "10.129.16.103"
+        type: LoadBalancer
     # ingress:
     #   enabled: true
     #   ingressClassName: "traefik-external"
