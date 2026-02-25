@@ -45,6 +45,7 @@ let
   # runtime-image: "index.docker.io/rancher/rke2-runtime:v1.30.1-rke2r1"
 in {
   imports = [
+    # ../spegel.nix
     (import ../../rke2-server.nix {
       inherit
         inputs

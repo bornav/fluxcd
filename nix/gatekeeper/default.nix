@@ -17,6 +17,7 @@
     ./disk-config.nix
     ./traefik.nix
     ./netbird.nix
+    ../alloy.nix
     {_module.args.disks = ["/dev/sda"];}
     {
       disabledModules = ["services/networking/headscale.nix"];
@@ -151,5 +152,12 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [22];
+    allowedUDPPorts = [ 4789 ]; # vxlan port
+    allowedUDPPortRanges = [
+      {
+        from = 51800;
+        to = 51900;
+      }
+    ];
   };
 }

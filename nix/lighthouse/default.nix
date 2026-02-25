@@ -20,6 +20,7 @@
     ./vxlan.nix
     ./traefik.nix
     ./haproxy.nix
+    ../alloy.nix
     # ./headscale.nix
     # ./netbird.nix
 

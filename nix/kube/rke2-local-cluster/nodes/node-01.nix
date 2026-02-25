@@ -50,6 +50,7 @@ let
 in {
   imports = [
     ../nvidia.nix
+    # ../spegel.nix
     (import ../../rke2-server.nix {
       inherit
         inputs
