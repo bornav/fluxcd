@@ -123,3 +123,39 @@ spec:
 #     requests:
 #       storage: 3Gi
 # status: {}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-tempo
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: tempo
+  datasource:
+    name: Tempo
+    type: tempo
+    access: proxy
+    url: http://grafana-tempo.observability.svc.cluster.local:3200
+    jsonData:
+      tracesToMetrics:
+        spanEndTimeShift: 1h
+        spanStartTimeShift: "-1h"
+        datasourceUid: prometheus
+      serviceMap:
+        datasourceUid: prometheus
+      nodeGraph:
+        enabled: true
+      tracesToLogsV2:
+        customQuery: false
+        spanStartTimeShift: "-1h"
+        datasourceUid: loki
+        spanEndTimeShift: 1h
+      streamingEnabled:
+        search: true
+        metrics: true
+      traceQuery:
+        timeShiftEnabled: false
+        spanStartTimeShift: ""

@@ -107,3 +107,21 @@ spec:
       enabled: false
     test:
       enabled: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-loki
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: loki
+  datasource:
+    name: Loki
+    type: loki
+    access: proxy
+    url: http://grafana-loki.observability.svc.cluster.local:3100
+    jsonData:
+      maxLines: 1000

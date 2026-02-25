@@ -29,10 +29,18 @@ spec:
   values:
     serviceMonitor:
       enabled: false
+    alloy:
+      enabled: false
     pyroscope:
       replicaCount: 1
       extraArgs:
         log.level: debug
+      service:
+        type: LoadBalancer
+        labels:
+          service-type/vxlan: static
+        annotations:
+          lbipam.cilium.io/ips: "10.129.16.104"
     # # preset: network
     # tolerations:
     #   - key: node-role.kubernetes.io/control-plane
@@ -63,3 +71,20 @@ spec:
     # #   OTEL_EXPORTER_OTLP_ENDPOINT: http://opentelemetry-collector.observability.svc.cluster.local:4318
     # #   BEYLA_TRACE_PRINTER: text
     # #   BEYLA_KUBE_CLUSTER_NAME: test
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanadatasource-pyroscope
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  uid: pyroscope
+  datasource:
+    name: Pyroscope
+    type: grafana-pyroscope-datasource
+    access: proxy
+    url: http://grafana-pyroscope.observability.svc.cluster.local:4040
+    jsonData: {}
