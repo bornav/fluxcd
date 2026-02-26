@@ -129,7 +129,7 @@ spec:
           - new-service-discovery-manager
           - exemplar-storage
         retention: 3d
-        retentionSize: 1GB
+        retentionSize: 4GB
         storageSpec:
           volumeClaimTemplate:
             spec:
