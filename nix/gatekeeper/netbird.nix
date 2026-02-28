@@ -109,8 +109,32 @@ in {
           "--log-opt=max-file=2"
         ];
       };
+      netbird-proxy = {
+        image = "docker.io/netbirdio/reverse-proxy:0.66.0";
+        autoStart = true;
+        dependsOn = ["netbird-server"];
+        environmentFiles = [/var/lib/netbird/proxy.env];
+        volumes = [
+          "/cert:/cert"
+        ];
+        log-driver = "json-file";
+        extraOptions = [
+          "--network=netbird"
+          "--label=traefik.enable=true"
+          "--label=traefik.tcp.routers.proxy-passthrough.entrypoints=websecure"
+          "--label=traefik.tcp.routers.proxy-passthrough.rule=HostSNI(`*`)"
+          "--label=traefik.tcp.routers.proxy-passthrough.tls.passthrough=true"
+          "--label=traefik.tcp.routers.proxy-passthrough.service=proxy-tls"
+          "--label=traefik.tcp.routers.proxy-passthrough.priority=1"
+          "--label=traefik.tcp.services.proxy-tls.loadbalancer.server.port=8443"
+          "--log-driver=json-file"
+          "--log-opt=max-size=500m"
+          "--log-opt=max-file=2"
+        ];
+      };
     };
   };
   systemd.services.podman-netbird-dashboard.after = ["podman-network-netbird.service"];
   systemd.services.podman-netbird-server.after = ["podman-network-netbird.service"];
+  systemd.services.podman-netbird-proxy.after = ["podman-network-netbird.service"];
 }
