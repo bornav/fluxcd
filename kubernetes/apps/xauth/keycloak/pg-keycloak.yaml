@@ -5,7 +5,7 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 1
+  instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.6-system-trixie
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
