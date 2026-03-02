@@ -36,4 +36,18 @@ spec:
       podMonitorEnabled: true
       grafanaDashboard:
         create: true
-        # namespace: storage
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: grafanadashboard-cnpg
+spec:
+  allowCrossNamespaceImport: true
+  folder: General
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  configMapRef:
+    name: cnpg-grafana-dashboard
+    key: cnp.json
