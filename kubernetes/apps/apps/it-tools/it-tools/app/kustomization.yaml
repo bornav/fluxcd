@@ -5,3 +5,4 @@ kind: Kustomization
 namespace: apps
 resources:
   - deployment.yaml
+  - poddistributionbudget.yaml
