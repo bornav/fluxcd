@@ -67,6 +67,9 @@ spec:
             - name: https
               protocol: TCP
               containerPort: 8448
+            - name: metrics
+              protocol: TCP
+              containerPort: 9000
             - name: replication
               protocol: TCP
               containerPort: 9092

@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: matrix-synapse
+  labels:
+    app: matrix-synapse
+spec:
+  selector:
+    matchLabels:
+      app: matrix-synapse
+  endpoints:
+    - port: metrics
+      path: /_synapse/metrics
+      interval: 15s
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: matrix-synapse
+spec:
+  allowCrossNamespaceImport: true
+  folder: General
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  url: https://raw.githubusercontent.com/element-hq/synapse/826a7dd29aea7041fb25b98d360da4dbedf22712/contrib/grafana/synapse.json

@@ -11,6 +11,7 @@ resources:
   - bridges.yaml
   - bridge_config.yaml
   - external-secrets.yaml
+  - observability.yaml
   # - secrets.yaml
   # - whatsapp-config.yaml
   # - whatsapp-service.yaml
