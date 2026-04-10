@@ -65,28 +65,27 @@ metadata:
 data:
   beyla-config.yml: |
     log_level: INFO
+    ebpf:
+      context_propagation: "all"
     routes:
       unmatched: heuristic
     discovery:
       services:
-        - k8s_namespace: apps
-        - k8s_namespace: default
-        - k8s_namespace: network
-        - k8s_namespace: xauth
-        - k8s_namespace: flux-system
-        - exe_path: (worker)|(backend)|(frontend)|(cilium)|(hubble) # any service exec that has name worker,backent...
-          namespace: kube-system
-        # - k8s_namespace: storage
-        # - exe_path: (worker)|(backend)|(frontend) # any service exec that has name worker,backent...
-        #   namespace: MyApplication
-        #   name: "TestLoadGenerator" # overwrites the built in name with this
-        # - exe_path: tcpforwarder
-        #   namespace: network
-    trace_printer: text
+        # - k8s_namespace: apps
+        # - k8s_namespace: default
+        # - k8s_namespace: network
+        # - k8s_namespace: xauth
+        # - k8s_namespace: flux-system
+        # - exe_path: (worker)|(backend)|(frontend)|(cilium)|(hubble) # any service exec that has name worker,backent...
+        #   namespace: kube-system
+        - k8s_pod_labels:
+            instrument: beyla
+    trace_printer: disabled   # disabled|json|text if you want to spam out
     otel_traces_export:
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
     otel_metrics_export:
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
+
     attributes:
       kubernetes:
         enable: true
