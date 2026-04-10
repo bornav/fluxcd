@@ -8,3 +8,7 @@ resources:
   - secrets.yaml
   - middleware.yaml
   - ingress.yaml
+labels:
+  - includeSelectors: true
+    pairs:
+      instrument: beyla
