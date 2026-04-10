@@ -1,11 +1,11 @@
 #https://www.keycloak.org/operator/installation
 
-apiVersion: k8s.keycloak.org/v2alpha1
+apiVersion: k8s.keycloak.org/v2beta1
 kind: Keycloak
 metadata:
   name: keycloak
 spec:
-  instances: 3
+  instances: 1
   db:
     database: pg_keycloak
     vendor: postgres
@@ -24,7 +24,23 @@ spec:
     enabled: false
   proxy:
     headers: xforwarded # double check your reverse proxy sets and overwrites the X-Forwarded-* headers
-
+  features:
+    enabled:
+      - opentelemetry-logs
+      - opentelemetry-metrics
+  telemetry:
+    endpoint: http://opentelemetry-collector.observability:4317
+    serviceName: keycloak
+    protocol: grpc
+  tracing:
+    enabled: true
+  additionalOptions:
+    - name: telemetry-logs-enabled
+      value: "true"
+    - name: telemetry-metrics-enabled
+      value: "true"
+    - name: metrics-enabled
+      value: "true"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
