@@ -41,74 +41,66 @@ spec:
       metricsProviders:
         - source: KubernetesMetrics
       profiles:
-        # - name: Default
-        #   pluginConfig:
-        #     - name: DefaultEvictor
-        #       args:
-        #         podProtections:
-        #           defaultDisabled:
-        #             - FailedBarePods
-        #             - PodsWithLocalStorage
-        #             - SystemCriticalPods
-        #             - DaemonSetPods
-        #         nodeFit: true
-        #         minReplicas: 2
-        #     - name: LowNodeUtilization
-        #       args:
-        #         metricsUtilization:
-        #           source: KubernetesMetrics
-        #         thresholds:
-        #           cpu: 20
-        #           memory: 20
-        #           pods: 20
-        #         targetThresholds:
-        #           cpu: 50
-        #           memory: 50
-        #           pods: 50
-        #     - name: RemoveFailedPods
-        #       args:
-        #         reasons:
-        #           - ContainerStatusUnknown
-        #           - NodeAffinity
-        #           - NodeShutdown
-        #           - Terminated
-        #           - UnexpectedAdmissionError
-        #         includingInitContainers: true
-        #         excludeOwnerKinds:
-        #           - Job
-        #         minPodLifetimeSeconds: 1800
-        #     - name: RemovePodsViolatingInterPodAntiAffinity
-        #     - name: RemovePodsViolatingNodeAffinity
-        #       args:
-        #         nodeAffinityType:
-        #           - requiredDuringSchedulingIgnoredDuringExecution
-        #     - name: RemovePodsViolatingNodeTaints
-        #     - name: RemovePodsViolatingTopologySpreadConstraint
-        #       args:
-        #         constraints:
-        #           - DoNotSchedule
-        #           - ScheduleAnyway
-        #   plugins:
-        #     balance:
-        #       enabled:
-        #         - LowNodeUtilization
-        #         - RemovePodsViolatingTopologySpreadConstraint
-        #     deschedule:
-        #       enabled:
-        #         - RemoveFailedPods
-        #         - RemovePodsViolatingInterPodAntiAffinity
-        #         - RemovePodsViolatingNodeAffinity
-        #         - RemovePodsViolatingNodeTaints
-        - name: ProfileName # reschedules pods across nodes
+        - name: Default
           pluginConfig:
-          - name: "RemoveDuplicates"
-            # args:
-            #   excludeOwnerKinds:
-            #     - "ReplicaSet"
+            - name: DefaultEvictor
+              args:
+                podProtections:
+                  defaultDisabled:
+                    - FailedBarePods
+                    - PodsWithLocalStorage
+                    - SystemCriticalPods
+                    - DaemonSetPods
+                nodeFit: true
+                minReplicas: 1
+            - name: RemoveDuplicates # reschedules pods across nodes
+            # - name: LowNodeUtilization
+            #   args:
+            #     metricsUtilization:
+            #       source: KubernetesMetrics
+            #     thresholds:
+            #       cpu: 20
+            #       memory: 20
+            #       pods: 20
+            #     targetThresholds:
+            #       cpu: 50
+            #       memory: 50
+            #       pods: 50
+            # - name: RemoveFailedPods
+            #   args:
+            #     reasons:
+            #       - ContainerStatusUnknown
+            #       - NodeAffinity
+            #       - NodeShutdown
+            #       - Terminated
+            #       - UnexpectedAdmissionError
+            #     includingInitContainers: true
+            #     excludeOwnerKinds:
+            #       - Job
+            #     minPodLifetimeSeconds: 1800
+            # - name: RemovePodsViolatingInterPodAntiAffinity
+            # - name: RemovePodsViolatingNodeAffinity
+            #   args:
+            #     nodeAffinityType:
+            #       - requiredDuringSchedulingIgnoredDuringExecution
+            # - name: RemovePodsViolatingNodeTaints
+            # - name: RemovePodsViolatingTopologySpreadConstraint
+            #   args:
+            #     constraints:
+            #       - DoNotSchedule
+            #       - ScheduleAnyway
           plugins:
             balance:
               enabled:
-                - "RemoveDuplicates"
+                # - LowNodeUtilization
+                # - RemovePodsViolatingTopologySpreadConstraint
+                - RemoveDuplicates
+            # deschedule:
+            #   enabled:
+            #     - RemoveFailedPods
+            #     - RemovePodsViolatingInterPodAntiAffinity
+            #     - RemovePodsViolatingNodeAffinity
+            #     - RemovePodsViolatingNodeTaints
     service:
       enabled: true
     serviceMonitor:
