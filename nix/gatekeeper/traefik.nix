@@ -24,10 +24,10 @@ in {
     # group = "root";
     staticConfigOptions = {
       # log.level = "DEBUG";
-      # api = {
-      #   dashboard = true;
-      #   insecure = true;
-      # };
+      api = {
+        dashboard = true;
+        insecure = true;
+      };
       entryPoints = {
         traefik = {
           address = ":9000";
@@ -37,6 +37,11 @@ in {
         };
         websecure = {
           address = ":443";
+          transport = {
+            respondingTimeouts = {
+              readTimeout = "0"; # for netbird rpc errors
+            };
+          };
         };
       };
       providers = {
@@ -69,6 +74,10 @@ in {
   };
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [80 443 9000];
+    allowedTCPPorts = [
+      80
+      443
+      # 9000
+    ];
   };
 }

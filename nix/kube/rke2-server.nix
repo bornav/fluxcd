@@ -13,6 +13,7 @@ let
     - 10.2.11.41
     - 10.2.11.42
     - 10.2.11.43
+    - 10.2.12.6
     - 10.99.10.10
     - 10.99.10.11
     - 10.99.10.12
@@ -30,6 +31,8 @@ let
     - k3s-local-01
     - k3s-local-02.local.icylair.com
     - k3s-local-02
+    - rke2.local.icylair.com
+    - rke2-secured.local.icylair.com
     - oracle-bv1-1
     - oracle-km1-1
     - contabo-1
@@ -40,7 +43,9 @@ let
     - rke2-local-node-01.local.icylair.com
     - rke2-local-node-02.local.icylair.com
     - rke2-local-cp-01.local.icylair.com
+    - rke2-local-secured-cp-01.local.icylair.com
     - lb.local.icylair.com
+    - lb-secured.local.icylair.com
     - lb.cloud.icylair.com
   kube-apiserver-extra-mount:
     - /etc/localtime:/etc/localtime:ro

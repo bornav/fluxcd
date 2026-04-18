@@ -1,4 +1,4 @@
-{lib, ...}: let
+{lib, pkgs-bornav-test, ...}: let
   # docker_socket = "unix:///var/run/docker.sock";
   docker_socket = "unix:///var/run/podman/podman.sock";
   prometheus_ingest = "http://10.129.16.104:9090/api/v1/write";
@@ -101,11 +101,40 @@ in {
       host = "${docker_socket}"
       targets = discovery.docker.linux.targets
       relabel_rules = discovery.relabel.logs_integrations_docker.rules
-      labels = {
-      }
+      labels = {}
       forward_to = [
         loki.write.local.receiver,
       ]
     }
+
+  '';
+
+  systemd.services.beyla = {
+    after = [ "network.target"];
+    # environment = { BEYLA_NETWORK_PRINT_FLOWS = "true";};
+    serviceConfig = {
+      ExecStart = "${pkgs-bornav-test.beyla}/bin/beyla -config /etc/beyla/config.yaml";
+      Restart = "on-failure";
+      RestartSec = "5s";
+      RemainAfterExit = true;
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+  environment.systemPackages = [pkgs-bornav-test.beyla];
+  environment.etc."beyla/config.yaml".text = lib.mkForce ''
+    network:
+      enable: true
+    # log_level: DEBUG
+    discovery:
+      instrument:
+        - open_ports: 443
+        - open_ports: 9443
+    otel_metrics_export:
+      endpoint: http://localhost:4318
+    otel_traces_export:
+      endpoint: http://localhost:4318
+    ebpf:
+      context_propagation: all
+      track_request_headers: true
   '';
 }

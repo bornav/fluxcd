@@ -148,6 +148,9 @@
     };
     # make routing on this interface a dependency for network-online.target
     linkConfig.RequiredForOnline = "routable";
+    address = [
+      "2a01:4f8:c17:1ebf::1/64"
+    ];
   };
   networking.firewall = {
     enable = true;
@@ -156,7 +159,7 @@
       {
         from = 51800;
         to = 51900;
-      }
+      } # wireguard ports
     ];
     interfaces = {
       "wg-mesh0" = {

@@ -10,6 +10,10 @@
   # export RESTIC_REPOSITORY=s3:http://<s3_endpoint>/restic-host-bucket/cloud/netbird
   # # restic backup /var/lib/netbird
   source_path = "/var/lib/.restic_netbird";
+  netbird = {
+    server = "0.68.0";
+    dashboard = "2.36.0";
+  };
 in {
   networking.firewall = {
     enable = true;
@@ -56,7 +60,7 @@ in {
     backend = "podman";
     containers = {
       netbird-dashboard = {
-        image = "docker.io/netbirdio/dashboard:v2.33.0";
+        image = "docker.io/netbirdio/dashboard:v${netbird.dashboard}";
         autoStart = true;
         # ports = [
         #   "127.0.0.1:18080:80"
@@ -77,11 +81,11 @@ in {
         ];
       };
       netbird-server = {
-        image = "docker.io/netbirdio/netbird-server:0.66.0";
+        image = "docker.io/netbirdio/netbird-server:${netbird.server}";
         autoStart = true;
-        # ports = [
-        #   "127.0.0.1:8081:80"
-        # ];
+        ports = [
+          "3478:3478/udp"
+        ];
         volumes = [
           "/var/lib/netbird/data:/var/lib/netbird"
           "/var/lib/netbird/config.yaml:/etc/netbird/config.yaml"
@@ -110,10 +114,14 @@ in {
         ];
       };
       netbird-proxy = {
-        image = "docker.io/netbirdio/reverse-proxy:0.66.0";
+        image = "docker.io/netbirdio/reverse-proxy:${netbird.server}";
         autoStart = true;
         dependsOn = ["netbird-server"];
         environmentFiles = [/var/lib/netbird/proxy.env];
+        environment = {
+          PIONS_LOG_DEBUG="all";
+          NB_LOG_LEVEL="debug";
+        };
         volumes = [
           "/cert:/cert"
         ];
@@ -137,4 +145,5 @@ in {
   systemd.services.podman-netbird-dashboard.after = ["podman-network-netbird.service"];
   systemd.services.podman-netbird-server.after = ["podman-network-netbird.service"];
   systemd.services.podman-netbird-proxy.after = ["podman-network-netbird.service"];
+  services.netbird.enable = true; # client install
 }

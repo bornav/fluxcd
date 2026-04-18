@@ -1,9 +1,21 @@
-{ config, lib, system, inputs, host, node_config, vars, pkgs, pkgs-unstable,  ... }:
 {
+  config,
+  lib,
+  system,
+  inputs,
+  host,
+  node_config,
+  vars,
+  pkgs,
+  pkgs-unstable,
+  ...
+}: let
+  rke2_package = pkgs.rke2_1_34;
+in {
   options = {
     rke2 = {
       type = lib.mkOption {
-        type = lib.types.enum [ "server" "agent" ];
+        type = lib.types.enum ["server" "agent"];
         default = "server";
         description = "RKE2 node type - either server or agent";
       };
@@ -18,7 +30,7 @@
   config = lib.mkMerge [
     (lib.mkIf (config.rke2.type == "server") {
       services.rke2 = {
-        package = pkgs.rke2_1_32;
+        package = rke2_package;
         # package = pkgs-unstable.rke2;
         # package = (pkgs.callPackage ../../modules/custom_pkg/rke2_custom.nix {
         #   rke2Version = "1.32.0+rke2r1";
@@ -35,16 +47,17 @@
         #   # eol = "2026-02-28";
         #   });
         # clusterInit=true;
-        role="server";
-        tokenFile ="/var/token";
+        role = "server";
+        tokenFile = "/var/token";
         enable = true;
         # cni = "cilium";
         cni = "none";
-        extraFlags = [ # space at the start important ! :|
+        extraFlags = [
+          # space at the start important ! :|
           # " --kube-apiserver-arg default-not-ready-toleration-seconds=30"
-          # " --kube-apiserver-arg default-unreachable-toleration-seconds=30" 
+          # " --kube-apiserver-arg default-unreachable-toleration-seconds=30"
           # " --kube-controller-manager-arg node-monitor-period=20s"
-          # " --kube-controller-manager-arg node-monitor-grace-period=20s" 
+          # " --kube-controller-manager-arg node-monitor-grace-period=20s"
           # " --kubelet-arg node-status-update-frequency=5s"
         ];
         # extraFlags = toString ([
@@ -61,7 +74,7 @@
         # ]));
       };
       environment.variables = {
-        KUBECONFIG="/etc/rancher/rke2/rke2.yaml";
+        KUBECONFIG = "/etc/rancher/rke2/rke2.yaml";
       };
       # systemd.services.copy-kubernetes-config = {
       #   description = "Copy kubernetes config to root config";
@@ -76,21 +89,22 @@
     })
     (lib.mkIf (config.rke2.type == "agent") {
       services.rke2 = {
-        package = pkgs.rke2;
-        role="agent";
-        tokenFile ="/var/token";
+        package = rke2_package;
+        role = "agent";
+        tokenFile = "/var/token";
         enable = true;
         serverAddr = config.rke2.server_lb_address;
         # configPath = "/etc/rancher/rke2/config.yaml";
-        extraFlags = [ # space at the start important ! :|
+        extraFlags = [
+          # space at the start important ! :|
           # " --disable rke2-kube-proxy"
           # " --kube-apiserver-arg default-not-ready-toleration-seconds=30"
-          # " --kube-apiserver-arg default-unreachable-toleration-seconds=30" 
+          # " --kube-apiserver-arg default-unreachable-toleration-seconds=30"
           # " --kube-controller-manager-arg node-monitor-period=20s"
-          # " --kube-controller-manager-arg node-monitor-grace-period=20s" 
+          # " --kube-controller-manager-arg node-monitor-grace-period=20s"
           # " --kubelet-arg node-status-update-frequency=5s"
         ];
       };
     })
-  ]; 
+  ];
 }
