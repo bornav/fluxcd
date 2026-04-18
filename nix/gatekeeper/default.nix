@@ -152,12 +152,16 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [22];
-    allowedUDPPorts = [ 4789 ]; # vxlan port
     allowedUDPPortRanges = [
       {
         from = 51800;
         to = 51900;
       }
     ];
+    interfaces = {
+      "wg-mesh0" = {
+        allowedUDPPorts = [4789]; # vxlan port
+      };
+    };
   };
 }
