@@ -171,3 +171,7 @@ prometheus:
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
+
+socketLB:
+  enabled: true
+  hostNamespaceOnly: true
