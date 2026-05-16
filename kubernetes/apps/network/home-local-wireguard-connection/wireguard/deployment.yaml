@@ -1,3 +1,4 @@
+
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/refs/heads/master/master/deployment.json
 apiVersion: apps/v1
@@ -19,25 +20,28 @@ spec:
         - name: 'wireguard-template-replacement'
           image: 'busybox'
           command:
-            [
-              'sh',
-              '-c',
-              'ENI=$(ip route get 8.8.8.8 | grep 8.8.8.8 | awk ''{print $5}''); sed "s/ENI/$ENI/g" /etc/wireguard-secret/wg0.conf.template > /etc/wireguard/wg0.conf; chmod 400 /etc/wireguard/wg0.conf',
-            ]
+            - sh
+            - -c
+            - |
+              set -e
+              ENI=$(ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++) if($i=="dev") print $(i+1)}')
+              PRIV_KEY=$(cat /etc/wireguard-secret/privateKey)
+              PUB_KEY=$(cat /etc/wireguard-secret/publicKey)
+              sed -e "s|__PRIVATE_KEY__|$PRIV_KEY|g" \
+                  -e "s|__PUBLIC_KEY__|$PUB_KEY|g" \
+                  -e "s|ENI|$ENI|g" \
+                  /etc/wireguard-template/wg0.conf.template > /etc/wireguard/wg0.conf
+              chmod 400 /etc/wireguard/wg0.conf
           volumeMounts:
             - name: wireguard-config
               mountPath: /etc/wireguard/
             - name: wireguard-secret
               mountPath: /etc/wireguard-secret/
+            - name: wireguard-template
+              mountPath: /etc/wireguard-template/
       containers:
         - name: 'wireguard'
           image: 'linuxserver/wireguard:v1.0.20210914-ls118'
-          # command:
-          #   [
-          #     'sh',
-          #     '-c',
-          #     'sleep 84000',
-          #   ]
           ports:
             - containerPort: 51820
           env:
@@ -49,7 +53,6 @@ spec:
             - name: wireguard-config
               mountPath: /config/wg0.conf
               subPath: wg0.conf
-              #mountPath: /etc/wireguard/
               readOnly: true
           resources:
             requests:
@@ -59,23 +62,12 @@ spec:
               memory: '6Gi'
               cpu: '2500m'
           startupProbe:
-            # httpGet:
-            #   path: /api2/json/access/ticket
-            #   port: 8006
-            #   host: 10.0.0.52
-            #   scheme: "HTTPS"
-              # httpHeaders:
-                # - name: Custom-Header
-                  # value: Awesome
-            #         curl -k -d "username=your_username@pam" -d "password=your_password" \
-            #  -X POST https://your-proxmox-server:8006/api2/json/access/ticket
             exec:
               command:
               - /bin/sh
               - -c
               - 'curl --connect-timeout 1 -k https://10.1.1.1:443'
             failureThreshold: 30
-            # initialDelaySeconds: 5
             periodSeconds: 1
           livenessProbe:
             exec:
@@ -83,7 +75,6 @@ spec:
               - /bin/sh
               - -c
               - 'curl --connect-timeout 1 -k https://10.1.1.1:443'
-            # initialDelaySeconds: 10
             failureThreshold: 15
             periodSeconds: 1
           securityContext:
@@ -91,22 +82,84 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
-        - name: nginx
-          image: nginx:1.29.4
+        - name: haproxy-proxy
+          image: haproxy:2.8-alpine
+          ports:
+            - containerPort: 9010
+              protocol: TCP
+          volumeMounts:
+            - name: haproxy-config
+              mountPath: /usr/local/etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg
+              readOnly: true
           resources:
             requests:
-              memory: '1Mi'
-              cpu: '1m'
+              memory: '32Mi'
+              cpu: '50m'
             limits:
-              memory: '6Gi'
-              cpu: '2500m'
+              memory: '128Mi'
+              cpu: '200m'
+          livenessProbe:
+            exec:
+              command:
+                - haproxy
+                - -c
+                - -f
+                - /usr/local/etc/haproxy/haproxy.cfg
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
       volumes:
         - name: wireguard-config
           emptyDir: {}
         - name: wireguard-secret
           secret:
-            secretName: wireguard
-            defaultMode: 0777
-      # dnsPolicy: Default
-      # imagePullSecrets:
-      #   - name: docker-registry
+            secretName: wireguard-keys
+            defaultMode: 0400
+        - name: wireguard-template
+          configMap:
+            name: wireguard-config-template
+        - name: haproxy-config
+          configMap:
+            name: haproxy-wg-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-wg-config
+data:
+  haproxy.cfg: |
+    global
+        log stdout format raw local0
+        maxconn 4096
+        # stats socket /var/run/haproxy.sock mode 660 level admin
+
+    defaults
+        log     global
+        mode    tcp          # Layer 4 forwarding (Critical for S3 signatures)
+        option  tcplog       # Log TCP connections
+        timeout connect 10s
+        timeout client  24h  # Long timeout for large backups
+        timeout server  24h
+
+    frontend s3_frontend
+        bind *:9010
+        default_backend s3_backend
+
+    backend s3_backend
+        server s3_remote 10.2.11.201:9010 check inter 5s fall 3 rise 2
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: wireguard-config-template
+data:
+    wg0.conf.template: |
+        [Interface]
+        Address = 10.10.2.2/32
+        ListenPort = 51821
+        privateKey = __PRIVATE_KEY__
+        [Peer]
+        AllowedIPs = 10.2.0.0/11
+        Endpoint = home.local.icylair.com:51821
+        PublicKey = __PUBLIC_KEY__
