@@ -13,45 +13,6 @@ spec:
   selector:
     name: wireguard
   ports:
-    - name: http
-      port: 80
-      targetPort: 80
-    - name: https
-      port: 443
-      targetPort: 443
-    - name: smb-old
-      port: 139
-      targetPort: 139
-    - name: smb
-      port: 445
-      targetPort: 445
-    - name: http-jdownloader  # curling this wireguard.network.svc.cluster.local:5800 should get a nice response
-      port: 5800
-      targetPort: 5800
-    - name: nfs
-      port: 2049
-      targetPort: 2049
-    - name: rsync
-      port: 873
-      targetPort: 873
-    - name: portmapper
-      port: 111
-      targetPort: 111
-    - name: syncthing-api
-      port: 8384
-      targetPort: 8384
-    - name: syncthing-sync
-      port: 22000
-      targetPort: 22000
-    - name: jellyfin
-      port: 8097
-      targetPort: 8097
-    - name: immich
-      port: 2283
-      targetPort: 2283
-    - name: tachidesk
-      port: 4568
-      targetPort: 4568
     - name: minio-api
       port: 9010
       targetPort: 9010

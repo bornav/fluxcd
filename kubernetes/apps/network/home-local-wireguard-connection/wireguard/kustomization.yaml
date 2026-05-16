@@ -9,4 +9,4 @@ resources:
   - secret.yaml
   - service.yaml
   - configmap.yaml
-  # - service_vxlan.yaml
+  - service_vxlan.yaml
