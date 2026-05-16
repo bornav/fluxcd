@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-wg-config
+data:
+  haproxy.cfg: |
+    global
+        log stdout format raw local0
+        maxconn 4096
+        # stats socket /var/run/haproxy.sock mode 660 level admin
+
+    defaults
+        log     global
+        mode    tcp          # Layer 4 forwarding (Critical for S3 signatures)
+        option  tcplog       # Log TCP connections
+        timeout connect 10s
+        timeout client  24h  # Long timeout for large backups
+        timeout server  24h
+
+    frontend s3_frontend
+        bind *:9010
+        default_backend s3_backend
+
+    backend s3_backend
+        server s3_remote 10.2.11.201:9010 check inter 5s fall 3 rise 2
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: wireguard-config-template
+data:
+    wg0.conf.template: |
+        [Interface]
+        Address = 10.10.2.2/32
+        ListenPort = 51821
+        privateKey = __PRIVATE_KEY__
+        [Peer]
+        AllowedIPs = 10.2.0.0/11
+        Endpoint = home.local.icylair.com:51821
+        PublicKey = __PUBLIC_KEY__
