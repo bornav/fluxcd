@@ -137,6 +137,12 @@
     settings.max-jobs = 4;
   };
   networking.useDHCP = lib.mkForce false; # forcing dissable cus of systemd network
+  networking.nameservers = [
+    "8.8.8.8"
+    "1.1.1.1"
+    "2001:4860:4860::8888"
+    "2001:4860:4860::8844"
+  ];
   systemd.network.enable = true;
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "enp1s0";
@@ -150,6 +156,14 @@
     linkConfig.RequiredForOnline = "routable";
     address = [
       "2a01:4f8:c17:1ebf::1/64"
+    ];
+    routes = [
+      {
+        routeConfig = {
+          Gateway = "fe80::1";
+          GatewayOnLink = true; # gateway is on-link even though not in subnet
+        };
+      }
     ];
   };
   networking.firewall = {

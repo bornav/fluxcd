@@ -1,0 +1,142 @@
+name: netbird
+services:
+  dashboard:
+    image: docker.io/netbirdio/dashboard:v2.38.1
+    container_name: netbird-dashboard
+    restart: unless-stopped
+    env_file:
+      - ./dashboard.env
+    networks:
+      - netbird
+    logging:
+      driver: json-file
+      options:
+        max-size: "500m"
+        max-file: "2"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.netbird-dashboard.rule=Host(`netbird.icylair.com`)"
+      - "traefik.http.routers.netbird-dashboard.entrypoints=websecure"
+      - "traefik.http.routers.netbird-dashboard.tls=true"
+      - "traefik.http.routers.netbird-dashboard.priority=1"
+      - "traefik.http.routers.netbird-dashboard.service=dashboard"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=80"
+
+  netbird-server:
+    image: docker.io/netbirdio/netbird-server:0.71.3
+    restart: unless-stopped
+    command: ["--config", "/etc/netbird/config.yaml"]
+    ports:
+      - "3478:3478/udp"
+    volumes:
+      - ./data:/var/lib/netbird # TODO UPDATE ${netbird.data_path}
+      - ./config.yaml:/etc/netbird/config.yaml # TODO UPDATE ${netbird.data_path}
+    networks:
+      - netbird
+    logging:
+      driver: json-file
+      options:
+        max-size: "500m"
+        max-file: "2"
+    labels:
+      - "traefik.enable=true"
+      # gRPC router
+      - "traefik.http.routers.netbird-grpc.rule=Host(`netbird.icylair.com`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`))"
+      - "traefik.http.routers.netbird-grpc.entrypoints=websecure"
+      - "traefik.http.routers.netbird-grpc.tls=true"
+      - "traefik.http.routers.netbird-grpc.service=netbird-server-h2c"
+      - "traefik.http.routers.netbird-grpc.priority=100"
+      # Backend router
+      - "traefik.http.routers.netbird-backend.rule=Host(`netbird.icylair.com`) && (PathPrefix(`/relay`) || PathPrefix(`/ws-proxy/`) || PathPrefix(`/api`) || PathPrefix(`/oauth2`))"
+      - "traefik.http.routers.netbird-backend.entrypoints=websecure"
+      - "traefik.http.routers.netbird-backend.tls=true"
+      - "traefik.http.routers.netbird-backend.service=netbird-server"
+      - "traefik.http.routers.netbird-backend.priority=100"
+      # Services
+      - "traefik.http.services.netbird-server.loadbalancer.server.port=80"
+      - "traefik.http.services.netbird-server-h2c.loadbalancer.server.port=80"
+      - "traefik.http.services.netbird-server-h2c.loadbalancer.server.scheme=h2c"
+
+  netbird-proxy:
+    image: docker.io/netbirdio/reverse-proxy:0.71.3
+    restart: unless-stopped
+    depends_on:
+      - netbird-server
+    env_file:
+      - ./proxy.env # TODO update ${netbird.data_path}
+    environment:
+      PIONS_LOG_DEBUG: "all"
+      NB_LOG_LEVEL: "debug"
+    ports:
+      - "127.0.0.1:8443:8443"
+    volumes:
+      - /cert:/cert
+    networks:
+      - netbird
+    logging:
+      driver: json-file
+      options:
+        max-size: "500m"
+        max-file: "2"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.proxy-passthrough.entrypoints=websecure"
+      - "traefik.tcp.routers.proxy-passthrough.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.proxy-passthrough.tls.passthrough=true"
+      - "traefik.tcp.routers.proxy-passthrough.service=proxy-tls"
+      - "traefik.tcp.routers.proxy-passthrough.priority=1"
+      - "traefik.tcp.services.proxy-tls.loadbalancer.server.port=8443"
+      # - "traefik.tcp.services.proxy-tls.loadbalancer.serverstransport=pp-v2@file"
+
+  # traefik:
+  #   image: docker.io/traefik:v3.6.17
+  #   restart: unless-stopped
+  #   command:
+  #     - "--api.dashboard=true"
+  #     - "--api.insecure=true"
+  #     - "--entrypoints.traefik.address=:9000"
+  #     - "--entrypoints.web.address=:80"
+  #     - "--entrypoints.websecure.address=:443"
+  #     - "--entrypoints.websecure.allowACMEByPass=true"
+  #     - "--entrypoints.websecure.transport.respondingTimeouts.readTimeout=0"
+  #     - "--entrypoints.websecure.transport.respondingTimeouts.writeTimeout=0"
+  #     - "--entrypoints.websecure.transport.respondingTimeouts.idleTimeout=0"
+
+  #     - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+  #     - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+
+  #     - "--serversTransport.forwardingTimeouts.responseHeaderTimeout=0"
+  #     - "--serversTransport.forwardingTimeouts.idleConnTimeout=0"
+  #     - "--providers.docker=true"
+  #     - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+  #     - "--providers.docker.exposedByDefault=false"
+  #     - "--providers.file.filename=/etc/traefik/dynamic.yml"
+  #     - "--tracing.serviceName=traefik-gatekeeper"
+  #     - "--tracing.otlp.http.endpoint=http://10.129.16.102:4318/v1/traces"
+  #     - "--tracing.otlp.http.tls.insecureSkipVerify=true"
+  #     - "--metrics.otlp.http.endpoint=http://10.129.16.102:4318/v1/metrics"
+  #     - "--metrics.otlp.http.tls.insecureSkipVerify=true"
+  #     - "--providers.docker.network=netbird"
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "9000:9000"   # dashboard
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+  #     - /cert:/cert:ro
+  #   networks:
+  #     netbird:
+  #       ipv4_address: 172.18.0.10
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "500m"
+  #       max-file: "2"
+networks:
+  netbird:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+          gateway: 172.30.0.1

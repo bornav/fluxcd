@@ -1,6 +1,9 @@
 {lib, ...}: let
   cert_path = "/cert";
 in {
+  # virtualisation.docker = {
+  #   enable = true;
+  # };
   virtualisation.podman = {
     enable = lib.mkDefault true;
     dockerSocket.enable = lib.mkDefault true;
@@ -36,13 +39,21 @@ in {
           address = ":80";
         };
         websecure = {
+          allowACMEByPass = "true";
           address = ":443";
           transport = {
+            # for netbird rpc errors
             respondingTimeouts = {
-              readTimeout = "0"; # for netbird rpc errors
+              readTimeout = "0";
+              writeTimeout = "0";
+              idleTimeout = "0";
             };
           };
         };
+      };
+      serverstransport.forwardingtimeouts = {
+        responseheadertimeout = "0"; # both may be 0s
+        idleconntimeout = "0";
       };
       providers = {
         docker = {
@@ -60,12 +71,13 @@ in {
       };
       metrics = {
         otlp.http = {
-          # tls.insecureSkipVerify = true;
+          tls.insecureSkipVerify = true;
           endpoint = "http://10.129.16.102:4318/v1/metrics";
         };
       };
     };
     dynamicConfigOptions = {
+      # tcp.serversTransports.pp-v2.proxyProtocol.version=2;  # netbird proxy requirement
       tls.stores.default.defaultCertificate = {
         certFile = "/cert/tls.crt";
         keyFile = "/cert/tls.key";
