@@ -23,6 +23,7 @@ services:
       - "traefik.http.services.dashboard.loadbalancer.server.port=80"
 
   netbird-server:
+    container_name: netbird-server
     image: docker.io/netbirdio/netbird-server:0.71.3
     restart: unless-stopped
     command: ["--config", "/etc/netbird/config.yaml"]
@@ -58,6 +59,7 @@ services:
       - "traefik.http.services.netbird-server-h2c.loadbalancer.server.scheme=h2c"
 
   netbird-proxy:
+    container_name: netbird-proxy
     image: docker.io/netbirdio/reverse-proxy:0.71.3
     restart: unless-stopped
     depends_on:
