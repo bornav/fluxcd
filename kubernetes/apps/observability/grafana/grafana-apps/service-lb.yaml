@@ -1,0 +1,136 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tempo-loadbalancer-local
+  labels:
+    service-type: ingress-static
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+    lbipam.cilium.io/ips: "10.129.16.106"
+spec:
+  selector:
+    app.kubernetes.io/instance: grafana-tempo
+    app.kubernetes.io/name: tempo
+  ports:
+    - name: tempo-prom-metrics
+      port: 3200
+      protocol: TCP
+      targetPort: 3200
+    - name: tempo-jaeger-thrift-http
+      port: 14268
+      protocol: TCP
+      targetPort: 14268
+    - name: grpc-tempo-jaeger
+      port: 14250
+      protocol: TCP
+      targetPort: 14250
+    - name: tempo-zipkin
+      port: 9411
+      protocol: TCP
+      targetPort: 9411
+    - name: tempo-otlp-legacy
+      port: 55680
+      protocol: TCP
+      targetPort: 55680
+    - name: tempo-otlp-http-legacy
+      port: 55681
+      protocol: TCP
+      targetPort: 55681
+    - name: grpc-tempo-otlp
+      port: 4317
+      protocol: TCP
+      targetPort: 4317
+    - name: tempo-otlp-http
+      port: 4318
+      protocol: TCP
+      targetPort: 4318
+    - name: tempo-opencensus
+      port: 55678
+      protocol: TCP
+      targetPort: 55678
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loki-loadbalancer-local
+  labels:
+    service-type: ingress-static
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+    lbipam.cilium.io/ips: "10.129.16.107"
+spec:
+  selector:
+    app.kubernetes.io/component: single-binary
+    app.kubernetes.io/instance: grafana-loki
+    app.kubernetes.io/name: loki
+  ports:
+    - name: http-metrics
+      port: 3100
+      protocol: TCP
+      targetPort: http-metrics
+    - name: grpc
+      port: 9095
+      protocol: TCP
+      targetPort: grpc
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pytoscope-loadbalancer-local
+  labels:
+    service-type: ingress-static
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+    lbipam.cilium.io/ips: "10.129.16.108"
+spec:
+  selector:
+    app.kubernetes.io/component: all
+    app.kubernetes.io/instance: grafana-pyroscope
+    app.kubernetes.io/name: pyroscope
+  ports:
+    - name: http2
+      port: 4040
+      protocol: TCP
+      targetPort: http2
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-loadbalancer-local
+  labels:
+    service-type: ingress-static
+  annotations:
+    service.cilium.io/affinity: "remote"
+    service.cilium.io/global: "true"
+    traefik.ingress.kubernetes.io/service.nativelb: "true"
+    lbipam.cilium.io/ips: "10.129.16.109"
+spec:
+  selector:
+    app.kubernetes.io/name: prometheus
+    operator.prometheus.io/name: prometheus-local-kube-prom
+  ports:
+    - name: http-web
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+      targetPort: reloader-web
+  type: LoadBalancer
+  externalTrafficPolicy: Local

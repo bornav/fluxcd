@@ -169,7 +169,7 @@ spec:
           receivers: [otlp, filelog]
           # receivers: [otlp]
           processors: [batch, k8sattributes]
-          exporters: [otlphttp] # for cli loging
+          exporters: [otlphttp, otlphttp/local-collector] # for cli loging
           # exporters: [debug, otlphttp] # for cli loging
       telemetry:
         metrics: []
