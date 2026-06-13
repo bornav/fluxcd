@@ -5,7 +5,7 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 2
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.6-system-trixie
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
@@ -17,7 +17,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 3.0Gi
+          storage: 4.0Gi
       storageClassName: longhorn-storage
       volumeMode: Filesystem
   externalClusters:
