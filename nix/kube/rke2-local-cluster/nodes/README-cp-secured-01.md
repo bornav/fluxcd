@@ -5,13 +5,13 @@
 some weird fuckerry happened in the grub part of the configuration making it not work, problem with not mounting the volumed since it did not exist
 
 ### To deploy | wipes all disk data, on each call
-`nix run github:nix-community/nixos-anywhere -- --flake ~/git/kubernetes/fluxcd/nix/local_flake#rke2-secured-cp-01 root@10.2.11.41 -i ~/.ssh/id_local`
+`nix run github:nix-community/nixos-anywhere -- --flake ~/git/kubernetes/fluxcd/nix/local_flake#rke2-secured-cp-01 root@10.2.12.6 -i ~/.ssh/id_local`
 
 
 ### rebuilds the flake with the new configuration
 `nixos-rebuild switch --flake ~/git/kubernetes/fluxcd/nix/local_flake#rke2-secured-cp-01 --use-substitutes --target-host rke2-secured-cp-01` #how i updated the config on the remote system
 `nh os switch ~/git/kubernetes/fluxcd/nix/local_flake -H rke2-secured-cp-01 --ask --target-host rke2-secured-cp-01`
 ### custom flake.lock file
-`nixos-rebuild switch --flake ~/git/kubernetes/fluxcd/nix/local_flake#rke2-secured-cp-01 --use-substitutes --target-host root@10.2.11.41`
+`nixos-rebuild switch --flake ~/git/kubernetes/fluxcd/nix/local_flake#rke2-secured-cp-01 --use-substitutes --target-host root@10.2.12.6`
 `nh os switch ~/git/kubernetes/fluxcd/nix/local_flake -H rke2-secured-cp-01 --ask --target-host rke2-secured-cp-01`
 aditional note, on update, seems local ip addres always switches

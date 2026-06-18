@@ -23,6 +23,7 @@ let
       - rke2-canal
       - rke2-ingress-nginx
       - rke2-service-lb
+      - rke2-metrics-server
       - rke2-snapshot-controller
       - rke2-snapshot-controller-crd
       - rke2-snapshot-validation-webhook
@@ -41,6 +42,9 @@ let
     egress-selector-mode: disabled
     # advertise-address: x.x.x.x
     supervisor-metrics: true
+    etcd-expose-metrics: true
+    kube-scheduler-arg:
+      - "bind-address=0.0.0.0"  # temp fix, this exposes metrics publicly
   '';
   # runtime-image: "index.docker.io/rancher/rke2-runtime:v1.30.1-rke2r1"
 in {

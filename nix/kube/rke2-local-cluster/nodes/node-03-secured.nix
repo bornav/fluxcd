@@ -33,15 +33,17 @@ let
       - "node-arch=amd64"
       - "storage/ceph=false"
       - "storage/longhorn=false"
+      - "node-locks/secured=true"
+      - "node-network/isolated=true"
     node-taint:
-      - "node-role.kubernetes.io/control-plane=true:NoSchedule"
+      - "node-network/isolated=true:NoSchedule"
     kube-apiserver-arg:
       - "oidc-issuer-url=https://sso.icylair.com/realms/master"
       - "oidc-client-id=kubernetes"
       - "oidc-username-claim=email"
       - "oidc-groups-claim=groups"
-    # node-ip: 10.99.10.53
-    node-ip: 10.2.12.8
+    node-ip: 10.99.10.54
+    # node-ip: 10.2.13.12
     cni: none
     egress-selector-mode: disabled
     # advertise-address: x.x.x.x
@@ -68,4 +70,12 @@ in {
   rke2.server_lb_address = "https://rke2-local-cp-01.local.icylair.com:9345";
 
   environment.etc."rancher/rke2/token".source = pkgs.writeText "token" token;
+
+
+  swapDevices = [ # swap attempt fixing proxmox OOM memory balloning
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
 }

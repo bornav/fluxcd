@@ -7,10 +7,13 @@
   node_config,
   vars,
   pkgs,
+  pkgs-stable,
   pkgs-unstable,
   ...
 }: let
-  rke2_package = pkgs.rke2_1_34;
+  # rke2_package = pkgs.rke2_1_35;
+  rke2_package = pkgs-stable.rke2_1_34;
+  # rke2_package = pkgs-stable.rke2;
 in {
   options = {
     rke2 = {

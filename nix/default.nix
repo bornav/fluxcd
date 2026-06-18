@@ -199,6 +199,27 @@
       ./kube/common.nix
     ];
   };
+  rke2-local-node-03-secured = inputs.nixpkgs-unstable.lib.nixosSystem {
+    system = "x86_64-linux";
+    specialArgs = {
+        inherit vars inputs;
+        host = {
+          hostName = "rke2-local-node-03-secured";
+          vars = vars;
+          system = "x86_64-linux";
+          kube_ha = false;
+        };
+        pkgs-stable   = import inputs.nixpkgs-stable   {system = "x86_64-linux";config.allowUnfree = true;};
+        pkgs-unstable = import inputs.nixpkgs-unstable {system = "x86_64-linux";config.allowUnfree = true;};
+        pkgs-master   = import inputs.nixpkgs-master   {system = "x86_64-linux";config.allowUnfree = true;};
+        system = "x86_64-linux";
+    };
+    modules = [
+      ./kube/rke2-local-cluster
+      ./kube/rke2-local-cluster/nodes/node-03-secured.nix
+      ./kube/common.nix
+    ];
+  };
   rke2-secured-cp-01 = inputs.nixpkgs-unstable.lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {

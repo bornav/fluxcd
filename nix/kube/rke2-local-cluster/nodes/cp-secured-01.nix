@@ -29,14 +29,16 @@ let
     node-label:
       - "node-location=local"
       - "node-arch=amd64"
-    node-taint:
-      - "node-role.kubernetes.io/control-plane=true:NoSchedule"
+      - "node-locks/secured=true"
+      - "node-network/isolated=true"
+    # node-taint:
+    #   - "node-role.kubernetes.io/control-plane=true:NoSchedule"
     kube-apiserver-arg:
       - oidc-issuer-url=https://sso.icylair.com/realms/master
       - oidc-client-id=kubernetes
       - oidc-groups-claim=groups
-    node-ip: 10.99.10.51
-    # node-ip: 10.2.11.41
+    # node-ip: 10.99.10.61
+    node-ip: 10.2.12.6
     # cni: none
     egress-selector-mode: disabled
     # advertise-address: x.x.x.x

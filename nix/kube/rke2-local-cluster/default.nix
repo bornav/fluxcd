@@ -82,6 +82,8 @@
     lsscsi
     sg3_utils
     multipath-tools
+
+    kata-runtime
   ];
 
   # networking = {
@@ -94,4 +96,20 @@
   #   #   prefixLength = 24;
   #   # }];
   # };
+  #
+  #
+
+  # kata-container
+  # systemd.services.k3s.path = [ pkgs.kata-runtime ];
+  systemd.tmpfiles.settings."09-rke2"."/var/lib/rancher/rke2/agent/etc/containerd/config-v3.toml.tmpl"."L+".argument = let
+    template = ''
+      {{ template "base" . }}
+
+      [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.'kata']
+          runtime_type = "io.containerd.kata.v2"
+          privileged_without_host_devices = true
+          pod_annotations = ["io.katacontainers.*"]
+          container_annotations = ["io.katacontainers.*"]
+    '';
+  in "${pkgs.writeText "config-v3.toml.tmpl" template}";
 }

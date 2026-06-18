@@ -58,6 +58,14 @@ in {
         allowedTCPPorts = [6443 9345 2379 2380];
         allowedUDPPorts = [4789]; # vxlan port
       };
+      "wg0" = {
+        allowedTCPPortRanges = [
+          {
+            from = 4;
+            to = 65535;
+          }
+        ];
+      };
     };
   };
 }

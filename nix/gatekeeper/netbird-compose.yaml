@@ -1,7 +1,7 @@
 name: netbird
 services:
   dashboard:
-    image: docker.io/netbirdio/dashboard:v2.38.1
+    image: docker.io/netbirdio/dashboard:v2.39.0
     container_name: netbird-dashboard
     restart: unless-stopped
     env_file:
@@ -18,13 +18,13 @@ services:
       - "traefik.http.routers.netbird-dashboard.rule=Host(`netbird.icylair.com`)"
       - "traefik.http.routers.netbird-dashboard.entrypoints=websecure"
       - "traefik.http.routers.netbird-dashboard.tls=true"
-      - "traefik.http.routers.netbird-dashboard.priority=1"
       - "traefik.http.routers.netbird-dashboard.service=dashboard"
+      - "traefik.http.routers.netbird-dashboard.priority=1"
       - "traefik.http.services.dashboard.loadbalancer.server.port=80"
 
   netbird-server:
     container_name: netbird-server
-    image: docker.io/netbirdio/netbird-server:0.71.3
+    image: docker.io/netbirdio/netbird-server:0.72.4
     restart: unless-stopped
     command: ["--config", "/etc/netbird/config.yaml"]
     ports:
@@ -42,7 +42,7 @@ services:
     labels:
       - "traefik.enable=true"
       # gRPC router
-      - "traefik.http.routers.netbird-grpc.rule=Host(`netbird.icylair.com`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`))"
+      - "traefik.http.routers.netbird-grpc.rule=Host(`netbird.icylair.com`) && (PathPrefix(`/signalexchange.SignalExchange/`) || PathPrefix(`/management.ManagementService/`) || PathPrefix(`/management.ProxyService/`))"
       - "traefik.http.routers.netbird-grpc.entrypoints=websecure"
       - "traefik.http.routers.netbird-grpc.tls=true"
       - "traefik.http.routers.netbird-grpc.service=netbird-server-h2c"
@@ -60,7 +60,7 @@ services:
 
   netbird-proxy:
     container_name: netbird-proxy
-    image: docker.io/netbirdio/reverse-proxy:0.71.3
+    image: docker.io/netbirdio/reverse-proxy:0.72.0
     restart: unless-stopped
     depends_on:
       - netbird-server
