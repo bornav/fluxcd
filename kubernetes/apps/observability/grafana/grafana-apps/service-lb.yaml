@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: tempo-loadbalancer-local
   labels:
-    service-type: ingress-static
+    service-type/vxlan: static
   annotations:
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
@@ -59,7 +59,7 @@ kind: Service
 metadata:
   name: loki-loadbalancer-local
   labels:
-    service-type: ingress-static
+    service-type/vxlan: static
   annotations:
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
@@ -87,7 +87,7 @@ kind: Service
 metadata:
   name: pytoscope-loadbalancer-local
   labels:
-    service-type: ingress-static
+    service-type/vxlan: static
   annotations:
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"
@@ -112,7 +112,7 @@ kind: Service
 metadata:
   name: prometheus-loadbalancer-local
   labels:
-    service-type: ingress-static
+    service-type/vxlan: static
   annotations:
     service.cilium.io/affinity: "remote"
     service.cilium.io/global: "true"

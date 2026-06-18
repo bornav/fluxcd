@@ -19,6 +19,9 @@ spec:
   - name: otlp-http
     port: 4318
     protocol: TCP
+  - name: otlp-grpc
+    port: 4317
+    protocol: TCP
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -34,4 +37,7 @@ spec:
   ports:
   - name: otlp-http
     port: 4318
+    protocol: TCP
+  - name: otlp-grpc
+    port: 4317
     protocol: TCP

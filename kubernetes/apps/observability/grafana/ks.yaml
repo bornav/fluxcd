@@ -35,7 +35,7 @@ spec:
     # - name: external secrets #TODO find name
   path: ./kubernetes/apps/observability/grafana/instances
   prune: true
-  suspend: false
+  suspend: true
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes

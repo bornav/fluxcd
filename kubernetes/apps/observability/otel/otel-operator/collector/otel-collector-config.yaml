@@ -75,6 +75,7 @@ spec:
         endpoint: ${env:MY_POD_IP}:13133
     exporters:
       debug: {}
+        # verbosity: detailed
       otlp:
         endpoint: jaegertracing-collector.observability.svc.cluster.local:4317
         tls:
@@ -92,7 +93,8 @@ spec:
         tls:
           insecure: false
     processors:
-      batch: {}
+      batch:
+        timeout: 5s
       k8sattributes:
         # filter:
         #     # only retrieve pods running on the same node as the collector
@@ -152,11 +154,10 @@ spec:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters:
-            [
-              otlp,
+          exporters: [
+              # otlp,
               spanmetrics,
-              otlp/grafana_cloud_tempo,
+              # otlp/grafana_cloud_tempo,
               otlphttp/local-collector,
             ]
           # exporters: [otlp, debug, spanmetrics,otlp/grafana_cloud_tempo, otlphttp/local-collector] # for cli loging
@@ -169,7 +170,11 @@ spec:
           receivers: [otlp, filelog]
           # receivers: [otlp]
           processors: [batch, k8sattributes]
-          exporters: [otlphttp, otlphttp/local-collector] # for cli loging
+          exporters: [
+              # otlphttp,
+              # otlphttp/local-collector,
+              debug,
+            ]
           # exporters: [debug, otlphttp] # for cli loging
       telemetry:
         metrics: []
