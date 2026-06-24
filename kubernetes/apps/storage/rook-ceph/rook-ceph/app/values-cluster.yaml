@@ -9,7 +9,7 @@ monitoring:
 ingress:
   dashboard:
     annotations:
-      traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+      traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
     ingressClassName: traefik-external
     host:
       name: &host rook-ceph.cloud.icylair.com

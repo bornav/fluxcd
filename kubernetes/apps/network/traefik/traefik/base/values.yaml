@@ -72,7 +72,7 @@ ingressRoute:
   dashboard:
     enabled: true
     # annotations:
-    #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    #   traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
 #       # traefik.ingress.kubernetes.io/router.entrypoints: websecure
 #       # traefik.ingress.kubernetes.io/router.middlewares: network-traefik-dashboard-auth@kubernetescrd
     # matchRule: PathPrefix(`/`)
@@ -229,6 +229,9 @@ experimental:
     traefik-api-key-auth:
       moduleName: "github.com/Septima/traefik-api-key-auth"
       version: "v0.3.0"
+    traefikoidc:
+      moduleName: "github.com/lukaszraczylo/traefikoidc"
+      version: v1.0.26
 metrics:
   prometheus:
     serviceMonitor:

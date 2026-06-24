@@ -109,7 +109,7 @@ spec:
         hosts:
           - prometheus.cloud.icylair.com
         annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
         tls:
           - secretName: icylair-com-all-prod
             hosts:
@@ -196,7 +196,7 @@ spec:
         hosts:
           - &host alertmanager.cloud.icylair.com
         annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
         tls:
           - secretName: icylair-com-all-prod
             hosts:

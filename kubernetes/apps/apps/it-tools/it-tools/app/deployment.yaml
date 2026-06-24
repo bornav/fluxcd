@@ -62,7 +62,7 @@ metadata:
     app.kubernetes.io/instance: *app
     kubernetes.io/ingress.class: traefik
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:

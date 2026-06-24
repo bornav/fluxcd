@@ -42,7 +42,7 @@ spec:
         hosts:
           core: harbor.icylair.com
         # annotations:
-        #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        #   traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
     persistence:
       enabled: true ##temp
       resourcePolicy: ""

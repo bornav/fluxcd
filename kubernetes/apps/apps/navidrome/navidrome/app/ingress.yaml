@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
     # ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
-    traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:
@@ -89,7 +89,7 @@ metadata:
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
     # ingress.kubernetes.io/auth-response-headers: X-Forwarded-User
-    # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:

@@ -33,7 +33,7 @@ spec:
       hosts:
         - alloy.cloud.icylair.com
       annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
       #   kubernetes.io/ingress.class: nginx
       #   kubernetes.io/tls-acme: "true"
       labels:

@@ -46,7 +46,7 @@ spec:
       tlsSecret: icylair-com-all-prod
       path: /
       annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
     longhornUI:
       # -- Replica count for Longhorn UI.
       replicas: 1

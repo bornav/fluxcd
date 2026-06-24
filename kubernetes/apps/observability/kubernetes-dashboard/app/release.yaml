@@ -61,7 +61,7 @@ metadata:
   name: kubernetes-dashboard
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: observability-oauth2@kubernetescrd
-    # traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:

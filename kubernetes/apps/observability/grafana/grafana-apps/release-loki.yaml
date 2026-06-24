@@ -83,7 +83,7 @@ spec:
     #   enabled: true
     #   ingressClassName: "traefik-external"
     #   annotations:
-    #       traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+    #       traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
     #   hosts:
     #     - &host loki.cloud.icylair.com
     #   # -- TLS configuration for the ingress. Hosts passed through the `tpl` function to allow templating

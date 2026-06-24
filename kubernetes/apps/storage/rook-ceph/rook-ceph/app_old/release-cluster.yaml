@@ -33,7 +33,7 @@ spec:
     ingress:
       dashboard:
         # annotations:
-        #   traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        #   traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
         ingressClassName: traefik-external
         host:
           name: rook.cloud.icylair.com

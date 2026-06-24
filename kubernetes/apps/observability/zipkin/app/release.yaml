@@ -32,7 +32,7 @@ spec:
       hosts:
         - zipkin.cloud.icylair.com
       annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: network-forward-auth@kubernetescrd
+        traefik.ingress.kubernetes.io/router.middlewares: network-oidc-auth@kubernetescrd
       labels:
         app: zipkin
       tls:
