@@ -1,69 +1,22 @@
-globalArguments:
-  - '--global.sendanonymoususage=false'
-  - '--global.checknewversion=false'
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
 additionalArguments:
-  - '--serversTransport.insecureSkipVerify=true'
-  - "--api.insecure=true"
+  - "--serversTransport.insecureSkipVerify=true"
+# nodeSelector: # temp till secont node ingress is fixed, find out why
+# kubernetes.io/hostname: rke2-local-node-01
+api:
+  dashboard: true
+  disableDashboardAd: true
+  insecure: true
 deployment:
   enabled: true
-  # kind: DaemonSet
   kind: Deployment
   replicas: 3
   terminationGracePeriodSeconds: 10
   minReadySeconds: 2
   podLabels:
     nat-policy: "enabled"
-ports:
-  traefik:
-    port: 8001
-  ts:
-    port: 9987
-    protocol: UDP
-    # expose: true
-    # exposeInternal: true
-    # exposedPort: 9987
-#   web:
-#     port: 8000
-#     redirectTo:
-#       port: websecure
-  websecure:
-    proxyProtocol:
-      trustedIPs:
-        - "10.99.10.254"
-        - "10.129.16.254"
-      insecure: false
-#     port: 8443
-#     exposedPort: 8443
-#     tls:
-#       enabled: true
-#     http3:
-#       enabled: true
-gateway:
-  listeners:
-    web:
-      namespacePolicy:
-        from: All
-    websecure:
-      port: 8443
-      hostname: "*.icylair.com"
-      protocol: HTTPS
-      namespacePolicy:
-        from: All
-      certificateRefs:
-        - kind: Secret
-          # group: ""
-          name: "icylair-com-all-prod"
-service:
-  single: true
-  annotations:
-    lbipam.cilium.io/ips: "10.99.10.11,10.99.10.12,10.99.10.13,10.49.22.2,10.129.16.100"
-  # spec:
-  #   loadBalancerIP: "10.49.22.2"
-  labels:
-    service-type: ingress-static
-    service-type/alt: wireguard-static
-    service-type/vxlan: static
-
 ingressClass:
   enabled: true
   isDefaultClass: true
@@ -80,140 +33,68 @@ ingressRoute:
     entryPoints: ["websecure"]
     middlewares:
       - name: "forward-auth"
-    # tls:
-    #   - hosts:
-    #       - traefik.cloud.icylair.com
-    #     secretName: icylair-com-all-prod
-###########################################################################
-extraObjects:
-  - apiVersion: traefik.io/v1alpha1
-    kind: Middleware
-    metadata:
-      name: forward-auth
-    spec:
-      forwardAuth:
-        address: "http://traefik-forward-auth.network.svc.cluster.local:4181"
-        trustForwardHeader: true
-        authResponseHeaders:
-          - "X-Forwarded-User"
-          # - "X-Auth-User"
-          # - "X-Secret"
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      name: traefik-udp
-      labels:
-        service-type: ingress
-    spec:
-      ports:
-      - name: ts
-        port: 9987
-        protocol: UDP
-        targetPort: ts
-      selector:
-        app.kubernetes.io/instance: traefik-network
-        app.kubernetes.io/name: traefik
-      type: LoadBalancer
-#   - apiVersion: v1
-#     kind: Service
-#     metadata:
-#       name: traefik-api
-#     spec:
-#       type: ClusterIP
-#       selector:
-#         app.kubernetes.io/name: traefik
-#         app.kubernetes.io/instance: traefik-network
-#       ports:
-#       - port: 8080
-#         name: traefik
-#         targetPort: 9000
-#         protocol: TCP
-
-#   - apiVersion: traefik.io/v1alpha1
-#     kind: Middleware
-#     metadata:
-#       name: traefik-dashboard-auth
-#     spec:
-#       basicAuth:
-#         secret: traefik-dashboard-auth-secret
-
-#   - apiVersion: traefik.io/v1alpha1
-#     kind: Middleware
-#     metadata:
-#       name: https-redirect
-#     spec:
-#       redirectScheme:
-#         scheme: https
-#         permanent: true
-
-#   - apiVersion: networking.k8s.io/v1
-#     kind: Ingress
-#     metadata:
-#       name: traefik-dashboard
-#       annotations:
-#         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-#         # traefik.ingress.kubernetes.io/router.middlewares: network-traefik-dashboard-auth@kubernetescrd
-#         traefik.ingress.kubernetes.io/router.middlewares: "network-forward-auth@kubernetescrd"
-#     spec:
-#       ingressClassName: traefik-external
-#       rules:
-#       - host: traefik.cloud.icylair.com
-#         http:
-#           paths:
-#           - path: /
-#             pathType: Prefix
-#             backend:
-#               service:
-#                 name: traefik-api
-#                 port:
-#                   name: traefik
-#       tls:
-#       - hosts:
-#           - traefik.cloud.icylair.com
-#         secretName: icylair-com-all-prod
-###########################################################################
+ports:
+  traefik:
+    port: 8001
+  ts:
+    port: 9987
+    protocol: UDP
+  websecure:
+    http3:
+      enabled: true
+    proxyProtocol:
+      trustedIPs:
+        - "10.99.10.254"
+        - "10.129.16.254"
+        - "10.128.16.100"
+      insecure: false
+    # http:
+    #   middlewares:
+    #     - network-oidc-auth@kubernetescrd
+gateway:
+  listeners:
+    web:
+      namespacePolicy:
+        from: All
+    websecure:
+      port: 8443
+      hostname: "*.icylair.com"
+      protocol: HTTPS
+      namespacePolicy:
+        from: All
+      certificateRefs:
+        - kind: Secret
+          name: "icylair-com-all-prod"
+service:
+  single: true
+  type: LoadBalancer
+  annotations:
+    lbipam.cilium.io/ips: "10.99.10.11,10.99.10.12,10.99.10.13,10.49.22.2,10.129.16.100"
+  labels:
+    service-type: ingress-static
+    service-type/alt: wireguard-static
+    service-type/vxlan: static
 providers:
   kubernetesCRD:
     enabled: true
-    ingressClass: *ingress-class-name
-    allowExternalNameServices: true
     allowCrossNamespace: true
-  kubernetesGateway:
-    enabled: true
   kubernetesIngress:
     enabled: true
-    allowExternalNameServices: true
-    # publishedService:
-    #   enabled: false
-  file:
-    # -- Create a file provider
+  kubernetesGateway:
     enabled: true
-    # -- Allows Traefik to automatically watch for file changes
+    experimentalChannel: true
+  kubernetesIngressNGINX:
+    enabled: true
+  file:
+    enabled: true
     watch: true
-    # -- File content (YAML format, go template supported) (see https://doc.traefik.io/traefik/providers/file/)
-    # content: # TODO look how to set this
-    #   tracing:
-    #     otlp:
-    #       http:
-    #         endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
 rbac:
   enabled: true
 tlsStore:
   default:
     defaultCertificate:
       secretName: icylair-com-all-prod
-logs:
-  general:
-    format: json # # @schema enum:["common", "json", null]; type:[string, null]; default: "common"
-    # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
-    level: INFO
-resources:
-  requests:
-    memory: '1Mi'
-    cpu: '1m'
-  limits:
-    memory: '6Gi'
-    cpu: '3000m'
+
 tracing:
   addInternals: true
   serviceName: traefik-cluster-prod
@@ -221,10 +102,30 @@ tracing:
     enabled: true
     http:
       enabled: true
-      # http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
+metrics:
+  # prometheus:
+  #   serviceMonitor:
+  #     enabled: true
+  #   # prometheusRule:  # TODO this breaks it
+  #   #   enabled: true
+  otlp:
+    enabled: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    http:
+      enabled: true
+      endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
+# accessLog:
+#   enabled: true
+#   format: json
+#   otlp:
+#     grpc:
+#       insecure: true
+#       endpoint: opentelemetry-collector.observability.svc.cluster.local:4317/v1/logs
+
 experimental:
-  # -- Enable traefik experimental plugins
+  otlpLogs: true
   plugins:
     traefik-api-key-auth:
       moduleName: "github.com/Septima/traefik-api-key-auth"
@@ -232,12 +133,16 @@ experimental:
     traefikoidc:
       moduleName: "github.com/lukaszraczylo/traefikoidc"
       version: v1.0.26
-metrics:
-  prometheus:
-    serviceMonitor:
-      enabled: true
-    # prometheusRule:  # TODO this breaks it
-    #   enabled: true
-env:
-- name: OTEL_PROPAGATORS
-  value: tracecontext,baggage,b3,jaeger
+
+logs:
+  general:
+    format: json # "common", "json", null"
+    level: INFO # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
+
+resources:
+  requests:
+    memory: "100Mi"
+    cpu: "30m"
+  limits:
+    memory: "6Gi"
+    cpu: "3000m"

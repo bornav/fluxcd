@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: network
 resources:
   - release.yaml
+  - httproute.yaml
   # - service.yaml
 generatorOptions:
   disableNameSuffixHash: true

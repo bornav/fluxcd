@@ -4,12 +4,14 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: traefik
+  labels:
+    reconcile.fluxcd.io/watch: Enabled
 spec:
   interval: 15m
   chart:
     spec:
       chart: traefik
-      version: 38.0.2
+      version: 40.3.0
       sourceRef:
         kind: HelmRepository
         name: traefik

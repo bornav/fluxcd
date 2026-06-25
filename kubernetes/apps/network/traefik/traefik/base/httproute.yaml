@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: &name traefik-dashboard
+  labels:
+    app: *name
+    service-type: ingress
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: traefik-dashboard.internal
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/instance: traefik-network
+    app.kubernetes.io/name: traefik
+  ports:
+    - port: 8001
+      name: *name
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: network
+  hostnames:
+    - traefik.cloud.icylair.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: traefik-dashboard
+          port: 8001
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: oidc-auth
