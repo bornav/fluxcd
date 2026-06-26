@@ -26,10 +26,16 @@ spec:
       # backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
       # backupTargetCredentialSecret: cifs-secret
       ##S3
-      backupTarget: "s3://kubernetes-backup-bucket@us-west-1/"
-      backupTargetCredentialSecret: s3-minio-secret
-      backupstorePollInterval: 15
+      # backupTarget: "s3://kubernetes-backup-bucket@us-west-1/"
+      # backupTargetCredentialSecret: s3-minio-secret
+      # backupstorePollInterval: 15
       taintToleration: "node-role.kubernetes.io/master=true:NoSchedule"
+      #
+      orphanAutoDeletion: false
+      autoDeletePodWhenVolumeDetachedUnexpectedly: true
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
+      nodeDrainPolicy: always-allow
+      #
     global:
       nodeSelector:
         storage/longhorn: "true"

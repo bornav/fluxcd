@@ -6,7 +6,7 @@ namespace: apps
 resources:
   - pg-synapse.yaml
   - pg-whatsapp.yaml
-  - pg-meta.yaml
+  # - pg-meta.yaml
   # - secrets.yaml
   # - service.yaml
   - external-secrets.yaml

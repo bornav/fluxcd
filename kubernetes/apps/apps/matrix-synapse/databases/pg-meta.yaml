@@ -62,14 +62,14 @@ spec:
     # recovery:
     #   source: *name
     #   recoveryTarget:
-    #     backupID: "20260204T150001"
+    #     backupID: "20260607T120002"
 ---
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
   name: matrix-pg-meta
 spec:
-  retentionPolicy: 7d
+  retentionPolicy: 60d
   configuration:
     destinationPath: s3://postgres-backups/cluster-cloud/matrix
     endpointURL: http://wireguard.network.svc.cluster.local:9010

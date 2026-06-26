@@ -29,18 +29,12 @@ spec:
   enableSuperuserAccess: true
   postgresql:
     parameters:
-      max_connections: '150'
+      max_connections: "150"
   superuserSecret:
     name: synapse-pg-superuser
   storage:
-    pvcTemplate:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 20Gi
-      storageClassName: longhorn-storage
-      volumeMode: Filesystem
+    storageClass: longhorn-cngp-eph
+    size: 20Gi
   externalClusters:
     - name: &name matrix-pg-synapse
       plugin:
@@ -49,11 +43,11 @@ spec:
           barmanObjectName: *name
           serverName: *name
   plugins:
-  - name: barman-cloud.cloudnative-pg.io
-    isWALArchiver: true
-    parameters:
-      barmanObjectName: *name
-      serverName: *name
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: *name
+        serverName: *name
   bootstrap:
     # initdb:
     #   database: synapse
@@ -65,14 +59,14 @@ spec:
     recovery:
       source: *name
       # recoveryTarget:
-        # backupID: "20260204T150001"
+      # backupID: "20260607T120002"
 ---
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
   name: matrix-pg-synapse
 spec:
-  retentionPolicy: 7d
+  retentionPolicy: 60d
   configuration:
     destinationPath: s3://postgres-backups/cluster-cloud/matrix
     endpointURL: http://wireguard.network.svc.cluster.local:9010
@@ -102,3 +96,14 @@ spec:
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+# ---
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Backup
+# metadata:
+#   name: matrix-pg-synapse-manual-backup
+# spec:
+#   cluster:
+#     name: matrix-pg-synapse
+#   method: plugin
+#   pluginConfiguration:
+#     name: barman-cloud.cloudnative-pg.io

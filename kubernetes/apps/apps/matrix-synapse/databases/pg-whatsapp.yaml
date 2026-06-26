@@ -30,14 +30,11 @@ spec:
   superuserSecret:
     name: synapse-pg-superuser
   storage:
-    pvcTemplate:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 10Gi
-      storageClassName: longhorn-storage
-      volumeMode: Filesystem
+    storageClass: longhorn-cngp-eph
+    size: 12Gi
+  # walStorage:
+  #   storageClass: longhorn-cngp-eph
+  #   size: 2Gi
   externalClusters:
     - name: &name matrix-pg-whatsapp
       plugin:
@@ -46,11 +43,11 @@ spec:
           barmanObjectName: *name
           serverName: *name
   plugins:
-  - name: barman-cloud.cloudnative-pg.io
-    isWALArchiver: true
-    parameters:
-      barmanObjectName: *name
-      serverName: *name
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: *name
+        serverName: *name
   bootstrap:
     # initdb:
     #   database: whatsapp
@@ -62,14 +59,14 @@ spec:
     recovery:
       source: *name
       # recoveryTarget:
-      #   backupID: "20260204T150003"
+      #   backupID: "20260607T120002"
 ---
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
   name: matrix-pg-whatsapp
 spec:
-  retentionPolicy: 7d
+  retentionPolicy: 60d
   configuration:
     destinationPath: s3://postgres-backups/cluster-cloud/matrix
     endpointURL: http://wireguard.network.svc.cluster.local:9010
@@ -99,3 +96,14 @@ spec:
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+# ---
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Backup
+# metadata:
+#   name: matrix-pg-whatsapp-manual-backup
+# spec:
+#   cluster:
+#     name: matrix-pg-whatsapp
+#   method: plugin
+#   pluginConfiguration:
+#     name: barman-cloud.cloudnative-pg.io
