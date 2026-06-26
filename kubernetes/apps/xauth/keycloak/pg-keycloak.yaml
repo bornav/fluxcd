@@ -12,14 +12,8 @@ spec:
   superuserSecret:
     name: keycloak-pg-superuser
   storage:
-    pvcTemplate:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 4.0Gi
-      storageClassName: longhorn-storage
-      volumeMode: Filesystem
+    storageClass: longhorn-cngp-eph
+    size: 5Gi
   externalClusters:
     - name: &name pg-keycloak
       plugin:
@@ -47,7 +41,7 @@ kind: ObjectStore
 metadata:
   name: pg-keycloak
 spec:
-  retentionPolicy: 30d
+  retentionPolicy: 60d
   configuration:
     destinationPath: s3://postgres-backups/cluster-cloud/pg-keycloak
     endpointURL: http://wireguard.network.svc.cluster.local:9010
@@ -77,3 +71,14 @@ spec:
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+# ---
+# apiVersion: postgresql.cnpg.io/v1
+# kind: Backup
+# metadata:
+#   name: pg-keycloak-manual-backup
+# spec:
+#   cluster:
+#     name: pg-keycloak
+#   method: plugin
+#   pluginConfiguration:
+#     name: barman-cloud.cloudnative-pg.io
