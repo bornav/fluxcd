@@ -68,14 +68,14 @@ metadata:
 spec:
   retentionPolicy: 60d
   configuration:
-    destinationPath: s3://postgres-backups/cluster-cloud/matrix
-    endpointURL: http://wireguard.network.svc.cluster.local:9010
+    destinationPath: s3://backups/postgres/cluster-cloud/matrix
+    endpointURL: http://10.53.255.254:9000
     s3Credentials:
       accessKeyId:
-        name: minio-synapse-pg-backup-secrets
+        name: rustfs-synapse-pg-backup-secrets
         key: AWS_ACCESS_KEY_ID
       secretAccessKey:
-        name: minio-synapse-pg-backup-secrets
+        name: rustfs-synapse-pg-backup-secrets
         key: AWS_SECRET_ACCESS_KEY
     data:
       compression: bzip2

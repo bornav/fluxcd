@@ -19,3 +19,6 @@ spec:
     - name: minio-ui
       port: 9011
       targetPort: 9011
+    - name: rustfs
+      port: 9000
+      targetPort: 9000

@@ -43,14 +43,14 @@ metadata:
 spec:
   retentionPolicy: 60d
   configuration:
-    destinationPath: s3://postgres-backups/cluster-cloud/pg-keycloak
-    endpointURL: http://wireguard.network.svc.cluster.local:9010
+    destinationPath: s3://backups/postgres/cluster-cloud
+    endpointURL: http://10.53.255.254:9000
     s3Credentials:
       accessKeyId:
-        name: minio-postgres-backup-secrets
+        name: rustfs-cnpg-cloud-token
         key: AWS_ACCESS_KEY_ID
       secretAccessKey:
-        name: minio-postgres-backup-secrets
+        name: rustfs-cnpg-cloud-token
         key: AWS_SECRET_ACCESS_KEY
     data:
       compression: bzip2

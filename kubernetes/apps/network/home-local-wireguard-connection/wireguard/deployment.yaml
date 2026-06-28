@@ -87,6 +87,8 @@ spec:
           ports:
             - containerPort: 9010
               protocol: TCP
+            - containerPort: 9000
+              protocol: TCP
           volumeMounts:
             - name: haproxy-config
               mountPath: /usr/local/etc/haproxy/haproxy.cfg
