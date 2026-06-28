@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: wireguard
 spec:
-  # clusterIP: 10.43.255.250 ## only needed for fqdn nfs mounting, since it is not resolving in kubernetes manifests
+  clusterIP: 10.53.255.254 # TODO FIX ME, for some reason only if i forward to this ip does rustfs 9000 port forwarding work, INVESTIGATE WHY tested with  AWS_ACCESS_KEY_ID= AWS_SECRET_ACCESS_KEY= restic init -r s3:http://10.53.146.18:9000/backups/restic-kubernetes-bucket/local/deleteme5
   selector:
     name: wireguard
   ports:

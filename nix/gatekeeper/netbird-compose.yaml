@@ -1,7 +1,7 @@
 name: netbird
 services:
   dashboard:
-    image: docker.io/netbirdio/dashboard:v2.39.0
+    image: docker.io/netbirdio/dashboard:v2.90.0
     container_name: netbird-dashboard
     restart: unless-stopped
     env_file:
@@ -24,7 +24,7 @@ services:
 
   netbird-server:
     container_name: netbird-server
-    image: docker.io/netbirdio/netbird-server:0.72.4
+    image: docker.io/netbirdio/netbird-server:0.73.2
     restart: unless-stopped
     command: ["--config", "/etc/netbird/config.yaml"]
     ports:
@@ -60,7 +60,7 @@ services:
 
   netbird-proxy:
     container_name: netbird-proxy
-    image: docker.io/netbirdio/reverse-proxy:0.72.0
+    image: docker.io/netbirdio/reverse-proxy:0.73.2
     restart: unless-stopped
     depends_on:
       - netbird-server
