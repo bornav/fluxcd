@@ -29,3 +29,7 @@ spec:
     targetPort: 8096
     name: jellyfin-tcp
     protocol: TCP
+  sessionAffinity: ClientIP          # backup sticky-session at kube level
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800          # 3 hours — covers long watch sessions

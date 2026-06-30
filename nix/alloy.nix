@@ -1,9 +1,14 @@
-{lib, pkgs-bornav-test, ...}: let
+{
+  lib,
+  pkgs-bornav-test,
+  ...
+}: let
   # docker_socket = "unix:///var/run/docker.sock";
   docker_socket = "unix:///var/run/podman/podman.sock";
   prometheus_ingest = "http://10.129.16.109:9090/api/v1/write";
   loki_ingest = "http://10.129.16.107:3100/loki/api/v1/push";
-  otel_ingest = "10.129.16.106:4317";
+  otel_ingest = "10.129.16.102:4317";
+  tempo_ingest = "10.129.16.106:4317";
   pytoscope_ingest = "http://10.129.16.108:4100";
 in {
   ####################### all required in order for alloy to have perm access to docker/podman socket
@@ -23,11 +28,6 @@ in {
     loki.write "local" {
       endpoint {
         url = "${loki_ingest}"
-      }
-    }
-    otelcol.exporter.otlp "local" {
-      client {
-        endpoint = "${otel_ingest}"
       }
     }
     pyroscope.write "local" {
@@ -106,35 +106,56 @@ in {
         loki.write.local.receiver,
       ]
     }
+    otelcol.receiver.otlp "default" {
+      grpc {
+        endpoint = "127.0.0.1:4317"
+      }
+      http {
+        endpoint = "127.0.0.1:4318"
+      }
 
+      output {
+        metrics = [otelcol.exporter.otlp.local.input]
+        traces  = [otelcol.exporter.otlp.local.input]
+      }
+    }
+    otelcol.exporter.otlp "local" {
+      client {
+        endpoint = "${otel_ingest}"
+        tls {
+          insecure = true
+        }
+      }
+    }
   '';
 
-  # systemd.services.beyla = {
-  #   after = [ "network.target"];
-  #   # environment = { BEYLA_NETWORK_PRINT_FLOWS = "true";};
-  #   serviceConfig = {
-  #     ExecStart = "${pkgs-bornav-test.beyla}/bin/beyla -config /etc/beyla/config.yaml";
-  #     Restart = "on-failure";
-  #     RestartSec = "5s";
-  #     RemainAfterExit = true;
-  #   };
-  #   wantedBy = [ "multi-user.target" ];
-  # };
-  # environment.systemPackages = [pkgs-bornav-test.beyla];
-  # environment.etc."beyla/config.yaml".text = lib.mkForce ''
-  #   network:
-  #     enable: true
-  #   # log_level: DEBUG
-  #   discovery:
-  #     instrument:
-  #       - open_ports: 443
-  #       - open_ports: 9443
-  #   otel_metrics_export:
-  #     endpoint: http://localhost:4318
-  #   otel_traces_export:
-  #     endpoint: http://localhost:4318
-  #   ebpf:
-  #     context_propagation: all
-  #     track_request_headers: true
+  systemd.services.beyla = {
+    after = [ "network.target"];
+    # environment = { BEYLA_NETWORK_PRINT_FLOWS = "true";};
+    serviceConfig = {
+      ExecStart = "${pkgs-bornav-test.beyla}/bin/beyla -config /etc/beyla/config.yaml";
+      Restart = "on-failure";
+      RestartSec = "5s";
+      RemainAfterExit = true;
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+  environment.systemPackages = [pkgs-bornav-test.beyla];
+  environment.etc."beyla/config.yaml".text = lib.mkForce ''
+    network:
+      enable: true
+    # log_level: DEBUG
+    discovery:
+      instrument:
+        - open_ports: 80
+        - open_ports: 443
+        - open_ports: 9443
+    otel_metrics_export:
+      endpoint: http://localhost:4318
+    otel_traces_export:
+      endpoint: http://localhost:4318
+    ebpf:
+      context_propagation: all
+      track_request_headers: true
   # '';
 }

@@ -45,7 +45,7 @@ spec:
           extensionRef:
             group: forward-auth.networking.k8s.io
             kind: ForwardAuth
-            name: network-forward-auth
+            name: network-oidc-auth
     # - filters:
     #     - type: ExtensionRef
     #       extensionRef:

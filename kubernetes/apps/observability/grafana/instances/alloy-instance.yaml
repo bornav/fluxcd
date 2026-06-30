@@ -17,6 +17,9 @@ spec:
         value: daemonset-test-cluster
     configMap:
       content: |-
+        livedebugging {
+          enabled = true
+        }
         prometheus.exporter.self "default" {}
 
         prometheus.scrape "default" {
@@ -52,7 +55,7 @@ spec:
         }
 
         loki.source.journal "host_logs" {
-          forward_to    = [loki.write.loki.receiver]
+          forward_to    = [loki.write.loki.receiver, otelcol.receiver.loki.default.receiver]
           relabel_rules = loki.relabel.journal.rules
           max_age       = "1h"
           path          = "/var/log/journal"
@@ -64,7 +67,30 @@ spec:
             url = "http://grafana-loki.observability.svc.cluster.local:3100/loki/api/v1/push"
           }
         }
-
+        otelcol.receiver.loki "default" {
+          output {
+            logs = [otelcol.exporter.otlphttp.default.input]
+          }
+        }
+        otelcol.exporter.otlphttp "default" {
+          client {
+            endpoint = "http://opentelemetry-collector-loadbalancer-local.observability.svc.cluster.local:4318"
+            tls {
+              insecure = true
+            }
+          }
+          sending_queue {
+              enabled    = true
+              queue_size = 10000
+              num_consumers = 10
+            }
+            retry_on_failure {
+              enabled          = true
+              initial_interval = "5s"
+              max_interval     = "30s"
+              max_elapsed_time = "300s"
+            }
+        }
 
 # ---
 # apiVersion: collectors.grafana.com/v1alpha1
@@ -167,7 +193,6 @@ spec:
 
 #           forward_to = [loki.write.loki.receiver]
 #         }
-
 
 #         loki.source.journal "host_logs" {
 #           forward_to    = [loki.write.loki.receiver]

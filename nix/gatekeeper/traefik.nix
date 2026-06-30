@@ -1,5 +1,6 @@
 {lib, ...}: let
   cert_path = "/cert";
+  otel_ingest = "10.129.16.102:4317";
 in {
   # virtualisation.docker = {
   #   enable = true;
@@ -64,15 +65,19 @@ in {
       };
       tracing = {
         serviceName = "traefik-gatekeeper";
-        otlp.http = {
-          tls.insecureSkipVerify = true;
-          endpoint = "http://10.129.16.102:4318/v1/traces";
+        otlp.grpc = {
+          insecure = true;
+          endpoint = "${otel_ingest}/v1/traces";
         };
       };
       metrics = {
-        otlp.http = {
-          tls.insecureSkipVerify = true;
-          endpoint = "http://10.129.16.102:4318/v1/metrics";
+        otlp = {
+          addRoutersLabels = true;
+          addServicesLabels = true;
+          grpc = {
+            insecure = true;
+            endpoint = "${otel_ingest}/v1/metrics";
+          };
         };
       };
     };

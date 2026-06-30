@@ -176,7 +176,7 @@ in {
     # "L+ /sbin - - - - /run/current-system/sw/bin/"
     "L+ /usr/sbin - - - - /run/current-system/sw/bin/"
     "L+ /usr/local/sbin - - - - /run/current-system/sw/bin/"
-    "L+ /var/lib/rancher/rke2/agent/etc/containerd/ - - - - /etc/containerd" # this is as a lot of different charts default to this path, but in our case that is not the correct
+    # "L+ /var/lib/rancher/rke2/agent/etc/containerd/ - - - - /etc/containerd" # this is as a lot of different charts default to this path, but in our case that is not the correct
     "L! /lib/modules - - - - /run/current-system/kernel-modules/lib/modules/" # make current modules exposed to /lib/modules
   ];
 }

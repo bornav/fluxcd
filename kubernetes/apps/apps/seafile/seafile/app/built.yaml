@@ -79,7 +79,6 @@ spec:
     requests:
       storage: "22Gi"
 ---
-# Source: seafile/charts/elasticsearch/templates/master/svc-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -108,7 +107,6 @@ spec:
     app.kubernetes.io/name: elasticsearch
     app.kubernetes.io/component: master
 ---
-# Source: seafile/charts/elasticsearch/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -137,7 +135,6 @@ spec:
     app.kubernetes.io/name: elasticsearch
     app.kubernetes.io/component: master
 ---
-# Source: seafile/charts/mariadb-galera/templates/headless-svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -170,7 +167,6 @@ spec:
     app.kubernetes.io/instance: seafile
     app.kubernetes.io/name: mariadb-galera
 ---
-# Source: seafile/charts/mariadb-galera/templates/svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -195,7 +191,6 @@ spec:
     app.kubernetes.io/instance: seafile
     app.kubernetes.io/name: mariadb-galera
 ---
-# Source: seafile/charts/memcached/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -218,7 +213,6 @@ spec:
     app.kubernetes.io/instance: seafile
     app.kubernetes.io/name: memcached
 ---
-# Source: seafile/charts/minio/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -245,7 +239,6 @@ spec:
     app.kubernetes.io/instance: seafile
     app.kubernetes.io/name: minio
 ---
-# Source: seafile/templates/seafile-frontend-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -290,11 +283,11 @@ spec:
         helm.sh/chart: memcached-7.4.11
       annotations:
     spec:
-      
+
       automountServiceAccountToken: false
       affinity:
         podAffinity:
-          
+
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -305,7 +298,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
+
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -406,11 +399,11 @@ spec:
       annotations:
         checksum/credentials-secret: asd
     spec:
-      
+
       serviceAccountName: seafile-minio
       affinity:
         podAffinity:
-          
+
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -421,7 +414,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
+
       automountServiceAccountToken: false
       securityContext:
         fsGroup: 1001
@@ -609,7 +602,7 @@ spec:
         - name: seafile-tmp
           emptyDir:
             sizeLimit: 100Mi
-        
+
         - name: seafile-license
           secret:
             secretName: seafile-license
@@ -675,7 +668,7 @@ spec:
             - name: SEAFILE__memcached__memcached_options
               value: "--SERVER=seafile-memcached --POOL-MIN=10 --POOL-MAX=100"
             - name: SEAFILE__storage__enable_storage_classes
-              value: "true" 
+              value: "true"
             - name: SEAFILE__storage__storage_classes_file
               value: "/opt/seafile/seafile_storage_classes.json"
             - name: SEAFEVENTS__INDEX0x20FILES__es_host
@@ -711,7 +704,7 @@ spec:
         - name: seafile-tmp
           emptyDir:
             sizeLimit: 100Mi
-        
+
         - name: seafile-license
           secret:
             secretName: seafile-license
@@ -762,15 +755,15 @@ spec:
       annotations:
     spec:
       serviceAccountName: seafile-elasticsearch-master
-      
+
       automountServiceAccountToken: false
       affinity:
         podAffinity:
-          
+
         podAntiAffinity:
-          
+
         nodeAffinity:
-          
+
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -827,7 +820,7 @@ spec:
               value: "9200"
             - name: ELASTICSEARCH_CLUSTER_NAME
               value: "seafile-elasticsearch"
-            
+
             - name: ELASTICSEARCH_HEAP_SIZE
               value: "512m"
           ports:
@@ -902,12 +895,12 @@ spec:
         app.kubernetes.io/version: 11.4.3
         helm.sh/chart: mariadb-galera-14.0.9
     spec:
-      
+
       automountServiceAccountToken: false
       serviceAccountName: seafile-mariadb-galera
       affinity:
         podAffinity:
-          
+
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -918,7 +911,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-          
+
       securityContext:
         fsGroup: 1001
         fsGroupChangePolicy: Always
@@ -1155,7 +1148,7 @@ metadata:
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-delete-policy: before-hook-creation
-spec: 
+spec:
   parallelism: 1
   template:
     metadata:
@@ -1165,7 +1158,7 @@ spec:
         helm.sh/chart: minio-14.7.0
         app.kubernetes.io/component: minio-provisioning
     spec:
-      
+
       restartPolicy: OnFailure
       terminationGracePeriodSeconds: 0
       securityContext:

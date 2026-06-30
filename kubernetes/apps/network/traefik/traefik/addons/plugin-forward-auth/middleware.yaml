@@ -17,3 +17,14 @@ spec:
       # allowedUserDomains: [company.com]
       allowedRolesAndGroups: [admin]
       excludedURLs: [/health, /metrics]
+      audience: account
+      # redis:
+      #   enabled: true
+      #   address: "redis-service.redis-namespace:6379"
+      #   password: "urn:k8s:secret:redis-secret:password"
+      #   db: 0
+      #   keyPrefix: "traefikoidc:"
+      #   cacheMode: "hybrid"
+      #   poolSize: 20
+      #   enableCircuitBreaker: true
+      #   circuitBreakerThreshold: 5

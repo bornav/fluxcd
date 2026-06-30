@@ -9,7 +9,7 @@ spec:
     - name: traefik-base
     - name: traefik-addons
   path: ./kubernetes/apps/apps/tunnel/minio-s3/access
-  suspend: true
+  suspend: false
   prune: true
   sourceRef:
     kind: GitRepository
