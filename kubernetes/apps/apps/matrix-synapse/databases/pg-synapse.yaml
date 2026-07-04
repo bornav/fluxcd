@@ -68,7 +68,7 @@ metadata:
 spec:
   retentionPolicy: 60d
   configuration:
-    destinationPath: s3://backups/postgres/cluster-cloudmatrix
+    destinationPath: s3://backups/postgres/cluster-cloud/matrix
     endpointURL: http://10.53.255.254:9000
     s3Credentials:
       accessKeyId:
