@@ -6,3 +6,4 @@ namespace: network
 resources:
   - middleware.yaml
   - secrets.yaml
+  - redis.yaml
