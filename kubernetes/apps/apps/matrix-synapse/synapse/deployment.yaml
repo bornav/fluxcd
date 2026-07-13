@@ -85,6 +85,9 @@ spec:
               value: "matrix.icylair.com"
             - name: SYNAPSE_REPORT_STATS
               value: "no"
+          envFrom:
+            - secretRef:
+                name: aws-credentials
           imagePullPolicy: IfNotPresent
           # livenessProbe:
           #   httpGet:
@@ -121,6 +124,10 @@ spec:
             - mountPath: /synapse/doublepuppet.yaml
               name: matrix-synapse-config
               subPath: doublepuppet
+            - name: s3-storage-provider
+              mountPath: /synapse/conf.d/s3-storage-provider.yaml
+              subPath: s3-storage-provider.yaml
+              readOnly: true
         - image: *synapse_image
           name: s3-upload-missing
           command:
@@ -166,5 +173,11 @@ spec:
           configMap:
             name: matrix-synapse-bridges
             defaultMode: 0777
+        - name: s3-storage-provider
+          secret:
+            secretName: aws-bucket-storage
+            items:
+            - key: s3-storage-provider.yaml
+              path: s3-storage-provider.yaml
 status: {}
 #to get the key "curl -XPOST -d '{"type":"m.login.password","identifier":{"type": "m.id.user", "user": "<username>"},"password":"<pass>","initial_device_display_name":"a fancy bridge"}' https://matrix.cloud.icylair.com/_matrix/client/v3/login"
