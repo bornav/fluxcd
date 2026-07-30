@@ -42,6 +42,11 @@ ports:
   websecure:
     http3:
       enabled: true
+    forwardedHeaders:
+      trustedIPs:
+        - "10.99.10.254"
+        - "10.129.16.254"
+        - "10.128.16.100"
     proxyProtocol:
       trustedIPs:
         - "10.99.10.254"
@@ -116,13 +121,20 @@ metrics:
     http:
       enabled: true
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
-# accessLog:
-#   enabled: true
-#   format: json
-#   otlp:
-#     grpc:
-#       insecure: true
-#       endpoint: opentelemetry-collector.observability.svc.cluster.local:4317/v1/logs
+
+accessLog:
+  enabled: true
+  format: json
+  fields:
+    headers:
+      names:
+        X-Forwarded-For: keep
+        X-Real-Ip: keep
+  otlp:
+    enabled: true
+    http:
+      enabled: true
+      endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/logs
 
 experimental:
   otlpLogs: true
