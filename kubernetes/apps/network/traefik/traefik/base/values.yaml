@@ -101,21 +101,17 @@ tlsStore:
       secretName: icylair-com-all-prod
 
 tracing:
-  addInternals: true
-  serviceName: traefik-cluster-prod
+  addInternals: false
+  serviceName: &service-name traefik-cluster-prod
   otlp:
     enabled: true
     http:
       enabled: true
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/traces
 metrics:
-  # prometheus:
-  #   serviceMonitor:
-  #     enabled: true
-  #   # prometheusRule:  # TODO this breaks it
-  #   #   enabled: true
   otlp:
     enabled: true
+    serviceName: *service-name
     addRoutersLabels: true
     addServicesLabels: true
     http:
@@ -132,6 +128,7 @@ accessLog:
         X-Real-Ip: keep
   otlp:
     enabled: true
+    serviceName: *service-name
     http:
       enabled: true
       endpoint: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/logs
