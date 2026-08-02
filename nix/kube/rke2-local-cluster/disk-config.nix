@@ -26,8 +26,8 @@
       };
       root = {
         name = "root";
-        # size = "100G";
-        size = "100%";
+        size = "128G";
+        # size = "100%";
         content = {
           type = "filesystem";
           format = "ext4";

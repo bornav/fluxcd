@@ -67,7 +67,8 @@ in {
   ];
   # "server" or "agent"
   rke2.type = "agent";
-  rke2.server_lb_address = "https://rke2-local-cp-01.local.icylair.com:9345";
+  rke2.server_lb_address = "https://10.99.10.51:9345"; # "https://rke2-local-cp-01.local.icylair.com:9345";
+  services.rke2.package = lib.mkForce pkgs.rke2_1_36;
 
   environment.etc."rancher/rke2/token".source = pkgs.writeText "token" token;
 

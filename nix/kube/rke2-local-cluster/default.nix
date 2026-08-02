@@ -47,7 +47,7 @@
   };
 
   services.rke2.tokenFile = lib.mkForce "/etc/rancher/rke2/token";
-  services.rke2.package = lib.mkForce (
+  services.rke2.package = lib.mkOverride 75 (
     pkgs.callPackage ../../modules/custom_pkg/rke2_custom.nix {
       rke2Version = "1.34.1+rke2r1";
       rke2Commit = "98b87c78e2c5a09fd8ff07bcaf4f102db1894a93";
