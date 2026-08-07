@@ -136,3 +136,7 @@ instance:
         target:
           kind: Deployment
           name: kustomize-controller
+healthcheck:
+  resources:
+    cpu: 10m
+    memory: 64Mi

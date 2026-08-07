@@ -35,7 +35,7 @@ spec:
               # cpu: 1G
               memory: 200M
             requests:
-              cpu: 50m
+              cpu: 10m
               memory: 50M
           volumeMounts: []
       volumes: []
