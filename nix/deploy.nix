@@ -18,11 +18,53 @@
   # lighthouse = inputs.nixpkgs-unstable.lib.nixosSystem {};
   nodes = {
     gatekeeper = {
-      hostname = "gatekeeper.icylair.com";
+      hostname = "gatekeeper";
       profiles.system = {
         user = "root";
+        sshUser = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.gatekeeper;
       };
     };
+    lighthouse = {
+      hostname = "lighthouse";
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.lighthouse;
+      };
+    };
+
+    rke2-local-cp-01 = {
+      hostname = "rke2-local-cp-01";
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.rke2-local-cp-01;
+      };
+    };
+    rke2-local-node-01 = {
+      hostname = "rke2-local-node-01";
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.rke2-local-node-01;
+      };
+    };
+    rke2-local-node-02 = {
+      hostname = "rke2-local-node-02";
+      profiles.system = {
+        user = "root";
+        sshUser = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.rke2-local-node-02;
+      };
+    };
+    # rke2-local-node-03-secured = {
+    #   hostname = "rke2-local-node-03-secured";
+    #   profiles.system = {
+    #     user = "root";
+    #     sshUser = "root";
+    #     path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.rke2-local-node-03-secured;
+    #   };
+    # };
   };
 }

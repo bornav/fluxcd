@@ -14,6 +14,8 @@ let
       - rke2-snapshot-controller
       - rke2-snapshot-controller-crd
       - rke2-snapshot-validation-webhook
+      - rke2-traefik
+      - rke2-traefik-crd
     kube-apiserver-arg:
       - oidc-issuer-url=https://sso.icylair.com/realms/master
       - oidc-client-id=kubernetes

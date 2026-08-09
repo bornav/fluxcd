@@ -28,6 +28,8 @@ let
       - rke2-snapshot-controller
       - rke2-snapshot-controller-crd
       - rke2-snapshot-validation-webhook
+      - rke2-traefik
+      - rke2-traefik-crd
     # control-plane-resource-requests:
     #   - kube-apiserver-cpu=500m
     #   - kube-apiserver-memory=512M
