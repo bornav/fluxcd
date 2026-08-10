@@ -1,4 +1,0 @@
-[ssh_connection]
-control_path = /tmp/ansiblesshh
-control_path_dir = /tmp
-pipelining = true 
