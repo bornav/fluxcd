@@ -11,6 +11,7 @@ resources:
   # - cloud-icylair-com.yaml
   # - icylair-com.yaml
   - icylair-com-all.yaml
+  - icylair-com-netbird.yaml
 patches:
   - target:
       kind: Certificate

@@ -11,6 +11,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/client-body-buffer-size: "10G"
     nginx.ingress.kubernetes.io/client-max-buffer-size: "10G"
+
+    # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    # traefik.ingress.kubernetes.io/router.tls: "true"
+    # # Middleware chain
+    # traefik.ingress.kubernetes.io/router.middlewares: >-
+    #   apps-media-stack-chromecast-headers@kubernetescrd,
+    #   apps-media-stack-sticky@kubernetescrd
 spec:
   ingressClassName: traefik-external
   rules:
@@ -50,3 +57,77 @@ spec:
       - jelly.icylair.com
       - jelly.cloud.icylair.com
     secretName: icylair-com-all-prod
+---
+# ServersTransport: increase timeouts for long media streams
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: jellyfin-transport
+spec:
+  serverName: jellyfin
+  insecureSkipVerify: false
+  # Long timeouts for media streaming / transcoding
+  # dialTimeout: 30s
+  # responseHeaderTimeout: 120s
+  # idleConnTimeout: 90s
+  forwardingTimeouts:
+    dialTimeout: 30s
+    responseHeaderTimeout: 120s
+    idleConnTimeout: 90s
+---
+# Middleware: sticky sessions so seek/stream requests hit the same pod
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: sticky
+spec:
+  # Sticky is configured on the ServersTransport / Service level;
+  # use a PassThrough here and configure stickiness on the IngressRoute
+  # if you use multiple Jellyfin replicas (usually just 1 replica is used).
+  # Remove this middleware if running a single replica.
+  buffering:
+    maxResponseBodyBytes: 0   # unlimited — needed for large media responses
+    retryExpression: ""
+---
+# Middleware: CORS + headers required for Chromecast
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: chromecast-headers
+spec:
+  headers:
+    # Chromecast requires permissive CORS
+    accessControlAllowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      - HEAD
+    accessControlAllowHeaders:
+      - Accept
+      - Accept-Language
+      - Authorization
+      - Content-Type
+      - Origin
+      - Range
+      - X-MediaBrowser-Token
+      - X-Emby-Authorization
+    accessControlAllowOriginList:
+      - "*"                         # lock down to your domain in production
+    accessControlExposeHeaders:
+      - Content-Range
+      - Accept-Ranges
+    accessControlMaxAge: 600
+
+    # WebSocket passthrough (needed for Jellyfin <-> Chromecast signalling)
+    customRequestHeaders:
+      X-Forwarded-Proto: "https"
+      Connection: ""                # clear hop-by-hop header
+      Upgrade: ""
+
+    customResponseHeaders:
+      X-Content-Type-Options: "nosniff"
+
+    # Required for byte-range media streaming (Chromecast seeks)
+    isDevelopment: false
