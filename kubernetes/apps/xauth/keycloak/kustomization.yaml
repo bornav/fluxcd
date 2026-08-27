@@ -5,9 +5,8 @@ kind: Kustomization
 namespace: xauth
 resources:
   #https://www.keycloak.org/operator/installation
-  - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.6.0/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
-  - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.6.0/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
-  - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.6.0/kubernetes/kubernetes.yml
+  - github.com/keycloak/keycloak-k8s-resources/kubernetes?ref=26.7.2
+
 
   - secret.yaml
   # - release.yaml
