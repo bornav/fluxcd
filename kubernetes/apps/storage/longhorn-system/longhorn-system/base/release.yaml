@@ -22,6 +22,9 @@ spec:
       # reclaimPolicy: Delete
       # defaultClassReplicaCount: 2
     defaultSettings:
+      GuaranteedEngineManagerCPU: "5" # means percentage 12%
+      GuaranteedReplicaManagerCPU: "5" # means percentage 12%
+      GuaranteedInstanceManagerCPU: "5" # means percentage 12%
       ##CIFS
       # backupTarget: "cifs://wireguard.network.svc.cluster.local/longhorn_kubernetes_backup"
       # backupTargetCredentialSecret: cifs-secret
@@ -63,9 +66,6 @@ spec:
           value: "true"
           effect: NoSchedule
     longhornManager:
-      resources:
-        requests:
-          cpu: 50m
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: "Equal"
