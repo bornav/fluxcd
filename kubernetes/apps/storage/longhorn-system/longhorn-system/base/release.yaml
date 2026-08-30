@@ -63,6 +63,9 @@ spec:
           value: "true"
           effect: NoSchedule
     longhornManager:
+      resources:
+        requests:
+          cpu: 50m
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: "Equal"
