@@ -33,7 +33,7 @@ spec:
   superuserSecret:
     name: synapse-pg-superuser
   storage:
-    storageClass: longhorn-cngp-eph
+    storageClass: oebs-local-hostpath
     size: 20Gi
   externalClusters:
     - name: &name matrix-pg-synapse
