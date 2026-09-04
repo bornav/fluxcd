@@ -12,7 +12,7 @@ spec:
   superuserSecret:
     name: keycloak-pg-superuser
   storage:
-    storageClass: longhorn-cngp-eph
+    storageClass: oebs-local-hostpath
     size: 5Gi
   externalClusters:
     - name: &name pg-keycloak
