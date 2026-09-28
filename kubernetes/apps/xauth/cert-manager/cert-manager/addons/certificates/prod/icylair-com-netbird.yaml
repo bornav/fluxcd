@@ -8,11 +8,10 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: '*.icylair.com'
   dnsNames:
-    - 'icylair.com'
-    - '*.proxy.icylair.com'
-    - '*.netbird.icylair.com'
+    - "netbird.icylair.com"
+    - "*.proxy.icylair.com"
+    - "*.netbird.icylair.com"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: ""
