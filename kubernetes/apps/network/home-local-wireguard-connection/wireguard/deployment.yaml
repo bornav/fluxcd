@@ -83,7 +83,7 @@ spec:
               add:
                 - NET_ADMIN
         - name: haproxy-proxy
-          image: haproxy:2.8-alpine
+          image: haproxy:3.4-alpine
           ports:
             - containerPort: 9010
               protocol: TCP
