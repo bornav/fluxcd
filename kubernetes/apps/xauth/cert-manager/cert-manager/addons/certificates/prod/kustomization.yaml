@@ -4,13 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: xauth
 resources:
-  #- icecoldlair-com.yaml
-  #- local-icecoldlair-com.yaml
-  #- cloud-icecoldlair-com.yaml
-  #- icecoldlair-com.yaml
-  # - cloud-icylair-com.yaml
-  # - icylair-com.yaml
   - icylair-com-all.yaml
+  - icylair-com-sso.yaml
   - icylair-com-netbird.yaml
 patches:
   - target:

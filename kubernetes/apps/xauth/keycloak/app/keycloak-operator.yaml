@@ -17,7 +17,7 @@ spec:
       name: keycloak-auth
       key: password
   http:
-    tlsSecret: icylair-com-all-prod
+    tlsSecret: icylair-com-sso
   hostname:
     hostname: sso.icylair.com
   ingress:
@@ -79,4 +79,4 @@ spec:
   tls:
     - hosts:
         - sso.icylair.com
-      secretName: icylair-com-all-prod
+      secretName: icylair-com-sso
