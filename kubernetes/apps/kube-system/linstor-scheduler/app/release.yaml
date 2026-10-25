@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: linstor-scheduler
-      version: 0.2.3
+      version: 0.3.1
       sourceRef:
         kind: HelmRepository
         name: piraeus
