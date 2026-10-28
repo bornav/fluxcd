@@ -1,10 +1,15 @@
 # Renovate batch merge — 2026-10-28
 
-Branch `batch/renovate-2026-10-28` (based on `origin/main` @ 487ae6b7) merges **70 of 89** open Renovate PRs.
+Branch `batch/renovate-2026-10-28` (based on `origin/main` @ 487ae6b7) merges **69 of 89** open Renovate PRs.
 Each PR keeps its original commit (author = renovate[bot], `(cherry picked from commit ...)` trailer).
 PRs whose stale branches carried outdated traefik hunks were cherry-picked with the traefik files restored to main, so **your traefik values (accessLog, trustedIPs, plugins) are untouched**; the traefik chart bump itself (#2698 → 42.1.3) was re-applied on top.
 
-## Skipped PRs (19)
+## Skipped PRs (20)
+
+### Operator veto (1)
+| PR | Dependency | Reason |
+|---|---|---|
+| #2601 | chart cilium 1.18.9 → 1.20.0 (+ helmfile lockstep) | Operator: "would break". Reverted on the branch — both `cilium/app/release.yaml` and `bootstrap/helmfile.yaml` stay at 1.18.9. |
 
 ### Breaking AND you are affected (2)
 | PR | Dependency | Reason |
@@ -53,7 +58,6 @@ Older Renovate branches for the same dependency:
 - **#2694 onlyoffice 7.5→10.0 (filestash docker-compose, not deployed):** inert; if ever run, JWT is now on by default → set shared secret.
 - **#2620 stork 26.4.2 (dead code):** Portworx not used anywhere, ks commented out, config uses removed `v1beta3` scheduler API. **Consider deleting `kubernetes/apps/kube-system/stork-scheduler/` instead.**
 - **#2618 authentik 2026.8.5 (ks suspend:true):** inert on this branch; yearly major — run authentik's migration/preflight steps before unsuspending.
-- **#2601 cilium 1.18.9→1.20.0:** all repo values keys still valid; `helmfile.yaml` bumped in lockstep; run cilium preflight before applying.
 - **#2674 redis 7→8 (active):** traefik forward-auth session cache; plain redis-server + requirepass, no modules/eviction config, Redis 8 loads 7.x RDB — compatible.
 - **#2670 checkout v7 (self-hosted runner):** only caveat — runner must be ≥2.329.0 (creds persisted via $RUNNER_TEMP since v6); workflow is workflow_dispatch-only so the fork-PR guard doesn't apply.
 
