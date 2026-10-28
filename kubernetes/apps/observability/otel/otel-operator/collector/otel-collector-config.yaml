@@ -177,5 +177,5 @@ spec:
             ]
           # exporters: [debug, otlphttp] # for cli loging
       telemetry:
-        metrics: []
+        metrics: {}
           # address: ${env:MY_POD_IP}:8888
