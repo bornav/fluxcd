@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: opentelemetry-operator
-      version: 0.102.0
+      version: 0.127.0
       sourceRef:
         kind: HelmRepository
         name: open-telemetry
@@ -29,7 +29,7 @@ spec:
     manager:
       collectorImage:
         repository: otel/opentelemetry-collector-k8s
-        tag: 0.142.0
+        tag: 0.164.0
     admissionWebhooks:
       certManager:
         enabled: true
