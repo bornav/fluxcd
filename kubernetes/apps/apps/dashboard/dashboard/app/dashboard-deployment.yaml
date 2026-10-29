@@ -42,6 +42,12 @@ spec:
               path: /
               port: 3000
               scheme: HTTP
+              httpHeaders:
+                # homepage v2.x validates the Host header against
+                # HOMEPAGE_ALLOWED_HOSTS; the kubelet probe sends the pod IP,
+                # which fails validation and caused CrashLoopBackOff.
+                - name: Host
+                  value: dashboard.icylair.com
             initialDelaySeconds: 5
           volumeMounts:
             - mountPath: /app/config/settings.yaml
