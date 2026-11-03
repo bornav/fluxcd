@@ -10,6 +10,22 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - "netbird.icylair.com"
+    - "git.icylair.com"
+    - "music.icylair.com"
+    - "navidrome.icylair.com"
+    - "forgejo.icylair.com"
+    - "bifrost.icylair.com"
+    - "grafana.icylair.com"
+    - "tachidesk.icylair.com"
+    - "tachi.icylair.com"
+    - "jelly.icylair.com"
+    - "jellyfin.icylair.com"
+    - "seerr.icylair.com"
+    - "immich.icylair.com"
+    - "n8n.icylair.com"
+    - "nc.icylair.com"
+    - "nextcloud.icylair.com"
+    - "opencloud.icylair.com"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: ""
