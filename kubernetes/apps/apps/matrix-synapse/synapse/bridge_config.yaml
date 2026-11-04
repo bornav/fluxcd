@@ -7,16 +7,25 @@ metadata:
     name: matrix-synapse-bridges
 sops:
     age:
-        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
-          enc: |
+        - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnSTVacnZNZUVwTTR3RFFi
-            RnFGMys4SGFKYnNhTkF1RGRyUnlQa1E3V0cwCm1QTmNORWV3Y2VUZXlRblFqWSsw
-            c3hDVmJ0TVcvVUt4eGJYYm1NWm1jdG8KLS0tIHVnZjcvTHAvemNDOTJHVFplR0pu
-            M3V3NWwxOE5vUjBzT1NhVDhYVm9zVUUKGIXqk+M54eufekUzW6hZaIuQoXgzVP9V
-            eXttiiOrSoftAbvlt+Zrk6x7pwzPzine5QmCvXXjPn5dDuraJ0YsDg==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBZRjBleC9CUlBIdEtlbXMz
+            eEpXRXQ1ZnlGT1AvOTZNQmhQWnJWN3FQR0NnCk04NFNsYlQ4c1k2cEJ4YjdCOGtT
+            UjJrdENnazR4Z2dUSnpyNWpudGxoSmsKLS0tIHp6bC9rU2NTQTNLZEVUSEZWR2Ft
+            VjN6Ymk3UE9vaHV6bHdJVngvdVFmaWcKOFcXoy7woSK1ggjzvWxXYt/Y5DTO5SJ4
+            Di0squ09zd5NX34PX6oRbOluL0XKd8tR/4kmlIel13FoQve118tCjw==
             -----END AGE ENCRYPTED FILE-----
+          recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBTTkJFVzk2WWlpdmVuaFl6
+            bHQ3RkRPdUVpOEY0ZlZET3JhdVpCRWM1NmdJCm9tcCtFOEE2ZUZHYXZnOXR3bnUx
+            cDNnWkFrMGpRaW44M0RMZzJWTjdtT0EKLS0tIDVyMVJKdmlFcVFqYUhoR0hvODZT
+            QlNWOXlUeVp2by9kSTVVcU14d1RGWlUKqEsXjIPpNHKaSGjiUL4wBRYE8KjCtUhD
+            SodamjsNSoGot6MLr6FOAz7+aQD+UhYEQtuvCGmE1kK6VUPoqtDJLg==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1694jaeekzre65p4y4r8x565jdqeef39qrm88gp5dttpwq7khedcseykave
+    encrypted_regex: ^(data|data)$
     lastmodified: "2025-08-01T16:04:16Z"
     mac: ENC[AES256_GCM,data:zv2hkoov5qNCBnRZmb/xDQX07pbM3dh3m4JjL+5o64GZbkj0RypfzJkqQhZF88GWnJ+OUgRZTBO/Eiq//wcbqJhpvgoSu0/kraDbQnz9omQV4SlkmQFraoWN6KLNgvib0lhvrg/oix6Xawex1OBX08ZytXX7KoRhXRJbNJNDvRg=,iv:p5n8IWL7bz2n6LQlotTre0oFvtDzwsV7SLlCyxZvIeA=,tag:Hor3+A8Ett3RhCsMLIuJRw==,type:str]
-    encrypted_regex: ^(data|data)$
     version: 3.10.2

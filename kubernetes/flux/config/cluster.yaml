@@ -7,11 +7,9 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  url: ssh://git@github.com/bornav/fluxcd.git
+  url: https://github.com/bornav/fluxcd.git
   ref:
     branch: main
-  secretRef:
-    name: github-ssh-key
   ignore: |
     # exclude all
     /*

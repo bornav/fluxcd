@@ -5,22 +5,26 @@ kind: ConfigMap
 metadata:
     name: teamspeak-dns-update
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
     age:
-        - recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
-          enc: |
+        - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnSTVacnZNZUVwTTR3RFFi
-            RnFGMys4SGFKYnNhTkF1RGRyUnlQa1E3V0cwCm1QTmNORWV3Y2VUZXlRblFqWSsw
-            c3hDVmJ0TVcvVUt4eGJYYm1NWm1jdG8KLS0tIHVnZjcvTHAvemNDOTJHVFplR0pu
-            M3V3NWwxOE5vUjBzT1NhVDhYVm9zVUUKGIXqk+M54eufekUzW6hZaIuQoXgzVP9V
-            eXttiiOrSoftAbvlt+Zrk6x7pwzPzine5QmCvXXjPn5dDuraJ0YsDg==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBuMS9QNVcxNUtnVHJFeXdt
+            U0FsSG5kQzZhTGxmYU10S2tzOGtTSFZySW1rClMrUGhSNnpiemJhVm9pVGtNZWF0
+            V2I2N3BTWUUvejFzNTJKYnJ2MFRHZFUKLS0tIHBubnlDdjU5S25OVjQ3MTF5T3gv
+            TkM1TEdsN3lYNEVRNTRiWENGQ2QzOGcKYhsZmi4toJT1kT2ctxISK9G6aEY5x118
+            vkGGNlw2qmIkkElHeOpFwltxbpHcRkAgh7mg1lsVk36HB4He7ICEsg==
             -----END AGE ENCRYPTED FILE-----
+          recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJa3J6cEd1MktLRHBsUWhQ
+            bDB3eEsvM0k0TlFsUXhiRW9HZ3lidzVLZ1FVCmhyam5hVi9tSGdEN0E4WDV1ZDZM
+            US9NMFNLdFpWbzNINTlNUDVBcmlQVDQKLS0tIHpEaFFBUnQ4eXRGV0RsUTlMYzV2
+            enRWVVNuTExnTlVpUjZTVGVhRU5JVmMKXbGubOSYR3wKNZ47ccUv/Teug3JIV3pW
+            ULfWAXN3xPeDjXSMByfdw1kOrxlOPXPpFBzRjI1rE76B8LnLKTolnA==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1694jaeekzre65p4y4r8x565jdqeef39qrm88gp5dttpwq7khedcseykave
+    encrypted_regex: ^(data|data)$
     lastmodified: "2024-07-18T12:06:40Z"
     mac: ENC[AES256_GCM,data:hKL0mkwcjtMKhxQB/k7GzWrrPYPRcxW3dTnsdHcACHDHAT5LKD+j5FCt8TLcQy49uWRRvSYN2fvyqFDGLzopQpv7pXfO3orqyL9rQI0T0Wapq4UXpF5SUUBFq1aVCcsD0mI9yhXMD/ZIj++HWJ9RZidxUpg5AIwg5B90NMaycXg=,iv:HJhQ1Q5Ms/eXWeQHX0n5VVEjM8MwWCv4anqgA/SopMk=,tag:yI+2+9+7AyQO2BXREoesCw==,type:str]
-    pgp: []
-    encrypted_regex: ^(data|data)$
     version: 3.9.0
