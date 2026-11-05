@@ -10,20 +10,11 @@ sops:
     age:
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2TEdBS0tWWHZ4Y3A4bXl2
-            VVphUmEwME4wMFVWaklDb0pQdUc5VkdYc0dNCmFuWXExV3VGSDZrVFovVCtXd3Jm
-            RWNjb2VNUlBaZzhMdFpjNUFoRUNRVGcKLS0tIG1zNVE2UTJIbnZBQlE3eUZmYW9s
-            aEF5aUplS2ZkUWlJcE5lek1pRnc3R0UKkNQwHyu9VDhOYBk364+XKtBqZtqEkfo2
-            SMXQWgEpO6ksp2othipVZY3gffDfvVGPkl2IvFb3AzNRP7GTF10LxA==
-            -----END AGE ENCRYPTED FILE-----
-          recipient: age1878n4cfsfpjqquszn2tlj0kq8ckwhdyx5eqjl32rh5vfs265gydq4myw6a
-        - enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBPWUpod0xRQjZyVC8wcURD
-            Qm0zWkY1UXF0YW03SzB4OEJIUlV2Vk5kd2xRCnlJYmpIZEJUWm1yQ2YveFFrdUh1
-            cGhWZFdPZnQxMUVhMTYxREwwUjIyUVUKLS0tIFltcjNCeSs1aGVVb2M1a3BHOW1l
-            RGpFNXFnNWUrdG1nOUliMXZjWC9PK0kKgnvTOgAQ8Rjk5NjKYWv/yoBQEj8z6P0d
-            /a8jhj+5Fw3lSPCh/jLRshjViaSpy1J3jiF8+vreI1ygPTaX2DzTkQ==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYWm5rT0xTa1FPVFRDSDZk
+            bnFjZ0JlZG5HK1ltOVU5dVYvWGNzOWxraFRJCkFDYVpkVmZCZHdxbTNFUUFyanVk
+            TFRjQmxEVDJNZUxQMW16SGk4M3IrRmsKLS0tIERWSWRJUWEyVEJ0ZXNGZGNvS1JK
+            U08yUlBiZE5TQk5zU3cwTkZ3NUtZZTQKuIX0jSTEMUH5jAU7x4vCpCQRVNL/uF45
+            f4GkF2gfuPv8Cy2jegBGV84QbdymkkvctZuPU7+c6pZ5HhZ3Fy9QsA==
             -----END AGE ENCRYPTED FILE-----
           recipient: age1694jaeekzre65p4y4r8x565jdqeef39qrm88gp5dttpwq7khedcseykave
     lastmodified: "2026-11-04T21:32:37Z"
