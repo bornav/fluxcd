@@ -11,6 +11,7 @@ namespace: apps-ntify
 resources:
   - namespace.yaml
   - configmap-ntfy.yaml
+  - externalsecret-ntfy.yaml
   - pvc.yaml
   - deployment.yaml
   - middleware-https.yaml

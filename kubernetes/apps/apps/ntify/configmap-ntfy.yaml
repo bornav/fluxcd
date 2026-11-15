@@ -27,9 +27,15 @@ data:
     # push, no SMTP, no metrics. Rate limits otherwise at ntfy defaults.
     global-topic-limit: 1000
 
-    # NOTE on access control: like ntfy.sh, this instance is open by default
-    # (everyone can read/write topics). UnifiedPush topics are unguessable
-    # random strings (up_...), so capability-by-URL is the actual security
-    # model. To harden into a private instance later: set auth-default-access
-    # to deny-all, grant "*:up* rw" (UnifiedPush keeps working), and
-    # provision named users via auth-users (bcrypt hash from Vault, not git).
+    # Access control: private instance. Everyone else is denied by default;
+    # the single exception is "up*" topics (UnifiedPush): the phone
+    # subscribes as the logged-in ntfy user, but SYNAPSE publishes to the
+    # up_<random> push URL anonymously, so anonymous clients need rw there.
+    # Security model for up*: capability-by-URL (unguessable random topic).
+    # The admin user (bornav) is provisioned declaratively via the
+    # NTFY_AUTH_USERS env var (bcrypt hash from Vault -> ntfy-secrets
+    # ExternalSecret), never stored in git.
+    auth-file: "/var/lib/ntfy/user.db"
+    auth-default-access: "deny-all"
+    auth-access:
+      - "*:up*:rw"

@@ -32,6 +32,15 @@ spec:
         - name: *name
           image: "harbor.icylair.com/docker.io/binwiederhier/ntfy:v2.38.0"
           args: ["serve"]
+          env:
+            # Declarative admin user "bornav:<bcrypt>:admin" (Vault ->
+            # ntfy-secrets). Removing it from the env/config deletes the
+            # provisioned user on next start, so manage via Vault.
+            - name: NTFY_AUTH_USERS
+              valueFrom:
+                secretKeyRef:
+                  name: ntfy-secrets
+                  key: auth_users
           ports:
             - name: http
               containerPort: 8080
