@@ -32,11 +32,16 @@ data:
       - "*:up*:rw"
 
     # --- attack surface: kill everything we don't use ---------------------
-    # Web app fully disabled (web-root "" internally): no SPA, no login page,
-    # no account UI exposed to the internet. The ntfy Android/iOS apps and
-    # synapse talk to the JSON API only; browsing topics is via authenticated
-    # curl/API. Flip back to web-root: "/" if the UI is ever wanted.
-    web-root: "disable"
+    # Web app moved OFF the root path to "/app" (NOT fully disabled). Reason:
+    # the UnifiedPush discovery route GET /<topic>?up=1 is dispatched via
+    # handleTopic which is gated by ensureWebEnabled -- web-root "disable"
+    # (WebRoot=="") 404s that route and BREAKS distributor registration
+    # (verified live: discovery returned 404). "/app" keeps ensureWebEnabled
+    # satisfied (so ?up=1 discovery AND the app's /v1/config work) while the
+    # obvious root "/" falls through to 404 (root SPA only served when
+    # WebRoot=="/" -- verified server.go:770). SPA at /app is inert anyway
+    # (deny-all + signup off). Flip to "disable" only if you drop UnifiedPush.
+    web-root: "/app"
     # Account self-service OFF everywhere (signup endpoint 400s even via
     # API; verified in server_account.go handleAccountCreate). Basic-auth
     # login for the provisioned user is NOT affected by these flags --
