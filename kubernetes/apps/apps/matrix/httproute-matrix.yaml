@@ -6,7 +6,8 @@
 # the Helm-managed name, and helm's 3-way merge would delete a route of that
 # name when the chart stops rendering one.
 #
-# Rules: /_matrix/push -> sygnal (ahead of the catch-all), /_matrix -> synapse,
+# Rules: /_matrix -> synapse (catch-all; the former /_matrix/push -> sygnal rule
+# was removed when sygnal was retired -- ntfy owns push now),
 # /.well-known/matrix -> wellknown-lighttpd (chart service). login/logout/
 # refresh -> MAS stays in the git-owned synapse-mas-client route (release-mas
 # .yaml), whose more-specific matches outrank the /_matrix Prefix here.
@@ -28,27 +29,6 @@ spec:
   hostnames:
     - matrix.icylair.com
   rules:
-    # --- push gateway (sygnal) ahead of the /_matrix catch-all ---
-    - filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: matrixredirecthttps
-        - type: ExtensionRef
-          extensionRef:
-            group: traefik.io
-            kind: Middleware
-            name: matrixsecureheaders
-      matches:
-        - path:
-            type: PathPrefix
-            value: /_matrix/push
-      backendRefs:
-        - group: ""
-          kind: Service
-          name: sygnal
-          port: 5000
     # --- everything else under /_matrix -> synapse ---
     - filters:
         - type: ExtensionRef

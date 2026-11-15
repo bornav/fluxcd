@@ -24,10 +24,10 @@ data:
     app_service_config_files:
       - /synapse/registrations/whatsapp-registration.yaml
 
-    # Push notifications -> in-cluster sygnal (see sygnal.yaml). Pusher
-    # registration + notify dispatch are enabled; sygnal itself has no app
-    # credentials yet (apps: {}), so pushes for unknown app_ids are rejected
-    # cleanly while the plumbing is in place.
+    # Push notifications enabled: synapse registers pushers and POSTs
+    # notifications to each pusher's URL (UnifiedPush clients like Element X
+    # point those at ntfy.icylair.com, which has its own built-in Matrix
+    # notify handling -- there is deliberately no in-cluster sygnal anymore).
     push:
       enabled: true
       include_content: true
