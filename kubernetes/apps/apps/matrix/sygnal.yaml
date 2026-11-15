@@ -1,10 +1,33 @@
 ---
 # Push gateway (Sygnal) for matrix.icylair.com.
 # Sygnal is stateless (no database): it fans synapse's POSTs from
-# /_matrix/push/v1/notify out to APNs/FCM pushkins. With no `apps:` entries it
-# starts clean and rejects unknown app_ids -- the plumbing (endpoint + pusher
-# registration) works; real FCM/APNs credentials can be added to sygnal.yaml
-# later without touching anything else.
+# /_matrix/push/v1/notify out to pushkins (webpush now; APNs/FCM when creds
+# exist). NOTE: sygnal refuses to start with zero pushkins, so `apps:` must
+# never be empty -- the credential-free webpush pushkin is always configured.
+---
+# VAPID signing key for the webpush pushkin. NEW secret generated during this
+# change (openssl P-256), stored in Vault at
+# secret/matrix-sygnal-local/sygnal-vapid (field vapid_private_key_pem);
+# nothing existing was rotated.
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: sygnal-secrets
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: vault-backend-cross-namespaces-secret
+  target:
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    name: sygnal-secrets
+  data:
+    - secretKey: vapid_private_key_pem
+      remoteRef:
+        key: matrix-sygnal-local/sygnal-vapid
+        property: vapid_private_key_pem
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -38,7 +61,8 @@ data:
       prometheus:
         enabled: false
 
-    # Add pushkin entries here when credentials exist, e.g.:
+    # Add FCM/APNs pushkin entries here when credentials exist (classic
+    # Element mobile push):
     # apps:
     #   im.vector.app.android:
     #     type: gcm
@@ -47,7 +71,24 @@ data:
     #   im.vector.app.ios:
     #     type: apns
     #     keyfile: ... key_id: ... team_id: ... topic: ...
-    apps: {}
+    #
+    # Sygnal refuses to start with zero pushkins, so the credential-free
+    # webpush pushkin is always present. Element Web (v1.12.x) does not
+    # register webpush pushers, so nothing hits it today; it keeps sygnal
+    # healthy and is the hook for web push if the client ever supports it.
+    apps:
+      org.matrix.webpush:
+        type: webpush
+        # PEM file rendered from the sygnal-secrets Secret (ExternalSecret),
+        # projected next to this config file.
+        vapid_private_key: /etc/sygnal/vapid_private.pem
+        vapid_contact_email: admin@icylair.com
+        # Only relay to well-known browser push services.
+        allowed_endpoints:
+          - "updates.push.services.mozilla.com"
+          - "*.updates.push.services.mozilla.com"
+          - "fcm.googleapis.com"
+          - "*.notify.windows.com"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -98,8 +139,15 @@ spec:
               readOnly: true
       volumes:
         - name: config
-          configMap:
-            name: sygnal-config
+          projected:
+            sources:
+              - configMap:
+                  name: sygnal-config
+              - secret:
+                  name: sygnal-secrets
+                  items:
+                    - key: vapid_private_key_pem
+                      path: vapid_private.pem
 ---
 apiVersion: v1
 kind: Service
