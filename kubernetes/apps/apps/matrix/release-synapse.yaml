@@ -1,0 +1,144 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: ananace-charts
+spec:
+  interval: 2h
+  url: https://ananace.gitlab.io/charts
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: synapse
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: matrix-synapse
+      version: 3.12.41
+      sourceRef:
+        kind: HelmRepository
+        name: ananace-charts
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    # Adopting prod's server_name for the cloud->local migration test: restored
+    # prod data (users/rooms @matrix.icylair.com) is only usable when the local
+    # homeserver serves the same server_name. Public DNS still points at the
+    # cloud instance; federation is fenced off via federation_domain_whitelist
+    # (see synapse-config ConfigMap) so this test can't split-brain prod.
+    serverName: &domain matrix.icylair.com
+    wellknown:
+      enabled: true
+    postgresql:
+      enabled: false
+    externalPostgresql:
+      host: matrix-pg-rw
+      username: synapse
+      database: synapse
+      existingSecret: synapse-ext-new
+      existingSecretPasswordKey: password
+
+    persistence:
+      enabled: false
+    ingress:
+      enabled: false
+      traefikPaths: true
+      includeUnderscoreSynapse: false # chart default is true; admin API must not be routed
+      includeServerName: true
+
+    gateway:
+      enabled: true
+      traefikPaths: true
+      # csHosts:
+      #    - *domain
+      parentRefs:
+        - name: traefik-gateway
+          namespace: network
+      # includeUnderscoreSynapse=false: the chart default is true, which routes
+      # /_synapse (admin API) onto the public gateway. Use kubectl port-forward for admin.
+      includeUnderscoreSynapse: false
+      includeServerName: true
+    signingkey:
+      job:
+        enabled: false
+      existingSecret: signing-key
+      existingSecretKey: signing.key
+    synapse:
+      annotations:
+        # Restart Synapse when the bridge registration Secret changes
+        # (appservice registrations are only read at startup).
+        reloader.stakater.com/auto: "true"
+      # Synapse image default UID:GID is 666:666; fsGroup makes the emptyDir
+      # volumes (conf.d, tmp, data) writable by it, enabling a read-only root fs.
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 666
+        runAsGroup: 666
+        fsGroup: 666
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
+      extraVolumes:
+        - name: synapse-config
+          configMap:
+            name: synapse-config
+            defaultMode: 0777
+        - name: app-secrets
+          secret:
+            secretName: synapse-app-secrets
+            # fsGroup: 666 owns the group; 0440 = readable only by the synapse process
+            defaultMode: 0440
+        - name: bridge-registrations
+          secret:
+            secretName: whatsapp-bridge-config
+            defaultMode: 0440
+        # Media -> S3 fallback (prod parity): provider code + generated conf.
+        - name: scripts
+          emptyDir: {}
+        - name: s3-storage-provider
+          secret:
+            secretName: s3-media-storage
+            defaultMode: 0440
+      extraVolumeMounts:
+        - name: synapse-config
+          mountPath: /synapse/config/conf.d/mas.yaml
+          subPath: mas.yaml
+        - name: synapse-config
+          mountPath: /synapse/config/conf.d/config.yaml
+          subPath: config.yaml
+        - name: app-secrets
+          mountPath: /synapse/app-secrets
+          readOnly: true
+        - name: bridge-registrations
+          mountPath: /synapse/registrations
+          readOnly: true
+        - name: scripts
+          mountPath: /scripts
+        - name: s3-storage-provider
+          mountPath: /synapse/config/conf.d/s3-storage-provider.yaml
+          subPath: s3-storage-provider.yaml
+      # Runs in the synapse container before exec (root fs is read-only, so
+      # everything installs into the /scripts emptyDir). Same provider version
+      # as prod (v1.6.1); boto3 from PyPI (reachable from this cluster).
+      # NOTE: the chart renders each entry on one line, so keep them single-line.
+      extraCommands:
+        - "set -e; if [ ! -d /scripts/synapse-s3-storage-provider ]; then curl -fsSL --retry 8 https://github.com/matrix-org/synapse-s3-storage-provider/archive/refs/tags/v1.6.1.tar.gz -o /scripts/s3p.tar.gz && tar xzf /scripts/s3p.tar.gz -C /scripts && mv /scripts/synapse-s3-storage-* /scripts/synapse-s3-storage-provider && rm -f /scripts/s3p.tar.gz; fi; python -c 'import boto3' 2>/dev/null || pip install --quiet --no-cache-dir --target /scripts boto3; export PYTHONPATH=$PYTHONPATH:/scripts/synapse-s3-storage-provider:/scripts"

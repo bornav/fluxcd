@@ -1,0 +1,188 @@
+# Single merged Postgres for the whole matrix stack: one CNPG cluster with
+# three logical databases (synapse via initdb; mas + whatsapp via Database
+# CRs). Replaces the previous three single-instance clusters
+# (matrix-pg-synapse / matrix-pg-synapse-mas / matrix-pg-whatsapp).
+#
+# Rationale: all three consumers used the same PG image and the same role;
+# merging removes 2 pods, 2 PVCs and 2 backup/service/secret sets while
+# keeping logical isolation (separate databases — mautrix bridges refuse to
+# share one database with foreign tables, so NOT one shared schema).
+# instances: 3 mirrors prod's CNPG shape (HA with automatic failover).
+#
+# Connection targets: matrix-pg-rw/synapse | matrix-pg-rw/mas | matrix-pg-rw/whatsapp
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: matrix-pg
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.6-system-trixie
+  managed:
+    services:
+      disabledDefaultServices: ["ro", "r"] # removes 2 services
+    roles:
+      - name: synapse
+        superuser: true
+        login: true
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      # Merged budget: previously 150 + 150 + 100 across three clusters;
+      # actual combined usage was ~35 connections.
+      max_connections: '200'
+  superuserSecret:
+    name: synapse-pg-superuser
+  storage:
+    pvcTemplate:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
+      storageClassName: longhorn-storage # cloud cluster (local used openebs-hostpath)
+      volumeMode: Filesystem
+  bootstrap:
+    # CUTOVER: restore from the barman-cloud archive this archive is written to
+    # (serverName matrix-pg; the local stack archives to the SAME cloud prefix).
+    # PITR to the latest WAL unless recoveryTarget pins a point. The MAS db +
+    # bornav account + Keycloak link live inside this cluster, so they come back
+    # with the restore. To re-init from scratch instead, swap back to initdb.
+    recovery:
+      source: &restore-src matrix-pg
+      # recoveryTarget:
+      #   backupID: "20261114T154306"
+    # initdb:
+    #   database: synapse
+    #   owner: synapse
+    #   secret:
+    #     name: synapse-ext-new
+    #   encoding: UTF8
+    #   locale: C
+  # Backups: barman-cloud plugin -> rustfs `backups` bucket. Destination is the
+  # CLOUD archive prefix (`cluster-cloud`) on purpose: the plan is to delete
+  # this local stack within a few days and rebuild the matrix stack on the
+  # cloud cluster via FluxCD; the archive must be readable there. rustfs is one
+  # shared instance (local view 10.2.11.200, cloud view 10.53.255.254) and the
+  # bucket/prefix are identical. serverName=matrix-pg keeps this cluster's
+  # archive under .../matrix/matrix-pg/, separate from the old prod serverNames
+  # (matrix-pg-synapse / matrix-pg-whatsapp) which stay read-only next to it.
+  # On the cloud cluster, apply the same manifests but set endpointURL to
+  # http://10.53.255.254:9000 (see memory.md cutover checklist).
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: &cname matrix-pg
+        serverName: *cname
+  externalClusters:
+    - name: *cname
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: *cname
+          serverName: *cname
+---
+# RBAC for the barman-cloud plugin: its instance pods (SA matrix-pg) read the
+# ObjectStore CR + the S3 creds secret. (Exists live since the Nov-1 merge;
+# declared here so a FluxCD-only rebuild on the cloud cluster is complete.)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: matrix-pg-barman-cloud
+rules:
+  - apiGroups: ["barmancloud.cnpg.io"]
+    resources: ["objectstores"]
+    resourceNames: ["matrix-pg"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["barmancloud.cnpg.io"]
+    resources: ["objectstores/status"]
+    resourceNames: ["matrix-pg"]
+    verbs: ["update"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["matrix-pg-barman-creds"]
+    verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: matrix-pg-barman-cloud
+subjects:
+  - kind: ServiceAccount
+    name: matrix-pg # CNPG instance pods' SA
+    namespace: apps-matrix
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: matrix-pg-barman-cloud
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/barmancloud.cnpg.io/objectstore_v1.json
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: matrix-pg
+spec:
+  retentionPolicy: 30d
+  configuration:
+    destinationPath: s3://backups/postgres/cluster-cloud/matrix
+    endpointURL: http://10.53.255.254:9000
+    s3Credentials:
+      accessKeyId:
+        name: matrix-pg-barman-creds
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: matrix-pg-barman-creds
+        key: AWS_SECRET_ACCESS_KEY
+    data:
+      compression: bzip2
+    wal:
+      compression: bzip2
+      maxParallel: 8
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/scheduledbackup_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: matrix-pg-backup
+spec:
+  schedule: "0 0 4 * * *" # daily at 04:00
+  backupOwnerReference: self
+  cluster:
+    name: matrix-pg
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: matrix-pg-mas
+spec:
+  name: mas
+  owner: synapse
+  encoding: UTF8
+  locale: C
+  # Keep the data if this CR is ever removed; deletion is only via the cluster.
+  databaseReclaimPolicy: retain
+  cluster:
+    name: matrix-pg
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: matrix-pg-whatsapp
+spec:
+  name: whatsapp
+  owner: synapse
+  encoding: UTF8
+  locale: C
+  databaseReclaimPolicy: retain
+  cluster:
+    name: matrix-pg

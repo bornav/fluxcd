@@ -1,0 +1,32 @@
+---
+# MSC4108 QR-login endpoint on the homeserver host.
+# The chart's includeUnderscoreSynapse=false keeps the whole /_synapse prefix
+# (incl. the admin API) off the public gateway, but the QR flow needs the
+# delegated rendezvous resource Synapse 1.163 registers at
+#   /_synapse/client/rendezvous
+# (Element Web and the scanning phone both talk to it; Synapse proxies the
+# OAuth part to MAS internally). Only this path is routed; /_synapse/admin
+# and everything else stays unreachable from outside.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: synapse-oidc
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: traefik-gateway
+      namespace: network
+  hostnames:
+    # Migration test: local stack serves prod's server_name now.
+    - matrix.icylair.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /_synapse/client/rendezvous
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: synapse-matrix-synapse
+          port: 8008

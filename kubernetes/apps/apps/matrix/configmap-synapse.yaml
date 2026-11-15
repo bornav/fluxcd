@@ -1,0 +1,30 @@
+# Secret-free config only. All secrets live in Vault and are synced into the
+# `synapse-app-secrets` Secret (see external-secrets.yaml); Synapse loads them
+# via the *_path options.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: synapse-config
+data:
+  config.yaml: |
+    experimental_features:
+      msc4108_enabled: true
+
+    macaroon_secret_key_path: /synapse/app-secrets/macaroon_secret_key
+
+    # No federation fence: the old public instance has been decommissioned, so
+    # this stack is the sole owner of matrix.icylair.com and federates normally.
+
+    cors_allowed_origin_regex:
+      - 'https://([a-z0-9-]+\.)?<domain>'
+    cors_allow_credentials: true
+
+    # Appservice registrations (mautrix bridges). Files come from the
+    # whatsapp-bridge-config Secret (ExternalSecret-rendered).
+    app_service_config_files:
+      - /synapse/registrations/whatsapp-registration.yaml
+  mas.yaml: |
+    matrix_authentication_service:
+      enabled: true
+      endpoint: "http://matrix-synapse-mas:8080/"
+      secret_path: /synapse/app-secrets/mas_secret

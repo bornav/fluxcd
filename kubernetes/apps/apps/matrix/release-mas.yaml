@@ -1,0 +1,198 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: synapse-mas
+spec:
+  interval: 10m
+  url: oci://codeberg.org/wrenix/helm-charts/matrix-authentication-service
+  ref:
+    tag: 0.1.27
+---
+# HelmRelease's CRD prunes nulls from spec.values, so the chart's inline
+# defaults (database.password: secret, matrix.secret: ...) cannot be removed
+# there. Flux merges valuesFrom first (nulls survive) and spec.values on top.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mas-chart-overrides
+data:
+  values.yaml: |
+    config:
+      database:
+        password: null
+      matrix:
+        secret: null
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: synapse-mas
+spec:
+  interval: 5m
+  chartRef:
+    kind: OCIRepository
+    name: synapse-mas
+  valuesFrom:
+    - kind: ConfigMap
+      name: mas-chart-overrides
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    fullnameOverride: "matrix-synapse-mas"
+    # Secret files for MAS's *_file config options (vault -> synapse-app-secrets / synapse-ext-new)
+    volumes:
+      - name: mas-secrets
+        secret:
+          secretName: synapse-app-secrets
+          defaultMode: 0440
+      - name: mas-db-secret
+        secret:
+          secretName: synapse-ext-new
+          defaultMode: 0440
+    volumeMounts:
+      - name: mas-secrets
+        mountPath: /etc/mas-secrets
+        readOnly: true
+      - name: mas-db-secret
+        mountPath: /etc/mas-db
+        readOnly: true
+    config:
+      http:
+        public_base: https://matrix-auth.local.icylair.com/
+        issuer: https://matrix-auth.local.icylair.com/
+      #   listeners:
+      #     - name: web
+      #       resources:
+      #         - name: discovery
+      #         - name: human
+      #         - name: oauth
+      #         - name: compat
+      #         - name: graphql
+      #         - name: assets
+      #       binds:
+      #         # Bind on a local port
+      #         - host: localhost
+      #           port: 8080
+      #       proxy_protocol: true
+
+      # # no clue
+      # passwords:
+      #   enabled: true
+      #   schemes:
+      #   - version: 1
+      #     algorithm: argon2id
+      #   minimum_complexity: 3
+      # # no clue
+
+      matrix:
+        kind: synapse
+        homeserver: "matrix.icylair.com"
+        endpoint: "http://synapse-matrix-synapse:8008"
+        secret_file: /etc/mas-secrets/mas_secret
+      database:
+        host: matrix-pg-rw
+        password_file: /etc/mas-db/password
+        username: synapse
+        database: mas
+      upstream_oauth2:
+        providers:
+          - id: "01KVJV5SCBD4TAGVRTGKDSMWPC"
+            issuer: "https://sso.icylair.com/realms/master"
+            token_endpoint_auth_method: client_secret_basic
+            client_id: "matrix-authentication-service"
+            client_secret_file: /etc/mas-secrets/upstream_client_secret
+            scope: "openid profile email"
+            include_id_token: true
+            claims_imports:
+              skip_confirmation: true
+              localpart:
+                action: require
+                template: "{{ (user.preferred_username or user.name) | lower | replace(' ', '-') }}"
+                on_existing: add
+              displayname:
+                action: require
+                template: "{{ user.name or user.preferred_username }}"
+              email:
+                action: require
+    ingress:
+      enabled: false
+      className: "traefik"
+      hosts:
+        - host: matrix-auth.local.icylair.com
+          paths:
+            - path: /
+              pathType: Prefix
+        - host: matrix.local.icylair.com
+          paths:
+            - path: /_matrix/client/v3/login
+              pathType: Prefix
+            - path: /_matrix/client/v3/logout
+              pathType: Exact
+            - path: /_matrix/client/v3/refresh
+              pathType: Exact
+      tls:
+        - hosts:
+            - matrix-auth.local.icylair.com
+            - matrix.local.icylair.com
+          secretName: icylair-com-all-prod
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: synapse-mas
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: network
+  hostnames:
+    # - mas.local.icylair.com
+    - matrix-auth.local.icylair.com
+    # Migration test: local stack now serves prod's server_name.
+    - matrix.icylair.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: matrix-synapse-mas
+          port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: synapse-mas-client
+  namespace: apps-matrix # Ensure this matches your service namespace
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: network
+  hostnames:
+    - matrix.icylair.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /_matrix/client/v3/login
+        - path:
+            type: Exact
+            value: /_matrix/client/v3/logout
+        - path:
+            type: Exact
+            value: /_matrix/client/v3/refresh
+      backendRefs:
+        - name: matrix-synapse-mas
+          port: 8080

@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: apps-matrix
+resources:
+  - pg-matrix.yaml
+  - namespace.yaml
+
+  - external-secrets.yaml
+  - release-mas.yaml
+  - configmap-synapse.yaml
+  - release-synapse.yaml
+  - httproute-oidc.yaml
+  - bridge-whatsapp.yaml

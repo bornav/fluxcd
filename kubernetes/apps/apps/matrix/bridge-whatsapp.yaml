@@ -1,0 +1,92 @@
+# mautrix-whatsapp bridge for the local stack (ported from prod
+# apps/apps/matrix-synapse, adapted: no arm64 nodeSelector since all local
+# nodes are amd64; runs non-root; config comes from the
+# whatsapp-bridge-config Secret (ExternalSecret) instead of a plaintext CM).
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matrix-whatsapp-bridge
+  labels:
+    app: matrix-whatsapp-bridge
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: matrix-whatsapp-bridge
+  template:
+    metadata:
+      labels:
+        app: matrix-whatsapp-bridge
+      annotations:
+        # stakater/reloader (kube-system) restarts the pod when the
+        # whatsapp-bridge-config Secret content changes (subPath mounts do
+        # not propagate updates otherwise).
+        reloader.stakater.com/auto: "true"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 666
+        runAsGroup: 666
+        fsGroup: 666
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mautrix-whatsapp
+          image: dock.mau.dev/mautrix/whatsapp:v26.10
+          command: ["/usr/bin/mautrix-whatsapp"]
+          args: ["--no-update"]
+          ports:
+            - name: appservice
+              containerPort: 29318
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+            - name: config
+              mountPath: /data/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            # v26 keeps all state (sessions, crypto, media cache) in Postgres,
+            # but /data is still used for scratch/log fallbacks.
+            - name: data
+              mountPath: /data
+          livenessProbe:
+            tcpSocket:
+              port: appservice
+            initialDelaySeconds: 15
+            periodSeconds: 30
+      volumes:
+        - name: config
+          secret:
+            secretName: whatsapp-bridge-config
+            defaultMode: 0440
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: matrix-whatsapp-bridge
+  labels:
+    app: matrix-whatsapp-bridge
+spec:
+  selector:
+    app: matrix-whatsapp-bridge
+  ports:
+    - name: appservice
+      port: 29318
+      targetPort: appservice
+      protocol: TCP
