@@ -10,10 +10,18 @@ kind: Kustomization
 namespace: apps-ntify
 resources:
   - namespace.yaml
-  - configmap-ntfy.yaml
   - externalsecret-ntfy.yaml
   - pvc.yaml
   - deployment.yaml
   - networkpolicy.yaml
   - middleware-https.yaml
   - httproute-ntfy.yaml
+
+# ConfigMap from the plain server.yml file with a content hash suffix:
+# editing the config changes the hash -> the Deployment's env reference
+# below changes -> automatic rollout. (A bare ConfigMap volume would let
+# config edits sit forever without restarting the pod.)
+configMapGenerator:
+  - name: ntfy-config
+    files:
+      - server.yml
