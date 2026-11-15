@@ -51,12 +51,16 @@ spec:
       storageClassName: oebs-local-hostpath
       volumeMode: Filesystem
   affinity:
-    # Pin to the two nodes with room on /storage. oracle-bv1-1's /storage is
-    # a 48.9G volume 99% full (xauth/pg-keycloak-1's local PV alone holds
-    # ~45.7G); the hostpath provisioner does NOT check free space, so an
-    # unsupervised schedule there would fill the node's disk. hetzner-01 and
-    # oracle-km1-1 have /storage on a 146G sdb1 with ~98G free. 3 instances
-    # on 2 nodes is fine (CNPG anti-affinity is preferred, not required).
+    # Pin to nodes with room on /storage. oracle-bv1-1's /storage is a 48.9G
+    # volume 99% full (xauth/pg-keycloak-1's local PV alone holds ~45.7G) and
+    # the hostpath provisioner does NOT check free space, so an unsupervised
+    # schedule there would fill the node's disk. hetzner-01 is tainted
+    # control-plane:NoSchedule (verified post-apply: all 3 instances landed
+    # on oracle-km1-1, which has /storage on a 146G sdb1 with ~98G free), so
+    # in practice km1-1 is the only schedulable target. Accepting the
+    # single-node concentration knowingly: hostpath PVs are node-local, so
+    # matrix DB availability == km1-1 availability; barman-cloud S3 (daily +
+    # WAL) is the durability path if the node dies.
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
