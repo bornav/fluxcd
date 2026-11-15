@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/apps/matrix
   prune: true
   wait: true
-  suspend: true # CUTOVER: flip to false only when the cloud rebuild is started
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes

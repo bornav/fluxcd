@@ -10,7 +10,6 @@ resources:
   - namespace.yaml
   - dashboard
   - teamspeak
-  # - matrix-synapse/ks.yaml  # CUTOVER: old prod stack, disabled; replaced by matrix/ks.yaml
   - matrix/ks.yaml
   # - tachi
   # - openwebui
