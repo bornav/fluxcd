@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: apps-matrix
+resources:
+  - namespace.yaml
+  - pg-matrix.yaml
+  - external-secrets.yaml

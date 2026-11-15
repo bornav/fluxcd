@@ -1,5 +1,12 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# DB layer: namespace + CNPG cluster + barman ObjectStore/ScheduledBackup/Databases
+# + all ExternalSecrets. Health gate: this ks only goes Ready — and only then
+# does matrix-apps apply anything (synapse, MAS, bridge, routes) — once a
+# MAJORITY of CNPG instances are ready. During a PITR restore replicas join
+# progressively, so waiting for all 3 risks the timeout; > half is enough for
+# matrix-pg-rw to serve traffic. (No `failed` expr: with 3 instances a quorum
+# loss must be recoverable, so the timeout handles genuinely stuck restores.)
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -10,6 +17,45 @@ spec:
     - name: external-secrets-vault-store
     - name: cloudnative-pg
     - name: longhorn-system-base
+  path: ./kubernetes/apps/apps/matrix/databases
+  prune: false
+  wait: true
+  suspend: false
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 15m
+  targetNamespace: apps-matrix
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      # inProgress: fewer than a majority ready (or status not populated yet)
+      # -> keep waiting instead of releasing the dependants early
+      inProgress: >-
+        !has(status.readyInstances) ||
+        status.readyInstances <= (spec.instances / 2)
+      # current: strictly more than half of spec.instances ready
+      # (3 instances -> integer division 3/2 = 1 -> majority = 2 ready is enough)
+      current: >-
+        has(status.readyInstances) &&
+        status.readyInstances > (spec.instances / 2)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# App layer: synapse + MAS HelmReleases, config, OIDC route, whatsapp bridge.
+# dependsOn makes flux skip applying this ks entirely until matrix-databases
+# reports the CNPG Cluster healthy (majority instances ready) — no more
+# Init:CrashLoopBackOff/Error window while Postgres restores.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: matrix-apps
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: matrix-databases
   path: ./kubernetes/apps/apps/matrix
   prune: true
   wait: true
@@ -20,5 +66,14 @@ spec:
     namespace: flux-system
   interval: 15m
   retryInterval: 15m
-  timeout: 10m
+  timeout: 15m
   targetNamespace: apps-matrix
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: synapse
+      namespace: apps-matrix
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: synapse-mas
+      namespace: apps-matrix
