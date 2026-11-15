@@ -44,18 +44,42 @@ spec:
       resources:
         requests:
           storage: 5Gi
-      storageClassName: longhorn-storage # cloud cluster (local used openebs-hostpath)
+      # OpenEBS LocalPV HostPath: data lives on the node's /storage disk
+      # (BasePath /storage/local-hostpath). Faster than longhorn (no
+      # replication overhead) but node-local: a pod can't reschedule if the
+      # node dies, and Delete reclaim means the PV is gone with the PVC.
+      storageClassName: oebs-local-hostpath
       volumeMode: Filesystem
+  affinity:
+    # Pin to the two nodes with room on /storage. oracle-bv1-1's /storage is
+    # a 48.9G volume 99% full (xauth/pg-keycloak-1's local PV alone holds
+    # ~45.7G); the hostpath provisioner does NOT check free space, so an
+    # unsupervised schedule there would fill the node's disk. hetzner-01 and
+    # oracle-km1-1 have /storage on a 146G sdb1 with ~98G free. 3 instances
+    # on 2 nodes is fine (CNPG anti-affinity is preferred, not required).
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - hetzner-01
+                  - oracle-km1-1
   bootstrap:
-    # CUTOVER: restore from the barman-cloud archive this archive is written to
-    # (serverName matrix-pg; the local stack archives to the SAME cloud prefix).
-    # PITR to the latest WAL unless recoveryTarget pins a point. The MAS db +
-    # bornav account + Keycloak link live inside this cluster, so they come back
-    # with the restore. To re-init from scratch instead, swap back to initdb.
+    # Storage swap 2026-11-15: cluster deleted (longhorn PVCs) and rebuilt on
+    # oebs-local-hostpath via PITR from the barman-cloud archive. Pinned to
+    # the final backup taken right before deletion (Backup CR matrix-pg-swap,
+    # completed 2026-11-15T21:52Z; pg_dump safety nets in
+    # local-cluster/.tmp-cutover/pg-dumps).
+    # WAL replay runs to the last ARCHIVED segment (~deletion time; archiver was
+    # verified current, 0 pending segments). The MAS db + bornav account +
+    # Keycloak link live inside this cluster, so they come back with the restore.
+    # To re-init from scratch instead, swap back to initdb.
     recovery:
       source: &restore-src matrix-pg
-      # recoveryTarget:
-      #   backupID: "20261114T154306"
+      recoveryTarget:
+        backupID: "20261115T215128"
     # initdb:
     #   database: synapse
     #   owner: synapse
