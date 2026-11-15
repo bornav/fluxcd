@@ -1,0 +1,38 @@
+---
+# ntfy.icylair.com -> ntfy service in apps-ntify. Same scoped-https pattern
+# as the matrix/element routes (redirect + security headers ONLY here).
+# No timeouts on purpose: ntfy subscribers hold long-lived SSE/stream
+# connections; ntfy's keepalive-interval (45s) keeps them under traefik's
+# idle timeout, and traefik's response timeout is off by default.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ntfy
+  namespace: apps-ntify
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: traefik-gateway
+      namespace: network
+  hostnames:
+    - ntfy.icylair.com
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      backendRefs:
+        - name: ntfy
+          port: 80

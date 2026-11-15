@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+# ntfy: general-purpose push server (UnifiedPush distributor for Element X,
+# pub/sub for anything else). Lives in its own apps-ntify namespace because
+# it is not matrix-specific -- matrix/element route through their own ks.
+# No targetNamespace: the app kustomization stamps namespace apps-ntify and
+# the namespace.yaml is cluster-scoped; kustomize keeps it tidy in one place.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ntfy
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: traefik-base
+    - name: traefik-addons
+    - name: longhorn-system-base
+  path: ./kubernetes/apps/apps/ntify
+  prune: true
+  wait: true
+  suspend: false
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 5m
+  timeout: 5m

@@ -16,4 +16,5 @@ resources:
   - it-tools
   - excalidraw
   - element/ks.yaml
+  - ntify/ks.yaml
   - tunnel

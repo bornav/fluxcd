@@ -1,0 +1,14 @@
+---
+# Message cache (SQLite) lives here so missed notifications survive pod
+# restarts. Tiny (24h of small messages) -> 1 Gi is plenty.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ntfy-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi

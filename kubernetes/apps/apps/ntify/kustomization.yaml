@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+# ntfy: general push server in its own apps-ntify namespace (not
+# matrix-specific -- any app on the cluster can publish to it; Element X
+# uses it as UnifiedPush distributor).
+# The namespace: stanza stamps every namespaced resource with apps-ntify;
+# the cluster-scoped Namespace object itself is unaffected.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: apps-ntify
+resources:
+  - namespace.yaml
+  - configmap-ntfy.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - middleware-https.yaml
+  - httproute-ntfy.yaml

@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ntfy-config
+data:
+  server.yml: |
+    base-url: "https://ntfy.icylair.com"
+    # Unprivileged port: the container runs as non-root, so :80 is not
+    # bindable without CAP_NET_BIND_SERVICE. The Service maps 80 -> 8080.
+    listen-http: ":8080"
+    behind-proxy: true
+
+    # Message cache on disk so phones reconnecting after a restart (or after
+    # the phone slept) can fetch missed notifications with since=... .
+    # Only metadata-ish messages anyway (UnifiedPush payloads are small).
+    cache-file: "/var/lib/ntfy/cache.db"
+    cache-duration: "24h"
+
+    # UnifiedPush: count publishes on "up*" topics against the subscriber's
+    # (the phone's) visitor quota instead of an anonymous publisher's, so
+    # synapse pushing for an offline phone cannot be abused for spam.
+    visitor-subscriber-rate-limiting: true
+
+    # Keep the attack surface small: attachments stay disabled (no
+    # attachment-cache-dir set), no Firebase/iOS instant delivery, no web
+    # push, no SMTP, no metrics. Rate limits otherwise at ntfy defaults.
+    global-topic-limit: 1000
+
+    # NOTE on access control: like ntfy.sh, this instance is open by default
+    # (everyone can read/write topics). UnifiedPush topics are unguessable
+    # random strings (up_...), so capability-by-URL is the actual security
+    # model. To harden into a private instance later: set auth-default-access
+    # to deny-all, grant "*:up* rw" (UnifiedPush keeps working), and
+    # provision named users via auth-users (bcrypt hash from Vault, not git).

@@ -1,0 +1,30 @@
+---
+# Copies of the matrixredirecthttps / matrixsecureheaders middlewares
+# (origin: ../matrix/middleware-https.yaml). Gateway API ExtensionRef filters
+# must reference Middleware objects in the SAME namespace as the HTTPRoute,
+# so ntfy gets its own copies rather than a cross-namespace grant. Names kept
+# dashless to match the matrix originals (traefik's <ns>-<name>@kubernetescrd
+# annotation separator must stay unambiguous).
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: matrixredirecthttps
+  namespace: apps-ntify
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: matrixsecureheaders
+  namespace: apps-ntify
+spec:
+  headers:
+    stsSeconds: 15552000
+    forceSTSHeader: true
+    contentTypeNosniff: true
+    browserXssFilter: true
+    customFrameOptionsValue: SAMEORIGIN
+    referrerPolicy: strict-origin-when-cross-origin
