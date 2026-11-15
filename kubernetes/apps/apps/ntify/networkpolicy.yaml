@@ -1,0 +1,37 @@
+---
+# Default-deny for the ntfy pod: the ONLY way to reach it is through
+# Traefik (which terminates TLS, applies auth-adjacent middlewares and is
+# the sole intended ingress path). Cluster-internal pods CANNOT bypass
+# Traefik by hitting svc/ntfy directly -- so no pod can talk to ntfy
+# without going through the public route (and its rate limits + ACLs).
+# Cilium enforces this; kubelet probes come from the host network and are
+# allowed by Cilium's host-allowlist (default true in v1.18, not
+# overridden in cilium-config), so probes keep passing.
+#
+# Egress is deliberately unmanaged: ntfy needs no outbound connections
+# (no upstream-base-url, no SMTP, no Firebase) and a default-deny egress
+# would add DNS policy complexity for zero benefit.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ntfy-default-deny-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: ntfy
+  policyTypes:
+    - Ingress
+  ingress:
+    # Traefik pods in the network namespace (same selector as the traefik
+    # Helm release: app.kubernetes.io/name + instance).
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: network
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: traefik
+              app.kubernetes.io/instance: traefik-network
+      ports:
+        - protocol: TCP
+          port: 8080

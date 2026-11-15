@@ -14,5 +14,6 @@ resources:
   - externalsecret-ntfy.yaml
   - pvc.yaml
   - deployment.yaml
+  - networkpolicy.yaml
   - middleware-https.yaml
   - httproute-ntfy.yaml
