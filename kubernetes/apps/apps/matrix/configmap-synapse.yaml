@@ -23,6 +23,14 @@ data:
     # whatsapp-bridge-config Secret (ExternalSecret-rendered).
     app_service_config_files:
       - /synapse/registrations/whatsapp-registration.yaml
+
+    # Push notifications -> in-cluster sygnal (see sygnal.yaml). Pusher
+    # registration + notify dispatch are enabled; sygnal itself has no app
+    # credentials yet (apps: {}), so pushes for unknown app_ids are rejected
+    # cleanly while the plumbing is in place.
+    push:
+      enabled: true
+      include_content: true
   mas.yaml: |
     matrix_authentication_service:
       enabled: true

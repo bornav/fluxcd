@@ -1,0 +1,117 @@
+---
+# Push gateway (Sygnal) for matrix.icylair.com.
+# Sygnal is stateless (no database): it fans synapse's POSTs from
+# /_matrix/push/v1/notify out to APNs/FCM pushkins. With no `apps:` entries it
+# starts clean and rejects unknown app_ids -- the plumbing (endpoint + pusher
+# registration) works; real FCM/APNs credentials can be added to sygnal.yaml
+# later without touching anything else.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sygnal-config
+data:
+  sygnal.yaml: |
+    log:
+      setup:
+        version: 1
+        formatters:
+          normal:
+            format: "%(asctime)s [%(process)d] %(levelname)-5s %(name)s %(message)s"
+        handlers:
+          stdout:
+            class: "logging.StreamHandler"
+            formatter: "normal"
+            stream: "ext://sys.stdout"
+        root:
+          handlers: ["stdout"]
+          level: "INFO"
+        disable_existing_loggers: false
+      access:
+        # Behind traefik, which sets X-Forwarded-For.
+        x_forwarded_for: true
+
+    http:
+      bind_addresses: ['0.0.0.0']
+      port: 5000
+
+    metrics:
+      prometheus:
+        enabled: false
+
+    # Add pushkin entries here when credentials exist, e.g.:
+    # apps:
+    #   im.vector.app.android:
+    #     type: gcm
+    #     project_id: ...
+    #     service_account_file: /etc/sygnal/fcm-service-account.json
+    #   im.vector.app.ios:
+    #     type: apns
+    #     keyfile: ... key_id: ... team_id: ... topic: ...
+    apps: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sygnal
+  labels:
+    app.kubernetes.io/name: sygnal
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sygnal
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sygnal
+    spec:
+      containers:
+        - name: sygnal
+          image: matrixdotorg/sygnal:v0.17.0
+          env:
+            - name: SYGNAL_CONF
+              value: /etc/sygnal/sygnal.yaml
+          ports:
+            - name: http
+              containerPort: 5000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/sygnal
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: sygnal-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sygnal
+  labels:
+    app.kubernetes.io/name: sygnal
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: sygnal
+  ports:
+    - name: http
+      port: 5000
+      targetPort: http

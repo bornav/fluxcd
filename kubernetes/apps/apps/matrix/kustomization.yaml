@@ -12,3 +12,7 @@ resources:
   - release-synapse.yaml
   - httproute-oidc.yaml
   - bridge-whatsapp.yaml
+  # (a) push gateway + (b) scoped https redirect/security headers
+  - sygnal.yaml
+  - middleware-https.yaml
+  - httproute-matrix.yaml

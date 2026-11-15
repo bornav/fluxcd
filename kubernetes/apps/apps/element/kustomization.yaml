@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+# element-web: gitops takeover of the previously unmanaged ingress (old
+# synapse-apps ks leftovers in ns apps). The Deployment/Service stay in ns
+# apps untouched; only the routing objects live here.
+#   httproute-element.yaml  -> route + ReferenceGrant (grant ns-scoped to apps)
+# ks.yaml declares targetNamespace: apps-matrix, so kustomize must NOT stamp
+# a namespace here (that would move the ReferenceGrant out of ns apps).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - httproute-element.yaml

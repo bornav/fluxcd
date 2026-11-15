@@ -163,7 +163,22 @@ spec:
     # Migration test: local stack now serves prod's server_name.
     - matrix.icylair.com
   rules:
-    - matches:
+    # Scoped https redirect + HSTS (Middleware CRDs in apps-matrix). HSTS is
+    # bare (no includeSubDomains) so other *.local.icylair.com tenants are not
+    # pinned. More specific matrix.icylair.com rules (matrix-gateway,
+    # synapse-mas-client) outrank this Prefix "/" catch-all.
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
         - path:
             type: PathPrefix
             value: /
@@ -183,7 +198,19 @@ spec:
   hostnames:
     - matrix.icylair.com
   rules:
-    - matches:
+    # Same scoped redirect + HSTS pair as synapse-mas / matrix-gateway.
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
         - path:
             type: PathPrefix
             value: /_matrix/client/v3/login

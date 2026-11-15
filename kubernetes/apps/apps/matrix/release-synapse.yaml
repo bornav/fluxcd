@@ -61,7 +61,11 @@ spec:
       includeServerName: true
 
     gateway:
-      enabled: true
+      # Route ownership moved to git (httproute-matrix.yaml) so the scoped
+      # https-redirect + security-header filters survive helm upgrades; the
+      # chart template has no filter/middleware support. wellknown ConfigMap +
+      # ExternalName service are gated only on wellknown.enabled and stay.
+      enabled: false
       traefikPaths: true
       # csHosts:
       #    - *domain

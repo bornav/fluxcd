@@ -1,0 +1,63 @@
+---
+# element-web on the gateway (replaces the unmanaged legacy Ingress
+# matrix-ingress in ns apps, which flux prunes on first apply — the element
+# Deployment/Service themselves stay untouched in ns apps).
+# Cross-namespace backendRefs (apps-matrix route -> apps service) are allowed
+# by the ReferenceGrant below (ns-scoped to apps).
+# Same hosts as before: element.icylair.com + element.cloud.icylair.com.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: element-web
+  namespace: apps-matrix
+  labels:
+    app.kubernetes.io/part-of: matrix
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: traefik-gateway
+      namespace: network
+  hostnames:
+    - element.icylair.com
+    - element.cloud.icylair.com
+  rules:
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: service-element
+          namespace: apps
+          port: 80
+---
+# Allow apps-matrix HTTPRoutes to reference services in ns apps.
+# (Cluster CRD is Gateway API v1beta1-era: grant target uses `name`, not the
+# newer `serviceNames` list.)
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: element-web-from-apps-matrix
+  namespace: apps
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: apps-matrix
+  to:
+    - group: ""
+      kind: Service
+      name: service-element

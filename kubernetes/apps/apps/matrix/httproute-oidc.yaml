@@ -21,7 +21,18 @@ spec:
     # Migration test: local stack serves prod's server_name now.
     - matrix.icylair.com
   rules:
-    - matches:
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
         - path:
             type: PathPrefix
             value: /_synapse/client/rendezvous

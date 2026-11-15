@@ -15,4 +15,5 @@ resources:
   # - openwebui
   - it-tools
   - excalidraw
+  - element/ks.yaml
   - tunnel

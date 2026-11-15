@@ -1,0 +1,96 @@
+---
+# Git-owned replacement for the HTTPRoute the synapse chart used to render
+# (release-synapse.yaml now sets gateway.enabled=false; the wellknown ConfigMap
+# + ExternalName service still come from the chart, gated only on
+# wellknown.enabled). Deliberately NOT named `synapse-matrix-synapse`: that was
+# the Helm-managed name, and helm's 3-way merge would delete a route of that
+# name when the chart stops rendering one.
+#
+# Rules: /_matrix/push -> sygnal (ahead of the catch-all), /_matrix -> synapse,
+# /.well-known/matrix -> wellknown-lighttpd (chart service). login/logout/
+# refresh -> MAS stays in the git-owned synapse-mas-client route (release-mas
+# .yaml), whose more-specific matches outrank the /_matrix Prefix here.
+#
+# Every rule carries matrixredirecthttps + matrixsecureheaders via ExtensionRef
+# -> http->https redirect + HSTS for matrix.icylair.com ONLY.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: matrix-gateway
+  labels:
+    app.kubernetes.io/part-of: matrix
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: traefik-gateway
+      namespace: network
+  hostnames:
+    - matrix.icylair.com
+  rules:
+    # --- push gateway (sygnal) ahead of the /_matrix catch-all ---
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
+        - path:
+            type: PathPrefix
+            value: /_matrix/push
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: sygnal
+          port: 5000
+    # --- everything else under /_matrix -> synapse ---
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
+        - path:
+            type: PathPrefix
+            value: /_matrix
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: synapse-matrix-synapse
+          port: 8008
+      timeouts:
+        request: 60s
+        backendRequest: 60s
+    # --- client wellknown -> tiny lighttpd from the chart ---
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixredirecthttps
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: matrixsecureheaders
+      matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known/matrix
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: synapse-wellknown-lighttpd
+          port: 80

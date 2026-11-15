@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+# element-web: gitops takeover of the previously unmanaged ingress in ns apps
+# (leftovers of the deleted synapse-apps ks). The route lives in apps-matrix
+# (with the matrix middlewares); the ReferenceGrant lives in ns apps.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: element-web
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: matrix-apps
+  path: ./kubernetes/apps/apps/element
+  prune: true
+  wait: true
+  suspend: false
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 5m
+  timeout: 5m
+  # No targetNamespace: every manifest carries its own namespace explicitly
+  # (HTTPRoute in apps-matrix next to the middlewares, ReferenceGrant in apps
+  # where the service lives).

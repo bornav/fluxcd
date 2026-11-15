@@ -1,0 +1,46 @@
+---
+# HTTP -> HTTPS redirect + security headers, scoped to the element/matrix
+# services ONLY. These are traefik.io Middleware CRDs (kubernetescrd provider
+# is enabled on the cluster traefik) attached per-rule via Gateway API
+# ExtensionRef filters on the matrix.icylair.com / element.icylair.com /
+# matrix-auth.local.icylair.com routes below. No other host's routes are
+# touched, so harbor / headscale / ts servers etc. keep answering on plain
+# HTTP exactly as before.
+#
+# Names deliberately contain NO dashes: traefik's Ingress-provider annotation
+# (used for the legacy element Ingress in ns apps) encodes cross-namespace
+# middleware refs as "<ns>-<name>@kubernetescrd", which is ambiguous for
+# dashes; dashless names parse unambiguously in both attachment styles.
+#
+# Loop-safety: traefik's RedirectScheme builds the target URL from req.TLS /
+# X-Forwarded-Proto (websecure terminates TLS behind PROXY protocol from
+# 10.99.10.254 whose forwarded headers are trusted), so attaching the
+# middleware to a route that also serves the https listener cannot bounce
+# https requests -- it only fires on plain HTTP.
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: matrixredirecthttps
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: matrixsecureheaders
+spec:
+  headers:
+    # HSTS scoped to each matrix host itself -- deliberately NO
+    # includeSubDomains: that would pin every other *.icylair.com tenant
+    # (harbor, headscale, ts servers, plain-HTTP ones too), and the cert is a
+    # wildcard anyway. matrix-auth.local.icylair.com is likewise bare, so
+    # other *.local.icylair.com tenants stay unaffected.
+    stsSeconds: 15552000
+    forceSTSHeader: true
+    contentTypeNosniff: true
+    browserXssFilter: true
+    customFrameOptionsValue: SAMEORIGIN
+    referrerPolicy: strict-origin-when-cross-origin
+    # No CSP override here: Element web + MAS assets would need a bespoke one.
