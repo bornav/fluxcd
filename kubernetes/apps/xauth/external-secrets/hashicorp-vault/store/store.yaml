@@ -100,3 +100,24 @@ spec:
           name: "vault-token"
           key: "token"
           namespace: xauth
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/clustersecretstore_v1beta1.json
+# Prod cluster's own mount under the `clusters` KV: clusters/prod/<category>/<secret>.
+# Mirrors vault-backend-clusters-local on the local cluster (same layout, same
+# field naming: one entry per target k8s Secret, fields = final data keys).
+# Entries live under prod/apps/, prod/networking/, prod/observability/.
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: vault-backend-clusters-prod
+spec:
+  provider:
+    vault:
+      server: "https://hashicorp-vault.icylair.com"
+      path: "clusters"
+      version: "v2"
+      auth:
+        tokenSecretRef:
+          name: "vault-token"
+          key: "token"
+          namespace: xauth
