@@ -6,4 +6,3 @@ namespace: wireguard-local
 resources:
   - deployment2.yaml
   - deployment.yaml
-  - secret.yaml

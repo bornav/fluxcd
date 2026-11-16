@@ -7,7 +7,6 @@ resources:
   - release.yaml
   # - otel-configmap.yaml
   - otel-col-ingress.yaml
-  - secrets.yaml
   - rbac.yaml
 generatorOptions:
   disableNameSuffixHash: true
