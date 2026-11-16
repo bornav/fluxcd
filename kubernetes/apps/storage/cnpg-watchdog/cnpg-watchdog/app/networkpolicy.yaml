@@ -1,0 +1,17 @@
+---
+# Default-deny ingress for the watchdog: it exposes nothing (FROM scratch
+# binary, no listening port), so no pod may talk to it. Egress deliberately
+# unmanaged (same reasoning as ntfy's policy): it needs the k8s API (via the
+# node's host-network API proxy — a host-egress policy would break it) and
+# HTTPS to ntfy.icylair.com.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: cnpg-watchdog-default-deny-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: cnpg-watchdog
+  policyTypes:
+    - Ingress
+  # no ingress rules => deny all

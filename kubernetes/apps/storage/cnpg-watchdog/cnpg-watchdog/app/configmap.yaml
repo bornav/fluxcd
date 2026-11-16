@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/configmap
+# Watchdog knobs. DRY_RUN=true => detect + notify only, never delete.
+# Flip to false only after the dry-run detections look right.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cnpg-watchdog-config
+data:
+  DRY_RUN: "true"
+  ALLOWED_NAMESPACES: "xauth,apps-matrix"
+  INTERVAL: "60s"
+  STUCK_WINDOW: "10m"
+  COOLDOWN: "2h"
+  POD_MIN_AGE: "5m"
+  LOG_TAIL_BYTES: "131072"
+  # Per-cluster action budget: at most 3 remediations in 24h. If a cluster
+  # keeps losing replicas one after another the cause is systemic (broken
+  # WAL archive, node/disk trouble) and more deletes only make it worse;
+  # the watchdog then stops acting and only notifies.
+  MAX_ACTIONS: "3"
+  ACTION_WINDOW: "24h"
+  STATE_CONFIGMAP: "cnpg-watchdog-state"
+  NTFY_URL: "https://ntfy.icylair.com"
+  NTFY_TOPIC: "cnpg-watchdog"
+  # User half of the ntfy basic auth (password comes from Vault via the
+  # cnpg-watchdog-ntfy ExternalSecret). Must match the ntfy user that has
+  # write rights on the cnpg-watchdog topic (admin user by default).
+  NTFY_USER: "bornav"

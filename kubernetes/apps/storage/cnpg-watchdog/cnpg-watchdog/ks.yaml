@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# RBAC layer: cluster-wide read + namespace-scoped delete rights. Separate
+# Kustomization because its RoleBindings must live in the TARGET namespaces
+# (xauth, apps-matrix) — kustomize's namespace: stanza in app/ would rewrite
+# them, so this dir carries no namespace transformer and pins namespaces by
+# hand.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-watchdog-rbac
+  namespace: flux-system
+spec:
+  path: ./kubernetes/apps/storage/cnpg-watchdog/cnpg-watchdog/rbac
+  prune: true
+  suspend: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# App layer: namespace + SA + state ConfigMap rights + Deployment +
+# NetworkPolicy. SUSPENDED ON PURPOSE — nothing applies until you flip
+# suspend: false on BOTH cnpg-watchdog-rbac and cnpg-watchdog.
+# Start with DRY_RUN=true (detect + ntfy notify, no deletes), observe for a
+# few days, then flip DRY_RUN=false in app/configmap.yaml.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cnpg-watchdog
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cnpg-watchdog-rbac
+  path: ./kubernetes/apps/storage/cnpg-watchdog/cnpg-watchdog/app
+  prune: true
+  suspend: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: fluxcd-kubernetes
+    namespace: flux-system
+  interval: 15m
+  retryInterval: 15m
+  timeout: 5m

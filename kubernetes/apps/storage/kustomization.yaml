@@ -8,5 +8,6 @@ resources:
   - ./volsync/ks.yaml
   - ./harbor
   - ./cloudnative-pg
+  - ./cnpg-watchdog
   - ./openebs/ks.yaml
   - namespace.yaml

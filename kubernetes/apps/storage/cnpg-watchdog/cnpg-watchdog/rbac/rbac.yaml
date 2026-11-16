@@ -1,0 +1,132 @@
+---
+# Namespace first: the RBAC layer applies before the app layer (dependsOn),
+# and its ServiceAccount/bindings need the namespace to exist. PSA restricted
+# as a hardening floor (the Deployment satisfies it).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cnpg-watchdog
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+---
+# The ServiceAccount lives in the RBAC layer (not app/) so every binding in
+# this file resolves against it in the same apply pass.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cnpg-watchdog
+  namespace: cnpg-watchdog
+---
+# Cluster-wide: discovery + log reading only. Deletion rights are NOT here —
+# they come from the namespace-scoped RoleBindings below (xauth, apps-matrix
+# only), so the watchdog physically cannot delete in any other namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cnpg-watchdog
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list"]
+  - apiGroups: ["postgresql.cnpg.io"]
+    resources: ["clusters"]
+    verbs: ["get", "list", "watch"]
+---
+# Namespaced remediation rights: delete the broken replica (pod + its PVCs)
+# and write audit Events. One copy per allowlisted namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cnpg-watchdog-remediate
+  namespace: xauth
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cnpg-watchdog-remediate
+  namespace: apps-matrix
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cnpg-watchdog-remediate
+  namespace: xauth
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cnpg-watchdog-remediate
+subjects:
+  - kind: ServiceAccount
+    name: cnpg-watchdog
+    namespace: cnpg-watchdog
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cnpg-watchdog-remediate
+  namespace: apps-matrix
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cnpg-watchdog-remediate
+subjects:
+  - kind: ServiceAccount
+    name: cnpg-watchdog
+    namespace: cnpg-watchdog
+---
+# State ConfigMap rights inside the watchdog's own namespace: the SA may
+# only touch the one state object (create if missing, update by name).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cnpg-watchdog-state
+  namespace: cnpg-watchdog
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["cnpg-watchdog-state"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cnpg-watchdog-state
+  namespace: cnpg-watchdog
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cnpg-watchdog-state
+subjects:
+  - kind: ServiceAccount
+    name: cnpg-watchdog
+    namespace: cnpg-watchdog
