@@ -1,10 +1,10 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
 # RBAC layer: cluster-wide read + namespace-scoped delete rights. Separate
 # Kustomization because its RoleBindings must live in the TARGET namespaces
 # (xauth, apps-matrix) — kustomize's namespace: stanza in app/ would rewrite
 # them, so this dir carries no namespace transformer and pins namespaces by
-# hand.
+# hand. Watchdog itself lives in the storage namespace (CNPG operator's home).
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -13,7 +13,7 @@ metadata:
 spec:
   path: ./kubernetes/apps/storage/cnpg-watchdog/cnpg-watchdog/rbac
   prune: true
-  suspend: true
+  suspend: false
   sourceRef:
     kind: GitRepository
     name: fluxcd-kubernetes
@@ -23,11 +23,11 @@ spec:
   timeout: 5m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# App layer: namespace + SA + state ConfigMap rights + Deployment +
-# NetworkPolicy. SUSPENDED ON PURPOSE — nothing applies until you flip
-# suspend: false on BOTH cnpg-watchdog-rbac and cnpg-watchdog.
-# Start with DRY_RUN=true (detect + ntfy notify, no deletes), observe for a
-# few days, then flip DRY_RUN=false in app/configmap.yaml.
+# App layer: SA + state ConfigMap rights + Deployment + NetworkPolicy, all in
+# the storage namespace. DEPLOYED but DRY_RUN=true: it detects, logs and
+# sends ntfy notifications, but NEVER deletes anything. Remediation becomes
+# real only when DRY_RUN is flipped to false in app/configmap.yaml (after
+# observing the dry-run notifications on the ntfy cnpg-watchdog topic).
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -38,7 +38,7 @@ spec:
     - name: cnpg-watchdog-rbac
   path: ./kubernetes/apps/storage/cnpg-watchdog/cnpg-watchdog/app
   prune: true
-  suspend: true
+  suspend: false
   wait: true
   sourceRef:
     kind: GitRepository

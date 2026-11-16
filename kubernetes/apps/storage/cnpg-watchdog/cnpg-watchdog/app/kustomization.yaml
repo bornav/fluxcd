@@ -1,11 +1,11 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
-# cnpg-watchdog lives in its own namespace (ops tooling, not storage per se —
-# it watches CNPG clusters in xauth + apps-matrix). The namespace: stanza
-# stamps every namespaced resource; the Namespace object is cluster-scoped.
+# Lives in the storage namespace (same home as the CNPG operator itself).
+# The namespace: stanza stamps every namespaced resource here; the storage
+# Namespace object is owned by ../storage/namespace.yaml, not by this app.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: cnpg-watchdog
+namespace: storage
 resources:
   - externalsecret-ntfy.yaml
   - configmap.yaml

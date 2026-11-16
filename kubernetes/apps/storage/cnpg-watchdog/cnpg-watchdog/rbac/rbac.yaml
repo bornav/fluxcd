@@ -1,22 +1,11 @@
 ---
-# Namespace first: the RBAC layer applies before the app layer (dependsOn),
-# and its ServiceAccount/bindings need the namespace to exist. PSA restricted
-# as a hardening floor (the Deployment satisfies it).
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: cnpg-watchdog
-  labels:
-    pod-security.kubernetes.io/enforce: restricted
-    pod-security.kubernetes.io/audit: restricted
----
 # The ServiceAccount lives in the RBAC layer (not app/) so every binding in
 # this file resolves against it in the same apply pass.
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cnpg-watchdog
-  namespace: cnpg-watchdog
+  namespace: storage
 ---
 # Cluster-wide: discovery + log reading only. Deletion rights are NOT here —
 # they come from the namespace-scoped RoleBindings below (xauth, apps-matrix
@@ -85,7 +74,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cnpg-watchdog
-    namespace: cnpg-watchdog
+    namespace: storage
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -99,7 +88,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cnpg-watchdog
-    namespace: cnpg-watchdog
+    namespace: storage
 ---
 # State ConfigMap rights inside the watchdog's own namespace: the SA may
 # only touch the one state object (create if missing, update by name).
@@ -107,7 +96,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cnpg-watchdog-state
-  namespace: cnpg-watchdog
+  namespace: storage
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -121,7 +110,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: cnpg-watchdog-state
-  namespace: cnpg-watchdog
+  namespace: storage
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -129,4 +118,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cnpg-watchdog
-    namespace: cnpg-watchdog
+    namespace: storage
