@@ -71,8 +71,8 @@ spec:
         readOnly: true
     config:
       http:
-        public_base: https://matrix-auth.local.icylair.com/
-        issuer: https://matrix-auth.local.icylair.com/
+        public_base: https://matrix-auth.icylair.com/
+        issuer: https://matrix-auth.icylair.com/
       #   listeners:
       #     - name: web
       #       resources:
@@ -131,7 +131,7 @@ spec:
       enabled: false
       className: "traefik"
       hosts:
-        - host: matrix-auth.local.icylair.com
+        - host: matrix-auth.icylair.com
           paths:
             - path: /
               pathType: Prefix
@@ -145,7 +145,7 @@ spec:
               pathType: Exact
       tls:
         - hosts:
-            - matrix-auth.local.icylair.com
+            - matrix-auth.icylair.com
             - matrix.local.icylair.com
           secretName: icylair-com-all-prod
 ---
@@ -159,7 +159,7 @@ spec:
       namespace: network
   hostnames:
     # - mas.local.icylair.com
-    - matrix-auth.local.icylair.com
+    - matrix-auth.icylair.com
     # Migration test: local stack now serves prod's server_name.
     - matrix.icylair.com
   rules:

@@ -3,7 +3,7 @@
 # services ONLY. These are traefik.io Middleware CRDs (kubernetescrd provider
 # is enabled on the cluster traefik) attached per-rule via Gateway API
 # ExtensionRef filters on the matrix.icylair.com / element.icylair.com /
-# matrix-auth.local.icylair.com routes below. No other host's routes are
+# matrix-auth.icylair.com routes below. No other host's routes are
 # touched, so harbor / headscale / ts servers etc. keep answering on plain
 # HTTP exactly as before.
 #
@@ -35,7 +35,7 @@ spec:
     # HSTS scoped to each matrix host itself -- deliberately NO
     # includeSubDomains: that would pin every other *.icylair.com tenant
     # (harbor, headscale, ts servers, plain-HTTP ones too), and the cert is a
-    # wildcard anyway. matrix-auth.local.icylair.com is likewise bare, so
+    # wildcard anyway. matrix-auth.icylair.com is likewise bare, so
     # other *.local.icylair.com tenants stay unaffected.
     stsSeconds: 15552000
     forceSTSHeader: true
