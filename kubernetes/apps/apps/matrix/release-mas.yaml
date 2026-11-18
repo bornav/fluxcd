@@ -8,7 +8,7 @@ spec:
   interval: 10m
   url: oci://codeberg.org/wrenix/helm-charts/matrix-authentication-service
   ref:
-    tag: 0.1.27
+    tag: 0.1.29
 ---
 # HelmRelease's CRD prunes nulls from spec.values, so the chart's inline
 # defaults (database.password: secret, matrix.secret: ...) cannot be removed
