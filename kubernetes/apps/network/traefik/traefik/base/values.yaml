@@ -151,7 +151,7 @@ experimental:
       version: "v0.3.0"
     traefikoidc:
       moduleName: "github.com/lukaszraczylo/traefikoidc"
-      version: v1.0.27
+      version: v1.0.66
 
 # logs:
 #   general:
