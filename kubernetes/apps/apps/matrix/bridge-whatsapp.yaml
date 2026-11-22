@@ -35,7 +35,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: mautrix-whatsapp
-          image: dock.mau.dev/mautrix/whatsapp:v26.10
+          image: dock.mau.dev/mautrix/whatsapp:v26.11
           command: ["/usr/bin/mautrix-whatsapp"]
           args: ["--no-update"]
           ports:
