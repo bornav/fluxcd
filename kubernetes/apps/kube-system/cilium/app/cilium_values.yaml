@@ -58,6 +58,10 @@ clustermesh:
     tls:
       auto:
         enabled: true
+        # Pinned: 1.20 lowers the auto-cert default to 365d and helm-method certs
+        # only renew on `helm upgrade`. Keep 1095d (matches current certs, expiring
+        # 2029) so the mesh does not depend on yearly upgrades. Matches local.
+        certValidityDuration: 1095
     service:
       nodePort: 32379 # make sure it's unique on each cluster when kube-proxy replacment is enabled
 # # dont thnk i need this
