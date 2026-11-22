@@ -5,6 +5,9 @@ metadata:
 spec:
   suspend: false
   interval: 45m
+  # 5m default is too tight for the arm64 image pulls on the oracle nodes;
+  # the 1.19.11 upgrade timed out at 5m and Flux rolled back to 1.18.9.
+  timeout: 15m
   chart:
     spec:
       chart: cilium
