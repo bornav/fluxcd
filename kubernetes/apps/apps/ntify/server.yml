@@ -32,16 +32,26 @@ auth-access:
 # (verified live: discovery returned 404). "/app" keeps ensureWebEnabled
 # satisfied (so ?up=1 discovery AND the app's /v1/config work) while the
 # obvious root "/" falls through to 404 (root SPA only served when
-# WebRoot=="/" -- verified server.go:770). SPA at /app is inert anyway
-# (deny-all + signup off). Flip to "disable" only if you drop UnifiedPush.
+# WebRoot=="/" -- verified server.go:770). SPA at /app is login-gated
+# (require-login) and ACL-gated server-side (deny-all). Flip web-root to
+# "disable" only if you drop UnifiedPush.
 web-root: "/app"
 # Account self-service OFF everywhere (signup endpoint 400s even via
 # API; verified in server_account.go handleAccountCreate). Basic-auth
 # login for the provisioned user is NOT affected by these flags --
-# enable-login/require-login only shape the (now disabled) web UI.
+# enable-login/require-login shape the web UI at /app (verified in v2.38.0
+# source): the login ENDPOINT (POST /v1/account/login) is NOT gated by
+# enable-login -- it exists whenever auth-file is set, and already answered
+# live (401 on wrong password) with the flag off. So enabling the login
+# BUTTON adds no server attack surface; brute force is throttled by
+# maybeAuthenticate (vip.AuthAllowed, ~3 failures -> lockout window) +
+# ban-file strikes. require-login is client-side only (App.jsx redirects to
+# the login screen); the real gate stays auth-default-access: deny-all.
+# enable-signup IS server-enforced (handleAccountCreate refuses) -> stays
+# false: accounts are provisioned via Vault auth_users only.
 enable-signup: false
-enable-login: false
-require-login: false
+enable-login: true
+require-login: true
 enable-reservations: false
 # Attachments stay OFF (no attachment-cache-dir): no file uploads, no
 # storage-exhaustion vector, no malware hosting. Upstream/base-url to
